@@ -2,20 +2,148 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sahdeepsingh.clousic">
 
+    <!-- So we can play songs while the device is locked -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- So we can save new Playlists on the disc -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.Light" >
+
+        <activity
+            android:name=".ui.ActivityMenuMain"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+
+            <!-- This is how we know this is the main Activity to
+                 start first -->
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.ActivityMenuMusic"
+            android:label="@string/menu_main_music"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.ActivityMenuMain"
+            />
+
+        <activity
+            android:name=".ui.ActivityMenuSettings"
+            android:label="@string/settings"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.ActivityMenuMain"
+            />
+
+        <activity
+            android:name=".ui.ActivityMenuArtist"
+            android:label="@string/menu_music_artists"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.ActivityMenuMusic"
+            />
+
+        <activity
+            android:name=".ui.ActivityMenuAlbum"
+            android:label="@string/menu_music_albums"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.ActivityMenuMusic"
+            />
+
+        <activity
+            android:name=".ui.ActivityMenuGenre"
+            android:label="@string/menu_music_genres"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.ActivityMenuMusic"
+            />
+
+        <activity
+            android:name=".ui.ActivityMenuYear"
+            android:label="@string/menu_music_years"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.ActivityMenuMusic"
+            />
+
+        <activity
+            android:name=".ui.ActivityMenuPlaylist"
+            android:label="@string/menu_music_playlists"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.ActivityMenuMusic"
+            />
+
+        <activity
+            android:name=".ui.ActivityListSongs"
+            android:label="@string/songs"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.XXX"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            />
+
+        <activity
+            android:name=".ui.ActivityListAlbums"
+            android:label="@string/songs"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.ActivityNowPlaying"
+            android:label="@string/now_playing"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.ActivityQuit"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <!-- Services (run on the background)
+         -->
+        <service android:name=".services.ServicePlayMusic" />
+        <service android:name=".services.ServiceScrobbleMusic" />
+
+        <!-- Allows specific classes to handle broadcasts
+          -  (on this case, two buttons clicked on the Notification)
+         -->
+        <receiver android:name="NotificationMusic$NotificationPlayButtonHandler" />
+        <receiver android:name="NotificationMusic$NotificationSkipButtonHandler" />
+
+        <!-- This static class will keep an eye when the following
+          -  activities happen.
+         -->
+        <receiver android:name=".services.ServicePlayMusic$ExternalBroadcastReceiver" >
+            <intent-filter>
+                <!-- Disconnected Headphones -->
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
