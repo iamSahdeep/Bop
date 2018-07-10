@@ -31,76 +31,52 @@
     <string name="menu_music_albums">Albums</string>
     <string name="menu_music_genres">Genres</string>
     <string name="menu_music_years">Years</string>
-    <string name="menu_music_proceed_error"
-        >Cannot proceed: I\'m scanning the device for songs.</string>
+    <string name="menu_music_proceed_error">Cannot proceed: I\'m scanning the device for songs.</string>
 
     <string name="notification_button_play">Play</string>
     <string name="notification_button_skip">Skip</string>
 
-    <string name="menu_settings_themes_title"
-        >Theme</string>
-    <string name="menu_settings_themes_subtitle"
-        >Colors used on the application.</string>
+    <string name="menu_settings_themes_title">Theme</string>
+    <string name="menu_settings_themes_subtitle">Colors used on the application.</string>
 
 
-    <string name="menu_settings_lastfm_title"
-        >Share songs on Last.fm</string>
-    <string name="menu_settings_lastfm_subtitle"
-        >You must have one of the apps below installed.</string>
+    <string name="menu_settings_lastfm_title">Share songs on Last.fm</string>
+    <string name="menu_settings_lastfm_subtitle">You must have one of the apps below installed.</string>
 
-    <string name="menu_settings_lastfm_which_title"
-        >Last.fm Scrobbler</string>
-    <string name="menu_settings_lastfm_which_subtitle"
-        >Which application I\'ll use to scrobble to Last.fm (you have to install at least one of those).</string>
+    <string name="menu_settings_lastfm_which_title">Last.fm Scrobbler</string>
+    <string name="menu_settings_lastfm_which_subtitle">Which application I\'ll use to scrobble to Last.fm (you have to install at least one of those).</string>
 
 
-    <string name="menu_settings_show_notification_title"
-        >Ongoing Notification</string>
-    <string name="menu_settings_show_notification_subtitle"
-        >Shows a system notification when I\'m playing a song. You can control the music player from there.</string>
+    <string name="menu_settings_show_notification_title">Ongoing Notification</string>
+    <string name="menu_settings_show_notification_subtitle">Shows a system notification when I\'m playing a song. You can control the music player from there.</string>
 
 
-    <string name="menu_settings_lock_widget_title"
-        >Lockscreen Widget</string>
-    <string name="menu_settings_lock_widget_subtitle"
-        >Displays music controls on the locked screen.\nNote: Restart application to apply changes.</string>
+    <string name="menu_settings_lock_widget_title">Lockscreen Widget</string>
+    <string name="menu_settings_lock_widget_subtitle">Displays music controls on the locked screen.\nNote: Restart application to apply changes.</string>
 
 
-    <string name="menu_settings_pause_headphone_off_title"
-        >Pause when Unplugged</string>
-    <string name="menu_settings_pause_headphone_off_subtitle"
-        >Should I pause the music when the headphone is disconnected?</string>
+    <string name="menu_settings_pause_headphone_off_title">Pause when Unplugged</string>
+    <string name="menu_settings_pause_headphone_off_subtitle">Should I pause the music when the headphone is disconnected?</string>
 
 
-    <string name="menu_settings_play_headphone_on_title"
-        >Play when Inserted</string>
-    <string name="menu_settings_play_headphone_on_subtitle"
-        >Should I resume the music when the headphone is reconnected?</string>
+    <string name="menu_settings_play_headphone_on_title">Play when Inserted</string>
+    <string name="menu_settings_play_headphone_on_subtitle">Should I resume the music when the headphone is reconnected?</string>
 
 
-    <string name="menu_settings_repeat_list_title"
-        >Repeat when finished</string>
-    <string name="menu_settings_repeat_list_subtitle"
-        >When finishing the \"Now Playing List\", should I start it all over again?</string>
+    <string name="menu_settings_repeat_list_title">Repeat when finished</string>
+    <string name="menu_settings_repeat_list_subtitle">When finishing the \"Now Playing List\", should I start it all over again?</string>
 
 
-    <string name="menu_settings_scroll_on_focus_title"
-        >Scroll when returning</string>
-    <string name="menu_settings_scroll_on_focus_subtitle"
-        >When returning to the \"Now Playing List\", should I scroll it to the currently playing song?</string>
+    <string name="menu_settings_scroll_on_focus_title">Scroll when returning</string>
+    <string name="menu_settings_scroll_on_focus_subtitle">When returning to the \"Now Playing List\", should I scroll it to the currently playing song?</string>
 
 
-    <string name="menu_settings_info_dialog_title"
-        >Music Library Info</string>
-    <string name="menu_settings_info_dialog_text"
-        >%1$d songs\n%2$d albums\n%3$s artists\n%4$d playlists\n\nNext versions will have more stuff here.</string>
+    <string name="menu_settings_info_dialog_title">Music Library Info</string>
+    <string name="menu_settings_info_dialog_text">%1$d songs\n%2$d albums\n%3$s artists\n%4$d playlists\n\nNext versions will have more stuff here.</string>
 
 
-    <string name="menu_settings_misc_dialog_title"
-        >Misc. Info</string>
-    <string name="menu_settings_misc_dialog_text"
-        >For now there\'s nothing here.\nPerhaps on a next version&#8230;</string>
-
+    <string name="menu_settings_misc_dialog_title">Misc. Info</string>
+    <string name="menu_settings_misc_dialog_text">For now there\'s nothing here.\nPerhaps on a next version&#8230;</string>
 
 
     <string name="menu_settings_version_title">Main Version</string>
@@ -113,19 +89,19 @@
     <string name="menu_now_playing_action_bar_sort_album">Sort by Album</string>
     <string name="menu_now_playing_action_bar_sort_track">Sort by Track Number</string>
     <string name="menu_now_playing_action_bar_sort_random">Sort Randomly</string>
-	<string name="menu_now_playing_action_bar_new_playlist">Create new Playlist</string>
+    <string name="menu_now_playing_action_bar_new_playlist">Create new Playlist</string>
 
-	<string name="menu_now_playing_dialog_create_playlist_title">Name the new Playlist</string>
-	<string name="menu_now_playing_dialog_create_playlist_subtitle">Enter a name for your new playlist</string>
-	<string name="menu_now_playing_dialog_create_playlist_button_ok">OK</string>
-	<string name="menu_now_playing_dialog_create_playlist_button_cancel">Cancel</string>
-	<string name="menu_now_playing_dialog_create_playlist_success">Playlist %1$s successfully created</string>
+    <string name="menu_now_playing_dialog_create_playlist_title">Name the new Playlist</string>
+    <string name="menu_now_playing_dialog_create_playlist_subtitle">Enter a name for your new playlist</string>
+    <string name="menu_now_playing_dialog_create_playlist_button_ok">OK</string>
+    <string name="menu_now_playing_dialog_create_playlist_button_cancel">Cancel</string>
+    <string name="menu_now_playing_dialog_create_playlist_success">Playlist %1$s successfully created</string>
 
 
-	<string name="service_music_play_headphone_on">Headphone connected (%1$s)</string>
-	<string name="service_music_play_headphone_off">Headphone disconnected</string>
+    <string name="service_music_play_headphone_on">Headphone connected (%1$s)</string>
+    <string name="service_music_play_headphone_off">Headphone disconnected</string>
 
-	<!-- Values for the Settings Activity
+    <!-- Values for the Settings Activity
 	 -->
 
     <string-array name="themes">
@@ -162,5 +138,11 @@
         <item>sls</item>
         <item>scrobbledroid</item>
     </string-array>
+    <string name="title_activity_main_screen">MainScreen</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>
