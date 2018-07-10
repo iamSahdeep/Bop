@@ -261,6 +261,7 @@ public class ServicePlayMusic extends Service
         Intent scrobblerIntent = new Intent(context, ServiceScrobbleMusic.class);
         context.startService(scrobblerIntent);
 
+
         // Registering our BroadcastReceiver to listen to orders
         // from inside our own application.
         LocalBroadcastManager
@@ -1224,5 +1225,12 @@ public class ServicePlayMusic extends Service
                 .sendBroadcast(broadcastIntent);
 
         Log.w(TAG, "sentBroadcast");
+    }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("LocalService", "Received start id " + startId + ": " + intent);
+        // We want this service to continue running until it is explicitly
+        // stopped, so return sticky.
+        return START_STICKY;
     }
 }

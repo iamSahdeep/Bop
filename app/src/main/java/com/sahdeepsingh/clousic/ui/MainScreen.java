@@ -25,10 +25,12 @@ import com.sahdeepsingh.clousic.fragments.FragmentAlbum;
 import com.sahdeepsingh.clousic.fragments.FragmentGenre;
 import com.sahdeepsingh.clousic.fragments.FragmentPlaylist;
 import com.sahdeepsingh.clousic.fragments.FragmentSongs;
+import com.sahdeepsingh.clousic.fragments.dummy.DummyContent;
+import com.sahdeepsingh.clousic.notifications.NotificationMusic;
 import com.sahdeepsingh.clousic.playerMain.Main;
 import com.sahdeepsingh.clousic.playerMain.SingleToast;
 
-public class MainScreen extends Activity implements ActionBar.TabListener {
+public class MainScreen extends Activity implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -77,6 +79,19 @@ public class MainScreen extends Activity implements ActionBar.TabListener {
         Main.settings.load(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+
+
+        if (Main.mainMenuHasNowPlayingItem)
+        {
+            //Implement Bottom fragment for current music playing
+        }
+
+        // Initializing the main program logic.
+        Main.initialize(this);
+
+        scanSongs(false);
+
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
@@ -113,15 +128,7 @@ public class MainScreen extends Activity implements ActionBar.TabListener {
         }
 
 
-        if (Main.mainMenuHasNowPlayingItem)
-        {
-            //Implement Bottom fragment for current music playing
-        }
 
-        // Initializing the main program logic.
-        Main.initialize(this);
-
-        scanSongs(false);
 
 
     }
@@ -144,12 +151,28 @@ public class MainScreen extends Activity implements ActionBar.TabListener {
         // See the implementation right at the end of this class.
         if ((forceScan) || (! Main.songs.isInitialized())) {
 
-            SingleToast.show(MainScreen.this,
+            /*SingleToast.show(MainScreen.this,
                     getString(R.string.menu_main_scanning),
-                    Toast.LENGTH_LONG);
+                    Toast.LENGTH_LONG);*/
 
             new ScanSongs().execute();
         }
+    }
+
+    @Override
+    public void onListFragmentInteraction(int position) {
+
+        // We'll play the current song list
+        Main.nowPlayingList = Main.musicList;
+
+        // Sending the song index inside the now playing list.
+        // See the documentation of `ActivityNowPLaying` class.
+        Intent intent = new Intent(this, ActivityNowPlaying.class);
+
+        intent.putExtra("song", position);
+        Log.e("yoyo",String.valueOf(position));
+        startActivity(intent);
+
     }
 
     /**
@@ -190,9 +213,9 @@ public class MainScreen extends Activity implements ActionBar.TabListener {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            SingleToast.show(MainScreen.this,
+            /*SingleToast.show(MainScreen.this,
                     result,
-                    Toast.LENGTH_LONG);
+                    Toast.LENGTH_LONG);*/
         }
     }
 
@@ -322,6 +345,7 @@ public class MainScreen extends Activity implements ActionBar.TabListener {
 */
             switch (position) {
                 case 0:
+                    Main.musicList = Main.songs.songs;
                     return new FragmentSongs();
                 case 1:
                     return new FragmentPlaylist();
@@ -372,5 +396,23 @@ public class MainScreen extends Activity implements ActionBar.TabListener {
         Main.mainMenuHasNowPlayingItem = true;
 
         // Refresh ListView
+    }
+
+    /**
+     * When destroying the Activity.
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (backPressedHandler != null)
+            backPressedHandler.removeCallbacks(backPressedTimeoutAction);
+
+        // Need to clear all the items otherwise
+        // they'll keep adding up.
+        // Cancell all thrown Notifications
+        NotificationMusic.cancelAll(this);
+
+        Main.stopMusicService(this);
     }
 }

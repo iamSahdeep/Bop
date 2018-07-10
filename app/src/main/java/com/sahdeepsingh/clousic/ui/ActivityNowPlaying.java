@@ -98,6 +98,7 @@ public class ActivityNowPlaying extends ActivityMaster implements
 		// We'll play this pre-defined list.
 		// By default we play the first track, although an
 		// extra can change this. Look below.
+		if(!Main.nowPlayingList.isEmpty())
 		Main.musicService.setList(Main.nowPlayingList);
 		Main.musicService.setSong(0);
 
@@ -146,7 +147,7 @@ public class ActivityNowPlaying extends ActivityMaster implements
 
 		// While we're playing music, add an item to the
 		// Main Menu that returns here.
-		ActivityMenuMain.addNowPlayingItem(this);
+		MainScreen.addNowPlayingItem(this);
 
 		// Customizing the ActionBar
 		// (menu on top)

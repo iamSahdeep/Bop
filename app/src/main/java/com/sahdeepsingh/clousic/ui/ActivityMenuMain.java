@@ -318,7 +318,6 @@ public class ActivityMenuMain extends ActivityMaster
 
 		Main.mainMenuHasNowPlayingItem = true;
 
-		// Refresh ListView
-		adapter.notifyDataSetChanged();
-	}
+		// Refresh ListView}
+}
 }

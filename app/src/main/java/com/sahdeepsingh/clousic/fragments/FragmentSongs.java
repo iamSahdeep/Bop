@@ -1,11 +1,13 @@
 package com.sahdeepsingh.clousic.fragments;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +74,11 @@ public class FragmentSongs extends android.app.Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MySongsRecyclerViewAdapter(Main.musicList, mListener));
+            MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.musicList,mListener);
+            recyclerView.setAdapter(mySongsRecyclerViewAdapter);
+
         }
+
         return view;
     }
 
@@ -81,7 +86,9 @@ public class FragmentSongs extends android.app.Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.e("yoyo","look1");
         if (context instanceof OnListFragmentInteractionListener) {
+            Log.e("yoyo","look");
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
@@ -107,6 +114,7 @@ public class FragmentSongs extends android.app.Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(int item);
     }
+
 }
