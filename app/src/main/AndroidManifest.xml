@@ -24,7 +24,6 @@
                  start first
             -->
 
-
         </activity>
         <activity
             android:name=".ui.ActivityMenuMusic"
@@ -100,8 +99,13 @@
           Allows specific classes to handle broadcasts
           -  (on this case, two buttons clicked on the Notification)
         -->
+        <!--
         <receiver android:name=".NotificationMusic$NotificationPlayButtonHandler" />
         <receiver android:name=".NotificationMusic$NotificationSkipButtonHandler" />
+        -->
+
+        <receiver android:name=".notifications.NotificationMusic$NotificationPlayButtonHandler" />
+        <receiver android:name=".notifications.NotificationMusic$NotificationSkipButtonHandler" />
 
         <!--
           This static class will keep an eye when the following
@@ -120,15 +124,14 @@
 
         <activity
             android:name=".ui.MainScreen"
-            android:label="@string/title_activity_main_screen">
-
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".ui.PlayingNow" />
     </application>
 
 </manifest>

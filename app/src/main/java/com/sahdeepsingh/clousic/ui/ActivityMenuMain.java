@@ -186,7 +186,7 @@ public class ActivityMenuMain extends ActivityMaster
 
 			Main.nowPlayingList = Main.songs.getSongs();
 
-			Intent nowPlayingIntent = new Intent(this, ActivityNowPlaying.class);
+			Intent nowPlayingIntent = new Intent(this, PlayingNow.class);
 			nowPlayingIntent.putExtra("sort", "random");
 			nowPlayingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

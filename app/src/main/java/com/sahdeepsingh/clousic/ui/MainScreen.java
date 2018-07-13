@@ -167,7 +167,7 @@ public class MainScreen extends Activity implements ActionBar.TabListener,Fragme
 
         // Sending the song index inside the now playing list.
         // See the documentation of `ActivityNowPLaying` class.
-        Intent intent = new Intent(this, ActivityNowPlaying.class);
+        Intent intent = new Intent(this, PlayingNow.class);
 
         intent.putExtra("song", position);
         Log.e("yoyo",String.valueOf(position));
