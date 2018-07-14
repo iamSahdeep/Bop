@@ -1,14 +1,12 @@
 package com.sahdeepsingh.clousic.ui;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,10 +19,9 @@ import android.widget.Toast;
 import com.sahdeepsingh.clousic.R;
 import com.sahdeepsingh.clousic.SongData.AdapterSong;
 import com.sahdeepsingh.clousic.controls.MusicController;
-import com.sahdeepsingh.clousic.fragments.BottomControls;
 import com.sahdeepsingh.clousic.playerMain.Main;
 
-public class PlayingNow extends FragmentActivity implements MediaController.MediaPlayerControl,AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
+public class PlayingNow extends ActivityMaster implements MediaController.MediaPlayerControl,AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
 
     /**
      * List that will display all the songs.
@@ -58,10 +55,18 @@ public class PlayingNow extends FragmentActivity implements MediaController.Medi
      */
 
 
+    private Toolbar toolbar;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playing_now);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         songListView = (ListView) findViewById(R.id.list_nowplaying);
 
@@ -98,9 +103,7 @@ public class PlayingNow extends FragmentActivity implements MediaController.Medi
             }
 
             Main.musicService.playSong();
-            BottomControls bc = new BottomControls();
-            FragmentManager fm = getSupportFragmentManager();
-            bc.show(fm,bc.getTag());
+
         }
 
         // Scroll the list view to the current song.
@@ -204,9 +207,7 @@ public class PlayingNow extends FragmentActivity implements MediaController.Medi
         super.onBackPressed();
         if(Main.musicService.isPlaying());
         {
-            BottomControls bc = new BottomControls();
-            FragmentManager fm = getSupportFragmentManager();
-            bc.show(fm, bc.getTag());
+
         }
     }
 
@@ -250,9 +251,7 @@ public class PlayingNow extends FragmentActivity implements MediaController.Medi
     @Override
     protected void onStop() {
         musicController.hide();
-        BottomControls bc = new BottomControls();
-        FragmentManager fm = getSupportFragmentManager();
-        bc.dismiss();
+
         super.onStop();
     }
 
@@ -413,6 +412,7 @@ public class PlayingNow extends FragmentActivity implements MediaController.Medi
             setMusicController();
             playbackPaused = false;
         }
+        onResume();
     }
 
     /**

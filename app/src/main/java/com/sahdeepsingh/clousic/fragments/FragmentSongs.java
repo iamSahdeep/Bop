@@ -1,5 +1,6 @@
 package com.sahdeepsingh.clousic.fragments;
 
+import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
@@ -76,6 +77,22 @@ public class FragmentSongs extends android.app.Fragment {
             }
             MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.musicList,mListener);
             recyclerView.setAdapter(mySongsRecyclerViewAdapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    ActionBar actionBar = getActivity().getActionBar();
+                    if (actionBar != null)
+                    if (dy > 0) {
+                        // Scrolling up
+
+                        actionBar.hide();
+                    } else {
+                        // Scrolling down
+                        actionBar.show();
+                    }
+                }
+            });
 
         }
 

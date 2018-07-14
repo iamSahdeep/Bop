@@ -11,16 +11,24 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.clousic.R;
+import com.sahdeepsingh.clousic.controls.BottomControlsView;
 import com.sahdeepsingh.clousic.fragments.FragmentAlbum;
 import com.sahdeepsingh.clousic.fragments.FragmentGenre;
 import com.sahdeepsingh.clousic.fragments.FragmentPlaylist;
@@ -29,8 +37,12 @@ import com.sahdeepsingh.clousic.fragments.dummy.DummyContent;
 import com.sahdeepsingh.clousic.notifications.NotificationMusic;
 import com.sahdeepsingh.clousic.playerMain.Main;
 import com.sahdeepsingh.clousic.playerMain.SingleToast;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-public class MainScreen extends Activity implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainScreen extends ActivityMaster implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -65,6 +77,10 @@ public class MainScreen extends Activity implements ActionBar.TabListener,Fragme
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,55 +99,35 @@ public class MainScreen extends Activity implements ActionBar.TabListener,Fragme
 
         if (Main.mainMenuHasNowPlayingItem)
         {
-            //Implement Bottom fragment for current music playing
+
+
         }
 
-        // Initializing the main program logic.
         Main.initialize(this);
 
         scanSongs(false);
 
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        // Set up the action bar.
-        final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setTitle(R.string.all_songs);
-        getActionBar().setDisplayShowHomeEnabled(false);
-        // When swiping between different sections, select the corresponding
-        // tab. We can also use ActionBar.Tab#select() to do this if we have
-        // a reference to the Tab.
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
+        setupViewPager(mViewPager);
 
-        // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by
-            // the adapter. Also specify this Activity object, which implements
-            // the TabListener interface, as the callback (listener) for when
-            // this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
-        }
-
-
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
 
 
     }
+
+    private void setupViewPager(ViewPager viewPager) {
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        viewPager.setAdapter(mSectionsPagerAdapter);
+    }
+
 
     /**
      * Starts the background process of scanning the songs.
@@ -414,5 +410,11 @@ public class MainScreen extends Activity implements ActionBar.TabListener,Fragme
         NotificationMusic.cancelAll(this);
 
         Main.stopMusicService(this);
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
     }
 }

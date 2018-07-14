@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.sahdeepsingh.clousic.R;
 import com.sahdeepsingh.clousic.playerMain.Main;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 /**
  * Master Activity from which every other Activity inherits
@@ -37,7 +39,7 @@ import com.sahdeepsingh.clousic.playerMain.Main;
  * - http://stackoverflow.com/a/11875930
  */
 @SuppressLint("Registered") // No need to register this class on AndroidManifest
-public class ActivityMaster extends Activity {
+public class ActivityMaster extends AppCompatActivity {
 
 	/**
 	 * Keeping track of the current theme name.
@@ -53,9 +55,6 @@ public class ActivityMaster extends Activity {
 
 		super.onCreate(savedInstanceState);
 
-		// Mandatory - when creating we don't have
-		// a theme applied yet.
-		refreshTheme();
 
 		Main.startMusicService(this);
 	}
@@ -67,47 +66,25 @@ public class ActivityMaster extends Activity {
 	protected void onResume() {
 		super.onResume();
 
-		// Every time the user focuses this Activity,
-		// we need to check it.
-		// It the theme changed, recreate ourselves.
-		if (refreshTheme())
-			recreate();
-	}
-
-	/**
-	 * Tests if our current theme is the same as the one
-	 * specified on `Settings`, reapplying the theme if
-	 * not the case.
-	 *
-	 * @return Flag that tells if we've changed the theme.
-	 */
-	public boolean refreshTheme() {
-
-		// Getting global theme name from the Settings.
-		// Second argument is the default value, in case
-		// something went wrong.
-		String theme = Main.settings.get("themes", "default");
-
-		if (currentTheme != theme)
+		SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
+		if (Main.mainMenuHasNowPlayingItem)
 		{
-			// Testing each possible theme name.
-			// I repeat - all valid theme names are specified
-			// at `res/strings.xml`, right at the Settings sub menu.
-			if      (theme.equals("default"))         setTheme(R.style.Theme_Default);
-			else if (theme.equals("light"))           setTheme(R.style.Theme_Light);
-			else if (theme.equals("dark"))            setTheme(R.style.Theme_Dark);
-			else if (theme.equals("solarized_dark"))  setTheme(R.style.Theme_Solarized_Dark);
-			else if (theme.equals("wallpaper"))       setTheme(R.style.Theme_Wallpaper);
-			else if (theme.equals("dialog_light"))    setTheme(R.style.Theme_DialogLight);
-			else if (theme.equals("dialog_dark"))     setTheme(R.style.Theme_DialogDark);
-			else if (theme.equals("light_simple"))    setTheme(R.style.Theme_LightSimple);
-			else if (theme.equals("dark_simple"))     setTheme(R.style.Theme_DarkSimple);
-
-			currentTheme = theme;
-			return true;
+			TextView t = findViewById(R.id.bottomtextView);
+			TextView a = findViewById(R.id.bottomtextartist);
+			t.setText(Main.musicService.currentSong.getTitle());
+			a.setText("by " + Main.musicService.currentSong.getArtist());
+			t.setSelected(true);
+			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 		}
-		return false;
+		else
+		{
+			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+			slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
+
+		}
 	}
+
+
 
 	/**
 	 * Let's set a context menu (menu that appears when
