@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.sahdeepsingh.clousic.SongData.Song;
 import com.sahdeepsingh.clousic.SongData.SongList;
@@ -129,11 +130,13 @@ public class Main {
             musicService = binder.getService();
             musicService.setList(Main.songs.songs);
             musicService.musicBound = true;
+            Log.w("service","onServiceConnected");
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             musicService.musicBound = false;
+            Log.w("service","onServiceDisconnected");
         }
     };
 
@@ -162,6 +165,8 @@ public class Main {
         musicServiceIntent = new Intent(c, ServicePlayMusic.class);
         c.bindService(musicServiceIntent, musicConnection, Context.BIND_AUTO_CREATE);
         c.startService(musicServiceIntent);
+        Log.w("service","startMusicService");
+
     }
 
     /**
@@ -173,6 +178,7 @@ public class Main {
         if (musicServiceIntent == null)
             return;
 
+        Log.w("service","stoppedService");
         c.stopService(musicServiceIntent);
         musicServiceIntent = null;
 

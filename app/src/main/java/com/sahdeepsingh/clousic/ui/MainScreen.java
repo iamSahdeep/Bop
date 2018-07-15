@@ -166,7 +166,6 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         Intent intent = new Intent(this, PlayingNow.class);
 
         intent.putExtra("song", position);
-        Log.e("yoyo",String.valueOf(position));
         startActivity(intent);
 
     }

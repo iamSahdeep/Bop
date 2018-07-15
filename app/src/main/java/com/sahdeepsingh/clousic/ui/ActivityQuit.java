@@ -2,6 +2,7 @@ package com.sahdeepsingh.clousic.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * Placeholder Activity that forcibly quits the application.
@@ -28,7 +29,7 @@ public class ActivityQuit extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
+		Log.w("service","Destroyed by quitActivity");
 		System.exit(0);
 	}
 }

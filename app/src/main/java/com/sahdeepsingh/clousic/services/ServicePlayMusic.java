@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -21,6 +22,7 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -101,7 +103,7 @@ public class ServicePlayMusic extends Service
      * other classes that might be interested on it must
      * register a BroadcastReceiver to this String.
      */
-    public static final String BROADCAST_ACTION = "com.kure.musicplayer.MUSIC_SERVICE";
+    public static final String BROADCAST_ACTION = "com.sahdeepsingh.clousic.MUSIC_SERVICE";
 
     /** String used to get the current state Extra on the Broadcast Intent */
     public static final String BROADCAST_EXTRA_STATE = "x_japan";
@@ -177,15 +179,15 @@ public class ServicePlayMusic extends Service
     // constants exist in our class is a mere convenience: what really defines the actions our
     // service can handle are the <action> tags in the <intent-filters> tag for our service in
     // AndroidManifest.xml.
-    public static final String BROADCAST_ORDER = "com.kure.musicplayer.MUSIC_SERVICE";
-    public static final String BROADCAST_EXTRA_GET_ORDER = "com.kure.musicplayer.dasdas.MUSIC_SERVICE";
+    public static final String BROADCAST_ORDER = "com.sahdeepsingh.clousic.MUSIC_SERVICE";
+    public static final String BROADCAST_EXTRA_GET_ORDER = "com.sahdeepsingh.clousic.dasdas.MUSIC_SERVICE";
 
-    public static final String BROADCAST_ORDER_PLAY            = "com.kure.musicplayer.action.PLAY";
-    public static final String BROADCAST_ORDER_PAUSE           = "com.kure.musicplayer.action.PAUSE";
+    public static final String BROADCAST_ORDER_PLAY            = "com.sahdeepsingh.clousic.action.PLAY";
+    public static final String BROADCAST_ORDER_PAUSE           = "com.sahdeepsingh.clousic.action.PAUSE";
     public static final String BROADCAST_ORDER_TOGGLE_PLAYBACK = "dlsadasd";
-    public static final String BROADCAST_ORDER_STOP            = "com.kure.musicplayer.action.STOP";
-    public static final String BROADCAST_ORDER_SKIP            = "com.kure.musicplayer.action.SKIP";
-    public static final String BROADCAST_ORDER_REWIND          = "com.kure.musicplayer.action.REWIND";
+    public static final String BROADCAST_ORDER_STOP            = "com.sahdeepsingh.clousic.action.STOP";
+    public static final String BROADCAST_ORDER_SKIP            = "com.sahdeepsingh.clousic.action.SKIP";
+    public static final String BROADCAST_ORDER_REWIND          = "com.sahdeepsingh.clousic.action.REWIND";
 
 
     /**
@@ -274,6 +276,7 @@ public class ServicePlayMusic extends Service
         registerReceiver(headsetBroadcastReceiver, headsetFilter);
 
         Log.w(TAG, "onCreate");
+
     }
 
     /**
@@ -313,6 +316,7 @@ public class ServicePlayMusic extends Service
             return;
 
         player.stop();
+        player.reset();
         player.release();
         player = null;
 
@@ -814,6 +818,8 @@ public class ServicePlayMusic extends Service
         stopMusicPlayer();
 
         destroyLockScreenWidget();
+        if(player!=null)
+            player.release();
 
         Log.w(TAG, "onDestroy");
         super.onDestroy();
@@ -1233,4 +1239,6 @@ public class ServicePlayMusic extends Service
         // stopped, so return sticky.
         return START_STICKY;
     }
+
+
 }
