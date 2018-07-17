@@ -23,13 +23,14 @@ public class ActivityQuit extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		finish();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		Log.w("service","Destroyed by quitActivity");
+/*
 		System.exit(0);
+*/
 	}
 }

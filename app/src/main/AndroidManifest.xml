@@ -94,7 +94,8 @@
         <!-- Services (run on the background) -->
         <service
             android:name=".services.ServicePlayMusic"
-            android:enabled="true" />
+            android:enabled="true"
+            android:stopWithTask="false"/>
         <service
             android:name=".services.ServiceScrobbleMusic"
             android:enabled="true" />

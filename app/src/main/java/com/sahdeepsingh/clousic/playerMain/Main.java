@@ -68,7 +68,7 @@ public class Main {
     public static boolean mainMenuHasNowPlayingItem = false;
 
     // GENERAL PROGRAM INFO
-    public static String applicationName = "kure Music Player";
+    public static String applicationName = "Clousic";
     public static String packageName = "<unknown>";
     public static String versionName = "<unknown>";
     public static int    versionCode = -1;
@@ -196,16 +196,9 @@ public class Main {
      */
     public static void forceExit(Activity c) {
 
-        // Instead of just calling `System.exit(0)` we use
-        // a temporary Activity do to the dirty job for us
-        // (clearing all other Activities and finishing() itself).
-        Intent intent = new Intent(c, ActivityQuit.class);
+        /*
+        c.finish();*/
+        c.unbindService(musicConnection);
 
-        // Clear all other Activities
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        c.startActivity(intent);
-
-        // Clear the Activity calling this function
-        c.finish();
     }
 }

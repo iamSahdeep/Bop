@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -20,7 +21,10 @@ import android.media.MediaPlayer;
 import android.media.RemoteControlClient;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
@@ -316,7 +320,6 @@ public class ServicePlayMusic extends Service
             return;
 
         player.stop();
-        player.reset();
         player.release();
         player = null;
 
@@ -625,15 +628,15 @@ public class ServicePlayMusic extends Service
      *
      * @param state Which state is it into.
      *              Can be one of the following:
-     *              {@link RemoteControlClient.PLAYSTATE_PLAYING }
-     *              {@link RemoteControlClient.PLAYSTATE_PAUSED }
-     *              {@link RemoteControlClient.PLAYSTATE_BUFFERING }
-     *              {@link RemoteControlClient.PLAYSTATE_ERROR }
-     *              {@link RemoteControlClient.PLAYSTATE_FAST_FORWARDING }
-     *              {@link RemoteControlClient.PLAYSTATE_REWINDING }
-     *              {@link RemoteControlClient.PLAYSTATE_SKIPPING_BACKWARDS }
-     *              {@link RemoteControlClient.PLAYSTATE_SKIPPING_FORWARDS }
-     *              {@link RemoteControlClient.PLAYSTATE_STOPPED }
+     *              {@link RemoteControlClient#PLAYSTATE_PLAYING }
+     *              {@link RemoteControlClient#PLAYSTATE_PAUSED }
+     *              {@link RemoteControlClient#PLAYSTATE_BUFFERING }
+     *              {@link RemoteControlClient#PLAYSTATE_ERROR }
+     *              {@link RemoteControlClient#PLAYSTATE_FAST_FORWARDING }
+     *              {@link RemoteControlClient#PLAYSTATE_REWINDING }
+     *              {@link RemoteControlClient#PLAYSTATE_SKIPPING_BACKWARDS }
+     *              {@link RemoteControlClient#PLAYSTATE_SKIPPING_FORWARDS }
+     *              {@link RemoteControlClient#PLAYSTATE_STOPPED }
      */
     public void updateLockScreenWidget(Song song, int state) {
 
@@ -822,6 +825,8 @@ public class ServicePlayMusic extends Service
             player.release();
 
         Log.w(TAG, "onDestroy");
+
+        unregisterReceiver(headsetBroadcastReceiver);
         super.onDestroy();
     }
 
@@ -1233,12 +1238,56 @@ public class ServicePlayMusic extends Service
         Log.w(TAG, "sentBroadcast");
     }
     @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Log.e("service","vwvwfvwfvwfv");
+
+
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("LocalService", "Received start id " + startId + ": " + intent);
-        // We want this service to continue running until it is explicitly
-        // stopped, so return sticky.
+
+        if ((intent != null) && (intent.getBooleanExtra("ALARM_RESTART_SERVICE_DIED", false)))
+        {
+            Log.d(TAG, "onStartCommand after ALARM_RESTART_SERVICE_DIED");
+            Log.d(TAG, "Service already running - return immediately...");
+            ensureServiceStaysRunning();
+            return START_STICKY;
+        }
+        // Do your other onStartCommand stuff..
         return START_STICKY;
     }
 
+    private void ensureServiceStaysRunning() {
+        // KitKat appears to have (in some cases) forgotten how to honor START_STICKY
+        // and if the service is killed, it doesn't restart.  On an emulator & AOSP device, it restarts...
+        // on my CM device, it does not - WTF?  So, we'll make sure it gets back
+        // up and running in a minimum of 20 minutes.  We reset our timer on a handler every
+        // 2 minutes...but since the handler runs on uptime vs. the alarm which is on realtime,
+        // it is entirely possible that the alarm doesn't get reset.  So - we make it a noop,
+        // but this will still count against the app as a wakelock when it triggers.  Oh well,
+        // it should never cause a device wakeup.  We're also at SDK 19 preferred, so the alarm
+        // mgr set algorithm is better on memory consumption which is good.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            // A restart intent - this never changes...
+            final int restartAlarmInterval = 20*60*1000;
+            final int resetAlarmTimer = 2*60*1000;
+            final Intent restartIntent = new Intent(this, ServicePlayMusic.class);
+            restartIntent.putExtra("ALARM_RESTART_SERVICE_DIED", true);
+            final AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            @SuppressLint("HandlerLeak") Handler restartServiceHandler = new Handler()
+            {
+                @Override
+                public void handleMessage(Message msg) {
+                    // Create a pending intent
+                    PendingIntent pintent = PendingIntent.getService(getApplicationContext(), 0, restartIntent, 0);
+                    alarmMgr.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + restartAlarmInterval, pintent);
+                    sendEmptyMessageDelayed(0, resetAlarmTimer);
+                }
+            };
+            restartServiceHandler.sendEmptyMessageDelayed(0, 0);
+        }
+    }
 
 }

@@ -261,6 +261,7 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
             // Default behavior, quit it
             super.onBackPressed();
             Main.forceExit(this);
+
             return;
         }
 
@@ -408,12 +409,9 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         // Cancell all thrown Notifications
         NotificationMusic.cancelAll(this);
 
+/*
         Main.stopMusicService(this);
+*/
     }
-    @Override
-    public void onResume()
-    {
-        super.onResume();
 
-    }
 }
