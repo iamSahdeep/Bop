@@ -14,12 +14,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.clousic.R;
 import com.sahdeepsingh.clousic.SongData.AdapterSong;
 import com.sahdeepsingh.clousic.controls.MusicController;
 import com.sahdeepsingh.clousic.playerMain.Main;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class PlayingNow extends ActivityMaster implements MediaController.MediaPlayerControl,AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
 
@@ -243,6 +245,22 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         // Scroll the list view to the current song.
         if (Main.settings.get("scroll_on_focus", true))
             songListView.setSelection(Main.musicService.currentSongPosition);
+        SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
+        if (Main.mainMenuHasNowPlayingItem)
+        {
+            TextView t = findViewById(R.id.bottomtextView);
+            TextView a = findViewById(R.id.bottomtextartist);
+            t.setText(Main.musicService.currentSong.getTitle());
+            a.setText("by " + Main.musicService.currentSong.getArtist());
+            t.setSelected(true);
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        }
+        else
+        {
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
+
+        }
     }
 
     /**

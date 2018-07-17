@@ -50,5 +50,6 @@ public class BottomControlsView extends LinearLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
     }
 }
