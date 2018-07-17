@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -42,7 +43,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainScreen extends ActivityMaster implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener {
+public class MainScreen extends ActivityMaster implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener , FragmentPlaylist.OnListFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -112,6 +113,8 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        FloatingActionButton floatingActionButton = findViewById(R.id.fab_Playall);
+
         mViewPager = (ViewPager) findViewById(R.id.container);
 
         setupViewPager(mViewPager);
@@ -156,16 +159,23 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
     }
 
     @Override
-    public void onListFragmentInteraction(int position) {
-
-        // We'll play the current song list
-        Main.nowPlayingList = Main.musicList;
-
-        // Sending the song index inside the now playing list.
-        // See the documentation of `ActivityNowPLaying` class.
+    public void onListFragmentInteraction(int position , String type) {
         Intent intent = new Intent(this, PlayingNow.class);
 
-        intent.putExtra("song", position);
+        if(type.equals("songs")){
+            Main.nowPlayingList = Main.musicList;
+            intent.putExtra("songs", position);
+
+        }else if(type.equals("playlist")){
+            String selectedPlaylist =  Main.songs.playlists.get(position).toString();
+            Main.musicList = Main.songs.getSongsByPlaylist(selectedPlaylist);
+
+
+        }
+
+
+
+
         startActivity(intent);
 
     }

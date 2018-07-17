@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,6 +66,7 @@ public class FragmentSongs extends android.app.Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_songs_list, container, false);
 
+        final FloatingActionButton floatingActionButton = getActivity().findViewById(R.id.fab_Playall);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -91,6 +93,11 @@ public class FragmentSongs extends android.app.Fragment {
                         // Scrolling down
                         actionBar.show();
                     }
+                    if (recyclerView.canScrollVertically(-1)){
+                        floatingActionButton.hide();
+                    }
+                    else floatingActionButton.show();
+
                 }
             });
 
@@ -128,7 +135,7 @@ public class FragmentSongs extends android.app.Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(int item);
+        void onListFragmentInteraction(int item , String type);
     }
 
 }

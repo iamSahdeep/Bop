@@ -22,10 +22,10 @@ import java.util.List;
  */
 public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Playlist> playlists ;
+    private final List<String> playlists ;
     private OnListFragmentInteractionListener mListener;
 
-    public MyPlaylistRecyclerViewAdapter(List<Playlist> items, OnListFragmentInteractionListener listener) {
+    public MyPlaylistRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
         playlists = items;
         mListener = listener;
     }
@@ -39,7 +39,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.playlistname.setText(playlists.get(position).getName());
+        holder.playlistname.setText(playlists.get(position));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +54,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
                 if (mListener !=null) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.getAdapterPosition());
+                    mListener.onListFragmentInteraction(holder.getAdapterPosition() , "playlist");
 
 
                 }
