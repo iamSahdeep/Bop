@@ -166,7 +166,6 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         Intent intent = new Intent(this, PlayingNow.class);
 
         intent.putExtra("song", position);
-        Log.e("yoyo",String.valueOf(position));
         startActivity(intent);
 
     }
@@ -262,6 +261,7 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
             // Default behavior, quit it
             super.onBackPressed();
             Main.forceExit(this);
+
             return;
         }
 
@@ -409,12 +409,29 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         // Cancell all thrown Notifications
         NotificationMusic.cancelAll(this);
 
+/*
         Main.stopMusicService(this);
+*/
     }
-    @Override
-    public void onResume()
-    {
-        super.onResume();
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
+        if (Main.mainMenuHasNowPlayingItem)
+        {
+            TextView t = findViewById(R.id.bottomtextView);
+            TextView a = findViewById(R.id.bottomtextartist);
+            t.setText(Main.musicService.currentSong.getTitle());
+            a.setText("by " + Main.musicService.currentSong.getArtist());
+            t.setSelected(true);
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        }
+        else
+        {
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
+
+        }
     }
 }

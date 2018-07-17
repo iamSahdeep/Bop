@@ -2,8 +2,12 @@ package com.sahdeepsingh.clousic.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,22 +70,7 @@ public class ActivityMaster extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 
-		SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
-		if (Main.mainMenuHasNowPlayingItem)
-		{
-			TextView t = findViewById(R.id.bottomtextView);
-			TextView a = findViewById(R.id.bottomtextartist);
-			t.setText(Main.musicService.currentSong.getTitle());
-			a.setText("by " + Main.musicService.currentSong.getArtist());
-			t.setSelected(true);
-			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-		}
-		else
-		{
-			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-			slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
 
-		}
 	}
 
 
@@ -134,5 +123,7 @@ public class ActivityMaster extends AppCompatActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
+
+
 }
 

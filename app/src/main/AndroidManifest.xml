@@ -92,8 +92,13 @@
             android:screenOrientation="portrait" />
 
         <!-- Services (run on the background) -->
-        <service android:name=".services.ServicePlayMusic" />
-        <service android:name=".services.ServiceScrobbleMusic" />
+        <service
+            android:name=".services.ServicePlayMusic"
+            android:enabled="true"
+            android:stopWithTask="false"/>
+        <service
+            android:name=".services.ServiceScrobbleMusic"
+            android:enabled="true" />
 
         <!--
           Allows specific classes to handle broadcasts
@@ -132,6 +137,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.PlayingNow" />
+
     </application>
 
 </manifest>

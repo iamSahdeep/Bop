@@ -81,10 +81,10 @@ public class FragmentPlaylist extends Fragment {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
-        } else {
+        }/* else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override

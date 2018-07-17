@@ -14,6 +14,7 @@ import com.sahdeepsingh.clousic.R;
 import com.sahdeepsingh.clousic.SongData.Song;
 import com.sahdeepsingh.clousic.playerMain.Main;
 import com.sahdeepsingh.clousic.ui.ActivityNowPlaying;
+import com.sahdeepsingh.clousic.ui.PlayingNow;
 
 /**
  * Specific way to stick an on-going message on the system
@@ -87,7 +88,7 @@ public class NotificationMusic extends NotificationSimple {
 
 
         // Intent that launches the "Now Playing" Activity
-        Intent notifyIntent = new Intent(context, ActivityNowPlaying.class);
+        Intent notifyIntent = new Intent(context, PlayingNow.class);
         notifyIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         // Letting the Intent be executed later by other application.

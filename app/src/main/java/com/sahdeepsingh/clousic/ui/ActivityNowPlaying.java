@@ -524,6 +524,8 @@ public class ActivityNowPlaying extends ActivityMaster implements
 		// Scroll the list view to the current song.
 		if (Main.settings.get("scroll_on_focus", true))
 			songListView.setSelection(Main.musicService.currentSongPosition);
+
+
 	}
 
 	/**

@@ -60,7 +60,7 @@ public class ServiceScrobbleMusic extends Service {
         // This makes sure this service will be restarted
         // when Android kills it.
         // When it does, the `intent` will be `null`.
-        return Service.START_STICKY;
+        return START_STICKY;
     }
 
     @Override
