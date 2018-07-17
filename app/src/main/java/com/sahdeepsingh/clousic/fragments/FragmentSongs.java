@@ -103,9 +103,7 @@ public class FragmentSongs extends android.app.Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.e("yoyo","look1");
         if (context instanceof OnListFragmentInteractionListener) {
-            Log.e("yoyo","look");
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
@@ -130,7 +128,6 @@ public class FragmentSongs extends android.app.Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(int item);
     }
 

@@ -50,12 +50,8 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("yoyo",String.valueOf(position));
-
-                Log.e("yoyo","look1");
                 Context context = holder.mView.getContext();
                 if (context instanceof OnListFragmentInteractionListener) {
-                    Log.e("yoyo","look");
                     mListener = (OnListFragmentInteractionListener) context;
                 } else {
                     throw new RuntimeException(context.toString()
@@ -85,7 +81,6 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         public final View mView;
         public final TextView songName;
         public final TextView songBy;
-        public DummyItem mItem;
 
         public ViewHolder(View view) {
             super(view);

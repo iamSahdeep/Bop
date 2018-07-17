@@ -1,5 +1,6 @@
 package com.sahdeepsingh.clousic.fragments;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import com.sahdeepsingh.clousic.R;
 import com.sahdeepsingh.clousic.fragments.dummy.DummyContent;
 import com.sahdeepsingh.clousic.fragments.dummy.DummyContent.DummyItem;
+import com.sahdeepsingh.clousic.playerMain.Main;
 
 import java.util.List;
 
@@ -70,8 +72,27 @@ public class FragmentPlaylist extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(Main.songs.playlists,mListener);
+            recyclerView.setAdapter(myPlaylistRecyclerViewAdapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    ActionBar actionBar = getActivity().getActionBar();
+                    if (actionBar != null)
+                        if (dy > 0) {
+                            // Scrolling up
+
+                            actionBar.hide();
+                        } else {
+                            // Scrolling down
+                            actionBar.show();
+                        }
+                }
+            });
+
         }
+
         return view;
     }
 
@@ -104,7 +125,6 @@ public class FragmentPlaylist extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(int item);
     }
 }

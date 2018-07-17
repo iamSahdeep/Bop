@@ -1,5 +1,6 @@
 package com.sahdeepsingh.clousic.fragments;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sahdeepsingh.clousic.R;
+import com.sahdeepsingh.clousic.SongData.Playlist;
 import com.sahdeepsingh.clousic.fragments.FragmentPlaylist.OnListFragmentInteractionListener;
 import com.sahdeepsingh.clousic.fragments.dummy.DummyContent.DummyItem;
+import com.sahdeepsingh.clousic.playerMain.Main;
 
 import java.util.List;
 
@@ -19,11 +22,11 @@ import java.util.List;
  */
 public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<Playlist> playlists ;
+    private OnListFragmentInteractionListener mListener;
 
-    public MyPlaylistRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MyPlaylistRecyclerViewAdapter(List<Playlist> items, OnListFragmentInteractionListener listener) {
+        playlists = items;
         mListener = listener;
     }
 
@@ -36,17 +39,24 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.playlistname.setText(playlists.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
+                Context context = holder.mView.getContext();
+                if (context instanceof FragmentPlaylist.OnListFragmentInteractionListener) {
+                    mListener = (FragmentPlaylist.OnListFragmentInteractionListener) context;
+                } else {
+                    throw new RuntimeException(context.toString()
+                            + " must implement OnListFragmentInteractionListener");
+                }
+                if (mListener !=null) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.getAdapterPosition());
+
+
                 }
             }
         });
@@ -54,25 +64,21 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if ((Main.songs.playlists != null) && (! Main.songs.playlists.isEmpty()))
+            return Main.songs.playlists.size();
+
+        return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView playlistname;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            playlistname = (TextView) view.findViewById(R.id.PlaylistName);
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }
     }
 }
