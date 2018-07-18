@@ -160,11 +160,14 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
 
     @Override
     public void onListFragmentInteraction(int position , String type) {
-        Intent intent = new Intent(this, PlayingNow.class);
+
 
         if(type.equals("songs")){
+            Intent intent = new Intent(this, PlayingNow.class);
             Main.nowPlayingList = Main.musicList;
             intent.putExtra("songs", position);
+            startActivity(intent);
+
 
         }else if(type.equals("playlist")){
             String selectedPlaylist =  Main.songs.playlists.get(position).toString();
@@ -176,7 +179,6 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
 
 
 
-        startActivity(intent);
 
     }
 

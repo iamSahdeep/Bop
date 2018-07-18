@@ -68,6 +68,7 @@ public class FragmentSongs extends android.app.Fragment {
 
         final FloatingActionButton floatingActionButton = getActivity().findViewById(R.id.fab_Playall);
 
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -78,6 +79,10 @@ public class FragmentSongs extends android.app.Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.musicList,mListener);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setItemViewCacheSize(20);
+            recyclerView.setDrawingCacheEnabled(true);
+            recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
             recyclerView.setAdapter(mySongsRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override

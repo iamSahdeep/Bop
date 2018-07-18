@@ -1,5 +1,10 @@
 package com.sahdeepsingh.clousic.SongData;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,8 +14,11 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 /**
  * Global interface to all the songs this application can see.
@@ -62,6 +70,8 @@ public class SongList {
      * Flag that tells if we're scanning songs right now.
      */
     private boolean scanningSongs;
+
+    private ContentResolver resolver;
 
     /**
      * Tells if we've successfully scanned all songs on
@@ -135,7 +145,7 @@ public class SongList {
                 android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI);
 
         // Gives us access to query for files on the system.
-        ContentResolver resolver = c.getContentResolver();
+        resolver = c.getContentResolver();
 
         // We use this thing to iterate through the results
         // of a SQLite database query.
@@ -175,6 +185,7 @@ public class SongList {
         String SONG_TRACK_NO = android.provider.MediaStore.Audio.Media.TRACK;
         String SONG_FILEPATH = android.provider.MediaStore.Audio.Media.DATA;
         String SONG_DURATION = android.provider.MediaStore.Audio.Media.DURATION;
+        String SONG_ALBUM_ID = MediaStore.Audio.Media.ALBUM_ID;
 
         // Creating the map  "Genre IDs" -> "Genre Names"
         genreIdToGenreNameMap = new HashMap<String, String>();
@@ -229,6 +240,7 @@ public class SongList {
                 SONG_TITLE,
                 SONG_ARTIST,
                 SONG_ALBUM,
+                SONG_ALBUM_ID,
                 SONG_YEAR,
                 SONG_TRACK_NO,
                 SONG_FILEPATH,
@@ -262,6 +274,7 @@ public class SongList {
                 song.setYear       (cursor.getInt   (cursor.getColumnIndex(SONG_YEAR)));
                 song.setTrackNumber(cursor.getInt   (cursor.getColumnIndex(SONG_TRACK_NO)));
                 song.setDuration   (cursor.getInt   (cursor.getColumnIndex(SONG_DURATION)));
+                song.setAlbumid    (cursor.getString(cursor.getColumnIndex(SONG_ALBUM_ID)));
 
                 // Using the previously created genre maps
                 // to fill the current song genre.
@@ -336,6 +349,31 @@ public class SongList {
 
     public void destroy() {
         songs.clear();
+    }
+
+    public String getAlbumArt(Song song) {
+        String path = "";
+//            try {
+//                Uri genericArtUri = Uri.parse("content://media/external/audio/albumart");
+//                Uri actualArtUri = ContentUris.withAppendedId(genericArtUri, albumId);
+//                return actualArtUri.toString();
+//            } catch(Exception e) {
+//                return null;
+//            }
+        Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                new String[] {MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
+                MediaStore.Audio.Albums._ID+ "=?",
+                new String[] {String.valueOf(song.getAlbumid())},
+                null);
+
+        if (cursor.moveToFirst()) {
+            path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
+            // do whatever you need to do
+
+        }
+        cursor.close();
+
+        return path;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.sahdeepsingh.clousic.fragments;
 
 import android.app.Notification;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,11 +12,16 @@ import android.widget.TextView;
 
 import com.sahdeepsingh.clousic.R;
 import com.sahdeepsingh.clousic.SongData.Song;
+import com.sahdeepsingh.clousic.SongData.SongList;
 import com.sahdeepsingh.clousic.fragments.FragmentSongs.OnListFragmentInteractionListener;
 import com.sahdeepsingh.clousic.fragments.dummy.DummyContent.DummyItem;
 import com.sahdeepsingh.clousic.playerMain.Main;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -46,6 +52,11 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.songName.setText(songs.get(position).getTitle());
         holder.songBy.setText(songs.get(position).getArtist());
+        String path = Main.songs.getAlbumArt(songs.get(position));
+        Log.e("image",path+"lol");
+        if(path !=null)
+        Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.pause).into(holder.circleImageView);
+        //holder.circleImageView.setImageBitmap(Main.songs.getAlbumArt(songs.get(position)));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,12 +92,14 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         public final View mView;
         public final TextView songName;
         public final TextView songBy;
+        public final CircleImageView circleImageView;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             songName = (TextView) view.findViewById(R.id.songName);
             songBy = (TextView) view.findViewById(R.id.songBy);
+            circleImageView = view.findViewById(R.id.albumArt);
         }
 
     }
