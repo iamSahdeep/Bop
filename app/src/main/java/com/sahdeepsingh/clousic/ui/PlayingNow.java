@@ -99,8 +99,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             if (bundle.containsKey("songs")) {
                 int songToPlayIndex = bundle.getInt("song");
 
-                // Prepare the music service to play the song.
-                // `setSong` does limit-checking
                 Main.musicService.setSong(songToPlayIndex);
                 Main.musicService.playSong();
             }
