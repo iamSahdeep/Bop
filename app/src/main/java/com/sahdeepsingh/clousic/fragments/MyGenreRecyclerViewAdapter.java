@@ -1,5 +1,6 @@
 package com.sahdeepsingh.clousic.fragments;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +20,10 @@ import java.util.List;
  */
 public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<String> mValues;
+    private OnListFragmentInteractionListener mListener;
 
-    public MyGenreRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyGenreRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,17 +37,23 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.genre.setText(mValues.get(position));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Context context = holder.mView.getContext();
+                if (context instanceof FragmentGenre.OnListFragmentInteractionListener) {
+                    mListener = (FragmentGenre.OnListFragmentInteractionListener) context;
+                } else {
+                    throw new RuntimeException(context.toString()
+                            + " must implement OnListFragmentInteractionListener");
+                }
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.getAdapterPosition(),"GenreList");
                 }
             }
         });
@@ -59,20 +66,11 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
-
+        public final TextView genre;
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            genre = (TextView) view.findViewById(R.id.GenreName);
         }
     }
 }

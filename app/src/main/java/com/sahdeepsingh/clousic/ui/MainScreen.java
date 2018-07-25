@@ -43,7 +43,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainScreen extends ActivityMaster implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener , FragmentPlaylist.OnListFragmentInteractionListener {
+public class MainScreen extends ActivityMaster implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener , FragmentPlaylist.OnListFragmentInteractionListener,FragmentGenre.OnListFragmentInteractionListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -179,6 +179,13 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
             intent.putExtra("playlistName", selectedPlaylist);
             startActivity(intent);
 
+        }else if(type.equals("GenreList")){
+            Main.musicList.clear();
+            String selectedGenre = Main.songs.getGenres().get(position);
+            Main.musicList = Main.songs.getSongsByGenre(selectedGenre);
+            Main.nowPlayingList = Main.musicList;
+            intent.putExtra("genreName",selectedGenre);
+            startActivity(intent);
         }
 
 

@@ -1,5 +1,6 @@
 package com.sahdeepsingh.clousic.fragments;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -13,7 +14,10 @@ import android.view.ViewGroup;
 import com.sahdeepsingh.clousic.R;
 import com.sahdeepsingh.clousic.fragments.dummy.DummyContent;
 import com.sahdeepsingh.clousic.fragments.dummy.DummyContent.DummyItem;
+import com.sahdeepsingh.clousic.playerMain.Main;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,6 +33,8 @@ public class FragmentGenre extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private ArrayList<String> Genres;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -70,7 +76,28 @@ public class FragmentGenre extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyGenreRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            Genres = Main.songs.getAlbums();
+            Collections.sort(Genres);
+            MyGenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new MyGenreRecyclerViewAdapter(Genres,mListener);
+            recyclerView.setAdapter(myGenreRecyclerViewAdapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    ActionBar actionBar = getActivity().getActionBar();
+                    if (actionBar != null)
+                        if (dy > 0) {
+                            // Scrolling up
+
+                            actionBar.hide();
+                        } else {
+                            // Scrolling down
+                            actionBar.show();
+                        }
+                }
+            });
+
+
         }
         return view;
     }
@@ -105,6 +132,6 @@ public class FragmentGenre extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(int position ,String type);
     }
 }

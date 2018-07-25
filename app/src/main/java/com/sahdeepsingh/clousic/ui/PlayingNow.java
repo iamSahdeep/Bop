@@ -105,9 +105,13 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             if (bundle.containsKey("playlistName")){
                 if(!Main.nowPlayingList.isEmpty())
                     Main.musicService.setList(Main.musicList);
-                Main.musicService.setSong(0);
-                Main.musicService.playSong();
+                    Main.musicService.playSong();
 
+            }
+            if (bundle.containsKey("genreName")){
+                if(!Main.nowPlayingList.isEmpty())
+                    Main.musicService.setList(Main.musicList);
+                Main.musicService.playSong();
             }
 
 
