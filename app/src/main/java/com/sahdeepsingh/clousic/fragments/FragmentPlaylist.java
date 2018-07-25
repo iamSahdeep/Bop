@@ -1,5 +1,6 @@
 package com.sahdeepsingh.clousic.fragments;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -11,9 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sahdeepsingh.clousic.R;
+import com.sahdeepsingh.clousic.SongData.Playlist;
 import com.sahdeepsingh.clousic.fragments.dummy.DummyContent;
 import com.sahdeepsingh.clousic.fragments.dummy.DummyContent.DummyItem;
+import com.sahdeepsingh.clousic.playerMain.Main;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,6 +28,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
+
 public class FragmentPlaylist extends Fragment {
 
     // TODO: Customize parameter argument names
@@ -29,6 +36,7 @@ public class FragmentPlaylist extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private ArrayList<String> lol;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -70,8 +78,31 @@ public class FragmentPlaylist extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            lol = Main.songs.getPlaylistNames();
+/*
+            Collections.sort(lol);
+*/
+            MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(lol,mListener);
+            recyclerView.setAdapter(myPlaylistRecyclerViewAdapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    ActionBar actionBar = getActivity().getActionBar();
+                    if (actionBar != null)
+                        if (dy > 0) {
+                            // Scrolling up
+
+                            actionBar.hide();
+                        } else {
+                            // Scrolling down
+                            actionBar.show();
+                        }
+                }
+            });
+
         }
+
         return view;
     }
 
@@ -104,7 +135,6 @@ public class FragmentPlaylist extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(int item , String type);
     }
 }

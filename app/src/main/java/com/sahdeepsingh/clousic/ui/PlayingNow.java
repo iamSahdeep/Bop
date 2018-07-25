@@ -96,15 +96,19 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
             // If we received an extra with the song position
             // inside the now playing list, start playing it
-            if (bundle.containsKey("song")) {
+            if (bundle.containsKey("songs")) {
                 int songToPlayIndex = bundle.getInt("song");
 
-                // Prepare the music service to play the song.
-                // `setSong` does limit-checking
                 Main.musicService.setSong(songToPlayIndex);
+                Main.musicService.playSong();
+            }
+            if (bundle.containsKey("playlist")){
+                Main.musicService.add(Main.musicList.get(0));
+                Main.musicService.playSong();
+
             }
 
-            Main.musicService.playSong();
+
 
         }
 
@@ -245,22 +249,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         // Scroll the list view to the current song.
         if (Main.settings.get("scroll_on_focus", true))
             songListView.setSelection(Main.musicService.currentSongPosition);
-        SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
-        if (Main.mainMenuHasNowPlayingItem)
-        {
-            TextView t = findViewById(R.id.bottomtextView);
-            TextView a = findViewById(R.id.bottomtextartist);
-            t.setText(Main.musicService.currentSong.getTitle());
-            a.setText("by " + Main.musicService.currentSong.getArtist());
-            t.setSelected(true);
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        }
-        else
-        {
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
 
-        }
     }
 
     /**

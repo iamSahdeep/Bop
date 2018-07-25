@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,6 +66,8 @@ public class FragmentSongs extends android.app.Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_songs_list, container, false);
 
+        final FloatingActionButton floatingActionButton = getActivity().findViewById(R.id.fab_Playall);
+
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -76,6 +79,10 @@ public class FragmentSongs extends android.app.Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.musicList,mListener);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setItemViewCacheSize(20);
+            recyclerView.setDrawingCacheEnabled(true);
+            recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
             recyclerView.setAdapter(mySongsRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -91,6 +98,11 @@ public class FragmentSongs extends android.app.Fragment {
                         // Scrolling down
                         actionBar.show();
                     }
+                    if (recyclerView.canScrollVertically(-1)){
+                        floatingActionButton.hide();
+                    }
+                    else floatingActionButton.show();
+
                 }
             });
 
@@ -103,9 +115,7 @@ public class FragmentSongs extends android.app.Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.e("yoyo","look1");
         if (context instanceof OnListFragmentInteractionListener) {
-            Log.e("yoyo","look");
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
@@ -130,8 +140,7 @@ public class FragmentSongs extends android.app.Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(int item);
+        void onListFragmentInteraction(int item , String type);
     }
 
 }

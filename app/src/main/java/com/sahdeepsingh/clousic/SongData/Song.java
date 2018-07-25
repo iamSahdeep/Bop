@@ -1,5 +1,19 @@
 package com.sahdeepsingh.clousic.SongData;
 
+import android.content.ContentProvider;
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.provider.MediaStore;
+import android.util.Log;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
 /**
  * Represents a single audio file on the Android system.
  *
@@ -50,6 +64,16 @@ public class Song {
     private String genre       = "";
     private int    track_no    = -1;
     private long   duration_ms = -1;
+
+    public String getAlbumid() {
+        return albumid;
+    }
+
+    public void setAlbumid(String albumid) {
+        this.albumid = albumid;
+    }
+
+    private String albumid     = "";
 
 
     public String getTitle() {
@@ -117,5 +141,6 @@ public class Song {
     public long getDurationMinutes() {
         return getDurationSeconds() / 60;
     }
+
 }
 

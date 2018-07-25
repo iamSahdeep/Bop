@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -42,7 +43,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainScreen extends ActivityMaster implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener {
+public class MainScreen extends ActivityMaster implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener , FragmentPlaylist.OnListFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -112,6 +113,8 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        FloatingActionButton floatingActionButton = findViewById(R.id.fab_Playall);
+
         mViewPager = (ViewPager) findViewById(R.id.container);
 
         setupViewPager(mViewPager);
@@ -156,17 +159,26 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
     }
 
     @Override
-    public void onListFragmentInteraction(int position) {
+    public void onListFragmentInteraction(int position , String type) {
 
-        // We'll play the current song list
-        Main.nowPlayingList = Main.musicList;
 
-        // Sending the song index inside the now playing list.
-        // See the documentation of `ActivityNowPLaying` class.
-        Intent intent = new Intent(this, PlayingNow.class);
+        if(type.equals("songs")){
+            Intent intent = new Intent(this, PlayingNow.class);
+            Main.nowPlayingList = Main.musicList;
+            intent.putExtra("songs", position);
+            startActivity(intent);
 
-        intent.putExtra("song", position);
-        startActivity(intent);
+
+        }else if(type.equals("playlist")){
+            String selectedPlaylist =  Main.songs.playlists.get(position).toString();
+            Main.musicList = Main.songs.getSongsByPlaylist(selectedPlaylist);
+
+
+        }
+
+
+
+
 
     }
 
@@ -417,21 +429,6 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
     @Override
     protected void onResume() {
         super.onResume();
-        SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
-        if (Main.mainMenuHasNowPlayingItem)
-        {
-            TextView t = findViewById(R.id.bottomtextView);
-            TextView a = findViewById(R.id.bottomtextartist);
-            t.setText(Main.musicService.currentSong.getTitle());
-            a.setText("by " + Main.musicService.currentSong.getArtist());
-            t.setSelected(true);
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        }
-        else
-        {
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
 
-        }
     }
 }

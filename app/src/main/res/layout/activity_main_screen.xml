@@ -44,13 +44,22 @@
             android:layout_height="match_parent"
             tools:context=".ui.MainScreen" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_Playall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"
+            android:layout_above="@id/bottomcontrolsMainscreen"
+            android:src="@drawable/end" />
+
     </android.support.design.widget.CoordinatorLayout>
 
     <com.sahdeepsingh.clousic.controls.BottomControlsView
         android:id="@+id/bottomcontrolsMainscreen"
         android:gravity="center|top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
     </com.sahdeepsingh.clousic.controls.BottomControlsView>
 
