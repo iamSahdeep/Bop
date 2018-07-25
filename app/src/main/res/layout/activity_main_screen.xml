@@ -55,13 +55,13 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <com.sahdeepsingh.clousic.controls.BottomControlsView
+    <com.sahdeepsingh.Bop.controls.BottomControlsView
         android:id="@+id/bottomcontrolsMainscreen"
         android:gravity="center|top"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.sahdeepsingh.clousic.controls.BottomControlsView>
+    </com.sahdeepsingh.Bop.controls.BottomControlsView>
 
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
