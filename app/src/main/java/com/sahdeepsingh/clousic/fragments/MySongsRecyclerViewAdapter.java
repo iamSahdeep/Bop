@@ -53,7 +53,6 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         holder.songName.setText(songs.get(position).getTitle());
         holder.songBy.setText(songs.get(position).getArtist());
         String path = Main.songs.getAlbumArt(songs.get(position));
-        Log.e("image",path+"lol");
         if(path !=null)
         Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.pause).into(holder.circleImageView);
         //holder.circleImageView.setImageBitmap(Main.songs.getAlbumArt(songs.get(position)));
@@ -71,7 +70,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
                 if (mListener !=null) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.getAdapterPosition() , "songs");
+                    mListener.onListFragmentInteraction(holder.getAdapterPosition() , "singleSong");
 
 
                 }
@@ -81,8 +80,8 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
 
     @Override
     public int getItemCount() {
-        if ((Main.musicList != null) && (! Main.musicList.isEmpty()))
-        return Main.musicList.size();
+        if ((Main.songs.songs != null) && (! Main.songs.songs.isEmpty()))
+        return Main.songs.songs.size();
 
         return 0;
     }

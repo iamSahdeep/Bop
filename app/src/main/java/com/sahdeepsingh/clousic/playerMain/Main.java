@@ -47,7 +47,7 @@ public class Main {
      * store subsections of `SongList` and set `ActivityListSongs`
      * to display it.
      */
-    public static ArrayList<Song> musicList = null;
+    public static ArrayList<Song> musicList = new ArrayList<>();
 
     /**
      * List of the songs being currently played by the user.

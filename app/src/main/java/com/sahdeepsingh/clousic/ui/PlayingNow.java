@@ -96,9 +96,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
             // If we received an extra with the song position
             // inside the now playing list, start playing it
-            if (bundle.containsKey("songs")) {
-                int songToPlayIndex = bundle.getInt("song");
-
+            if (bundle.containsKey("songPosition")) {
+                int songToPlayIndex = bundle.getInt("songPosition");
                 Main.musicService.setSong(songToPlayIndex);
                 Main.musicService.playSong();
             }

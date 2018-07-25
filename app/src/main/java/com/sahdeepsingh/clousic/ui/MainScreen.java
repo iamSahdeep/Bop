@@ -162,10 +162,12 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
     public void onListFragmentInteraction(int position , String type) {
 
 
-        if(type.equals("songs")){
+        if(type.equals("singleSong")){
             Intent intent = new Intent(this, PlayingNow.class);
+            Main.musicList.clear();
+            Main.musicList.add(Main.songs.songs.get(position));
             Main.nowPlayingList = Main.musicList;
-            intent.putExtra("songs", position);
+            intent.putExtra("songPosition", position);
             startActivity(intent);
 
 
@@ -353,7 +355,6 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
 */
             switch (position) {
                 case 0:
-                    Main.musicList = Main.songs.songs;
                     return new FragmentSongs();
                 case 1:
                     return new FragmentPlaylist();

@@ -78,7 +78,7 @@ public class FragmentSongs extends android.app.Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.musicList,mListener);
+            MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs,mListener);
             recyclerView.setHasFixedSize(true);
             recyclerView.setItemViewCacheSize(20);
             recyclerView.setDrawingCacheEnabled(true);
