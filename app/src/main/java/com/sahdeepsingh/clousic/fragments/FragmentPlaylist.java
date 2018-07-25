@@ -79,9 +79,7 @@ public class FragmentPlaylist extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             lol = Main.songs.getPlaylistNames();
-/*
             Collections.sort(lol);
-*/
             MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(lol,mListener);
             recyclerView.setAdapter(myPlaylistRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

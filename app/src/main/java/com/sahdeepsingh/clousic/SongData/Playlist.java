@@ -1,5 +1,9 @@
 package com.sahdeepsingh.clousic.SongData;
 
+import android.util.Log;
+
+import com.sahdeepsingh.clousic.playerMain.Main;
+
 import java.util.ArrayList;
 
 public class Playlist {
@@ -38,6 +42,7 @@ public class Playlist {
      */
     public ArrayList<Long> getSongIds() {
         ArrayList<Long> list = new ArrayList<Long>();
+        Log.e("wtf",String.valueOf(songs));
 
         for (Long songID : songs)
             list.add(songID);

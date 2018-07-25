@@ -320,16 +320,18 @@ public class SongList {
 
             // For each playlist, get all song IDs
             Uri currentUri = MediaStore.Audio.Playlists.Members.getContentUri(fromWhere, playlist.getID());
-
-            Cursor cursor2 = resolver.query(currentUri,
+            Cursor cursor2 = null;
+            cursor2 = resolver.query(currentUri,
                     new String[] { PLAYLIST_SONG_ID },
                     musicsOnly,
                     null, null);
 
             // Adding each song's ID to it
             for (cursor2.moveToFirst(); !cursor2.isAfterLast(); cursor2.moveToNext())
-                playlist.add(cursor2.getLong(cursor2.getColumnIndex(PLAYLIST_SONG_ID)));
+            { playlist.add(cursor2.getLong(cursor2.getColumnIndex(PLAYLIST_SONG_ID)));
+            }
 
+            if (!playlist.getSongIds().isEmpty())
             playlists.add(playlist);
             cursor2.close();
         }
@@ -601,16 +603,18 @@ public class SongList {
 
     public ArrayList<Song> getSongsByPlaylist(String playlistName) {
 
-        ArrayList<Long> songIDs = null;
-
+        ArrayList<Long> songIDs = new ArrayList<>();
         for (Playlist playlist : playlists)
+        {
             if (playlist.getName().equals(playlistName)) {
                 songIDs = playlist.getSongIds();
+                Log.e("wtf3",String.valueOf(playlist));
                 break;
             }
+        }
 
         ArrayList<Song> currentSongs = new ArrayList<Song>();
-
+        if (songIDs!=null)
         for (Long songID : songIDs)
             currentSongs.add(getSongById(songID));
 

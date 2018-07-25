@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -75,9 +76,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         // We'll play this pre-defined list.
         // By default we play the first track, although an
         // extra can change this. Look below.
-        if(!Main.nowPlayingList.isEmpty())
+       /* if(!Main.nowPlayingList.isEmpty())
             Main.musicService.setList(Main.nowPlayingList);
-        Main.musicService.setSong(0);
+        Main.musicService.setSong(0);*/
 
         // Connects the song list to an adapter
         // (thing that creates several Layouts from the song list)
@@ -101,8 +102,10 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
                 Main.musicService.setSong(songToPlayIndex);
                 Main.musicService.playSong();
             }
-            if (bundle.containsKey("playlist")){
-                Main.musicService.add(Main.musicList.get(0));
+            if (bundle.containsKey("playlistName")){
+                if(!Main.nowPlayingList.isEmpty())
+                    Main.musicService.setList(Main.musicList);
+                Main.musicService.setSong(0);
                 Main.musicService.playSong();
 
             }
