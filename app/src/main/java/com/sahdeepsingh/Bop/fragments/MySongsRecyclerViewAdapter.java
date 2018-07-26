@@ -52,6 +52,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.songName.setText(songs.get(position).getTitle());
         holder.songBy.setText(songs.get(position).getArtist());
+        holder.songName.setSelected(true);
         String path = Main.songs.getAlbumArt(songs.get(position));
         if(path !=null)
         Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.pause).into(holder.circleImageView);

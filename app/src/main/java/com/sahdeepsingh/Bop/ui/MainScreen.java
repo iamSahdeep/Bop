@@ -163,36 +163,41 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
 
         Intent intent = new Intent(this, PlayingNow.class);
 
-        if(type.equals("singleSong")){
-            Main.musicList.clear();
-            Main.musicList.add(Main.songs.songs.get(position));
-            Main.nowPlayingList = Main.musicList;
-            intent.putExtra("songPosition", position);
-            startActivity(intent);
+        switch (type) {
+            case "singleSong":
+                Main.musicList.clear();
+                Main.musicList.add(Main.songs.songs.get(position));
+                Main.nowPlayingList = Main.musicList;
+                intent.putExtra("songPosition", position);
+                startActivity(intent);
 
 
-        }else if(type.equals("playlist")){
-            Main.musicList.clear();
-            String selectedPlaylist =  Main.songs.playlists.get(position).getName();
-            Main.musicList = Main.songs.getSongsByPlaylist(selectedPlaylist);
-            Main.nowPlayingList = Main.musicList;
-            intent.putExtra("playlistName", selectedPlaylist);
-            startActivity(intent);
+                break;
+            case "playlist":
+                Main.musicList.clear();
+                String selectedPlaylist = Main.songs.playlists.get(position).getName();
+                Main.musicList = Main.songs.getSongsByPlaylist(selectedPlaylist);
+                Main.nowPlayingList = Main.musicList;
+                intent.putExtra("playlistName", selectedPlaylist);
+                startActivity(intent);
 
-        }else if(type.equals("GenreList")){
-            Main.musicList.clear();
-            String selectedGenre = Main.songs.getGenres().get(position);
-            Main.musicList = Main.songs.getSongsByGenre(selectedGenre);
-            Main.nowPlayingList = Main.musicList;
-            intent.putExtra("genreName",selectedGenre);
-            startActivity(intent);
-        }else if(type.equals("AlbumList")){
-            Main.musicList.clear();
-            String selectedAlbum = Main.songs.getAlbums().get(position);
-            Main.musicList = Main.songs.getSongsByAlbum(selectedAlbum);
-            Main.nowPlayingList = Main.musicList;
-            intent.putExtra("albumName",selectedAlbum);
-            startActivity(intent);
+                break;
+            case "GenreList":
+                Main.musicList.clear();
+                String selectedGenre = Main.songs.getGenres().get(position);
+                Main.musicList = Main.songs.getSongsByGenre(selectedGenre);
+                Main.nowPlayingList = Main.musicList;
+                intent.putExtra("genreName", selectedGenre);
+                startActivity(intent);
+                break;
+            case "AlbumList":
+                Main.musicList.clear();
+                String selectedAlbum = Main.songs.getAlbums().get(position);
+                Main.musicList = Main.songs.getSongsByAlbum(selectedAlbum);
+                Main.nowPlayingList = Main.musicList;
+                intent.putExtra("albumName", selectedAlbum);
+                startActivity(intent);
+                break;
         }
 
 
