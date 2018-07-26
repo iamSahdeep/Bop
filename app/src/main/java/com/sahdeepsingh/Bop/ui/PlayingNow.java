@@ -3,19 +3,29 @@ package com.sahdeepsingh.Bop.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.Element;
+import android.support.v8.renderscript.RenderScript;
+import android.support.v8.renderscript.ScriptIntrinsicBlur;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +35,9 @@ import com.sahdeepsingh.Bop.controls.CircularSeekBar;
 import com.sahdeepsingh.Bop.controls.MusicController;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 public class PlayingNow extends ActivityMaster implements MediaController.MediaPlayerControl,AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
 
@@ -59,10 +72,14 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
      * Gets called when the Activity is getting initialized.
      */
 
+    private static final float BLUR_RADIUS = 25f;
+
 
     private Toolbar toolbar;
 
     CircularSeekBar circularSeekBar;
+    ImageView blurimage,centreimage;
+    ImageButton shuffletoggle,previousSong,PlayPause,nextSong,repeatToggle;
 
 
 
@@ -79,6 +96,13 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         songListView = (ListView) findViewById(R.id.list_nowplaying);
 
         circularSeekBar = findViewById(R.id.circularSeekBar);
+        blurimage = findViewById(R.id.BlurImage);
+        centreimage = findViewById(R.id.CircleImage);
+        shuffletoggle = findViewById(R.id.shuffle);
+        previousSong = findViewById(R.id.previous);
+        PlayPause = findViewById(R.id.playPause);
+        nextSong = findViewById(R.id.skip_next);
+        repeatToggle = findViewById(R.id.repeat);
 
         // We'll play this pre-defined list.
         // By default we play the first track, although an
@@ -127,7 +151,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             }
 
 
-
         }
 
         // Scroll the list view to the current song.
@@ -149,6 +172,47 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         // Main Menu that returns here.
         MainScreen.addNowPlayingItem(this);
 
+        setControllListeners();
+    }
+
+    private void setControllListeners() {
+        shuffletoggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.toggleShuffle();
+                if (Main.musicService.isShuffle())
+                    Picasso.get().load(R.drawable.ic_menu_shuffle_on).into(shuffletoggle);
+                else Picasso.get().load(R.drawable.ic_menu_shuffle_off).into(shuffletoggle);
+
+            }
+        });
+        previousSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playPrevious();
+            }
+        });
+        PlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pause();
+            }
+        });
+        nextSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playNext();
+            }
+        });
+        repeatToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.toggleRepeat();
+                if (Main.musicService.isRepeat())
+                    Picasso.get().load(R.drawable.ic_menu_repeat_on).into(repeatToggle);
+                else Picasso.get().load(R.drawable.ic_menu_repeat_off).into(repeatToggle);
+            }
+        });
     }
 
     private void prepareSeekBar() {
@@ -183,6 +247,48 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
                 handler.postDelayed(this,1);
             }
         });
+
+        workOnImages();
+    }
+
+    private void workOnImages() {
+        final File path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
+        Bitmap bitmap;
+        if (path.exists()){
+            bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
+        } else  bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.nachi);
+        Bitmap blurredBitmap = blurMyImage(bitmap);
+
+        blurimage.setImageBitmap(blurredBitmap);
+        DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
+        final int px = (int)(((circularSeekBar.getWidth()/2) * displayMetrics.density) + 0.5);
+        Picasso.get().load(R.drawable.nachi).into(centreimage);
+        circularSeekBar.post(new Runnable() {
+            @Override
+            public void run() {
+                centreimage.setLayoutParams(new RelativeLayout.LayoutParams(circularSeekBar.getWidth() - px,circularSeekBar.getHeight() - px));
+            }
+        });
+        centreimage.bringToFront();
+        circularSeekBar.bringToFront();
+    }
+
+    private Bitmap blurMyImage(Bitmap image) {
+        if (null == image) return null;
+
+        Bitmap outputBitmap = Bitmap.createBitmap(image);
+        final RenderScript renderScript = RenderScript.create(this);
+        Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
+        Allocation tmpOut = Allocation.createFromBitmap(renderScript, outputBitmap);
+
+//Intrinsic Gausian blur filter
+        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+        theIntrinsic.setRadius(BLUR_RADIUS);
+        theIntrinsic.setInput(tmpIn);
+        theIntrinsic.forEach(tmpOut);
+        tmpOut.copyTo(outputBitmap);
+        return outputBitmap;
+
     }
 
 

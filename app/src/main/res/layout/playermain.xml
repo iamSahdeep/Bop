@@ -1,13 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <com.sahdeepsingh.Bop.controls.CircularSeekBar
-        android:id="@+id/circularSeekBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/BlurImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+        <com.sahdeepsingh.Bop.controls.CircularSeekBar
+            android:id="@+id/circularSeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:circle_x_radius="130dp"
+            app:circle_y_radius="130dp"
+            app:use_custom_radii="true"
+            android:layout_centerHorizontal="true"
+            android:indeterminate="true"
+            android:layout_centerInParent="true">
+
+        </com.sahdeepsingh.Bop.controls.CircularSeekBar>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/CircleImage"
+            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:indeterminate="true"
+            android:layout_centerInParent="true"
+            android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
+            android:orientation="horizontal"
+            android:weightSum="5">
+            <ImageButton
+                android:id="@+id/shuffle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_menu_shuffle_on"
+                android:layout_weight="1"/>
+            <ImageButton
+                android:id="@+id/previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_skip_dark"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/playPause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_pause_dark"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/skip_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_skip_dark"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/repeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_menu_repeat_on"
+                android:layout_weight="1" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>
