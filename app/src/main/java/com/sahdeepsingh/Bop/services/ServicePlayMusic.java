@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
+import com.sahdeepsingh.Bop.controls.CircularSeekBar;
 import com.sahdeepsingh.Bop.controls.RemoteControlClientCompat;
 import com.sahdeepsingh.Bop.controls.RemoteControlHelper;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
@@ -250,6 +251,8 @@ public class ServicePlayMusic extends Service
      * Whenever we're created, reset the MusicPlayer and
      * start the MusicScrobblerService.
      */
+
+
     public void onCreate() {
         super.onCreate();
 
@@ -306,6 +309,8 @@ public class ServicePlayMusic extends Service
         player.setOnErrorListener(this);
 
         Log.w(TAG, "initMusicPlayer");
+
+
     }
     /**
      * Cleans resources from Android's native MediaPlayer.

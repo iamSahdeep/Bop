@@ -3,6 +3,7 @@ package com.sahdeepsingh.Bop.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.AdapterSong;
+import com.sahdeepsingh.Bop.controls.CircularSeekBar;
 import com.sahdeepsingh.Bop.controls.MusicController;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -60,6 +62,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
     private Toolbar toolbar;
 
+    CircularSeekBar circularSeekBar;
+
+
 
 
     @Override
@@ -72,6 +77,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         songListView = (ListView) findViewById(R.id.list_nowplaying);
+
+        circularSeekBar = findViewById(R.id.circularSeekBar);
 
         // We'll play this pre-defined list.
         // By default we play the first track, although an
@@ -142,8 +149,42 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         // Main Menu that returns here.
         MainScreen.addNowPlayingItem(this);
 
-
     }
+
+    private void prepareSeekBar() {
+
+        circularSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
+                if (musicController!=null && fromUser)
+                    seekTo(progress);
+            }
+
+            @Override
+            public void onStopTrackingTouch(CircularSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(CircularSeekBar seekBar) {
+
+            }
+        });
+
+
+        circularSeekBar.setMax((int)Main.musicService.currentSong.getDuration());
+        final Handler handler = new Handler();
+        PlayingNow.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(isPlaying())
+                circularSeekBar.setProgress((int)getCurrentPosition());
+
+                handler.postDelayed(this,1);
+            }
+        });
+    }
+
 
     /**
      * Shows a Dialog asking the user for a new Playlist name,
@@ -277,6 +318,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
      * (Re)Starts the musicController.
      */
     private void setMusicController() {
+        prepareSeekBar();
+
         musicController = new MusicController(PlayingNow.this);
 
         // What will happen when the user presses the
@@ -382,7 +425,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     public void playNext() {
         Main.musicService.next(true);
         Main.musicService.playSong();
-
 
         // To prevent the MusicPlayer from behaving
         // unexpectedly when we pause the song playback.
