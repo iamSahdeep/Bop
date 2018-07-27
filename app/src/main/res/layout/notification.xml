@@ -1,85 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/notification"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/notification"
     app:cardBackgroundColor="#505050">
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="#373737"
-    android:weightSum="6"
-    android:gravity="center"
-    android:orientation="horizontal">
-    <ImageView
-        android:id="@+id/albumArtNoti"
-        android:layout_weight="1.3"
-        android:src="#bcbcbc"
-        android:layout_width="0dp"
-        android:layout_height="70dp" />
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2.2"
-        android:orientation="vertical"
-        android:layout_marginStart="10dp">
-        <TextView
-            android:id="@+id/songNameNoti"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="#bcbcbc"
-            android:textSize="17sp"
-            android:text="Song Name"
-            />
-        <TextView
-            android:id="@+id/ArtistNameNoti"
-            android:layout_width="match_parent"
-            android:textColor="#bcbcbc"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textSize="14sp"
-            android:text="Artist Name" />
-    </LinearLayout>
-    <ImageView
-        android:layout_width="1dp"
-        android:layout_margin="3dp"
-        android:src="#bcbcbc"
-        android:layout_height="30dp"/>
-    <ImageButton
-        android:id="@+id/pauseNoti"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_play_white"
-        android:background="#373737"
-        android:layout_weight=".84"/>
-    <ImageView
-        android:layout_width="1dp"
-        android:layout_margin="3dp"
-        android:src="#bcbcbc"
-        android:layout_height="30dp"/>
-    <ImageButton
-        android:id="@+id/skipNoti"
-        android:background="#373737"
-        android:src="@drawable/ic_skip_white"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_weight=".83"/>
-    <ImageView
-        android:layout_width="1dp"
-        android:layout_margin="3dp"
-        android:src="#bcbcbc"
-        android:layout_height="30dp"/>
-    <ImageButton
-        android:id="@+id/stopNoti"
-        android:layout_width="0dp"
-        android:src="@drawable/ic_cancel_white"
-        android:layout_height="40dp"
-        android:background="#373737"
-        android:layout_weight=".83"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#373737"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <ImageView
+            android:id="@+id/albumArtNoti"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1.3"
+            android:src="#bcbcbc" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="2.2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/songNameNoti"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Song Name"
+                android:textColor="#bcbcbc"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/ArtistNameNoti"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Artist Name"
+                android:textColor="#bcbcbc"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_margin="3dp"
+            android:src="#bcbcbc" />
+
+        <ImageButton
+            android:id="@+id/pauseNoti"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight=".84"
+            android:background="#373737"
+            android:src="@drawable/ic_play_white" />
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_margin="3dp"
+            android:src="#bcbcbc" />
+
+        <ImageButton
+            android:id="@+id/skipNoti"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight=".83"
+            android:background="#373737"
+            android:src="@drawable/ic_skip_white" />
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_margin="3dp"
+            android:src="#bcbcbc" />
+
+        <ImageButton
+            android:id="@+id/stopNoti"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight=".83"
+            android:background="#373737"
+            android:src="@drawable/ic_cancel_white" />
+
+    </LinearLayout>
 
 </LinearLayout>

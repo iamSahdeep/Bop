@@ -1,41 +1,34 @@
 package com.sahdeepsingh.Bop.SongData;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Log;
-
 /**
  * Global interface to all the songs this application can see.
- *
+ * <p>
  * Tasks:
  * - Scans for songs on the device
- *   (both internal and external memories)
+ * (both internal and external memories)
  * - Has query functions to songs and their attributes.
- *
+ * <p>
  * Thanks:
- *
+ * <p>
  * - Showing me how to get a music's full PATH:
- *   http://stackoverflow.com/a/21333187
- *
+ * http://stackoverflow.com/a/21333187
+ * <p>
  * - Teaching me the queries to get Playlists
- *   and their songs:
- *   http://stackoverflow.com/q/11292125
+ * and their songs:
+ * http://stackoverflow.com/q/11292125
  */
 public class SongList {
 
@@ -51,12 +44,14 @@ public class SongList {
 
     /**
      * Maps song's genre IDs to song's genre names.
+     *
      * @note It's only available after calling `scanSongs`.
      */
     private HashMap<String, String> genreIdToGenreNameMap;
 
     /**
      * Maps song's IDs to song genre IDs.
+     *
      * @note It's only available after calling `scanSongs`.
      */
     private HashMap<String, String> songIdToGenreIdMap;
@@ -76,7 +71,7 @@ public class SongList {
     /**
      * Tells if we've successfully scanned all songs on
      * the device.
-     *
+     * <p>
      * This will return `false` both while we're scanning
      * for songs and if some error happened while scanning.
      */
@@ -93,26 +88,25 @@ public class SongList {
 
     /**
      * Scans the device for songs.
-     *
+     * <p>
      * This function takes a lot of time to execute and
      * blocks the program UI.
      * So you should call it on a separate thread and
      * query `isInitialized` when needed.
-     *
+     * <p>
      * Inside it, we make a lot of queries to the system's
      * databases - getting songs, genres and playlists.
      *
-     * @note If you call this function twice, it rescans
-     *       the songs, refreshing internal lists.
-     *       It doesn't add up songs.
-     *
      * @param c         The current Activity's Context.
      * @param fromWhere Where should we scan for songs.
-     *
-     * Accepted values to `fromWhere` are:
-     * - "internal" To scan for songs on the phone's memory.
-     * - "external" To scan for songs on the SD card.
-     * - "both"     To scan for songs anywhere.
+     *                  <p>
+     *                  Accepted values to `fromWhere` are:
+     *                  - "internal" To scan for songs on the phone's memory.
+     *                  - "external" To scan for songs on the SD card.
+     *                  - "both"     To scan for songs anywhere.
+     * @note If you call this function twice, it rescans
+     * the songs, refreshing internal lists.
+     * It doesn't add up songs.
      */
     public void scanSongs(Context c, String fromWhere) {
 
@@ -135,13 +129,13 @@ public class SongList {
         //
         // Remember - internal is the phone memory, external is for the SD card.
         Uri musicUri = ((fromWhere == "internal") ?
-                android.provider.MediaStore.Audio.Media.INTERNAL_CONTENT_URI:
+                android.provider.MediaStore.Audio.Media.INTERNAL_CONTENT_URI :
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
         Uri genreUri = ((fromWhere == "internal") ?
-                android.provider.MediaStore.Audio.Genres.INTERNAL_CONTENT_URI:
+                android.provider.MediaStore.Audio.Genres.INTERNAL_CONTENT_URI :
                 android.provider.MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI);
         Uri playlistUri = ((fromWhere == "internal") ?
-                android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI:
+                android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI :
                 android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI);
 
         // Gives us access to query for files on the system.
@@ -175,13 +169,13 @@ public class SongList {
 
         // These are the columns from the system databases.
         // They're the information I want to get from songs.
-        String GENRE_ID      = MediaStore.Audio.Genres._ID;
-        String GENRE_NAME    = MediaStore.Audio.Genres.NAME;
-        String SONG_ID       = android.provider.MediaStore.Audio.Media._ID;
-        String SONG_TITLE    = android.provider.MediaStore.Audio.Media.TITLE;
-        String SONG_ARTIST   = android.provider.MediaStore.Audio.Media.ARTIST;
-        String SONG_ALBUM    = android.provider.MediaStore.Audio.Media.ALBUM;
-        String SONG_YEAR     = android.provider.MediaStore.Audio.Media.YEAR;
+        String GENRE_ID = MediaStore.Audio.Genres._ID;
+        String GENRE_NAME = MediaStore.Audio.Genres.NAME;
+        String SONG_ID = android.provider.MediaStore.Audio.Media._ID;
+        String SONG_TITLE = android.provider.MediaStore.Audio.Media.TITLE;
+        String SONG_ARTIST = android.provider.MediaStore.Audio.Media.ARTIST;
+        String SONG_ALBUM = android.provider.MediaStore.Audio.Media.ALBUM;
+        String SONG_YEAR = android.provider.MediaStore.Audio.Media.YEAR;
         String SONG_TRACK_NO = android.provider.MediaStore.Audio.Media.TRACK;
         String SONG_FILEPATH = android.provider.MediaStore.Audio.Media.DATA;
         String SONG_DURATION = android.provider.MediaStore.Audio.Media.DURATION;
@@ -219,7 +213,7 @@ public class SongList {
             Uri uri = MediaStore.Audio.Genres.Members.getContentUri(fromWhere,
                     Long.parseLong(genreID));
 
-            cursor = resolver.query(uri, new String[] { SONG_ID }, null, null, null);
+            cursor = resolver.query(uri, new String[]{SONG_ID}, null, null, null);
 
             // Iterating through the results, populating the map
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
@@ -257,8 +251,7 @@ public class SongList {
         // Actually querying the system
         cursor = resolver.query(musicUri, columns, musicsOnly, null, null);
 
-        if (cursor != null && cursor.moveToFirst())
-        {
+        if (cursor != null && cursor.moveToFirst()) {
             // NOTE: I tried to use MediaMetadataRetriever, but it was too slow.
             //       Even with 10 songs, it took like 13 seconds,
             //       No way I'm releasing it this way - I have like 4.260 songs!
@@ -268,17 +261,17 @@ public class SongList {
                 Song song = new Song(cursor.getInt(cursor.getColumnIndex(SONG_ID)),
                         cursor.getString(cursor.getColumnIndex(SONG_FILEPATH)));
 
-                song.setTitle      (cursor.getString(cursor.getColumnIndex(SONG_TITLE)));
-                song.setArtist     (cursor.getString(cursor.getColumnIndex(SONG_ARTIST)));
-                song.setAlbum      (cursor.getString(cursor.getColumnIndex(SONG_ALBUM)));
-                song.setYear       (cursor.getInt   (cursor.getColumnIndex(SONG_YEAR)));
-                song.setTrackNumber(cursor.getInt   (cursor.getColumnIndex(SONG_TRACK_NO)));
-                song.setDuration   (cursor.getInt   (cursor.getColumnIndex(SONG_DURATION)));
-                song.setAlbumid    (cursor.getString(cursor.getColumnIndex(SONG_ALBUM_ID)));
+                song.setTitle(cursor.getString(cursor.getColumnIndex(SONG_TITLE)));
+                song.setArtist(cursor.getString(cursor.getColumnIndex(SONG_ARTIST)));
+                song.setAlbum(cursor.getString(cursor.getColumnIndex(SONG_ALBUM)));
+                song.setYear(cursor.getInt(cursor.getColumnIndex(SONG_YEAR)));
+                song.setTrackNumber(cursor.getInt(cursor.getColumnIndex(SONG_TRACK_NO)));
+                song.setDuration(cursor.getInt(cursor.getColumnIndex(SONG_DURATION)));
+                song.setAlbumid(cursor.getString(cursor.getColumnIndex(SONG_ALBUM_ID)));
 
                 // Using the previously created genre maps
                 // to fill the current song genre.
-                String currentGenreID   = songIdToGenreIdMap.get(Long.toString(song.getId()));
+                String currentGenreID = songIdToGenreIdMap.get(Long.toString(song.getId()));
                 String currentGenreName = genreIdToGenreNameMap.get(currentGenreID);
                 song.setGenre(currentGenreName);
 
@@ -286,9 +279,7 @@ public class SongList {
                 songs.add(song);
             }
             while (cursor.moveToNext());
-        }
-        else
-        {
+        } else {
             // What do I do if I can't find any songs?
         }
         cursor.close();
@@ -298,8 +289,8 @@ public class SongList {
         // one of those, getting all songs inside them.
 
         // As you know, the columns for the database.
-        String PLAYLIST_ID      = MediaStore.Audio.Playlists._ID;
-        String PLAYLIST_NAME    = MediaStore.Audio.Playlists.NAME;
+        String PLAYLIST_ID = MediaStore.Audio.Playlists._ID;
+        String PLAYLIST_NAME = MediaStore.Audio.Playlists.NAME;
         String PLAYLIST_SONG_ID = MediaStore.Audio.Playlists.Members.AUDIO_ID;
 
         // This is what I'll get for all playlists.
@@ -322,30 +313,29 @@ public class SongList {
             Uri currentUri = MediaStore.Audio.Playlists.Members.getContentUri(fromWhere, playlist.getID());
             Cursor cursor2 = null;
             cursor2 = resolver.query(currentUri,
-                    new String[] { PLAYLIST_SONG_ID },
+                    new String[]{PLAYLIST_SONG_ID},
                     musicsOnly,
                     null, null);
 
             // Adding each song's ID to it
-            for (cursor2.moveToFirst(); !cursor2.isAfterLast(); cursor2.moveToNext())
-            { playlist.add(cursor2.getLong(cursor2.getColumnIndex(PLAYLIST_SONG_ID)));
+            for (cursor2.moveToFirst(); !cursor2.isAfterLast(); cursor2.moveToNext()) {
+                playlist.add(cursor2.getLong(cursor2.getColumnIndex(PLAYLIST_SONG_ID)));
             }
 
             if (!playlist.getSongIds().isEmpty())
-            playlists.add(playlist);
+                playlists.add(playlist);
             cursor2.close();
         }
 
         // Finally, let's sort the song list alphabetically
         // based on the song title.
         Collections.sort(songs, new Comparator<Song>() {
-            public int compare(Song a, Song b)
-            {
+            public int compare(Song a, Song b) {
                 return a.getTitle().compareTo(b.getTitle());
             }
         });
 
-        scannedSongs  = true;
+        scannedSongs = true;
         scanningSongs = false;
     }
 
@@ -363,9 +353,9 @@ public class SongList {
 //                return null;
 //            }
         Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
-                new String[] {MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
-                MediaStore.Audio.Albums._ID+ "=?",
-                new String[] {String.valueOf(song.getAlbumid())},
+                new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
+                MediaStore.Audio.Albums._ID + "=?",
+                new String[]{String.valueOf(song.getAlbumid())},
                 null);
 
         if (cursor.moveToFirst()) {
@@ -383,7 +373,7 @@ public class SongList {
      * artists of the scanned songs.
      *
      * @note This method might take a while depending on how
-     *       many songs you have.
+     * many songs you have.
      */
     public ArrayList<String> getArtists() {
 
@@ -392,7 +382,7 @@ public class SongList {
         for (Song song : songs) {
             String artist = song.getArtist();
 
-            if ((artist != null) && (! artists.contains(artist)))
+            if ((artist != null) && (!artists.contains(artist)))
                 artists.add(artist);
         }
 
@@ -407,7 +397,7 @@ public class SongList {
      * albums of the scanned songs.
      *
      * @note This method might take a while depending on how
-     *       many songs you have.
+     * many songs you have.
      */
     public ArrayList<String> getAlbums() {
 
@@ -416,7 +406,7 @@ public class SongList {
         for (Song song : songs) {
             String album = song.getAlbum();
 
-            if ((album != null) && (! albums.contains(album)))
+            if ((album != null) && (!albums.contains(album)))
                 albums.add(album);
         }
 
@@ -446,7 +436,7 @@ public class SongList {
      * Returns a list with all years your songs have.
      *
      * @note It is a list of Strings. To access the
-     *       years, do a `Integer.parseInt(string)`.
+     * years, do a `Integer.parseInt(string)`.
      */
     public ArrayList<String> getYears() {
 
@@ -455,7 +445,7 @@ public class SongList {
         for (Song song : songs) {
             String year = Integer.toString(song.getYear());
 
-            if ((Integer.parseInt(year) > 0) && (! years.contains(year)))
+            if ((Integer.parseInt(year) > 0) && (!years.contains(year)))
                 years.add(year);
         }
 
@@ -480,8 +470,7 @@ public class SongList {
 
         // Sorting resulting list by Album
         Collections.sort(songsByArtist, new Comparator<Song>() {
-            public int compare(Song a, Song b)
-            {
+            public int compare(Song a, Song b) {
                 return a.getAlbum().compareTo(b.getAlbum());
             }
         });
@@ -497,10 +486,10 @@ public class SongList {
 
         for (Song song : songs) {
             String currentArtist = song.getArtist();
-            String currentAlbum  = song.getAlbum();
+            String currentAlbum = song.getAlbum();
 
             if (currentArtist.equals(desiredArtist))
-                if (! albumsByArtist.contains(currentAlbum))
+                if (!albumsByArtist.contains(currentAlbum))
                     albumsByArtist.add(currentAlbum);
         }
 
@@ -514,8 +503,8 @@ public class SongList {
      * Returns a new list with all songs.
      *
      * @note This is different than accessing `songs` directly
-     *       because it duplicates it - you can then mess with
-     *       it without worrying about changing the original.
+     * because it duplicates it - you can then mess with
+     * it without worrying about changing the original.
      */
     public ArrayList<Song> getSongs() {
         ArrayList<Song> list = new ArrayList<Song>();
@@ -604,19 +593,18 @@ public class SongList {
     public ArrayList<Song> getSongsByPlaylist(String playlistName) {
 
         ArrayList<Long> songIDs = new ArrayList<>();
-        for (Playlist playlist : playlists)
-        {
+        for (Playlist playlist : playlists) {
             if (playlist.getName().equals(playlistName)) {
                 songIDs = playlist.getSongIds();
-                Log.e("wtf3",String.valueOf(playlist));
+                Log.e("wtf3", String.valueOf(playlist));
                 break;
             }
         }
 
         ArrayList<Song> currentSongs = new ArrayList<Song>();
-        if (songIDs!=null)
-        for (Long songID : songIDs)
-            currentSongs.add(getSongById(songID));
+        if (songIDs != null)
+            for (Long songID : songIDs)
+                currentSongs.add(getSongById(songID));
 
         return currentSongs;
     }
@@ -634,7 +622,7 @@ public class SongList {
         ContentResolver resolver = c.getContentResolver();
 
         Uri playlistUri = ((fromWhere == "internal") ?
-                android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI:
+                android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI :
                 android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI);
 
         // CHECK IF PLAYLIST EXISTS!
@@ -648,8 +636,8 @@ public class SongList {
         Uri newPlaylistUri = resolver.insert(playlistUri, values);
 
         // Getting the new Playlist ID
-        String PLAYLIST_ID      = MediaStore.Audio.Playlists._ID;
-        String PLAYLIST_NAME    = MediaStore.Audio.Playlists.NAME;
+        String PLAYLIST_ID = MediaStore.Audio.Playlists._ID;
+        String PLAYLIST_NAME = MediaStore.Audio.Playlists.NAME;
 
         // This is what I'll get for all playlists.
         String[] playlistColumns = {
@@ -676,7 +664,7 @@ public class SongList {
 
             ContentValues songValues = new ContentValues();
 
-            songValues.put(MediaStore.Audio.Playlists.Members.AUDIO_ID,   song.getId());
+            songValues.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, song.getId());
             songValues.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, songOrder);
 
             resolver.insert(songUri, songValues);

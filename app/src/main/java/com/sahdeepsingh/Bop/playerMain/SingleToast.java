@@ -1,20 +1,21 @@
 package com.sahdeepsingh.Bop.playerMain;
+
 import android.content.Context;
 import android.widget.Toast;
 
 /**
  * Makes sure that a single Toast (text message) is displayed
  * on the application.
- *
+ * <p>
  * Normally when you call several Toasts, they wait for the
  * others to finish.
  * We don't want that!
- *
+ * <p>
  * With this class, you get an immediate Toast right away.
- *
+ * <p>
  * Thanks to the awesome guys at StackOverflow:
  * http://stackoverflow.com/a/18676736
- *
+ * <p>
  * Created by kure on 9/24/2014.
  */
 public class SingleToast {

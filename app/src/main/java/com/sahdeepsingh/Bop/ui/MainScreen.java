@@ -3,21 +3,20 @@ package com.sahdeepsingh.Bop.ui;
 
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.app.FragmentManager;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -35,8 +34,15 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.playerMain.SingleToast;
 
 
-public class MainScreen extends ActivityMaster implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener , FragmentPlaylist.OnListFragmentInteractionListener,FragmentGenre.OnListFragmentInteractionListener,FragmentAlbum.OnListFragmentInteractionListener{
+public class MainScreen extends ActivityMaster implements ActionBar.TabListener, FragmentSongs.OnListFragmentInteractionListener, FragmentPlaylist.OnListFragmentInteractionListener, FragmentGenre.OnListFragmentInteractionListener, FragmentAlbum.OnListFragmentInteractionListener {
 
+    public static final String BROADCAST_ACTION = "lol";
+    static final int USER_CHANGED_THEME = 1;
+    /**
+     * How long to wait to disable double-pressing to quit
+     */
+    private static final int BACK_PRESSED_DELAY = 2000;
+    ChangeSongBR changeSongBR;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -46,28 +52,17 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    public static final String BROADCAST_ACTION = "lol";
-
-
-    static final int USER_CHANGED_THEME = 1;
-
     private boolean backPressedOnce = false;
-    private Handler backPressedHandler = new Handler();
-
-    /** How long to wait to disable double-pressing to quit */
-    private static final int BACK_PRESSED_DELAY = 2000;
-
-    /** Action that actually disables double-pressing to quit */
+    /**
+     * Action that actually disables double-pressing to quit
+     */
     private final Runnable backPressedTimeoutAction = new Runnable() {
         @Override
         public void run() {
             backPressedOnce = false;
         }
     };
-
-
-
+    private Handler backPressedHandler = new Handler();
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -75,9 +70,19 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
     private Toolbar toolbar;
     private TabLayout tabLayout;
 
-    ChangeSongBR changeSongBR;
+    /**
+     * Adds a new item "Now Playing" on the main menu, if
+     * it ain't there yet.
+     */
+    public static void addNowPlayingItem(Context c) {
 
+        if (Main.mainMenuHasNowPlayingItem)
+            return;
 
+        Main.mainMenuHasNowPlayingItem = true;
+
+        // Refresh ListView
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +99,7 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         setContentView(R.layout.activity_main_screen);
 
 
-        if (Main.mainMenuHasNowPlayingItem)
-        {
+        if (Main.mainMenuHasNowPlayingItem) {
 
         }
 
@@ -121,20 +125,6 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
 
     }
 
-    class ChangeSongBR extends BroadcastReceiver{
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            TextView name,artist;
-            name = findViewById(R.id.bottomtextView);
-            artist = findViewById(R.id.bottomtextartist);
-            name.setText(Main.musicService.currentSong.getTitle());
-            artist.setText(Main.musicService.currentSong.getArtist());
-        }
-
-    }
-
     private void setupViewPager(ViewPager viewPager) {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
@@ -157,7 +147,7 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         // We'll only actually do it if they weren't loaded already
         //
         // See the implementation right at the end of this class.
-        if ((forceScan) || (! Main.songs.isInitialized())) {
+        if ((forceScan) || (!Main.songs.isInitialized())) {
 
             /*SingleToast.show(MainScreen.this,
                     getString(R.string.menu_main_scanning),
@@ -168,7 +158,7 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
     }
 
     @Override
-    public void onListFragmentInteraction(int position , String type) {
+    public void onListFragmentInteraction(int position, String type) {
 
         Intent intent = new Intent(this, PlayingNow.class);
 
@@ -210,51 +200,6 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         }
 
     }
-
-    /**
-     * Does an action on another Thread.
-     *
-     * On this case, we'll scan the songs on the Android device
-     * without blocking the main Thread.
-     *
-     * It gives a nice pop-up when finishes.
-     *
-     * Source:
-     * http://answers.oreilly.com/topic/2699-how-to-handle-threads-in-android-and-what-you-need-to-watch-for/
-     */
-    class ScanSongs extends AsyncTask<String, Integer, String> {
-
-        /**
-         * The action we'll do in the background.
-         */
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-                // Will scan all songs on the device
-                Main.songs.scanSongs(MainScreen.this, "external");
-                return MainScreen.this.getString(R.string.menu_main_scanning_ok);
-            }
-            catch (Exception e) {
-                Log.e("Couldn't execute", e.toString());
-                e.printStackTrace();
-                return MainScreen.this.getString(R.string.menu_main_scanning_not_ok);
-            }
-        }
-
-        /**
-         * Called once the background processing is done.
-         */
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            /*SingleToast.show(MainScreen.this,
-                    result,
-                    Toast.LENGTH_LONG);*/
-        }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -328,23 +273,42 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-   /* *//**
+    /**
+     * When destroying the Activity.
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (backPressedHandler != null)
+            backPressedHandler.removeCallbacks(backPressedTimeoutAction);
+
+        // Need to clear all the items otherwise
+        // they'll keep adding up.
+        // Cancell all thrown Notifications
+        NotificationMusic.cancelAll(this);
+/*
+        Main.stopMusicService(this);
+*/
+    }
+
+    /* *//**
      * A placeholder fragment containing a simple view.
      *//*
     public static class PlaceholderFragment extends Fragment {
         *//**
-         * The fragment argument representing the section number for this
-         * fragment.
-         *//*
+     * The fragment argument representing the section number for this
+     * fragment.
+     *//*
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
         }
 
         *//**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         *//*
+     * Returns a new instance of this fragment for the given section
+     * number.
+     *//*
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -363,7 +327,86 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         }
     }
 
-    *//**
+    */
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BROADCAST_ACTION);
+        registerReceiver(changeSongBR, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(changeSongBR);
+    }
+
+    class ChangeSongBR extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            TextView name, artist;
+            name = findViewById(R.id.bottomtextView);
+            artist = findViewById(R.id.bottomtextartist);
+            name.setText(Main.musicService.currentSong.getTitle());
+            artist.setText(Main.musicService.currentSong.getArtist());
+        }
+
+    }
+
+    /**
+     * Does an action on another Thread.
+     * <p>
+     * On this case, we'll scan the songs on the Android device
+     * without blocking the main Thread.
+     * <p>
+     * It gives a nice pop-up when finishes.
+     * <p>
+     * Source:
+     * http://answers.oreilly.com/topic/2699-how-to-handle-threads-in-android-and-what-you-need-to-watch-for/
+     */
+    class ScanSongs extends AsyncTask<String, Integer, String> {
+
+        /**
+         * The action we'll do in the background.
+         */
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                // Will scan all songs on the device
+                Main.songs.scanSongs(MainScreen.this, "external");
+                return MainScreen.this.getString(R.string.menu_main_scanning_ok);
+            } catch (Exception e) {
+                Log.e("Couldn't execute", e.toString());
+                e.printStackTrace();
+                return MainScreen.this.getString(R.string.menu_main_scanning_not_ok);
+            }
+        }
+
+        /**
+         * Called once the background processing is done.
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            /*SingleToast.show(MainScreen.this,
+                    result,
+                    Toast.LENGTH_LONG);*/
+        }
+    }
+
+    /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
@@ -387,10 +430,11 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
                     return new FragmentPlaylist();
                 case 2:
                     return new FragmentGenre();
-                case 3 :
+                case 3:
                     return new FragmentAlbum();
 
-                default: return new FragmentSongs();
+                default:
+                    return new FragmentSongs();
 
 
             }
@@ -416,58 +460,5 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
             }
             return null;
         }
-    }
-
-    /**
-     * Adds a new item "Now Playing" on the main menu, if
-     * it ain't there yet.
-     */
-    public static void addNowPlayingItem(Context c) {
-
-        if (Main.mainMenuHasNowPlayingItem)
-            return;
-
-        Main.mainMenuHasNowPlayingItem = true;
-
-        // Refresh ListView
-    }
-
-    /**
-     * When destroying the Activity.
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (backPressedHandler != null)
-            backPressedHandler.removeCallbacks(backPressedTimeoutAction);
-
-        // Need to clear all the items otherwise
-        // they'll keep adding up.
-        // Cancell all thrown Notifications
-        NotificationMusic.cancelAll(this);
-/*
-        Main.stopMusicService(this);
-*/
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BROADCAST_ACTION);
-        registerReceiver(changeSongBR, intentFilter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(changeSongBR);
     }
 }

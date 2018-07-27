@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -15,25 +14,25 @@
             android:id="@+id/albumArt"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginEnd="12dp"
-            android:src="@drawable/play"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:src="@drawable/play" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:gravity="center"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp">
+            android:orientation="vertical"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp">
 
             <TextView
                 android:id="@+id/GenreName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
 
             <TextView
@@ -41,9 +40,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:textSize="12sp"
+                android:text="@string/app_name"
                 android:textColor="@color/darkblue"
-                android:text="@string/app_name" />
+                android:textSize="12sp" />
 
 
         </LinearLayout>

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.SongData.Playlist;
 import com.sahdeepsingh.Bop.fragments.FragmentPlaylist.OnListFragmentInteractionListener;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
@@ -21,7 +20,7 @@ import java.util.List;
  */
 public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
 
-    private final List<String> playlists ;
+    private final List<String> playlists;
     private OnListFragmentInteractionListener mListener;
 
     public MyPlaylistRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
@@ -50,10 +49,10 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
                     throw new RuntimeException(context.toString()
                             + " must implement OnListFragmentInteractionListener");
                 }
-                if (mListener !=null) {
+                if (mListener != null) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.getAdapterPosition() , "playlist");
+                    mListener.onListFragmentInteraction(holder.getAdapterPosition(), "playlist");
 
 
                 }
@@ -63,7 +62,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     @Override
     public int getItemCount() {
-        if ((Main.songs.playlists != null) && (! Main.songs.playlists.isEmpty()))
+        if ((Main.songs.playlists != null) && (!Main.songs.playlists.isEmpty()))
             return Main.songs.playlists.size();
 
         return 0;

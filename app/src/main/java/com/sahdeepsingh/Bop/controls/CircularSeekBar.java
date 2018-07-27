@@ -19,16 +19,6 @@ import com.sahdeepsingh.Bop.R;
 
 public class CircularSeekBar extends View {
 
-    /**
-     * Used to scale the dp units to pixels
-     */
-    protected final float DPTOPX_SCALE = getResources().getDisplayMetrics().density;
-
-    /**
-     * Minimum touch target size in DP. 48dp is the Android design recommendation
-     */
-    protected final float MIN_TOUCH_TARGET_DP = 48;
-
     // Default values
     protected static final float DEFAULT_CIRCLE_X_RADIUS = 30f;
     protected static final float DEFAULT_CIRCLE_Y_RADIUS = 30f;
@@ -52,7 +42,14 @@ public class CircularSeekBar extends View {
     protected static final boolean DEFAULT_MAINTAIN_EQUAL_CIRCLE = true;
     protected static final boolean DEFAULT_MOVE_OUTSIDE_CIRCLE = false;
     protected static final boolean DEFAULT_LOCK_ENABLED = true;
-
+    /**
+     * Used to scale the dp units to pixels
+     */
+    protected final float DPTOPX_SCALE = getResources().getDisplayMetrics().density;
+    /**
+     * Minimum touch target size in DP. 48dp is the Android design recommendation
+     */
+    protected final float MIN_TOUCH_TARGET_DP = 48;
     /**
      * {@code Paint} instance used to draw the inactive circle.
      */
@@ -336,9 +333,25 @@ public class CircularSeekBar extends View {
      */
     protected boolean isTouchEnabled = true;
 
+    public CircularSeekBar(Context context) {
+        super(context);
+        init(null, 0);
+    }
+
+    public CircularSeekBar(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(attrs, 0);
+    }
+
+    public CircularSeekBar(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(attrs, defStyle);
+    }
+
     /**
      * Initialize the CircularSeekBar with the attributes from the XML style.
      * Uses the defaults defined at the top of this file when an attribute is not specified by the user.
+     *
      * @param attrArray TypedArray containing the attributes.
      */
     protected void initAttributes(TypedArray attrArray) {
@@ -457,7 +470,7 @@ public class CircularSeekBar extends View {
      * Sets mPointerPosition to that value.
      */
     protected void calculatePointerAngle() {
-        float progressPercent = ((float)mProgress / (float)mMax);
+        float progressPercent = ((float) mProgress / (float) mMax);
         mPointerPosition = (progressPercent * mTotalCircleDegrees) + mStartAngle;
         mPointerPosition = mPointerPosition % 360f;
     }
@@ -510,16 +523,18 @@ public class CircularSeekBar extends View {
 
     /**
      * Get the progress of the CircularSeekBar.
+     *
      * @return The progress of the CircularSeekBar.
      */
     public int getProgress() {
-        int progress = Math.round((float)mMax * mProgressDegrees / mTotalCircleDegrees);
+        int progress = Math.round((float) mMax * mProgressDegrees / mTotalCircleDegrees);
         return progress;
     }
 
     /**
      * Set the progress of the CircularSeekBar.
      * If the progress is the same, then any listener will not receive a onProgressChanged event.
+     *
      * @param progress The progress to set the CircularSeekBar to.
      */
     public void setProgress(int progress) {
@@ -537,7 +552,7 @@ public class CircularSeekBar extends View {
     protected void setProgressBasedOnAngle(float angle) {
         mPointerPosition = angle;
         calculateProgressDegrees();
-        mProgress = Math.round((float)mMax * mProgressDegrees / mTotalCircleDegrees);
+        mProgress = Math.round((float) mMax * mProgressDegrees / mTotalCircleDegrees);
     }
 
     protected void recalculateAll() {
@@ -564,8 +579,8 @@ public class CircularSeekBar extends View {
         }
 
         // Set the circle width and height based on the view for the moment
-        mCircleHeight = (float)height / 2f - mCircleStrokeWidth - mPointerRadius - (mPointerHaloBorderWidth * 1.5f);
-        mCircleWidth = (float)width / 2f - mCircleStrokeWidth - mPointerRadius - (mPointerHaloBorderWidth * 1.5f);
+        mCircleHeight = (float) height / 2f - mCircleStrokeWidth - mPointerRadius - (mPointerHaloBorderWidth * 1.5f);
+        mCircleWidth = (float) width / 2f - mCircleStrokeWidth - mPointerRadius - (mPointerHaloBorderWidth * 1.5f);
 
         // If it is not set to use custom
         if (mCustomRadii) {
@@ -590,6 +605,7 @@ public class CircularSeekBar extends View {
 
     /**
      * Get whether the pointer locks at zero and max.
+     *
      * @return Boolean value of true if the pointer locks at zero and max, false if it does not.
      */
     public boolean isLockEnabled() {
@@ -598,6 +614,7 @@ public class CircularSeekBar extends View {
 
     /**
      * Set whether the pointer locks at zero and max or not.
+     *
      * @param boolean value. True if the pointer should lock at zero and max, false if it should not.
      */
     public void setLockEnabled(boolean lockEnabled) {
@@ -606,7 +623,7 @@ public class CircularSeekBar extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(!isTouchEnabled){
+        if (!isTouchEnabled) {
             return false;
         }
 
@@ -626,8 +643,7 @@ public class CircularSeekBar extends View {
 
         if (mCircleStrokeWidth < minimumTouchTarget) { // If the width is less than the minimumTouchTarget, use the minimumTouchTarget
             additionalRadius = minimumTouchTarget / 2;
-        }
-        else {
+        } else {
             additionalRadius = mCircleStrokeWidth / 2; // Otherwise use the width
         }
         float outerRadius = Math.max(mCircleHeight, mCircleWidth) + additionalRadius; // Max outer radius of the circle, including the minimumTouchTarget or wheel width
@@ -635,8 +651,7 @@ public class CircularSeekBar extends View {
 
         if (mPointerRadius < (minimumTouchTarget / 2)) { // If the pointer radius is less than the minimumTouchTarget, use the minimumTouchTarget
             additionalRadius = minimumTouchTarget / 2;
-        }
-        else {
+        } else {
             additionalRadius = mPointerRadius; // Otherwise use the radius
         }
 
@@ -660,7 +675,7 @@ public class CircularSeekBar extends View {
                 cwDistanceFromPointer = (cwDistanceFromPointer < 0 ? 360f + cwDistanceFromPointer : cwDistanceFromPointer);
                 ccwDistanceFromPointer = 360f - cwDistanceFromPointer;
                 // This is for if the first touch is on the actual pointer.
-                if (((touchEventRadius >= innerRadius) && (touchEventRadius <= outerRadius)) && ( (cwDistanceFromPointer <= pointerRadiusDegrees) || (ccwDistanceFromPointer <= pointerRadiusDegrees)) ) {
+                if (((touchEventRadius >= innerRadius) && (touchEventRadius <= outerRadius)) && ((cwDistanceFromPointer <= pointerRadiusDegrees) || (ccwDistanceFromPointer <= pointerRadiusDegrees))) {
                     setProgressBasedOnAngle(mPointerPosition);
                     lastCWDistanceFromStart = cwDistanceFromStart;
                     mIsMovingCW = true;
@@ -804,21 +819,6 @@ public class CircularSeekBar extends View {
         initPaints();
     }
 
-    public CircularSeekBar(Context context) {
-        super(context);
-        init(null, 0);
-    }
-
-    public CircularSeekBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(attrs, 0);
-    }
-
-    public CircularSeekBar(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(attrs, defStyle);
-    }
-
     @Override
     protected Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
@@ -869,19 +869,17 @@ public class CircularSeekBar extends View {
     }
 
     /**
-     * Listener for the CircularSeekBar. Implements the same methods as the normal OnSeekBarChangeListener.
+     * Gets the circle color.
+     *
+     * @return An integer color value for the circle
      */
-    public interface OnCircularSeekBarChangeListener {
-
-        public abstract void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser);
-
-        public abstract void onStopTrackingTouch(CircularSeekBar seekBar);
-
-        public abstract void onStartTrackingTouch(CircularSeekBar seekBar);
+    public int getCircleColor() {
+        return mCircleColor;
     }
 
     /**
      * Sets the circle color.
+     *
      * @param color the color of the circle
      */
     public void setCircleColor(int color) {
@@ -891,15 +889,17 @@ public class CircularSeekBar extends View {
     }
 
     /**
-     * Gets the circle color.
-     * @return An integer color value for the circle
+     * Gets the circle progress color.
+     *
+     * @return An integer color value for the circle progress
      */
-    public int getCircleColor() {
-        return mCircleColor;
+    public int getCircleProgressColor() {
+        return mCircleProgressColor;
     }
 
     /**
      * Sets the circle progress color.
+     *
      * @param color the color of the circle progress
      */
     public void setCircleProgressColor(int color) {
@@ -909,15 +909,17 @@ public class CircularSeekBar extends View {
     }
 
     /**
-     * Gets the circle progress color.
-     * @return An integer color value for the circle progress
+     * Gets the pointer color.
+     *
+     * @return An integer color value for the pointer
      */
-    public int getCircleProgressColor() {
-        return mCircleProgressColor;
+    public int getPointerColor() {
+        return mPointerColor;
     }
 
     /**
      * Sets the pointer color.
+     *
      * @param color the color of the pointer
      */
     public void setPointerColor(int color) {
@@ -927,15 +929,17 @@ public class CircularSeekBar extends View {
     }
 
     /**
-     * Gets the pointer color.
-     * @return An integer color value for the pointer
+     * Gets the pointer halo color.
+     *
+     * @return An integer color value for the pointer halo
      */
-    public int getPointerColor() {
-        return mPointerColor;
+    public int getPointerHaloColor() {
+        return mPointerHaloColor;
     }
 
     /**
      * Sets the pointer halo color.
+     *
      * @param color the color of the pointer halo
      */
     public void setPointerHaloColor(int color) {
@@ -945,27 +949,8 @@ public class CircularSeekBar extends View {
     }
 
     /**
-     * Gets the pointer halo color.
-     * @return An integer color value for the pointer halo
-     */
-    public int getPointerHaloColor() {
-        return mPointerHaloColor;
-    }
-
-    /**
-     * Sets the pointer alpha.
-     * @param alpha the alpha of the pointer
-     */
-    public void setPointerAlpha(int alpha) {
-        if (alpha >=0 && alpha <= 255) {
-            mPointerAlpha = alpha;
-            mPointerHaloPaint.setAlpha(mPointerAlpha);
-            invalidate();
-        }
-    }
-
-    /**
      * Gets the pointer alpha value.
+     *
      * @return An integer alpha value for the pointer (0..255)
      */
     public int getPointerAlpha() {
@@ -973,17 +958,21 @@ public class CircularSeekBar extends View {
     }
 
     /**
-     * Sets the pointer alpha when touched.
-     * @param alpha the alpha of the pointer (0..255) when touched
+     * Sets the pointer alpha.
+     *
+     * @param alpha the alpha of the pointer
      */
-    public void setPointerAlphaOnTouch(int alpha) {
-        if (alpha >=0 && alpha <= 255) {
-            mPointerAlphaOnTouch = alpha;
+    public void setPointerAlpha(int alpha) {
+        if (alpha >= 0 && alpha <= 255) {
+            mPointerAlpha = alpha;
+            mPointerHaloPaint.setAlpha(mPointerAlpha);
+            invalidate();
         }
     }
 
     /**
      * Gets the pointer alpha value when touched.
+     *
      * @return An integer alpha value for the pointer (0..255) when touched
      */
     public int getPointerAlphaOnTouch() {
@@ -991,7 +980,28 @@ public class CircularSeekBar extends View {
     }
 
     /**
+     * Sets the pointer alpha when touched.
+     *
+     * @param alpha the alpha of the pointer (0..255) when touched
+     */
+    public void setPointerAlphaOnTouch(int alpha) {
+        if (alpha >= 0 && alpha <= 255) {
+            mPointerAlphaOnTouch = alpha;
+        }
+    }
+
+    /**
+     * Gets the circle fill color.
+     *
+     * @return An integer color value for the circle fill
+     */
+    public int getCircleFillColor() {
+        return mCircleFillColor;
+    }
+
+    /**
      * Sets the circle fill color.
+     *
      * @param color the color of the circle fill
      */
     public void setCircleFillColor(int color) {
@@ -1001,17 +1011,19 @@ public class CircularSeekBar extends View {
     }
 
     /**
-     * Gets the circle fill color.
-     * @return An integer color value for the circle fill
+     * Get the current max of the CircularSeekBar.
+     *
+     * @return Synchronized integer value of the max.
      */
-    public int getCircleFillColor() {
-        return mCircleFillColor;
+    public synchronized int getMax() {
+        return mMax;
     }
 
     /**
      * Set the max of the CircularSeekBar.
      * If the new max is less than the current progress, then the progress will be set to zero.
      * If the progress is changed as a result, then any listener will receive a onProgressChanged event.
+     *
      * @param max The new max for the CircularSeekBar.
      */
     public void setMax(int max) {
@@ -1030,27 +1042,33 @@ public class CircularSeekBar extends View {
     }
 
     /**
-     * Get the current max of the CircularSeekBar.
-     * @return Synchronized integer value of the max.
+     * Get whether user touch input is accepted.
+     *
+     * @return Boolean value of true if user touch input is accepted, false if user touch input is ignored.
      */
-    public synchronized int getMax() {
-        return mMax;
+    public boolean getIsTouchEnabled() {
+        return isTouchEnabled;
     }
 
     /**
      * Set whether user touch input is accepted or ignored.
-     * @param  value. True if user touch input is to be accepted, false if user touch input is to be ignored.
+     *
+     * @param value. True if user touch input is to be accepted, false if user touch input is to be ignored.
      */
     public void setIsTouchEnabled(boolean isTouchEnabled) {
         this.isTouchEnabled = isTouchEnabled;
     }
 
     /**
-     * Get whether user touch input is accepted.
-     * @return Boolean value of true if user touch input is accepted, false if user touch input is ignored.
+     * Listener for the CircularSeekBar. Implements the same methods as the normal OnSeekBarChangeListener.
      */
-    public boolean getIsTouchEnabled() {
-        return isTouchEnabled;
+    public interface OnCircularSeekBarChangeListener {
+
+        public abstract void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser);
+
+        public abstract void onStopTrackingTouch(CircularSeekBar seekBar);
+
+        public abstract void onStartTrackingTouch(CircularSeekBar seekBar);
     }
 
 }

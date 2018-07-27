@@ -20,16 +20,16 @@ import com.squareup.picasso.Picasso;
 /**
  * Specific way to stick an on-going message on the system
  * with the current song I'm playing.
- *
+ * <p>
  * This is a rather complicated set of functions because
  * it interacts with a great deal of the Android API.
  * Read with care.
- *
+ * <p>
  * Thanks:
- *
+ * <p>
  * - Gave me a complete example on how to add a custom
- *   action to a button click on the Notification:
- *   http://stackoverflow.com/a/21927248
+ * action to a button click on the Notification:
+ * http://stackoverflow.com/a/21927248
  */
 public class NotificationMusic extends NotificationSimple {
 
@@ -61,11 +61,19 @@ public class NotificationMusic extends NotificationSimple {
     NotificationManager notificationManager = null;
 
     /**
+     * Cancels all sent notifications.
+     */
+    public static void cancelAll(Context c) {
+        NotificationManager manager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancelAll();
+    }
+
+    /**
      * Sends a system notification with a song's information.
-     *
+     * <p>
      * If the user clicks the notification, will be redirected
      * to the "Now Playing" Activity.
-     *
+     * <p>
      * If the user clicks on any of the buttons inside it,
      * custom actions will be executed on the
      * `NotificationButtonHandler` class.
@@ -75,9 +83,8 @@ public class NotificationMusic extends NotificationSimple {
      *                Required so the Notification can
      *                run on the background.
      * @param song    Song which we'll display information.
-     *
      * @note By calling this function multiple times, it'll
-     *       update the old notification.
+     * update the old notification.
      */
     public void notifySong(Context context, Service service, Song song) {
 
@@ -85,7 +92,6 @@ public class NotificationMusic extends NotificationSimple {
             this.context = context;
         if (this.service == null)
             this.service = service;
-
 
 
         // Intent that launches the "Now Playing" Activity
@@ -100,7 +106,6 @@ public class NotificationMusic extends NotificationSimple {
                         PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-
         // Setting our custom appearance for the notification
         notificationView = new RemoteViews(Main.packageName, R.layout.notification);
 
@@ -108,12 +113,10 @@ public class NotificationMusic extends NotificationSimple {
         // (ignoring the defaults on the XML)
         notificationView.setImageViewResource(R.id.pauseNoti, R.drawable.ic_pause_white);
         notificationView.setImageViewResource(R.id.skipNoti, R.drawable.ic_skip_white);
-        notificationView.setImageViewResource(R.id.stopNoti,R.drawable.ic_cancel_white);
+        notificationView.setImageViewResource(R.id.stopNoti, R.drawable.ic_cancel_white);
         notificationView.setTextViewText(R.id.songNameNoti, song.getTitle());
         notificationView.setTextViewText(R.id.ArtistNameNoti, song.getArtist());
         String path = Main.songs.getAlbumArt(song);
-
-
 
 
         // On the notification we have two buttons - Play and Skip
@@ -142,13 +145,11 @@ public class NotificationMusic extends NotificationSimple {
         notificationView.setOnClickPendingIntent(R.id.stopNoti, buttonStopPendingIntent);
 
 
-
-
         // Finally... Actually creating the Notification
         notificationBuilder = new NotificationCompat.Builder(context);
 
         notificationBuilder.setContentIntent(pendingIntent)
-               .setSmallIcon(R.drawable.ic_launcher_white)
+                .setSmallIcon(R.drawable.ic_launcher_white)
                 .setOngoing(true)
                 .setStyle(new NotificationCompat.BigPictureStyle())
                 .setCustomContentView(notificationView)
@@ -156,44 +157,15 @@ public class NotificationMusic extends NotificationSimple {
 
         Notification notification = notificationBuilder.build();
 
-        Picasso.get().load(path).into(notificationView,R.id.albumArtNoti,NOTIFICATION_ID,notification);
+        Picasso.get().load(path).into(notificationView, R.id.albumArtNoti, NOTIFICATION_ID, notification);
 
 
-        notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 //		notificationManager.notify(NOTIFICATION_ID, notification);
 
         // Sets the notification to run on the foreground.
         // (why not the former commented line?)
         service.startForeground(NOTIFICATION_ID, notification);
-    }
-
-    /**
-     * Called when user clicks the "play/pause" button on the on-going system Notification.
-     */
-    public static class NotificationPlayButtonHandler extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Main.musicService.togglePlayback();
-        }
-    }
-
-    /**
-     * Called when user clicks the "skip" button on the on-going system Notification.
-     */
-    public static class NotificationSkipButtonHandler extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Main.musicService.next(true);
-            Main.musicService.playSong();
-        }
-    }
-
-    public static class NotificationStopButtonHandler extends BroadcastReceiver{
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Main.musicService.onDestroy();
-            System.exit(0);
-        }
     }
 
     /**
@@ -203,8 +175,8 @@ public class NotificationMusic extends NotificationSimple {
         if ((notificationView == null) || (notificationBuilder == null))
             return;
 
-        int iconID = ((isPaused)?
-                R.drawable.ic_play_white:
+        int iconID = ((isPaused) ?
+                R.drawable.ic_play_white :
                 R.drawable.ic_pause_white);
 
         notificationView.setImageViewResource(R.id.pauseNoti, iconID);
@@ -228,10 +200,31 @@ public class NotificationMusic extends NotificationSimple {
     }
 
     /**
-     * Cancels all sent notifications.
+     * Called when user clicks the "play/pause" button on the on-going system Notification.
      */
-    public static void cancelAll(Context c) {
-        NotificationManager manager = (NotificationManager)c.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancelAll();
+    public static class NotificationPlayButtonHandler extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Main.musicService.togglePlayback();
+        }
+    }
+
+    /**
+     * Called when user clicks the "skip" button on the on-going system Notification.
+     */
+    public static class NotificationSkipButtonHandler extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Main.musicService.next(true);
+            Main.musicService.playSong();
+        }
+    }
+
+    public static class NotificationStopButtonHandler extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Main.musicService.onDestroy();
+            System.exit(0);
+        }
     }
 }

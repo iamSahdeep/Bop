@@ -1,9 +1,9 @@
 package com.sahdeepsingh.Bop.fragments;
 
 import android.app.ActionBar;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +16,6 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -76,7 +75,7 @@ public class FragmentGenre extends Fragment {
             }
             Genres = Main.songs.getGenres();
             Collections.sort(Genres);
-            MyGenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new MyGenreRecyclerViewAdapter(Genres,mListener);
+            MyGenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new MyGenreRecyclerViewAdapter(Genres, mListener);
             recyclerView.setAdapter(myGenreRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -130,6 +129,6 @@ public class FragmentGenre extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(int position ,String type);
+        void onListFragmentInteraction(int position, String type);
     }
 }

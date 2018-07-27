@@ -36,7 +36,7 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-       holder.albumname.setText(mValues.get(position));
+        holder.albumname.setText(mValues.get(position));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +50,7 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
                 }
                 // Notify the active callbacks interface (the activity, if the
                 // fragment is attached to one) that an item has been selected.
-                mListener.onListFragmentInteraction(holder.getAdapterPosition(),"AlbumList");
+                mListener.onListFragmentInteraction(holder.getAdapterPosition(), "AlbumList");
             }
         });
     }

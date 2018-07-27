@@ -5,17 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,8 +21,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
@@ -34,55 +28,43 @@ import com.sahdeepsingh.Bop.SongData.AdapterSong;
 import com.sahdeepsingh.Bop.controls.CircularSeekBar;
 import com.sahdeepsingh.Bop.controls.MusicController;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-public class PlayingNow extends ActivityMaster implements MediaController.MediaPlayerControl,AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
-
-    /**
-     * List that will display all the songs.
-     */
-    private ListView songListView;
-
-    private boolean paused = false;
-    private boolean playbackPaused = false;
-
-    private MusicController musicController;
-
-    /**
-     * Thing that maps songs to items on the ListView.
-     *
-     * We're keeping track of it so we can refresh the ListView if the user
-     * wishes to change it's order.
-     *
-     * Check out the leftmost menu and it's options.
-     */
-    private AdapterSong songAdapter;
-
-    /**
-     * Little menu that will show when the user
-     * clicks the ActionBar.
-     * It serves to sort the current song list.
-     */
-    private PopupMenu popup;
+public class PlayingNow extends ActivityMaster implements MediaController.MediaPlayerControl, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     /**
      * Gets called when the Activity is getting initialized.
      */
 
     private static final float BLUR_RADIUS = 25f;
-
-
-    private Toolbar toolbar;
-
     CircularSeekBar circularSeekBar;
-    ImageView blurimage,centreimage;
-    ImageButton shuffletoggle,previousSong,PlayPause,nextSong,repeatToggle;
-
-
-
+    ImageView blurimage, centreimage;
+    ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle;
+    /**
+     * List that will display all the songs.
+     */
+    private ListView songListView;
+    private boolean paused = false;
+    private boolean playbackPaused = false;
+    private MusicController musicController;
+    /**
+     * Thing that maps songs to items on the ListView.
+     * <p>
+     * We're keeping track of it so we can refresh the ListView if the user
+     * wishes to change it's order.
+     * <p>
+     * Check out the leftmost menu and it's options.
+     */
+    private AdapterSong songAdapter;
+    /**
+     * Little menu that will show when the user
+     * clicks the ActionBar.
+     * It serves to sort the current song list.
+     */
+    private PopupMenu popup;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,19 +115,19 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
                 Main.musicService.setSong(songToPlayIndex);
                 Main.musicService.playSong();
             }
-            if (bundle.containsKey("playlistName")){
-                if(!Main.nowPlayingList.isEmpty())
+            if (bundle.containsKey("playlistName")) {
+                if (!Main.nowPlayingList.isEmpty())
                     Main.musicService.setList(Main.musicList);
-                    Main.musicService.playSong();
+                Main.musicService.playSong();
 
             }
-            if (bundle.containsKey("genreName")){
-                if(!Main.nowPlayingList.isEmpty())
+            if (bundle.containsKey("genreName")) {
+                if (!Main.nowPlayingList.isEmpty())
                     Main.musicService.setList(Main.musicList);
                 Main.musicService.playSong();
             }
-            if (bundle.containsKey("albumName")){
-                if(!Main.nowPlayingList.isEmpty())
+            if (bundle.containsKey("albumName")) {
+                if (!Main.nowPlayingList.isEmpty())
                     Main.musicService.setList(Main.musicList);
                 Main.musicService.playSong();
             }
@@ -236,7 +218,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         circularSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
-                if (musicController!=null && fromUser)
+                if (musicController != null && fromUser)
                     seekTo(progress);
             }
 
@@ -252,15 +234,15 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         });
 
 
-        circularSeekBar.setMax((int)Main.musicService.currentSong.getDuration());
+        circularSeekBar.setMax((int) Main.musicService.currentSong.getDuration());
         final Handler handler = new Handler();
         PlayingNow.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(isPlaying())
-                circularSeekBar.setProgress((int)getCurrentPosition());
+                if (isPlaying())
+                    circularSeekBar.setProgress((int) getCurrentPosition());
 
-                handler.postDelayed(this,1);
+                handler.postDelayed(this, 1);
             }
         });
 
@@ -270,9 +252,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     private void workOnImages() {
         final File path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
         Bitmap bitmap;
-        if (path.exists()){
+        if (path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else  bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.nachi);
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.nachi);
         Bitmap blurredBitmap = blurMyImage(bitmap);
 
         blurimage.setImageBitmap(blurredBitmap);
@@ -309,9 +291,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         final EditText input = new EditText(PlayingNow.this);
 
         // Labels
-        String dialogTitle  = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_title);
-        String dialogText   = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_subtitle);
-        String buttonOK     = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_button_ok);
+        String dialogTitle = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_title);
+        String dialogText = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_subtitle);
+        String buttonOK = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_button_ok);
         String buttonCancel = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_button_cancel);
 
         // Creating the dialog box that asks the user,
@@ -374,9 +356,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         super.onBackPressed();
-        if(Main.musicService.isPlaying());
+        if (Main.musicService.isPlaying()) ;
         {
 
         }

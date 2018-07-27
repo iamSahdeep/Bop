@@ -8,43 +8,18 @@ package com.sahdeepsingh.Bop.ui;
  */
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
-
+import com.sahdeepsingh.Bop.R;
 
 // lel
-
-
-
-
-
-
 // > 2014
 // > Java
 
 
-
-import android.os.Bundle;
-
-
-
-
-
-
-
-
-import android.view.View;
-
-
-
-
-                                                                                            import android.widget.Toast;
-import com.sahdeepsingh.Bop.R;
-
-
 // dasdkasdd0 {} !"|E@!: {@!:| !"
-
-
-
 
 
 /* 	 		 		 	 	 	 	  dadas8d a9sudas8duas98d
@@ -56,74 +31,54 @@ import com.sahdeepsingh.Bop.R;
 
 
 
-* * * **S
-  *** D*  public                        */
-public
+ * * * **S
+ *** D*  public                        */
+public class
+        ///////////////////////////////////////////
+XXX
+        extends //////////
+        Activity ////
+{
+    @Override
+    protected void
 
 
+    onCreate
+            (
 
 
+                    Bundle
+                            savedInstanceState
+            ) {
 
 
-									class
-									///////////////////////////////////////////
-     																		XXX
-       extends //////////
-                        							Activity ////
-                        							{
-	@Override
-protected
-
-void
+        super
 
 
-	onCreate
-								(
+                .
+                        onCreate
 
 
-
-										Bundle
-	savedInstanceState
-	) {
+                                (
+                                        savedInstanceState
 
 
-		super
+                                )
 
 
-
-		.
-																		onCreate
-
+        ;
+        setContentView
 
 
-													(
-		   savedInstanceState
+                (R.layout.xxx
 
 
-															)
+                )
+        ;
+        activateIt
 
 
-										;
-		   setContentView
-
-
-
-
-		   (R.layout.xxx
-
-
-
-
-
-				   										)
-				   										     	 	;
-activateIt
-
-
-
-
-
-(
+                (
 /*
 
 
@@ -144,30 +99,14 @@ activateIt
 							*/null
 
 
+                )
 
 
+        ;
 
-												)
+    }
 
-
-;
-
-	               }public
-
-
-
-
-
-
-
-
-
-
-
-	 	 	 	 	 	 	 	 	  	  	/* lel */
-
-
-void
+    public
 
 
 
@@ -179,59 +118,52 @@ void
 
 
 
-			 	 	 		 	 	activateIt
+        /* lel */
 
 
-			 	 	 (final
+    void
 
 
-
-			 	 			 View
-
+    activateIt
 
 
+    (final
 
 
-			 	 			 								v)
-
-	{
-		  Toast
-
-		  .
-		                        makeText							(
-		this
-
-												,
-		                                 "Main-chan, by BDNachi"
+     View
 
 
+             v)
 
-						,
-		          Toast
-		          .
+    {
+        Toast
 
+                .
+                        makeText(
+                                this
 
-
-
-
-
-
-		          							LENGTH_SHORT
-
+                                ,
+                                "Main-chan, by BDNachi"
 
 
-		                        		)
+                                ,
+                                Toast
+                                        .
 
 
-
-		                        									.
-		         show
+                                        LENGTH_SHORT
 
 
+                        )
 
-		         		(
-		                 )
-		                  ;
-	                       }
-	                        }
+
+                .
+                        show
+
+
+                                (
+                                )
+        ;
+    }
+}
 

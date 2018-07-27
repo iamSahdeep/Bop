@@ -14,10 +14,8 @@ import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.SongData.SongList;
 import com.sahdeepsingh.Bop.services.ServicePlayMusic;
 import com.sahdeepsingh.Bop.settings.Settings;
-import com.sahdeepsingh.Bop.ui.ActivityQuit;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 
@@ -42,7 +40,7 @@ public class Main {
      * the user on a particular menu.
      *
      * @note IGNORE THIS - don't mess with it.
-     *
+     * <p>
      * Every `ActivityMenu*` uses this temporary variable to
      * store subsections of `SongList` and set `ActivityListSongs`
      * to display it.
@@ -51,9 +49,9 @@ public class Main {
 
     /**
      * List of the songs being currently played by the user.
-     *
+     * <p>
      * (independent of the UI)
-     *
+     * <p>
      * TODO remove this shit
      */
     public static ArrayList<Song> nowPlayingList = null;
@@ -61,7 +59,7 @@ public class Main {
     /**
      * Flag that tells if the Main Menu has an item that
      * sends the user to the Now Playing Activity.
-     *
+     * <p>
      * It's here because when firstly initializing the
      * application, there's no Now Playing Activity.
      */
@@ -71,13 +69,45 @@ public class Main {
     public static String applicationName = "Clousic";
     public static String packageName = "<unknown>";
     public static String versionName = "<unknown>";
-    public static int    versionCode = -1;
-    public static long   firstInstalledTime = -1;
-    public static long   lastUpdatedTime    = -1;
+    public static int versionCode = -1;
+    public static long firstInstalledTime = -1;
+    public static long lastUpdatedTime = -1;
+    /**
+     * The actual connection to the MusicService.
+     * We start it with an Intent.
+     * <p>
+     * These callbacks will bind the MusicService to our internal
+     * variables.
+     * We can only know it happened through our flag, `musicBound`.
+     */
+    public static ServiceConnection musicConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ServicePlayMusic.MusicBinder binder = (ServicePlayMusic.MusicBinder) service;
+
+            // Here's where we finally create the MusicService
+            musicService = binder.getService();
+            musicService.setList(Main.songs.songs);
+            musicService.musicBound = true;
+            Log.w("service", "onServiceConnected");
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            musicService.musicBound = false;
+            Log.w("service", "onServiceDisconnected");
+        }
+    };
+    /**
+     * Our will to start a new music Service.
+     * Android requires that we start a service through an Intent.
+     */
+    private static Intent musicServiceIntent = null;
 
     /**
      * Creates everything.
-     *
+     * <p>
      * Must be called only once at the beginning
      * of the program.
      */
@@ -89,10 +119,10 @@ public class Main {
             // Retrieving several information
             PackageInfo info = c.getPackageManager().getPackageInfo(Main.packageName, 0);
 
-            Main.versionName        = info.versionName;
-            Main.versionCode        = info.versionCode;
+            Main.versionName = info.versionName;
+            Main.versionCode = info.versionCode;
             Main.firstInstalledTime = info.firstInstallTime;
-            Main.lastUpdatedTime    = info.lastUpdateTime;
+            Main.lastUpdatedTime = info.lastUpdateTime;
 
         } catch (PackageManager.NameNotFoundException e) {
             // Couldn't get package information
@@ -104,7 +134,7 @@ public class Main {
 
     /**
      * Destroys everything.
-     *
+     * <p>
      * Must be called only once when the program
      * being destroyed.
      */
@@ -113,44 +143,10 @@ public class Main {
     }
 
     /**
-     * The actual connection to the MusicService.
-     * We start it with an Intent.
-     *
-     * These callbacks will bind the MusicService to our internal
-     * variables.
-     * We can only know it happened through our flag, `musicBound`.
-     */
-    public static ServiceConnection musicConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            ServicePlayMusic.MusicBinder binder = (ServicePlayMusic.MusicBinder)service;
-
-            // Here's where we finally create the MusicService
-            musicService = binder.getService();
-            musicService.setList(Main.songs.songs);
-            musicService.musicBound = true;
-            Log.w("service","onServiceConnected");
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            musicService.musicBound = false;
-            Log.w("service","onServiceDisconnected");
-        }
-    };
-
-    /**
-     * Our will to start a new music Service.
-     * Android requires that we start a service through an Intent.
-     */
-    private static Intent musicServiceIntent = null;
-
-    /**
      * Initializes the Music Service at Activity/Context c.
      *
      * @note Only starts the service once - does nothing when
-     *       called multiple times.
+     * called multiple times.
      */
     public static void startMusicService(Context c) {
 
@@ -165,7 +161,7 @@ public class Main {
         musicServiceIntent = new Intent(c, ServicePlayMusic.class);
         c.bindService(musicServiceIntent, musicConnection, Context.BIND_AUTO_CREATE);
         c.startService(musicServiceIntent);
-        Log.w("service","startMusicService");
+        Log.w("service", "startMusicService");
 
     }
 
@@ -178,7 +174,7 @@ public class Main {
         if (musicServiceIntent == null)
             return;
 
-        Log.w("service","stoppedService");
+        Log.w("service", "stoppedService");
         c.stopService(musicServiceIntent);
         musicServiceIntent = null;
 
@@ -187,12 +183,12 @@ public class Main {
 
     /**
      * Forces the whole application to quit.
-     *
+     * <p>
      * Please read more info on this StackOverflow answer:
      * http://stackoverflow.com/a/4737595
      *
      * @note This is dangerous, make sure to cleanup
-     *       everything before calling this.
+     * everything before calling this.
      */
     public static void forceExit(Activity c) {
 

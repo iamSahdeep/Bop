@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.fragments.FragmentGenre.OnListFragmentInteractionListener;
+
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.getAdapterPosition(),"GenreList");
+                    mListener.onListFragmentInteraction(holder.getAdapterPosition(), "GenreList");
                 }
             }
         });
@@ -65,6 +66,7 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView genre;
+
         public ViewHolder(View view) {
             super(view);
             mView = view;

@@ -1,9 +1,9 @@
 package com.sahdeepsingh.Bop.fragments;
 
 import android.app.ActionBar;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -75,7 +75,7 @@ public class FragmentPlaylist extends Fragment {
             }
             lol = Main.songs.getPlaylistNames();
             Collections.sort(lol);
-            MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(lol,mListener);
+            MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(lol, mListener);
             recyclerView.setAdapter(myPlaylistRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -128,6 +128,6 @@ public class FragmentPlaylist extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(int item , String type);
+        void onListFragmentInteraction(int item, String type);
     }
 }

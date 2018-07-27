@@ -6,16 +6,15 @@ import android.preference.PreferenceManager;
 
 /**
  * Interface to the application's settings.
- *
+ * <p>
  * Keep in mind that when we call `get()` we must supply a
  * key that exists on `res/xml/preferences.xml`!
- *
+ * <p>
  * As a matter of fact, go look there now.
- *
+ * <p>
  * Thanks a lot again, you great sources:
  * - http://stackoverflow.com/a/3624358
  * - http://android-elements.blogspot.com.br/2011/06/creating-android-preferences-screen.html
- *
  */
 public class Settings {
 

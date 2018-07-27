@@ -2,8 +2,6 @@ package com.sahdeepsingh.Bop.SongData;
 
 import android.util.Log;
 
-import com.sahdeepsingh.Bop.playerMain.Main;
-
 import java.util.ArrayList;
 
 public class Playlist {
@@ -32,16 +30,17 @@ public class Playlist {
      * @param id Global song id.
      */
     public void add(long id) {
-        if (! songs.contains(id))
+        if (!songs.contains(id))
             songs.add(id);
     }
 
     /**
      * Returns a list with all the songs inside this Playlist.
+     *
      * @return lol
      */
     public ArrayList<Long> getSongIds() {
-        Log.e("wtf",String.valueOf(songs));
+        Log.e("wtf", String.valueOf(songs));
 
         return new ArrayList<>(songs);
     }

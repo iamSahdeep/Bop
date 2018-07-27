@@ -15,10 +15,9 @@ import java.util.ArrayList;
 
 /**
  * Maps `Songs` inside `ArrayLists` into `TextView` fields.
- *
+ * <p>
  * We'll map the ArrayList from our MainActivity into
  * multiple Artist/Title fields inside our activity_main Layout.
- *
  */
 public class AdapterSong extends BaseAdapter {
 
@@ -50,12 +49,12 @@ public class AdapterSong extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Will map from a Song to a Song layout
-        @SuppressLint("ViewHolder") LinearLayout songLayout = (LinearLayout)songInflater.inflate(R.layout.menu_item_song,parent,
+        @SuppressLint("ViewHolder") LinearLayout songLayout = (LinearLayout) songInflater.inflate(R.layout.menu_item_song, parent,
                 false);
 
-        TextView titleView  = (TextView)songLayout.findViewById(R.id.menu_item_song_title);
-        TextView artistView = (TextView)songLayout.findViewById(R.id.menu_item_song_artist);
-        TextView albumView  = (TextView)songLayout.findViewById(R.id.menu_item_song_album);
+        TextView titleView = (TextView) songLayout.findViewById(R.id.menu_item_song_title);
+        TextView artistView = (TextView) songLayout.findViewById(R.id.menu_item_song_artist);
+        TextView albumView = (TextView) songLayout.findViewById(R.id.menu_item_song_album);
 
         Song currentSong = songs.get(position);
 

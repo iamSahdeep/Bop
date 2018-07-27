@@ -1,14 +1,9 @@
 package com.sahdeepsingh.Bop.controls;
 
-import java.lang.reflect.Method;
-
 import android.media.AudioManager;
 import android.util.Log;
 
-
-
-
-
+import java.lang.reflect.Method;
 
 
 //NOTE (READ THIS PLEASE):
@@ -23,16 +18,10 @@ import android.util.Log;
 //see how I use this class.
 
 
-
-
-
-
-
-
 /**
  * Contains methods to handle registering/unregistering
  * remote control clients.
- *
+ * <p>
  * These methods only run on ICS devices.
  * On previous devices, all methods are no-ops.
  */

@@ -1,10 +1,7 @@
 package com.sahdeepsingh.Bop.fragments;
 
-import android.app.Notification;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +9,6 @@ import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
-import com.sahdeepsingh.Bop.SongData.SongList;
 import com.sahdeepsingh.Bop.fragments.FragmentSongs.OnListFragmentInteractionListener;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.squareup.picasso.Picasso;
@@ -31,7 +27,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
 
     private final List<Song> songs;
 
-    private  OnListFragmentInteractionListener mListener;
+    private OnListFragmentInteractionListener mListener;
 
     public MySongsRecyclerViewAdapter(List<Song> items, OnListFragmentInteractionListener listener) {
         songs = items;
@@ -46,15 +42,14 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
     }
 
 
-
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.songName.setText(songs.get(position).getTitle());
         holder.songBy.setText(songs.get(position).getArtist());
         holder.songName.setSelected(true);
         String path = Main.songs.getAlbumArt(songs.get(position));
-        if(path !=null)
-        Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.pause).into(holder.circleImageView);
+        if (path != null)
+            Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.pause).into(holder.circleImageView);
         //holder.circleImageView.setImageBitmap(Main.songs.getAlbumArt(songs.get(position)));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -67,10 +62,10 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
                     throw new RuntimeException(context.toString()
                             + " must implement OnListFragmentInteractionListener");
                 }
-                if (mListener !=null) {
+                if (mListener != null) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.getAdapterPosition() , "singleSong");
+                    mListener.onListFragmentInteraction(holder.getAdapterPosition(), "singleSong");
 
 
                 }
@@ -80,8 +75,8 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
 
     @Override
     public int getItemCount() {
-        if ((Main.songs.songs != null) && (! Main.songs.songs.isEmpty()))
-        return Main.songs.songs.size();
+        if ((Main.songs.songs != null) && (!Main.songs.songs.isEmpty()))
+            return Main.songs.songs.size();
 
         return 0;
     }

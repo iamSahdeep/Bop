@@ -71,7 +71,7 @@ public class FragmentSongs extends android.app.Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs,mListener);
+            MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs, mListener);
             recyclerView.setHasFixedSize(true);
             recyclerView.setItemViewCacheSize(20);
             recyclerView.setDrawingCacheEnabled(true);
@@ -83,18 +83,17 @@ public class FragmentSongs extends android.app.Fragment {
                     super.onScrolled(recyclerView, dx, dy);
                     ActionBar actionBar = getActivity().getActionBar();
                     if (actionBar != null)
-                    if (dy > 0) {
-                        // Scrolling up
+                        if (dy > 0) {
+                            // Scrolling up
 
-                        actionBar.hide();
-                    } else {
-                        // Scrolling down
-                        actionBar.show();
-                    }
-                    if (recyclerView.canScrollVertically(-1)){
+                            actionBar.hide();
+                        } else {
+                            // Scrolling down
+                            actionBar.show();
+                        }
+                    if (recyclerView.canScrollVertically(-1)) {
                         floatingActionButton.hide();
-                    }
-                    else floatingActionButton.show();
+                    } else floatingActionButton.show();
 
                 }
             });
@@ -133,7 +132,7 @@ public class FragmentSongs extends android.app.Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(int item , String type);
+        void onListFragmentInteraction(int item, String type);
     }
 
 }

@@ -1,43 +1,38 @@
 package com.sahdeepsingh.Bop.SongData;
 
-import android.content.ContentProvider;
-import android.content.ContentResolver;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.provider.MediaStore;
-import android.util.Log;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-
 /**
  * Represents a single audio file on the Android system.
- *
+ * <p>
  * It's a simple data container, filled with setters/getters.
- *
+ * <p>
  * Only mandatory fields are:
  * - id (which is a unique Android identified for a media file
- *       anywhere on the system)
+ * anywhere on the system)
  * - filePath (full path for the file on the filesystem).
  */
 public class Song {
 
     private long id;
     private String filePath;
+    private String title = "";
+    private String artist = "";
+    private String album = "";
 
+    // optional metadata
+    private int year = -1;
+    private String genre = "";
+    private int track_no = -1;
+    private long duration_ms = -1;
+    private String albumid = "";
     /**
      * Creates a new Song, with specified `songID` and `filePath`.
      *
      * @note It's a unique Android identifier for a media file
-     *       anywhere on the system.
+     * anywhere on the system.
      */
     public Song(long id, String filePath) {
-        this.id        = id;
-        this.filePath  = filePath;
+        this.id = id;
+        this.filePath = filePath;
     }
 
     /**
@@ -55,16 +50,6 @@ public class Song {
         return filePath;
     }
 
-    // optional metadata
-
-    private String title       = "";
-    private String artist      = "";
-    private String album       = "";
-    private int    year        = -1;
-    private String genre       = "";
-    private int    track_no    = -1;
-    private long   duration_ms = -1;
-
     public String getAlbumid() {
         return albumid;
     }
@@ -73,12 +58,10 @@ public class Song {
         this.albumid = albumid;
     }
 
-    private String albumid     = "";
-
-
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -87,6 +70,7 @@ public class Song {
     public String getArtist() {
         return artist;
     }
+
     public void setArtist(String artist) {
         this.artist = artist;
     }
@@ -95,6 +79,7 @@ public class Song {
     public String getAlbum() {
         return album;
     }
+
     public void setAlbum(String album) {
         this.album = album;
     }
@@ -103,6 +88,7 @@ public class Song {
     public int getYear() {
         return year;
     }
+
     public void setYear(int year) {
         this.year = year;
     }
@@ -111,6 +97,7 @@ public class Song {
     public String getGenre() {
         return genre;
     }
+
     public void setGenre(String genre) {
         this.genre = genre;
     }
@@ -119,8 +106,16 @@ public class Song {
     public int getTrackNumber() {
         return track_no;
     }
+
     public void setTrackNumber(int track_no) {
         this.track_no = track_no;
+    }
+
+    /**
+     * Returns the duration of the song, in miliseconds.
+     */
+    public long getDuration() {
+        return duration_ms;
     }
 
     /**
@@ -129,15 +124,11 @@ public class Song {
     public void setDuration(long duration_ms) {
         this.duration_ms = duration_ms;
     }
-    /**
-     * Returns the duration of the song, in miliseconds.
-     */
-    public long getDuration() {
-        return duration_ms;
-    }
+
     public long getDurationSeconds() {
         return getDuration() / 1000;
     }
+
     public long getDurationMinutes() {
         return getDurationSeconds() / 60;
     }

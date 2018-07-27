@@ -15,19 +15,41 @@ import com.sahdeepsingh.Bop.playerMain.Main;
  * Asynchronous service that will communicate with the
  * MusicService and scrobble songs to Last.fm through
  * installed applications.
- *
+ * <p>
  * - It listens to Broadcasts from MusicService, like when
- *   the music started, paused, has changed...
+ * the music started, paused, has changed...
  * - Then sends that information to other applications that
- *   directly communicates with Last.fm.
- *   There's a handful of them, check out on Settings.
- *
+ * directly communicates with Last.fm.
+ * There's a handful of them, check out on Settings.
+ * <p>
  * Thanks:
  * - Vogella, for the awesome tutorial on Services.
- *   http://www.vogella.com/tutorials/AndroidServices/article.html
- *
+ * http://www.vogella.com/tutorials/AndroidServices/article.html
  */
 public class ServiceScrobbleMusic extends Service {
+
+    /**
+     * The thing that will keep an eye on LocalBroadcasts
+     * for the MusicService.
+     */
+    BroadcastReceiver musicServiceBroadcastReceiver = new BroadcastReceiver() {
+
+        /**
+         * What it'll do when receiving a message from the
+         * MusicService?
+         */
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Getting the information sent by the MusicService
+            // (and ignoring it if invalid)
+            String action = intent.getStringExtra(ServicePlayMusic.BROADCAST_EXTRA_STATE);
+            Long song_id = intent.getLongExtra(ServicePlayMusic.BROADCAST_EXTRA_SONG_ID, -1);
+
+            if (song_id != -1)
+                scrobbleSong(Main.songs.getSongById(song_id), action);
+        }
+    };
 
     /**
      * Service just got created.
@@ -52,8 +74,7 @@ public class ServiceScrobbleMusic extends Service {
 
         if (intent == null) {
             // We just got restarted after Android killed us
-        }
-        else {
+        } else {
             // This service is being explicitly started
         }
 
@@ -75,31 +96,8 @@ public class ServiceScrobbleMusic extends Service {
     }
 
     /**
-     * The thing that will keep an eye on LocalBroadcasts
-     * for the MusicService.
-     */
-    BroadcastReceiver musicServiceBroadcastReceiver = new BroadcastReceiver() {
-
-        /**
-         * What it'll do when receiving a message from the
-         * MusicService?
-         */
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            // Getting the information sent by the MusicService
-            // (and ignoring it if invalid)
-            String action  = intent.getStringExtra(ServicePlayMusic.BROADCAST_EXTRA_STATE);
-            Long   song_id = intent.getLongExtra(ServicePlayMusic.BROADCAST_EXTRA_SONG_ID, -1);
-
-            if (song_id != -1)
-                scrobbleSong(Main.songs.getSongById(song_id), action);
-        }
-    };
-
-    /**
      * Sends a song information to Last.fm.
-     *
+     * <p>
      * It supports several Last.fm Android scrobblers, as specified
      * on `res/xml/preferences.xml`.
      *
@@ -111,7 +109,7 @@ public class ServiceScrobbleMusic extends Service {
 
         // Double-checking - won't scrobble if the user
         // don't want us to.
-        if (! Main.settings.get("lastfm", false))
+        if (!Main.settings.get("lastfm", false))
             return;
 
         String scrobbler = Main.settings.get("lastfm_which", "sls");
@@ -164,12 +162,12 @@ public class ServiceScrobbleMusic extends Service {
             scrobble.putExtra("state", state);
 
             // Now, to the song's details.
-            scrobble.putExtra("app-name",    Main.applicationName);
+            scrobble.putExtra("app-name", Main.applicationName);
             scrobble.putExtra("app-package", Main.packageName);
 
-            scrobble.putExtra("track",    song.getTitle());
-            scrobble.putExtra("artist",   song.getArtist());
-            scrobble.putExtra("album",    song.getAlbum());
+            scrobble.putExtra("track", song.getTitle());
+            scrobble.putExtra("artist", song.getArtist());
+            scrobble.putExtra("album", song.getAlbum());
             scrobble.putExtra("duration", song.getDurationSeconds());
 
             sendBroadcast(scrobble);
