@@ -10,13 +10,12 @@ import android.widget.TextView;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Playlist;
 import com.sahdeepsingh.Bop.fragments.FragmentPlaylist.OnListFragmentInteractionListener;
-import com.sahdeepsingh.Bop.fragments.dummy.DummyContent.DummyItem;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */

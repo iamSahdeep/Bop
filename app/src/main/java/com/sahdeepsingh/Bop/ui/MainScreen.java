@@ -1,7 +1,6 @@
 package com.sahdeepsingh.Bop.ui;
 
 
-import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -19,26 +18,18 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.SongData.Song;
-import com.sahdeepsingh.Bop.controls.BottomControlsView;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
 import com.sahdeepsingh.Bop.fragments.FragmentGenre;
 import com.sahdeepsingh.Bop.fragments.FragmentPlaylist;
 import com.sahdeepsingh.Bop.fragments.FragmentSongs;
-import com.sahdeepsingh.Bop.fragments.dummy.DummyContent;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.playerMain.SingleToast;
@@ -435,8 +426,6 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
 
         if (Main.mainMenuHasNowPlayingItem)
             return;
-
-        ActivityMenuMain.items.add(c.getString(R.string.menu_main_now_playing));
 
         Main.mainMenuHasNowPlayingItem = true;
 

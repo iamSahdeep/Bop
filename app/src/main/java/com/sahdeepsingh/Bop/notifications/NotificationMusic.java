@@ -14,7 +14,6 @@ import android.widget.RemoteViews;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.ui.ActivityNowPlaying;
 import com.sahdeepsingh.Bop.ui.PlayingNow;
 import com.squareup.picasso.Picasso;
 

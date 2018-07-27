@@ -1,25 +1,18 @@
 package com.sahdeepsingh.Bop.fragments;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.fragments.dummy.DummyContent;
-import com.sahdeepsingh.Bop.fragments.dummy.DummyContent.DummyItem;
 import com.sahdeepsingh.Bop.playerMain.Main;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.

@@ -14,77 +14,14 @@
         android:label="@string/app_name"
         android:theme="@style/MyMaterialTheme.Base">
         <activity
-            android:name=".ui.ActivityMenuMain"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait">
-
-            <!--
-                 This is how we know this is the main Activity to
-                 start first
-            -->
-
-        </activity>
-        <activity
-            android:name=".ui.ActivityMenuMusic"
-            android:label="@string/menu_main_music"
-            android:launchMode="singleTop"
-            android:parentActivityName=".ui.ActivityMenuMain"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.ActivityMenuSettings"
             android:label="@string/settings"
             android:launchMode="singleTop"
-            android:parentActivityName=".ui.ActivityMenuMain"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.ActivityMenuArtist"
-            android:label="@string/menu_music_artists"
-            android:launchMode="singleTop"
-            android:parentActivityName=".ui.ActivityMenuMusic"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.ActivityMenuAlbum"
-            android:label="@string/menu_music_albums"
-            android:launchMode="singleTop"
-            android:parentActivityName=".ui.ActivityMenuMusic"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.ActivityMenuGenre"
-            android:label="@string/menu_music_genres"
-            android:launchMode="singleTop"
-            android:parentActivityName=".ui.ActivityMenuMusic"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.ActivityMenuYear"
-            android:label="@string/menu_music_years"
-            android:launchMode="singleTop"
-            android:parentActivityName=".ui.ActivityMenuMusic"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.ActivityMenuPlaylist"
-            android:label="@string/menu_music_playlists"
-            android:launchMode="singleTop"
-            android:parentActivityName=".ui.ActivityMenuMusic"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.ActivityListSongs"
-            android:label="@string/songs"
-            android:launchMode="singleTop"
+            android:parentActivityName=".ui.MainScreen"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.XXX"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".ui.ActivityListAlbums"
-            android:label="@string/songs"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.ActivityNowPlaying"
-            android:label="@string/now_playing"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ActivityQuit"
             android:label="@string/app_name"

@@ -128,12 +128,6 @@ public class ActivityMaster extends AppCompatActivity {
 			startActivity(new Intent(this, ActivityMenuSettings.class));
 			break;
 
-		case R.id.context_menu_now_playing:
-			Intent nowPlayingIntent = new Intent(this, ActivityNowPlaying.class);
-			nowPlayingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-			startActivity(nowPlayingIntent);
-			break;
 		}
 
 		return super.onOptionsItemSelected(item);

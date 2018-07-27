@@ -12,13 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.fragments.dummy.DummyContent;
-import com.sahdeepsingh.Bop.fragments.dummy.DummyContent.DummyItem;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.

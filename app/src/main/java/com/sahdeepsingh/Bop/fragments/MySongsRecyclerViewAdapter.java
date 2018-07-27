@@ -14,7 +14,6 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.SongData.SongList;
 import com.sahdeepsingh.Bop.fragments.FragmentSongs.OnListFragmentInteractionListener;
-import com.sahdeepsingh.Bop.fragments.dummy.DummyContent.DummyItem;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.squareup.picasso.Picasso;
 
@@ -24,7 +23,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display  and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
