@@ -39,6 +39,7 @@ import com.sahdeepsingh.Bop.controls.RemoteControlClientCompat;
 import com.sahdeepsingh.Bop.controls.RemoteControlHelper;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.ui.MainScreen;
 
 
 /**
@@ -1202,6 +1203,12 @@ public class ServicePlayMusic extends Service
             notification = new NotificationMusic();
 
         notification.notifySong(this, this, currentSong);
+
+        Intent broadCastIntent = new Intent();
+        broadCastIntent.setAction(MainScreen.BROADCAST_ACTION);
+        sendBroadcast(broadCastIntent);
+
+
     }
 
     /**

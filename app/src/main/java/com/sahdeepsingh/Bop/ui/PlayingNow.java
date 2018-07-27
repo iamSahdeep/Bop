@@ -173,6 +173,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         MainScreen.addNowPlayingItem(this);
 
         setControllListeners();
+
+
     }
 
     private void setControllListeners() {

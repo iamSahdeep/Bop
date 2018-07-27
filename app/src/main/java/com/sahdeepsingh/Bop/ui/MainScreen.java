@@ -6,8 +6,10 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -30,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.controls.BottomControlsView;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
 import com.sahdeepsingh.Bop.fragments.FragmentGenre;
@@ -39,10 +42,7 @@ import com.sahdeepsingh.Bop.fragments.dummy.DummyContent;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.playerMain.SingleToast;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainScreen extends ActivityMaster implements ActionBar.TabListener,FragmentSongs.OnListFragmentInteractionListener , FragmentPlaylist.OnListFragmentInteractionListener,FragmentGenre.OnListFragmentInteractionListener,FragmentAlbum.OnListFragmentInteractionListener{
 
@@ -55,6 +55,8 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    public static final String BROADCAST_ACTION = "lol";
 
 
     static final int USER_CHANGED_THEME = 1;
@@ -81,6 +83,8 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
     private ViewPager mViewPager;
     private Toolbar toolbar;
     private TabLayout tabLayout;
+
+    ChangeSongBR changeSongBR;
 
 
 
@@ -122,7 +126,21 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        changeSongBR = new ChangeSongBR();
 
+    }
+
+    class ChangeSongBR extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            TextView name,artist;
+            name = findViewById(R.id.bottomtextView);
+            artist = findViewById(R.id.bottomtextartist);
+            name.setText(Main.musicService.currentSong.getTitle());
+            artist.setText(Main.musicService.currentSong.getArtist());
+        }
 
     }
 
@@ -199,10 +217,6 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
                 startActivity(intent);
                 break;
         }
-
-
-
-
 
     }
 
@@ -443,15 +457,28 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         // they'll keep adding up.
         // Cancell all thrown Notifications
         NotificationMusic.cancelAll(this);
-
 /*
         Main.stopMusicService(this);
 */
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BROADCAST_ACTION);
+        registerReceiver(changeSongBR, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(changeSongBR);
     }
 }
