@@ -178,6 +178,17 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     }
 
     private void setControllListeners() {
+
+        if (Main.musicService.isShuffle())
+            Picasso.get().load(R.drawable.ic_menu_shuffle_on).into(shuffletoggle);
+        else Picasso.get().load(R.drawable.ic_menu_shuffle_off).into(shuffletoggle);
+
+
+        if (Main.musicService.isRepeat())
+            Picasso.get().load(R.drawable.ic_menu_repeat_on).into(repeatToggle);
+        else Picasso.get().load(R.drawable.ic_menu_repeat_off).into(repeatToggle);
+
+
         shuffletoggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,7 +208,10 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         PlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pause();
+                Main.musicService.togglePlayback();
+                if (Main.musicService.isPaused())
+                    Picasso.get().load(R.drawable.ic_play_dark).into(PlayPause);
+                else Picasso.get().load(R.drawable.ic_pause_dark).into(PlayPause);
             }
         });
         nextSong.setOnClickListener(new View.OnClickListener() {
