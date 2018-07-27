@@ -260,34 +260,25 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         Bitmap blurredBitmap = blurMyImage(bitmap);
 
         blurimage.setImageBitmap(blurredBitmap);
-        DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
-        final int px = (int)(((circularSeekBar.getWidth()/2) * displayMetrics.density) + 0.5);
-        Picasso.get().load(R.drawable.nachi).into(centreimage);
-        circularSeekBar.post(new Runnable() {
-            @Override
-            public void run() {
-                centreimage.setLayoutParams(new RelativeLayout.LayoutParams(circularSeekBar.getWidth() - px,circularSeekBar.getHeight() - px));
-            }
-        });
-        centreimage.bringToFront();
-        circularSeekBar.bringToFront();
+        centreimage.setImageBitmap(bitmap);
+
+
     }
 
     private Bitmap blurMyImage(Bitmap image) {
         if (null == image) return null;
 
-        Bitmap outputBitmap = Bitmap.createBitmap(image);
         final RenderScript renderScript = RenderScript.create(this);
         Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
-        Allocation tmpOut = Allocation.createFromBitmap(renderScript, outputBitmap);
+        Allocation tmpOut = Allocation.createFromBitmap(renderScript, image);
 
 //Intrinsic Gausian blur filter
         ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
         theIntrinsic.setRadius(BLUR_RADIUS);
         theIntrinsic.setInput(tmpIn);
         theIntrinsic.forEach(tmpOut);
-        tmpOut.copyTo(outputBitmap);
-        return outputBitmap;
+        tmpOut.copyTo(image);
+        return image;
 
     }
 
