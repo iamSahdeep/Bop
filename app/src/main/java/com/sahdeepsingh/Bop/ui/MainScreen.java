@@ -27,11 +27,9 @@ import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -420,6 +418,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             artist = findViewById(R.id.bottomtextartist);
             name.setText(Main.musicService.currentSong.getTitle());
             artist.setText(Main.musicService.currentSong.getArtist());
+            workOnImages();
         }
 
     }
@@ -637,7 +636,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         Bitmap bitmap;
         if (path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.nachi);
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         Bitmap blurredBitmap = blurMyImage(bitmap);
 
         blurimage.setImageBitmap(blurredBitmap);

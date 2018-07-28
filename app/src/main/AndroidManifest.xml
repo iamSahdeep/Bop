@@ -37,14 +37,6 @@
             android:name=".services.ServiceScrobbleMusic"
             android:enabled="true" />
 
-        <!--
-          Allows specific classes to handle broadcasts
-          -  (on this case, two buttons clicked on the Notification)
-        -->
-        <!--
-        <receiver android:name=".NotificationMusic$NotificationPlayButtonHandler" />
-        <receiver android:name=".NotificationMusic$NotificationSkipButtonHandler" />
-        -->
 
         <receiver android:name=".notifications.NotificationMusic$NotificationPlayButtonHandler" />
         <receiver android:name=".notifications.NotificationMusic$NotificationSkipButtonHandler" />

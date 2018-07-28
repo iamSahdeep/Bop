@@ -15,10 +15,10 @@ import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -183,6 +183,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             artist = findViewById(R.id.bottomtextartist);
             name.setText(Main.musicService.currentSong.getTitle());
             artist.setText(Main.musicService.currentSong.getArtist());
+            workOnImages();
         }
 
     }
@@ -278,15 +279,18 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     }
 
     private void workOnImages() {
-        File path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
+        File path;
+        Log.e("wtr",String.valueOf(Main.songs.getAlbumArt(Main.musicService.currentSong)));
+        if (Main.songs.getAlbumArt(Main.musicService.currentSong) != null)
+         path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
+        else path = null;
         Bitmap bitmap;
-        if (path.exists()) {
+        if (path != null && path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.nachi);
-        Bitmap blurredBitmap = blurMyImage(bitmap);
-
-        blurimage.setImageBitmap(blurredBitmap);
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         centreimage.setImageBitmap(bitmap);
+        Bitmap blurredBitmap = blurMyImage(bitmap);
+        blurimage.setImageBitmap(blurredBitmap);
 
 
     }

@@ -12,6 +12,6 @@
         android:layout_height="match_parent"
         android:onClick="activateIt"
         android:scaleType="centerInside"
-        android:src="@drawable/nachi" />
+        android:src="@drawable/background" />
 
 </LinearLayout>

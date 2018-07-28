@@ -1,13 +1,20 @@
 package com.sahdeepsingh.Bop.SongData;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.sahdeepsingh.Bop.R;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -352,6 +359,7 @@ public class SongList {
 //            } catch(Exception e) {
 //                return null;
 //            }
+        Bitmap bitmap = getAlbumBitmap(song);
         Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
                 MediaStore.Audio.Albums._ID + "=?",
@@ -366,6 +374,22 @@ public class SongList {
         cursor.close();
 
         return path;
+    }
+
+    public Bitmap getAlbumBitmap(Song song){
+        Bitmap bitmap = null;
+        Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"),Long.valueOf(song.getAlbumid()));
+
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(
+                    resolver, albumArtUri);
+            bitmap = Bitmap.createScaledBitmap(bitmap, 30, 30, true);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
     }
 
     /**
