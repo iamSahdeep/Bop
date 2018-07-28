@@ -298,17 +298,19 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     private Bitmap blurMyImage(Bitmap image) {
         if (null == image) return null;
 
-        final RenderScript renderScript = RenderScript.create(this);
+        Bitmap bitmaplol = image.copy(image.getConfig(),true);
+        RenderScript renderScript = RenderScript.create(this);
         Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
-        Allocation tmpOut = Allocation.createFromBitmap(renderScript, image);
+        Allocation tmpOut = Allocation.createFromBitmap(renderScript, bitmaplol);
 
 //Intrinsic Gausian blur filter
         ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
         theIntrinsic.setRadius(BLUR_RADIUS);
         theIntrinsic.setInput(tmpIn);
         theIntrinsic.forEach(tmpOut);
-        tmpOut.copyTo(image);
-        return image;
+        tmpOut.copyTo(bitmaplol);
+        renderScript.destroy();
+        return bitmaplol;
 
     }
 

@@ -632,15 +632,18 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     }
 
     private void workOnImages() {
-        File path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
+        File path;
+        Log.e("wtr",String.valueOf(Main.songs.getAlbumArt(Main.musicService.currentSong)));
+        if (Main.songs.getAlbumArt(Main.musicService.currentSong) != null)
+            path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
+        else path = null;
         Bitmap bitmap;
-        if (path.exists()) {
+        if (path != null && path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
         } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-        Bitmap blurredBitmap = blurMyImage(bitmap);
-
-        blurimage.setImageBitmap(blurredBitmap);
         centreimage.setImageBitmap(bitmap);
+        Bitmap blurredBitmap = blurMyImage(bitmap);
+        blurimage.setImageBitmap(blurredBitmap);
 
 
     }
@@ -648,17 +651,19 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     private Bitmap blurMyImage(Bitmap image) {
         if (null == image) return null;
 
-        final RenderScript renderScript = RenderScript.create(this);
+        Bitmap bitmaplol = image.copy(image.getConfig(),true);
+        RenderScript renderScript = RenderScript.create(this);
         Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
-        Allocation tmpOut = Allocation.createFromBitmap(renderScript, image);
+        Allocation tmpOut = Allocation.createFromBitmap(renderScript, bitmaplol);
 
 //Intrinsic Gausian blur filter
         ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
         theIntrinsic.setRadius(BLUR_RADIUS);
         theIntrinsic.setInput(tmpIn);
         theIntrinsic.forEach(tmpOut);
-        tmpOut.copyTo(image);
-        return image;
+        tmpOut.copyTo(bitmaplol);
+        renderScript.destroy();
+        return bitmaplol;
 
     }
 
