@@ -21,6 +21,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +35,7 @@ import com.sahdeepsingh.Bop.fragments.FragmentSongs;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.playerMain.SingleToast;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 
 public class MainScreen extends ActivityMaster implements ActionBar.TabListener, FragmentSongs.OnListFragmentInteractionListener, FragmentPlaylist.OnListFragmentInteractionListener, FragmentGenre.OnListFragmentInteractionListener, FragmentAlbum.OnListFragmentInteractionListener {
@@ -122,6 +126,8 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         tabLayout.setupWithViewPager(mViewPager);
 
         changeSongBR = new ChangeSongBR();
+
+        workonSlidingPanel();
 
     }
 
@@ -341,6 +347,29 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
+
+        final SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
+        if (Main.mainMenuHasNowPlayingItem) {
+            TextView t = findViewById(R.id.bottomtextView);
+            TextView a = findViewById(R.id.bottomtextartist);
+            t.setText(Main.musicService.currentSong.getTitle());
+            a.setText(new StringBuilder().append("by ").append(Main.musicService.currentSong.getArtist()).toString());
+            t.setSelected(true);
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        } else {
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
+        }
+        /*LinearLayout ll = findViewById(R.id.layout_item);
+        ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainScreen.this,PlayingNow.class);
+                startActivity(intent);
+            }
+        });*/
+
+
     }
 
     @Override
@@ -461,4 +490,12 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
             return null;
         }
     }
+
+
+    private void workonSlidingPanel() {
+
+    }
+
+
+
 }

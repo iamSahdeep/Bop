@@ -250,7 +250,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     }
 
     private void workOnImages() {
-        final File path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
+        File path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
         Bitmap bitmap;
         if (path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
