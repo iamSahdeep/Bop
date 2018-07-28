@@ -97,6 +97,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     private ViewPager mViewPager;
     private Toolbar toolbar;
     private TabLayout tabLayout;
+    SlidingUpPanelLayout slidingUpPanelLayout;
 
     /**
      * Adds a new item "Now Playing" on the main menu, if
@@ -126,10 +127,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-
-        if (Main.mainMenuHasNowPlayingItem) {
-
-        }
+        slidingUpPanelLayout = findViewById(R.id.sliding_layout);
 
         Main.initialize(this);
 
@@ -271,20 +269,23 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     @Override
     public void onBackPressed() {
+        if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        else {
+            if (this.backPressedOnce) {
+                // Default behavior, quit it
+                super.onBackPressed();
+                Main.forceExit(this);
 
-        if (this.backPressedOnce) {
-            // Default behavior, quit it
-            super.onBackPressed();
-            Main.forceExit(this);
+                return;
+            }
 
-            return;
+            this.backPressedOnce = true;
+
+            SingleToast.show(this, getString(R.string.menu_main_back_to_exit), Toast.LENGTH_SHORT);
+
+            backPressedHandler.postDelayed(backPressedTimeoutAction, BACK_PRESSED_DELAY);
         }
-
-        this.backPressedOnce = true;
-
-        SingleToast.show(this, getString(R.string.menu_main_back_to_exit), Toast.LENGTH_SHORT);
-
-        backPressedHandler.postDelayed(backPressedTimeoutAction, BACK_PRESSED_DELAY);
     }
 
     @Override
@@ -371,7 +372,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
 
-        final SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         if (Main.mainMenuHasNowPlayingItem) {
             TextView t = findViewById(R.id.bottomtextView);
             TextView a = findViewById(R.id.bottomtextartist);

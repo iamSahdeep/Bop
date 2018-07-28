@@ -33,6 +33,7 @@ import com.sahdeepsingh.Bop.SongData.AdapterSong;
 import com.sahdeepsingh.Bop.controls.CircularSeekBar;
 import com.sahdeepsingh.Bop.controls.MusicController;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -51,6 +52,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle;
 
     ChangeSongBR changeSongBR;
+
+    SlidingUpPanelLayout slidingUpPanelLayout;
 
     /**
      * List that will display all the songs.
@@ -94,6 +97,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         PlayPause = findViewById(R.id.playPause);
         nextSong = findViewById(R.id.skip_next);
         repeatToggle = findViewById(R.id.repeat);
+        slidingUpPanelLayout = findViewById(R.id.sliding_layout);
 
         // We'll play this pre-defined list.
         // By default we play the first track, although an
@@ -381,11 +385,10 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        if (Main.musicService.isPlaying()) ;
-        {
+       if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)
+           slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+       else  super.onBackPressed();
 
-        }
     }
 
     /**
@@ -402,13 +405,11 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
     /**
      * Activity has become visible.
-     *
-     * @see onPause()
      */
     @Override
     protected void onResume() {
         super.onResume();
-
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
@@ -463,7 +464,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         // Binding to our media player
         musicController.setMediaPlayer(this);
         musicController
-                .setAnchorView(findViewById(R.id.activity_now_playing_song_list));
+                .setAnchorView(findViewById(R.id.list_nowplaying));
         musicController.setEnabled(true);
     }
 
