@@ -1,8 +1,11 @@
 package com.sahdeepsingh.Bop.ui;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,12 +18,14 @@ import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
@@ -32,6 +37,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
+
 public class PlayingNow extends ActivityMaster implements MediaController.MediaPlayerControl, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     /**
@@ -42,6 +49,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     CircularSeekBar circularSeekBar;
     ImageView blurimage, centreimage;
     ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle;
+
+    ChangeSongBR changeSongBR;
+
     /**
      * List that will display all the songs.
      */
@@ -74,7 +84,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         songListView = (ListView) findViewById(R.id.list_nowplaying);
 
         circularSeekBar = findViewById(R.id.circularSeekBar);
@@ -156,6 +165,21 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         setControllListeners();
 
+        changeSongBR = new ChangeSongBR();
+
+
+    }
+    class ChangeSongBR extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            TextView name, artist;
+            name = findViewById(R.id.bottomtextView);
+            artist = findViewById(R.id.bottomtextartist);
+            name.setText(Main.musicService.currentSong.getTitle());
+            artist.setText(Main.musicService.currentSong.getArtist());
+        }
 
     }
 
@@ -371,7 +395,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     @Override
     protected void onPause() {
         super.onPause();
-
+        unregisterReceiver(changeSongBR);
         paused = true;
         playbackPaused = true;
     }
@@ -385,7 +409,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     protected void onResume() {
         super.onResume();
 
-
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BROADCAST_ACTION);
+        registerReceiver(changeSongBR, intentFilter);
         if (paused) {
             // Ensure that the controller
             // is shown when the user returns to the app

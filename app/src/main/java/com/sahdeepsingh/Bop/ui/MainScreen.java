@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,16 +20,25 @@ import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.Element;
+import android.support.v8.renderscript.RenderScript;
+import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.controls.CircularSeekBar;
+import com.sahdeepsingh.Bop.controls.MusicController;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
 import com.sahdeepsingh.Bop.fragments.FragmentGenre;
 import com.sahdeepsingh.Bop.fragments.FragmentPlaylist;
@@ -36,9 +47,12 @@ import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.playerMain.SingleToast;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 
-public class MainScreen extends ActivityMaster implements ActionBar.TabListener, FragmentSongs.OnListFragmentInteractionListener, FragmentPlaylist.OnListFragmentInteractionListener, FragmentGenre.OnListFragmentInteractionListener, FragmentAlbum.OnListFragmentInteractionListener {
+public class MainScreen extends ActivityMaster implements MediaController.MediaPlayerControl, ActionBar.TabListener, FragmentSongs.OnListFragmentInteractionListener, FragmentPlaylist.OnListFragmentInteractionListener, FragmentGenre.OnListFragmentInteractionListener, FragmentAlbum.OnListFragmentInteractionListener {
 
     public static final String BROADCAST_ACTION = "lol";
     static final int USER_CHANGED_THEME = 1;
@@ -46,6 +60,16 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
      * How long to wait to disable double-pressing to quit
      */
     private static final int BACK_PRESSED_DELAY = 2000;
+
+    private static final float BLUR_RADIUS = 25f;
+    CircularSeekBar circularSeekBar;
+    ImageView blurimage, centreimage;
+    ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle;
+    private MusicController musicController;
+    public boolean paused = false;
+    private boolean playbackPaused = false;
+
+
     ChangeSongBR changeSongBR;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -127,7 +151,6 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
 
         changeSongBR = new ChangeSongBR();
 
-        workonSlidingPanel();
 
     }
 
@@ -369,6 +392,15 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
             }
         });*/
 
+        if (Main.mainMenuHasNowPlayingItem) {
+            setMusicController();
+
+            if (playbackPaused) {
+                setMusicController();
+                playbackPaused = false;
+            }
+            workonSlidingPanel();
+        }
 
     }
 
@@ -494,8 +526,272 @@ public class MainScreen extends ActivityMaster implements ActionBar.TabListener,
 
     private void workonSlidingPanel() {
 
+        circularSeekBar = findViewById(R.id.circularSeekBar);
+        blurimage = findViewById(R.id.BlurImage);
+        centreimage = findViewById(R.id.CircleImage);
+        shuffletoggle = findViewById(R.id.shuffle);
+        previousSong = findViewById(R.id.previous);
+        PlayPause = findViewById(R.id.playPause);
+        nextSong = findViewById(R.id.skip_next);
+        repeatToggle = findViewById(R.id.repeat);
+
+        setControllListeners();
+        prepareSeekBar();
+
+
     }
 
 
+    private void setControllListeners() {
+
+        if (Main.musicService.isShuffle())
+            Picasso.get().load(R.drawable.ic_menu_shuffle_on).into(shuffletoggle);
+        else Picasso.get().load(R.drawable.ic_menu_shuffle_off).into(shuffletoggle);
+
+
+        if (Main.musicService.isRepeat())
+            Picasso.get().load(R.drawable.ic_menu_repeat_on).into(repeatToggle);
+        else Picasso.get().load(R.drawable.ic_menu_repeat_off).into(repeatToggle);
+
+
+        shuffletoggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.toggleShuffle();
+                if (Main.musicService.isShuffle())
+                    Picasso.get().load(R.drawable.ic_menu_shuffle_on).into(shuffletoggle);
+                else Picasso.get().load(R.drawable.ic_menu_shuffle_off).into(shuffletoggle);
+
+            }
+        });
+        previousSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playPrevious();
+            }
+        });
+        PlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.togglePlayback();
+                if (Main.musicService.isPaused())
+                    Picasso.get().load(R.drawable.ic_play_dark).into(PlayPause);
+                else Picasso.get().load(R.drawable.ic_pause_dark).into(PlayPause);
+            }
+        });
+        nextSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playNext();
+            }
+        });
+        repeatToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.toggleRepeat();
+                if (Main.musicService.isRepeat())
+                    Picasso.get().load(R.drawable.ic_menu_repeat_on).into(repeatToggle);
+                else Picasso.get().load(R.drawable.ic_menu_repeat_off).into(repeatToggle);
+            }
+        });
+    }
+
+    private void prepareSeekBar() {
+
+        circularSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
+                if (musicController != null && fromUser)
+                    seekTo(progress);
+            }
+
+            @Override
+            public void onStopTrackingTouch(CircularSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(CircularSeekBar seekBar) {
+
+            }
+        });
+
+
+        circularSeekBar.setMax((int) Main.musicService.currentSong.getDuration());
+        final Handler handler = new Handler();
+        MainScreen.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isPlaying())
+                    circularSeekBar.setProgress((int) getCurrentPosition());
+
+                handler.postDelayed(this, 1);
+            }
+        });
+
+        workOnImages();
+    }
+
+    private void workOnImages() {
+        File path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
+        Bitmap bitmap;
+        if (path.exists()) {
+            bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.nachi);
+        Bitmap blurredBitmap = blurMyImage(bitmap);
+
+        blurimage.setImageBitmap(blurredBitmap);
+        centreimage.setImageBitmap(bitmap);
+
+
+    }
+
+    private Bitmap blurMyImage(Bitmap image) {
+        if (null == image) return null;
+
+        final RenderScript renderScript = RenderScript.create(this);
+        Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
+        Allocation tmpOut = Allocation.createFromBitmap(renderScript, image);
+
+//Intrinsic Gausian blur filter
+        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+        theIntrinsic.setRadius(BLUR_RADIUS);
+        theIntrinsic.setInput(tmpIn);
+        theIntrinsic.forEach(tmpOut);
+        tmpOut.copyTo(image);
+        return image;
+
+    }
+
+    private void setMusicController() {
+
+        musicController = new MusicController(MainScreen.this);
+
+        // What will happen when the user presses the
+        // next/previous buttons?
+        musicController.setPrevNextListeners(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Calling method defined on ActivityNowPlaying
+                playNext();
+            }
+        }, new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Calling method defined on ActivityNowPlaying
+                playPrevious();
+            }
+        });
+
+        // Binding to our media player
+        musicController.setMediaPlayer(this);
+        musicController.setEnabled(true);
+    }
+
+
+    @Override
+    public void start() {
+        Main.musicService.unpausePlayer();
+    }
+
+    /**
+     * Callback to when the user pressed the `pause` button.
+     */
+    @Override
+    public void pause() {
+        Main.musicService.pausePlayer();
+    }
+
+    @Override
+    public int getDuration() {
+        if (Main.musicService != null && Main.musicService.musicBound
+                && Main.musicService.isPlaying())
+            return Main.musicService.getDuration();
+        else
+            return 0;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        if (Main.musicService != null && Main.musicService.musicBound
+                && Main.musicService.isPlaying())
+            return Main.musicService.getPosition();
+        else
+            return 0;
+    }
+
+    @Override
+    public void seekTo(int position) {
+        Main.musicService.seekTo(position);
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return Main.musicService != null && Main.musicService.musicBound && Main.musicService.isPlaying();
+
+    }
+
+    @Override
+    public int getBufferPercentage() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean canPause() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    // Back to the normal methods
+
+    /**
+     * Jumps to the next song and starts playing it right now.
+     */
+    public void playNext() {
+        Main.musicService.next(true);
+        Main.musicService.playSong();
+        // To prevent the MusicPlayer from behaving
+        // unexpectedly when we pause the song playback.
+        if (playbackPaused) {
+            setMusicController();
+            playbackPaused = false;
+        }
+
+        musicController.show();
+    }
+
+    /**
+     * Jumps to the previous song and starts playing it right now.
+     */
+    public void playPrevious() {
+        Main.musicService.previous(true);
+        Main.musicService.playSong();
+
+        // To prevent the MusicPlayer from behaving
+        // unexpectedly when we pause the song playback.
+        if (playbackPaused) {
+            setMusicController();
+            playbackPaused = false;
+        }
+
+        musicController.show();
+    }
 
 }

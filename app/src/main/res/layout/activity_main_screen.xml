@@ -58,7 +58,7 @@
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/bottomviewcontrols"
+        layout="@layout/bottomcontrols"
         android:gravity="center|top">
     </include>
 
