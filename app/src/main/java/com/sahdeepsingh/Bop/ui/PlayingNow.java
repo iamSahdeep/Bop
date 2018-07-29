@@ -377,7 +377,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     }
 
 
-    @Override
+   /* @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (event.getAction() == KeyEvent.ACTION_DOWN)
@@ -386,7 +386,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         return super.onKeyDown(keyCode, event);
     }
-
+*/
     @Override
     public void onBackPressed() {
        if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)
@@ -559,7 +559,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             playbackPaused = false;
         }
 
+/*
         musicController.show();
+*/
     }
 
     /**
@@ -576,7 +578,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             playbackPaused = false;
         }
 
+/*
         musicController.show();
+*/
     }
 
     /**

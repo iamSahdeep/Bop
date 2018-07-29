@@ -779,7 +779,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             playbackPaused = false;
         }
 
+/*
         musicController.show();
+*/
     }
 
     /**
@@ -796,7 +798,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             playbackPaused = false;
         }
 
+/*
         musicController.show();
+*/
     }
 
 }

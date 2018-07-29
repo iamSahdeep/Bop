@@ -130,18 +130,17 @@ public class SongList {
         if (scanningSongs)
             return;
         scanningSongs = true;
-
         // The URIs that tells where we should scan for files.
         // There are separate URIs for music, genres and playlists. Go figure...
         //
         // Remember - internal is the phone memory, external is for the SD card.
-        Uri musicUri = ((fromWhere == "internal") ?
+        Uri musicUri = ((fromWhere.equals("internal")) ?
                 android.provider.MediaStore.Audio.Media.INTERNAL_CONTENT_URI :
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-        Uri genreUri = ((fromWhere == "internal") ?
+        Uri genreUri = ((fromWhere.equals("internal")) ?
                 android.provider.MediaStore.Audio.Genres.INTERNAL_CONTENT_URI :
                 android.provider.MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI);
-        Uri playlistUri = ((fromWhere == "internal") ?
+        Uri playlistUri = ((fromWhere.equals("internal")) ?
                 android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI :
                 android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI);
 
@@ -286,6 +285,7 @@ public class SongList {
                 //We will check of the album art otherwise wont add just remove in future after solution
                 if (getAlbumArt(song) != null)
                 songs.add(song);
+
             }
             while (cursor.moveToNext());
         } else {
@@ -293,6 +293,14 @@ public class SongList {
         }
         cursor.close();
 
+        // Finally, let's sort the song list alphabetically
+        // based on the song title.
+        Log.e("here","here");
+        Collections.sort(songs, new Comparator<Song>() {
+               public int compare(Song a, Song b) {
+                return a.getTitle().compareTo(b.getTitle());
+            }
+        });
         // Alright, now I'll get all the Playlists.
         // First I grab all playlist IDs and Names and then for each
         // one of those, getting all songs inside them.
@@ -336,14 +344,6 @@ public class SongList {
             cursor2.close();
         }
 
-        // Finally, let's sort the song list alphabetically
-        // based on the song title.
-        Collections.sort(songs, new Comparator<Song>() {
-            public int compare(Song a, Song b) {
-                return a.getTitle().compareTo(b.getTitle());
-            }
-        });
-
         scannedSongs = true;
         scanningSongs = false;
     }
@@ -361,7 +361,9 @@ public class SongList {
 //            } catch(Exception e) {
 //                return null;
 //            }
+/*
         Bitmap bitmap = getAlbumBitmap(song);
+*/
         Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
                 MediaStore.Audio.Albums._ID + "=?",
