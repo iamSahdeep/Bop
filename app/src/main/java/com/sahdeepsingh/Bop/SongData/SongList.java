@@ -283,6 +283,8 @@ public class SongList {
                 song.setGenre(currentGenreName);
 
                 // Adding the song to the global list
+                //We will check of the album art otherwise wont add just remove in future after solution
+                if (getAlbumArt(song) != null)
                 songs.add(song);
             }
             while (cursor.moveToNext());
