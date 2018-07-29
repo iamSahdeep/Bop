@@ -10,7 +10,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_skip_white"
         android:label="@string/app_name"
         android:theme="@style/MyMaterialTheme.Base">
         <activity
@@ -37,7 +37,6 @@
             android:name=".services.ServiceScrobbleMusic"
             android:enabled="true" />
 
-
         <receiver android:name=".notifications.NotificationMusic$NotificationPlayButtonHandler" />
         <receiver android:name=".notifications.NotificationMusic$NotificationSkipButtonHandler" />
         <receiver android:name=".notifications.NotificationMusic$NotificationStopButtonHandler" />
@@ -59,14 +58,16 @@
         <activity
             android:name=".ui.MainScreen"
             android:label="@string/app_name">
+        </activity>
+        <activity android:name=".ui.PlayingNow" />
+        <activity android:name=".ui.SplashScreen"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PlayingNow" />
-
     </application>
 
 </manifest>

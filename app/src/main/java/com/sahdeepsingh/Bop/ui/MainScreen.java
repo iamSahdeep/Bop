@@ -128,11 +128,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
 
-        Main.initialize(this);
-
-        scanSongs(false);
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -167,21 +162,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
      *                  rescan the songs when this Activity
      *                  is created again for some reason.
      */
-    void scanSongs(boolean forceScan) {
-
-        // Loading all the songs from the device on a different thread.
-        // We'll only actually do it if they weren't loaded already
-        //
-        // See the implementation right at the end of this class.
-        if ((forceScan) || (!Main.songs.isInitialized())) {
-
-            /*SingleToast.show(MainScreen.this,
-                    getString(R.string.menu_main_scanning),
-                    Toast.LENGTH_LONG);*/
-
-            new ScanSongs().execute();
-        }
-    }
 
     @Override
     public void onListFragmentInteraction(int position, String type) {
@@ -435,37 +415,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
      * Source:
      * http://answers.oreilly.com/topic/2699-how-to-handle-threads-in-android-and-what-you-need-to-watch-for/
      */
-    class ScanSongs extends AsyncTask<String, Integer, String> {
-
-        /**
-         * The action we'll do in the background.
-         */
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-                // Will scan all songs on the device
-                Main.songs.scanSongs(MainScreen.this, "external");
-                return MainScreen.this.getString(R.string.menu_main_scanning_ok);
-            } catch (Exception e) {
-                Log.e("Couldn't execute", e.toString());
-                e.printStackTrace();
-                return MainScreen.this.getString(R.string.menu_main_scanning_not_ok);
-            }
-        }
-
-        /**
-         * Called once the background processing is done.
-         */
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            /*SingleToast.show(MainScreen.this,
-                    result,
-                    Toast.LENGTH_LONG);*/
-        }
-    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
