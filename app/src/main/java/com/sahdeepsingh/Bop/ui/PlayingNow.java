@@ -279,15 +279,13 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     }
 
     private void workOnImages() {
-        File path;
-        Log.e("wtr",String.valueOf(Main.songs.getAlbumArt(Main.musicService.currentSong)));
+        File path = null;
         if (Main.songs.getAlbumArt(Main.musicService.currentSong) != null)
          path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
-        else path = null;
         Bitmap bitmap;
         if (path != null && path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cancel_dark);
         centreimage.setImageBitmap(bitmap);
         Bitmap blurredBitmap = blurMyImage(bitmap);
         blurimage.setImageBitmap(blurredBitmap);

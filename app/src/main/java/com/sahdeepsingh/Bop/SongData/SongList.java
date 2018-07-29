@@ -372,14 +372,12 @@ public class SongList {
 
         }
         cursor.close();
-
         return path;
     }
 
     public Bitmap getAlbumBitmap(Song song){
         Bitmap bitmap = null;
         Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"),Long.valueOf(song.getAlbumid()));
-
         try {
             bitmap = MediaStore.Images.Media.getBitmap(
                     resolver, albumArtUri);
@@ -388,7 +386,6 @@ public class SongList {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return bitmap;
     }
 
