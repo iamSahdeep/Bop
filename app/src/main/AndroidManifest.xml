@@ -57,11 +57,14 @@
 
         <activity
             android:name=".ui.MainScreen"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.PlayingNow" />
+        <activity android:name=".ui.PlayingNow"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.SplashScreen"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
