@@ -8,6 +8,8 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
@@ -117,7 +119,12 @@ public class NotificationMusic extends NotificationSimple {
         notificationView.setImageViewResource(R.id.stopNoti, R.drawable.ic_cancel_white);
         notificationView.setTextViewText(R.id.songNameNoti, song.getTitle());
         notificationView.setTextViewText(R.id.ArtistNameNoti, song.getArtist());
-        String path = Main.songs.getAlbumArt(song);
+        Bitmap newImage;
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inSampleSize = 5;
+        newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
+        notificationView.setImageViewBitmap(R.id.albumArtNoti,newImage);
+        //String path = Main.songs.getAlbumArt(song);
 
 
         // On the notification we have two buttons - Play and Skip
@@ -158,7 +165,7 @@ public class NotificationMusic extends NotificationSimple {
 
         Notification notification = notificationBuilder.build();
 
-        Picasso.get().load(path).into(notificationView, R.id.albumArtNoti, NOTIFICATION_ID, notification);
+        //Picasso.get().load(path).into(notificationView, R.id.albumArtNoti, NOTIFICATION_ID, notification);
 
 
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

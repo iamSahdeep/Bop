@@ -34,6 +34,7 @@
             android:layout_marginTop="5dip"
             android:ellipsize="marquee"
             android:focusable="true"
+            android:textColor="@color/gray"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
@@ -47,6 +48,7 @@
             android:layout_marginLeft="5dip"
             android:layout_marginRight="5dip"
             android:layout_marginTop="5dip"
+            android:textColor="@color/gray"
             android:ellipsize="marquee"
             android:focusable="true"
             android:marqueeRepeatLimit="marquee_forever"
@@ -62,7 +64,7 @@
         android:layout_gravity="center"
         android:layout_weight="0.02"
         android:layout_margin="10dp"
-        android:background="@color/black" />
+        android:background="@color/white" />
 
     <ImageButton
         android:id="@+id/bottomImagebutton"
