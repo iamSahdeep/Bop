@@ -75,20 +75,7 @@ public class ActivityMaster extends AppCompatActivity {
         if (Main.mainMenuHasNowPlayingItem) {
             TextView t = findViewById(R.id.bottomtextView);
             TextView a = findViewById(R.id.bottomtextartist);
-            final ImageButton pp = findViewById(R.id.bottomImagebutton);
             ImageView aa = findViewById(R.id.bottomImageview);
-            if (!Main.musicService.isPaused())
-                pp.setImageResource(R.drawable.ic_pause_dark);
-            else pp.setImageResource(R.drawable.ic_play_dark);
-            pp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Main.musicService.togglePlayback();
-                    if (!Main.musicService.isPaused())
-                        pp.setImageResource(R.drawable.ic_pause_dark);
-                    else pp.setImageResource(R.drawable.ic_play_dark);
-                }
-            });
             Bitmap newImage;
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inSampleSize = 4;

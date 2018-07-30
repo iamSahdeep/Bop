@@ -15,8 +15,6 @@ import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -34,7 +32,6 @@ import com.sahdeepsingh.Bop.controls.CircularSeekBar;
 import com.sahdeepsingh.Bop.controls.MusicController;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -48,8 +45,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
     private static final float BLUR_RADIUS = 25f;
     CircularSeekBar circularSeekBar;
-    ImageView blurimage, centreimage;
-    ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle;
+    ImageView blurimage, centreimage, aa;
+    TextView name, artist;
+    ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle, pp;
 
     ChangeSongBR changeSongBR;
 
@@ -98,6 +96,10 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         nextSong = findViewById(R.id.skip_next);
         repeatToggle = findViewById(R.id.repeat);
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
+        name = findViewById(R.id.bottomtextView);
+        artist = findViewById(R.id.bottomtextartist);
+        pp = findViewById(R.id.bottomImagebutton);
+        aa = findViewById(R.id.bottomImageview);
 
         // We'll play this pre-defined list.
         // By default we play the first track, although an
@@ -173,31 +175,22 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
 
     }
+
     class ChangeSongBR extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            TextView name, artist;
-            name = findViewById(R.id.bottomtextView);
-            artist = findViewById(R.id.bottomtextartist);
             name.setText(Main.musicService.currentSong.getTitle());
             artist.setText(Main.musicService.currentSong.getArtist());
             workOnImages();
-            final ImageButton pp = findViewById(R.id.bottomImagebutton);
-            ImageView aa = findViewById(R.id.bottomImageview);
-            if (!Main.musicService.isPaused())
-                pp.setImageResource(R.drawable.ic_pause_dark);
-            else pp.setImageResource(R.drawable.ic_play_dark);
-            pp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Main.musicService.togglePlayback();
-                    if (!Main.musicService.isPaused())
-                        pp.setImageResource(R.drawable.ic_pause_dark);
-                    else pp.setImageResource(R.drawable.ic_play_dark);
-                }
-            });
+            if (!Main.musicService.isPaused()) {
+                pp.setImageResource(R.drawable.ic_pause_white);
+                PlayPause.setImageResource(R.drawable.ic_pause_white);
+            } else {
+                pp.setImageResource(R.drawable.ic_play_white);
+                PlayPause.setImageResource(R.drawable.ic_play_white);
+            }
             Bitmap newImage;
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inSampleSize = 4;
@@ -209,14 +202,15 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
     private void setControllListeners() {
 
+
         if (Main.musicService.isShuffle())
-            Picasso.get().load(R.drawable.ic_menu_shuffle_on).into(shuffletoggle);
-        else Picasso.get().load(R.drawable.ic_menu_shuffle_off).into(shuffletoggle);
+            shuffletoggle.setImageResource(R.drawable.ic_menu_shuffle_on);
+        else shuffletoggle.setImageResource(R.drawable.ic_menu_shuffle_off);
 
 
         if (Main.musicService.isRepeat())
-            Picasso.get().load(R.drawable.ic_menu_repeat_on).into(repeatToggle);
-        else Picasso.get().load(R.drawable.ic_menu_repeat_off).into(repeatToggle);
+            repeatToggle.setImageResource(R.drawable.ic_menu_repeat_on);
+        else repeatToggle.setImageResource(R.drawable.ic_menu_repeat_off);
 
 
         shuffletoggle.setOnClickListener(new View.OnClickListener() {
@@ -224,8 +218,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             public void onClick(View view) {
                 Main.musicService.toggleShuffle();
                 if (Main.musicService.isShuffle())
-                    Picasso.get().load(R.drawable.ic_menu_shuffle_on).into(shuffletoggle);
-                else Picasso.get().load(R.drawable.ic_menu_shuffle_off).into(shuffletoggle);
+                    shuffletoggle.setImageResource(R.drawable.ic_menu_shuffle_on);
+                else shuffletoggle.setImageResource(R.drawable.ic_menu_shuffle_off);
 
             }
         });
@@ -239,9 +233,13 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             @Override
             public void onClick(View view) {
                 Main.musicService.togglePlayback();
-                if (Main.musicService.isPaused())
-                    Picasso.get().load(R.drawable.ic_play_dark).into(PlayPause);
-                else Picasso.get().load(R.drawable.ic_pause_dark).into(PlayPause);
+                if (Main.musicService.isPaused()) {
+                    PlayPause.setImageResource(R.drawable.ic_play_white);
+                    pp.setImageResource(R.drawable.ic_play_white);
+                } else {
+                    PlayPause.setImageResource(R.drawable.ic_pause_white);
+                    pp.setImageResource(R.drawable.ic_pause_white);
+                }
             }
         });
         nextSong.setOnClickListener(new View.OnClickListener() {
@@ -255,8 +253,22 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             public void onClick(View view) {
                 Main.musicService.toggleRepeat();
                 if (Main.musicService.isRepeat())
-                    Picasso.get().load(R.drawable.ic_menu_repeat_on).into(repeatToggle);
-                else Picasso.get().load(R.drawable.ic_menu_repeat_off).into(repeatToggle);
+                    repeatToggle.setImageResource(R.drawable.ic_menu_repeat_on);
+                else repeatToggle.setImageResource(R.drawable.ic_menu_repeat_off);
+            }
+        });
+
+        pp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.togglePlayback();
+                if (Main.musicService.isPaused()) {
+                    PlayPause.setImageResource(R.drawable.ic_play_white);
+                    pp.setImageResource(R.drawable.ic_play_white);
+                } else {
+                    PlayPause.setImageResource(R.drawable.ic_pause_white);
+                    pp.setImageResource(R.drawable.ic_pause_white);
+                }
             }
         });
     }
@@ -300,11 +312,11 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     private void workOnImages() {
         File path = null;
         if (Main.songs.getAlbumArt(Main.musicService.currentSong) != null)
-         path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
+            path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
         Bitmap bitmap;
         if (path != null && path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cancel_dark);
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cancel_white);
         centreimage.setImageBitmap(bitmap);
         Bitmap blurredBitmap = blurMyImage(bitmap);
         blurimage.setImageBitmap(blurredBitmap);
@@ -315,7 +327,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     private Bitmap blurMyImage(Bitmap image) {
         if (null == image) return null;
 
-        Bitmap bitmaplol = image.copy(image.getConfig(),true);
+        Bitmap bitmaplol = image.copy(image.getConfig(), true);
         RenderScript renderScript = RenderScript.create(this);
         Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
         Allocation tmpOut = Allocation.createFromBitmap(renderScript, bitmaplol);
@@ -396,21 +408,21 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     }
 
 
-   /* @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    /* @Override
+     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (event.getAction() == KeyEvent.ACTION_DOWN)
-            if (keyCode == KeyEvent.KEYCODE_MENU)
-                musicController.show();
+         if (event.getAction() == KeyEvent.ACTION_DOWN)
+             if (keyCode == KeyEvent.KEYCODE_MENU)
+                 musicController.show();
 
-        return super.onKeyDown(keyCode, event);
-    }
-*/
+         return super.onKeyDown(keyCode, event);
+     }
+ */
     @Override
     public void onBackPressed() {
-       if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)
-           slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-       else  super.onBackPressed();
+        if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        else super.onBackPressed();
 
     }
 
