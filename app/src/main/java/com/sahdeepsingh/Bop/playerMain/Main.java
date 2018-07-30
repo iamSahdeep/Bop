@@ -14,7 +14,6 @@ import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.SongData.SongList;
 import com.sahdeepsingh.Bop.services.ServicePlayMusic;
 import com.sahdeepsingh.Bop.settings.Settings;
-
 import java.util.ArrayList;
 
 public class Main {
@@ -192,9 +191,8 @@ public class Main {
      */
     public static void forceExit(Activity c) {
 
-        /*
-        c.finish();*/
-        c.unbindService(musicConnection);
+        c.finish();
+        c.finishAffinity();
 
     }
 }

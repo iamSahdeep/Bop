@@ -55,7 +55,7 @@ public class ActivityMaster extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        Main.startMusicService(this);
+        //Main.startMusicService(this);
     }
 
     /**

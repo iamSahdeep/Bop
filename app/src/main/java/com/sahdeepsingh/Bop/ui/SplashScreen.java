@@ -15,9 +15,14 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Main.initialize(this);
-        scanSongs(false);
+        if (Main.mainMenuHasNowPlayingItem){
+            Intent intent = new Intent(SplashScreen.this,MainScreen.class);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }else {
+            Main.initialize(this);
+            scanSongs(false);
+        }
     }
 
     void scanSongs(boolean forceScan) {
@@ -62,9 +67,8 @@ public class SplashScreen extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Intent intent = new Intent(SplashScreen.this,MainScreen.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            finish();
         }
     }
 

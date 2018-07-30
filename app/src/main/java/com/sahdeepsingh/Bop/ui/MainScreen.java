@@ -324,7 +324,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
                 // Default behavior, quit it
                 super.onBackPressed();
                 Main.forceExit(this);
-
+                finishAffinity();
                 return;
             }
 

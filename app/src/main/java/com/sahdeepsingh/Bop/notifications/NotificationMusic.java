@@ -14,6 +14,7 @@ import android.widget.RemoteViews;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.ui.MainScreen;
 import com.sahdeepsingh.Bop.ui.PlayingNow;
 import com.squareup.picasso.Picasso;
 
@@ -95,7 +96,7 @@ public class NotificationMusic extends NotificationSimple {
 
 
         // Intent that launches the "Now Playing" Activity
-        Intent notifyIntent = new Intent(context, PlayingNow.class);
+        Intent notifyIntent = new Intent(context, MainScreen.class);
         notifyIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         // Letting the Intent be executed later by other application.
@@ -224,7 +225,9 @@ public class NotificationMusic extends NotificationSimple {
         @Override
         public void onReceive(Context context, Intent intent) {
             Main.musicService.onDestroy();
+            Main.stopMusicService(context);
             System.exit(0);
+
         }
     }
 }
