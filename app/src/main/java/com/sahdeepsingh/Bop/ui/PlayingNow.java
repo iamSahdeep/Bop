@@ -192,17 +192,21 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED || newState == SlidingUpPanelLayout.PanelState.DRAGGING)
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED)
                 {
-                    songNameDisplay.animate().alpha(1.0f).setDuration(300);
-                    songNameDisplay.setVisibility(View.VISIBLE);
                     BottomControls.setVisibility(View.GONE);
+                    songNameDisplay.setAlpha(0f);
+                    songNameDisplay.setVisibility(View.VISIBLE);
+                    songNameDisplay.animate().alpha(1.0f).setDuration(300).setListener(null);
+                }else if (newState == SlidingUpPanelLayout.PanelState.DRAGGING){
+                    BottomControls.setAlpha(0f);
+                    songNameDisplay.setAlpha(0f);
                 }else{
-                    BottomControls.animate().alpha(1.0f).setDuration(300);
-                    BottomControls.setVisibility(View.VISIBLE);
                     songNameDisplay.setVisibility(View.GONE);
+                    BottomControls.setAlpha(0f);
+                    BottomControls.setVisibility(View.VISIBLE);
+                    BottomControls.animate().alpha(1.0f).setDuration(300).setListener(null);
                 }
-
             }
         });
     }
@@ -216,6 +220,10 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             artist.setText(Main.musicService.currentSong.getArtist());
             TopName.setText(Main.musicService.currentSong.getTitle());
             TopArttist.setText(Main.musicService.currentSong.getArtist());
+            name.setSelected(true);
+            artist.setSelected(true);
+            TopName.setSelected(true);
+            TopArttist.setSelected(true);
             workOnImages();
             if (!Main.musicService.isPaused()) {
                 pp.setImageResource(R.drawable.ic_pause_white);

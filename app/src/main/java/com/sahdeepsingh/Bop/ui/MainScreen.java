@@ -173,15 +173,20 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED || newState == SlidingUpPanelLayout.PanelState.DRAGGING)
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED)
                 {
-                    songNameDisplay.animate().alpha(1.0f).setDuration(300);
-                    songNameDisplay.setVisibility(View.VISIBLE);
                     BottomControls.setVisibility(View.GONE);
+                    songNameDisplay.setAlpha(0f);
+                    songNameDisplay.setVisibility(View.VISIBLE);
+                    songNameDisplay.animate().alpha(1.0f).setDuration(300).setListener(null);
+                }else if (newState == SlidingUpPanelLayout.PanelState.DRAGGING){
+                    BottomControls.setAlpha(0f);
+                    songNameDisplay.setAlpha(0f);
                 }else{
-                    BottomControls.animate().alpha(1.0f).setDuration(300);
-                    BottomControls.setVisibility(View.VISIBLE);
                     songNameDisplay.setVisibility(View.GONE);
+                    BottomControls.setAlpha(0f);
+                    BottomControls.setVisibility(View.VISIBLE);
+                    BottomControls.animate().alpha(1.0f).setDuration(300).setListener(null);
                 }
 
             }
@@ -332,44 +337,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 */
     }
 
-    /* *//**
-     * A placeholder fragment containing a simple view.
-     *//*
-    public static class PlaceholderFragment extends Fragment {
-        *//**
-     * The fragment argument representing the section number for this
-     * fragment.
-     *//*
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        */
-
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     *//*
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-    */
     @Override
     protected void onStop() {
         super.onStop();
@@ -390,14 +357,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
         }
-        /*LinearLayout ll = findViewById(R.id.layout_item);
-        ll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainScreen.this,PlayingNow.class);
-                startActivity(intent);
-            }
-        });*/
 
         if (Main.mainMenuHasNowPlayingItem) {
             setMusicController();
@@ -426,6 +385,10 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             artist.setText(Main.musicService.currentSong.getArtist());
             TopName.setText(Main.musicService.currentSong.getTitle());
             TopArttist.setText(Main.musicService.currentSong.getArtist());
+            name.setSelected(true);
+            artist.setSelected(true);
+            TopName.setSelected(true);
+            TopArttist.setSelected(true);
             workOnImages();
             if (Main.musicService.isPaused()) {
                 PlayPause.setImageResource(R.drawable.ic_play_white);
@@ -443,22 +406,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     }
 
-    /**
-     * Does an action on another Thread.
-     * <p>
-     * On this case, we'll scan the songs on the Android device
-     * without blocking the main Thread.
-     * <p>
-     * It gives a nice pop-up when finishes.
-     * <p>
-     * Source:
-     * http://answers.oreilly.com/topic/2699-how-to-handle-threads-in-android-and-what-you-need-to-watch-for/
-     */
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
