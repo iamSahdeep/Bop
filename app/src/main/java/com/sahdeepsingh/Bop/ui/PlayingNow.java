@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.PopupMenu;
@@ -46,7 +47,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     private static final float BLUR_RADIUS = 25f;
     CircularSeekBar circularSeekBar;
     ImageView blurimage, centreimage, aa;
-    TextView name, artist;
+    TextView name, artist , TopName , TopArttist;
     ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle, pp;
 
     ChangeSongBR changeSongBR;
@@ -97,6 +98,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         repeatToggle = findViewById(R.id.repeat);
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         name = findViewById(R.id.bottomtextView);
+        TopName = findViewById(R.id.songMainTitle);
+        TopArttist = findViewById(R.id.songMainArtist);
         artist = findViewById(R.id.bottomtextartist);
         pp = findViewById(R.id.bottomImagebutton);
         aa = findViewById(R.id.bottomImageview);
@@ -173,7 +176,35 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         changeSongBR = new ChangeSongBR();
 
+        slidingUpPanelLayoutListen();
 
+    }
+
+    private void slidingUpPanelLayoutListen() {
+        final LinearLayout songNameDisplay , BottomControls;
+        songNameDisplay = findViewById(R.id.SongNameTop);
+        BottomControls = findViewById(R.id.layout_item);
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED || newState == SlidingUpPanelLayout.PanelState.DRAGGING)
+                {
+                    songNameDisplay.animate().alpha(1.0f).setDuration(300);
+                    songNameDisplay.setVisibility(View.VISIBLE);
+                    BottomControls.setVisibility(View.GONE);
+                }else{
+                    BottomControls.animate().alpha(1.0f).setDuration(300);
+                    BottomControls.setVisibility(View.VISIBLE);
+                    songNameDisplay.setVisibility(View.GONE);
+                }
+
+            }
+        });
     }
 
     class ChangeSongBR extends BroadcastReceiver {
@@ -183,6 +214,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
             name.setText(Main.musicService.currentSong.getTitle());
             artist.setText(Main.musicService.currentSong.getArtist());
+            TopName.setText(Main.musicService.currentSong.getTitle());
+            TopArttist.setText(Main.musicService.currentSong.getArtist());
             workOnImages();
             if (!Main.musicService.isPaused()) {
                 pp.setImageResource(R.drawable.ic_pause_white);

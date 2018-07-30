@@ -36,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,7 +70,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     private static final float BLUR_RADIUS = 25f;
     CircularSeekBar circularSeekBar;
     ImageView blurimage, centreimage, aa;
-    TextView name, artist;
+    TextView name, artist , TopName , TopArttist;
     ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle, pp;
     private MusicController musicController;
     public boolean paused = false;
@@ -133,14 +134,15 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-
-
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         name = findViewById(R.id.bottomtextView);
         artist = findViewById(R.id.bottomtextartist);
         pp = findViewById(R.id.bottomImagebutton);
         aa = findViewById(R.id.bottomImageview);
+        TopName = findViewById(R.id.songMainTitle);
+        TopArttist = findViewById(R.id.songMainArtist);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -154,8 +156,36 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         tabLayout.setupWithViewPager(mViewPager);
 
         changeSongBR = new ChangeSongBR();
+        slidingUpPanelLayoutListen();
 
+    }
 
+    private void slidingUpPanelLayoutListen() {
+
+        final LinearLayout songNameDisplay , BottomControls;
+        songNameDisplay = findViewById(R.id.SongNameTop);
+        BottomControls = findViewById(R.id.layout_item);
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED || newState == SlidingUpPanelLayout.PanelState.DRAGGING)
+                {
+                    songNameDisplay.animate().alpha(1.0f).setDuration(300);
+                    songNameDisplay.setVisibility(View.VISIBLE);
+                    BottomControls.setVisibility(View.GONE);
+                }else{
+                    BottomControls.animate().alpha(1.0f).setDuration(300);
+                    BottomControls.setVisibility(View.VISIBLE);
+                    songNameDisplay.setVisibility(View.GONE);
+                }
+
+            }
+        });
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -354,11 +384,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         registerReceiver(changeSongBR, intentFilter);
 
         if (Main.mainMenuHasNowPlayingItem) {
-            TextView t = findViewById(R.id.bottomtextView);
-            TextView a = findViewById(R.id.bottomtextartist);
-            t.setText(Main.musicService.currentSong.getTitle());
-            a.setText(new StringBuilder().append("by ").append(Main.musicService.currentSong.getArtist()).toString());
-            t.setSelected(true);
+            Main.musicService.notifyCurrentSong();
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
@@ -398,13 +424,15 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
             name.setText(Main.musicService.currentSong.getTitle());
             artist.setText(Main.musicService.currentSong.getArtist());
+            TopName.setText(Main.musicService.currentSong.getTitle());
+            TopArttist.setText(Main.musicService.currentSong.getArtist());
             workOnImages();
-            if (!Main.musicService.isPaused()) {
-                pp.setImageResource(R.drawable.ic_pause_white);
-                PlayPause.setImageResource(R.drawable.ic_pause_white);
-            } else {
-                pp.setImageResource(R.drawable.ic_play_white);
+            if (Main.musicService.isPaused()) {
                 PlayPause.setImageResource(R.drawable.ic_play_white);
+                pp.setImageResource(R.drawable.ic_play_white);
+            } else {
+                PlayPause.setImageResource(R.drawable.ic_pause_white);
+                pp.setImageResource(R.drawable.ic_pause_white);
             }
             Bitmap newImage;
             BitmapFactory.Options opts = new BitmapFactory.Options();

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:id="@+id/SongNameTop"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:visibility="gone"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/songMainTitle"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:textColor="@color/white"
+        android:background="@color/transparent"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="@string/appbar_scrolling_view_behavior"
+        android:textSize="25sp"/>
+    <TextView
+        android:id="@+id/songMainArtist"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_width="wrap_content"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:text="@string/appbar_scrolling_view_behavior"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:layout_gravity="center_horizontal"
+        android:textSize="15sp"/>
+
+</LinearLayout>
