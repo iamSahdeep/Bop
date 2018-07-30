@@ -2,16 +2,22 @@ package com.sahdeepsingh.Bop.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.squareup.picasso.Picasso;
 
 /**
  * Master Activity from which every other Activity inherits
@@ -69,8 +75,27 @@ public class ActivityMaster extends AppCompatActivity {
         if (Main.mainMenuHasNowPlayingItem) {
             TextView t = findViewById(R.id.bottomtextView);
             TextView a = findViewById(R.id.bottomtextartist);
+            final ImageButton pp = findViewById(R.id.bottomImagebutton);
+            ImageView aa = findViewById(R.id.bottomImageview);
+            if (!Main.musicService.isPaused())
+                pp.setImageResource(R.drawable.ic_pause_dark);
+            else pp.setImageResource(R.drawable.ic_play_dark);
+            pp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Main.musicService.togglePlayback();
+                    if (!Main.musicService.isPaused())
+                        pp.setImageResource(R.drawable.ic_pause_dark);
+                    else pp.setImageResource(R.drawable.ic_play_dark);
+                }
+            });
+            Bitmap newImage;
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = 4;
+            newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
+            aa.setImageBitmap(newImage);
             t.setText(Main.musicService.currentSong.getTitle());
-            a.setText("by " + Main.musicService.currentSong.getArtist());
+            a.setText(String.format("by %s", Main.musicService.currentSong.getArtist()));
             t.setSelected(true);
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {

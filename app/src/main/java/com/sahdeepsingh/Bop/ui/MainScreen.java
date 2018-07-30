@@ -469,6 +469,25 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             name.setText(Main.musicService.currentSong.getTitle());
             artist.setText(Main.musicService.currentSong.getArtist());
             workOnImages();
+            final ImageButton pp = findViewById(R.id.bottomImagebutton);
+            ImageView aa = findViewById(R.id.bottomImageview);
+            if (!Main.musicService.isPaused())
+                pp.setImageResource(R.drawable.ic_pause_dark);
+            else pp.setImageResource(R.drawable.ic_play_dark);
+            pp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Main.musicService.togglePlayback();
+                    if (!Main.musicService.isPaused())
+                        pp.setImageResource(R.drawable.ic_pause_dark);
+                    else pp.setImageResource(R.drawable.ic_play_dark);
+                }
+            });
+            Bitmap newImage;
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = 4;
+            newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
+            aa.setImageBitmap(newImage);
         }
 
     }

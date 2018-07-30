@@ -176,7 +176,7 @@ public class NotificationMusic extends NotificationSimple {
         if ((notificationView == null) || (notificationBuilder == null))
             return;
 
-        int iconID = ((isPaused) ?
+        int iconID = ((Main.musicService.isPaused()) ?
                 R.drawable.ic_play_white :
                 R.drawable.ic_pause_white);
 
@@ -206,6 +206,7 @@ public class NotificationMusic extends NotificationSimple {
     public static class NotificationPlayButtonHandler extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Main.musicService.notifyCurrentSong();
             Main.musicService.togglePlayback();
         }
     }

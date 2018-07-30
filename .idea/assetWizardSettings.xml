@@ -19,9 +19,9 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/icons8-end-26.png" />
-                                      <entry key="outputName" value="ic_skip_dark" />
-                                      <entry key="theme" value="CUSTOM" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/icons8-skip-to-start-26.png" />
+                                      <entry key="outputName" value="ic_previous_white" />
+                                      <entry key="theme" value="HOLO_DARK" />
                                       <entry key="themeColor" value="000000" />
                                     </map>
                                   </option>

@@ -6,19 +6,19 @@
         android:key="appearance"
         android:title="Appearance">
 
-        <ListPreference
+        <!--<ListPreference
             android:defaultValue="default"
             android:entries="@array/themes"
             android:entryValues="@array/themes_values"
             android:key="themes"
             android:summary="@string/menu_settings_themes_subtitle"
-            android:title="@string/menu_settings_themes_title" />
+            android:title="@string/menu_settings_themes_title" />-->
 
-        <CheckBoxPreference
+        <!--<CheckBoxPreference
             android:defaultValue="true"
             android:key="show_notification"
             android:summary="@string/menu_settings_show_notification_subtitle"
-            android:title="@string/menu_settings_show_notification_title" />
+            android:title="@string/menu_settings_show_notification_title" />-->
 
         <CheckBoxPreference
             android:defaultValue="true"
@@ -28,27 +28,27 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:key="sharing"
-        android:title="Sharing">
+    <!--<PreferenceCategory-->
+        <!--android:key="sharing"-->
+        <!--android:title="Sharing">-->
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:disableDependentsState="false"
-            android:key="lastfm"
-            android:summary="@string/menu_settings_lastfm_subtitle"
-            android:title="@string/menu_settings_lastfm_title" />
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="false"-->
+            <!--android:disableDependentsState="false"-->
+            <!--android:key="lastfm"-->
+            <!--android:summary="@string/menu_settings_lastfm_subtitle"-->
+            <!--android:title="@string/menu_settings_lastfm_title" />-->
 
-        <ListPreference
-            android:defaultValue="sls"
-            android:dependency="lastfm"
-            android:entries="@array/lastfm_which"
-            android:entryValues="@array/lastfm_which_values"
-            android:key="lastfm_which"
-            android:summary="@string/menu_settings_lastfm_which_subtitle"
-            android:title="@string/menu_settings_lastfm_which_title" />
+        <!--<ListPreference-->
+            <!--android:defaultValue="sls"-->
+            <!--android:dependency="lastfm"-->
+            <!--android:entries="@array/lastfm_which"-->
+            <!--android:entryValues="@array/lastfm_which_values"-->
+            <!--android:key="lastfm_which"-->
+            <!--android:summary="@string/menu_settings_lastfm_which_subtitle"-->
+            <!--android:title="@string/menu_settings_lastfm_which_title" />-->
 
-    </PreferenceCategory>
+    <!--</PreferenceCategory>-->
 
     <PreferenceCategory
         android:key="headset"

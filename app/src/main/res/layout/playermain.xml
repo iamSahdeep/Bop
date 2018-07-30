@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/transparent"
-                        android:src="@drawable/ic_skip_dark" />
+                        android:src="@drawable/ic_previous_dark" />
 
                     <ImageButton
                         android:id="@+id/playPause"
