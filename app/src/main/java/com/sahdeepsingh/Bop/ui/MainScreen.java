@@ -54,12 +54,10 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 
 public class MainScreen extends ActivityMaster implements MediaController.MediaPlayerControl, ActionBar.TabListener, FragmentSongs.OnListFragmentInteractionListener, FragmentPlaylist.OnListFragmentInteractionListener, FragmentGenre.OnListFragmentInteractionListener, FragmentAlbum.OnListFragmentInteractionListener {
 
-    private static final int PERMISSION_REQUEST_CODE = 200;
 
     public static final String BROADCAST_ACTION = "lol";
     static final int USER_CHANGED_THEME = 1;
@@ -135,11 +133,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!checkPerm()) {
-                requestPerm();
-            }
-        }
+
 
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -162,68 +156,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         changeSongBR = new ChangeSongBR();
 
 
-    }
-
-    private boolean checkPerm() {
-        int result = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPerm() {
-
-        ActivityCompat.requestPermissions(this, new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0) {
-
-                    boolean ReadAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean WriteAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-
-                    if (ReadAccepted && WriteAccepted)
-                        Snackbar.make(findViewById(R.id.sliding_layout), "Permission Granted, working on Player", Snackbar.LENGTH_SHORT).show();
-                    else {
-
-                        Snackbar.make(findViewById(R.id.sliding_layout), "Permission Denied, can't work on Player", Snackbar.LENGTH_SHORT).show();
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)) {
-                                showMessageOKCancel("You need to allow access to both the permissions",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE},
-                                                            PERMISSION_REQUEST_CODE);
-                                                }
-                                            }
-                                        });
-                                return;
-                            }
-                        }
-
-                    }
-                }
-
-
-                break;
-        }
-    }
-
-
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(MainScreen.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
     }
 
     private void setupViewPager(ViewPager viewPager) {
