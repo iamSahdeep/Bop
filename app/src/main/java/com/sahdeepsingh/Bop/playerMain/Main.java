@@ -176,7 +176,6 @@ public class Main {
         Log.w("service", "stoppedService");
         c.stopService(musicServiceIntent);
         musicServiceIntent = null;
-
         Main.musicService = null;
     }
 

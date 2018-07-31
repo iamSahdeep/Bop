@@ -123,7 +123,9 @@ public class NotificationMusic extends NotificationSimple {
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = 5;
         newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
+        if (newImage != null)
         notificationView.setImageViewBitmap(R.id.albumArtNoti,newImage);
+        else notificationView.setImageViewResource(R.id.albumArtNoti,R.drawable.ic_cancel_white);
         //String path = Main.songs.getAlbumArt(song);
 
 
@@ -147,7 +149,7 @@ public class NotificationMusic extends NotificationSimple {
 
         // And now, building and attaching the Skip button.
         Intent buttonStopIntent = new Intent(context, NotificationStopButtonHandler.class);
-        buttonSkipIntent.putExtra("action", "stop");
+        buttonStopIntent.putExtra("action", "stop");
 
         PendingIntent buttonStopPendingIntent = PendingIntent.getBroadcast(context, 0, buttonStopIntent, 0);
         notificationView.setOnClickPendingIntent(R.id.stopNoti, buttonStopPendingIntent);
@@ -235,7 +237,6 @@ public class NotificationMusic extends NotificationSimple {
             Main.musicService.onDestroy();
             Main.stopMusicService(context);
             System.exit(0);
-
         }
     }
 }

@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.AdapterSong;
 import com.sahdeepsingh.Bop.controls.CircularSeekBar;
-import com.sahdeepsingh.Bop.controls.MusicController;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -75,7 +74,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
      * clicks the ActionBar.
      * It serves to sort the current song list.
      */
-    private PopupMenu popup;
     private Toolbar toolbar;
 
     @Override
@@ -219,7 +217,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inSampleSize = 4;
             newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
+            if (newImage != null)
             aa.setImageBitmap(newImage);
+            else aa.setImageResource(R.drawable.ic_cancel_dark);
         }
 
     }

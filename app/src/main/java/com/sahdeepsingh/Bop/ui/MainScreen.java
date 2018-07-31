@@ -43,7 +43,6 @@ import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.controls.CircularSeekBar;
-import com.sahdeepsingh.Bop.controls.MusicController;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
 import com.sahdeepsingh.Bop.fragments.FragmentGenre;
 import com.sahdeepsingh.Bop.fragments.FragmentPlaylist;
@@ -72,7 +71,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     ImageView blurimage, centreimage, aa;
     TextView name, artist , TopName , TopArttist;
     ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle, pp;
-    private MusicController musicController;
     public boolean paused = false;
     private boolean playbackPaused = false;
 
@@ -400,7 +398,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inSampleSize = 4;
             newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
+            if (newImage != null)
             aa.setImageBitmap(newImage);
+            else aa.setImageResource(R.drawable.ic_cancel_dark);
         }
 
     }
@@ -554,7 +554,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         circularSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
-                if (musicController != null && fromUser)
+                if (fromUser)
                     seekTo(progress);
             }
 
