@@ -357,7 +357,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         Bitmap bitmap;
         if (path != null && path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cancel_white);
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cancel_dark);
         centreimage.setImageBitmap(bitmap);
         Bitmap blurredBitmap = blurMyImage(bitmap);
         blurimage.setImageBitmap(blurredBitmap);

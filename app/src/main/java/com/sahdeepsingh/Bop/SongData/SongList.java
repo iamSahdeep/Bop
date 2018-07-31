@@ -4,9 +4,13 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -283,7 +287,7 @@ public class SongList {
 
                 // Adding the song to the global list
                 //We will check of the album art otherwise wont add just remove in future after solution
-                if (getAlbumArt(song) != null)
+                //if (getAlbumArt(song) != null)
                 songs.add(song);
 
             }
@@ -354,13 +358,13 @@ public class SongList {
 
     public String getAlbumArt(Song song) {
         String path = "";
-//            try {
-//                Uri genericArtUri = Uri.parse("content://media/external/audio/albumart");
-//                Uri actualArtUri = ContentUris.withAppendedId(genericArtUri, albumId);
-//                return actualArtUri.toString();
-//            } catch(Exception e) {
-//                return null;
-//            }
+           /* try {
+                Uri genericArtUri = Uri.parse("content://media/external/audio/albumart");
+                Uri actualArtUri = ContentUris.withAppendedId(genericArtUri, Long.parseLong(String.valueOf(song.getAlbumid())));
+                return actualArtUri.toString();
+            } catch(Exception e) {
+                return null;
+            }*/
 /*
         Bitmap bitmap = getAlbumBitmap(song);
 */
@@ -373,10 +377,10 @@ public class SongList {
         if (cursor.moveToFirst()) {
             path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
             // do whatever you need to do
-
         }
         cursor.close();
         return path;
+
     }
 
     public Bitmap getAlbumBitmap(Song song){
@@ -389,6 +393,15 @@ public class SongList {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if (bitmap ==null){
+           bitmap = BitmapFactory.decodeFile("android.resource://com.sahdeepsingh.Bop/drawable/play");
+        }
+        if (bitmap == null){
+            bitmap = Bitmap.createBitmap(400,400, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawColor(Color.rgb(66, 173, 244));
         }
         return bitmap;
     }

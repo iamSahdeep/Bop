@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -77,21 +78,28 @@ public class SplashScreen extends AppCompatActivity {
                     boolean WriteAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
 
                     if (ReadAccepted && WriteAccepted)
-                        Snackbar.make(findViewById(R.id.sliding_layout), "Permission Granted, working on Player", Snackbar.LENGTH_SHORT).show();
-                    else {
-
-                        Snackbar.make(findViewById(R.id.sliding_layout), "Permission Denied, can't work on Player", Snackbar.LENGTH_SHORT).show();
+                    {
+                        if (Main.mainMenuHasNowPlayingItem) {
+                            Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+                            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        } else {
+                            Main.initialize(this);
+                            scanSongs(false);
+                        }
+                    }
+                       // Snackbar.make(findViewById(R.id.sliding_layout), "Permission Granted, working on Player", Snackbar.LENGTH_SHORT).show();
+                    else {  // Snackbar.make(findViewById(R.id.sliding_layout), "Permission Denied, can't work on Player", Snackbar.LENGTH_SHORT).show();
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)) {
                                 showMessageOKCancel("You need to allow access to both the permissions",
                                         new DialogInterface.OnClickListener() {
+                                            @RequiresApi(api = Build.VERSION_CODES.M)
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE},
-                                                            PERMISSION_REQUEST_CODE);
-                                                }
+                                                requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE},
+                                                        PERMISSION_REQUEST_CODE);
                                             }
                                         });
                                 return;
@@ -100,8 +108,6 @@ public class SplashScreen extends AppCompatActivity {
 
                     }
                 }
-
-
                 break;
         }
     }

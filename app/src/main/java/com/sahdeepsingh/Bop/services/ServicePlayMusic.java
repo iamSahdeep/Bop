@@ -577,11 +577,8 @@ public class ServicePlayMusic extends Service
                 .putString(android.media.MediaMetadataRetriever.METADATA_KEY_ALBUM, song.getAlbum())
                 .putString(android.media.MediaMetadataRetriever.METADATA_KEY_TITLE, song.getTitle())
                 .putLong(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION, song.getDuration())
-
-                // TODO: fetch real item artwork
-                //.putBitmap(
-                //        RemoteControlClientCompat.MetadataEditorCompat.METADATA_KEY_ARTWORK,
-                //        mDummyAlbumArt)
+                .putBitmap(RemoteControlClientCompat.MetadataEditorCompat.METADATA_KEY_ARTWORK,
+                        Main.songs.getAlbumBitmap(song))
 
                 // Saves (after #editMetadata())
                 .apply();
@@ -1098,55 +1095,14 @@ public class ServicePlayMusic extends Service
         Log.w(TAG, "sentBroadcast");
     }
 
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        Log.e("service", "vwvwfvwfvwfv");
-
-
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if ((intent != null) && (intent.getBooleanExtra("ALARM_RESTART_SERVICE_DIED", false))) {
-            Log.d(TAG, "onStartCommand after ALARM_RESTART_SERVICE_DIED");
-            Log.d(TAG, "Service already running - return immediately...");
-            ensureServiceStaysRunning();
-            return START_STICKY;
-        }
         // Do your other onStartCommand stuff..
         return START_STICKY;
     }
 
-    private void ensureServiceStaysRunning() {
-        // KitKat appears to have (in some cases) forgotten how to honor START_STICKY
-        // and if the service is killed, it doesn't restart.  On an emulator & AOSP device, it restarts...
-        // on my CM device, it does not - WTF?  So, we'll make sure it gets back
-        // up and running in a minimum of 20 minutes.  We reset our timer on a handler every
-        // 2 minutes...but since the handler runs on uptime vs. the alarm which is on realtime,
-        // it is entirely possible that the alarm doesn't get reset.  So - we make it a noop,
-        // but this will still count against the app as a wakelock when it triggers.  Oh well,
-        // it should never cause a device wakeup.  We're also at SDK 19 preferred, so the alarm
-        // mgr set algorithm is better on memory consumption which is good.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // A restart intent - this never changes...
-            final int restartAlarmInterval = 20 * 60 * 1000;
-            final int resetAlarmTimer = 2 * 60 * 1000;
-            final Intent restartIntent = new Intent(this, ServicePlayMusic.class);
-            restartIntent.putExtra("ALARM_RESTART_SERVICE_DIED", true);
-            final AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            @SuppressLint("HandlerLeak") Handler restartServiceHandler = new Handler() {
-                @Override
-                public void handleMessage(Message msg) {
-                    // Create a pending intent
-                    PendingIntent pintent = PendingIntent.getService(getApplicationContext(), 0, restartIntent, 0);
-                    alarmMgr.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + restartAlarmInterval, pintent);
-                    sendEmptyMessageDelayed(0, resetAlarmTimer);
-                }
-            };
-            restartServiceHandler.sendEmptyMessageDelayed(0, 0);
-        }
-    }
 
     /**
      * Possible states this Service can be on.
