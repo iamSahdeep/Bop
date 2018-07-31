@@ -60,7 +60,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     private ListView songListView;
     private boolean paused = false;
     private boolean playbackPaused = false;
-    private MusicController musicController;
+
     /**
      * Thing that maps songs to items on the ListView.
      * <p>
@@ -104,19 +104,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         pp = findViewById(R.id.bottomImagebutton);
         aa = findViewById(R.id.bottomImageview);
 
-        // We'll play this pre-defined list.
-        // By default we play the first track, although an
-        // extra can change this. Look below.
-       /* if(!Main.nowPlayingList.isEmpty())
-            Main.musicService.setList(Main.nowPlayingList);
-        Main.musicService.setSong(0);*/
-
-        // Connects the song list to an adapter
-        // (thing that creates several Layouts from the song list)
         songAdapter = new AdapterSong(this, Main.nowPlayingList);
         songListView.setAdapter(songAdapter);
 
-        // Looking for optional extras
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
@@ -149,8 +139,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
                     Main.musicService.setList(Main.musicList);
                 Main.musicService.playSong();
             }
-
-
         }
 
         // Scroll the list view to the current song.
@@ -161,22 +149,17 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         songListView.setOnItemClickListener(this);
         songListView.setOnItemLongClickListener(this);
 
-        setMusicController();
-
-        if (playbackPaused) {
-            setMusicController();
-            playbackPaused = false;
-        }
 
         // While we're playing music, add an item to the
         // Main Menu that returns here.
         MainScreen.addNowPlayingItem(this);
-
+        prepareSeekBar();
         setControllListeners();
 
         changeSongBR = new ChangeSongBR();
 
         slidingUpPanelLayoutListen();
+
 
     }
 
@@ -319,7 +302,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         circularSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
-                if (musicController != null && fromUser)
+                if (fromUser)
                     seekTo(progress);
             }
 
@@ -341,7 +324,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             @Override
             public void run() {
                 if (isPlaying())
-                    circularSeekBar.setProgress((int) getCurrentPosition());
+                    circularSeekBar.setProgress(getCurrentPosition());
 
                 handler.postDelayed(this, 1);
             }
@@ -361,8 +344,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         centreimage.setImageBitmap(bitmap);
         Bitmap blurredBitmap = blurMyImage(bitmap);
         blurimage.setImageBitmap(blurredBitmap);
-
-
     }
 
     private Bitmap blurMyImage(Bitmap image) {
@@ -491,9 +472,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
         if (paused) {
-            // Ensure that the controller
-            // is shown when the user returns to the app
-            setMusicController();
             paused = false;
         }
 
@@ -508,42 +486,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
      */
     @Override
     protected void onStop() {
-        musicController.hide();
-
         super.onStop();
     }
 
-    /**
-     * (Re)Starts the musicController.
-     */
-    private void setMusicController() {
-        prepareSeekBar();
-
-        musicController = new MusicController(PlayingNow.this);
-
-        // What will happen when the user presses the
-        // next/previous buttons?
-        musicController.setPrevNextListeners(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Calling method defined on ActivityNowPlaying
-                playNext();
-            }
-        }, new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // Calling method defined on ActivityNowPlaying
-                playPrevious();
-            }
-        });
-
-        // Binding to our media player
-        musicController.setMediaPlayer(this);
-        musicController
-                .setAnchorView(findViewById(R.id.list_nowplaying));
-        musicController.setEnabled(true);
-    }
 
     @Override
     public void start() {
@@ -628,7 +573,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         // To prevent the MusicPlayer from behaving
         // unexpectedly when we pause the song playback.
         if (playbackPaused) {
-            setMusicController();
             playbackPaused = false;
         }
 
@@ -647,7 +591,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         // To prevent the MusicPlayer from behaving
         // unexpectedly when we pause the song playback.
         if (playbackPaused) {
-            setMusicController();
             playbackPaused = false;
         }
 
@@ -672,7 +615,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         Main.musicService.playSong();
 
         if (playbackPaused) {
-            setMusicController();
             playbackPaused = false;
         }
         onResume();

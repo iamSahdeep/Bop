@@ -359,10 +359,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         }
 
         if (Main.mainMenuHasNowPlayingItem) {
-            setMusicController();
+           Main.musicService.notifyCurrentSong();
 
             if (playbackPaused) {
-                setMusicController();
                 playbackPaused = false;
             }
             workonSlidingPanel();
@@ -622,32 +621,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     }
 
-    private void setMusicController() {
-
-        musicController = new MusicController(MainScreen.this);
-
-        // What will happen when the user presses the
-        // next/previous buttons?
-        musicController.setPrevNextListeners(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Calling method defined on ActivityNowPlaying
-                playNext();
-            }
-        }, new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // Calling method defined on ActivityNowPlaying
-                playPrevious();
-            }
-        });
-
-        // Binding to our media player
-        musicController.setMediaPlayer(this);
-        musicController.setEnabled(true);
-    }
-
 
     @Override
     public void start() {
@@ -729,7 +702,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         // To prevent the MusicPlayer from behaving
         // unexpectedly when we pause the song playback.
         if (playbackPaused) {
-            setMusicController();
             playbackPaused = false;
         }
 
@@ -748,7 +720,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         // To prevent the MusicPlayer from behaving
         // unexpectedly when we pause the song playback.
         if (playbackPaused) {
-            setMusicController();
             playbackPaused = false;
         }
 
