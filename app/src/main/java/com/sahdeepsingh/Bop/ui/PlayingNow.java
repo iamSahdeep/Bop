@@ -15,6 +15,10 @@ import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -42,7 +46,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     /**
      * Gets called when the Activity is getting initialized.
      */
-
+    private Menu menu;
     private static final float BLUR_RADIUS = 25f;
     CircularSeekBar circularSeekBar;
     ImageView blurimage, centreimage, aa;
@@ -161,6 +165,15 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.removeItem(R.id.nowPlayingIcon);
+        return true;
+    }
+
+
+
     private void slidingUpPanelLayoutListen() {
         final LinearLayout songNameDisplay , BottomControls;
         songNameDisplay = findViewById(R.id.SongNameTop);
@@ -196,7 +209,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
             name.setText(Main.musicService.currentSong.getTitle());
             artist.setText(Main.musicService.currentSong.getArtist());
             TopName.setText(Main.musicService.currentSong.getTitle());
@@ -430,16 +442,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     }
 
 
-    /* @Override
-     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-         if (event.getAction() == KeyEvent.ACTION_DOWN)
-             if (keyCode == KeyEvent.KEYCODE_MENU)
-                 musicController.show();
-
-         return super.onKeyDown(keyCode, event);
-     }
- */
     @Override
     public void onBackPressed() {
         if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)
@@ -466,11 +468,11 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     @Override
     protected void onResume() {
         super.onResume();
-        Main.musicService.notifyCurrentSong();
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
+        Main.musicService.notifyCurrentSong();
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         if (paused) {
             paused = false;
         }

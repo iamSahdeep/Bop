@@ -53,8 +53,6 @@ public class ActivityMaster extends AppCompatActivity {
      * `res/values/strings.xml`, at the fields
      * we can change on the Settings menu.
      */
-    protected String currentTheme = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -70,7 +68,7 @@ public class ActivityMaster extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        ActivityMaster.this.invalidateOptionsMenu();
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         if (Main.mainMenuHasNowPlayingItem) {
             TextView t = findViewById(R.id.bottomtextView);
@@ -88,7 +86,6 @@ public class ActivityMaster extends AppCompatActivity {
         } else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
-
         }
     }
 
@@ -107,7 +104,7 @@ public class ActivityMaster extends AppCompatActivity {
         // Extra option to go to Now Playing screen
         // (only activated when there's an actual Now Playing screen)
         if (Main.mainMenuHasNowPlayingItem)
-            menu.findItem(R.id.context_menu_now_playing).setVisible(true);
+            menu.findItem(R.id.nowPlayingIcon).setVisible(true);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -116,6 +113,7 @@ public class ActivityMaster extends AppCompatActivity {
      * This method gets called whenever the user clicks an
      * item on the context menu.
      */
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -129,6 +127,10 @@ public class ActivityMaster extends AppCompatActivity {
 
             case R.id.context_menu_settings:
                 startActivity(new Intent(this, ActivityMenuSettings.class));
+                break;
+
+            case R.id.nowPlayingIcon:
+                startActivity(new Intent(this,PlayingNow.class));
                 break;
 
         }

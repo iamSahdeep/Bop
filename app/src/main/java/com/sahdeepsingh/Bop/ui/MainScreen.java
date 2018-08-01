@@ -32,6 +32,7 @@ import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -239,34 +240,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
                 break;
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_screen, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            // Let's start the settings screen.
-            // While doing so, we need to know if the user have
-            // changed the theme.
-            // If he did, we'll refresh the screen.
-            // See `onActivityResult()`
-            Intent settingsIntent = new Intent(this, ActivityMenuSettings.class);
-            startActivityForResult(settingsIntent, USER_CHANGED_THEME);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**
