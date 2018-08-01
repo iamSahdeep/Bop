@@ -251,8 +251,8 @@ public class RemoteControlClientCompat {
                     mPutLongMethod = metadataEditorClass.getMethod("putLong",
                             int.class, long.class);
 
-                    mClearMethod = metadataEditorClass.getMethod("clear", new Class[]{});
-                    mApplyMethod = metadataEditorClass.getMethod("apply", new Class[]{});
+                    mClearMethod = metadataEditorClass.getMethod("clear");
+                    mApplyMethod = metadataEditorClass.getMethod("apply");
 
                 } catch (Exception e) {
                     throw new RuntimeException(e.getMessage(), e);

@@ -52,9 +52,9 @@ public class AdapterSong extends BaseAdapter {
         @SuppressLint("ViewHolder") LinearLayout songLayout = (LinearLayout) songInflater.inflate(R.layout.menu_item_song, parent,
                 false);
 
-        TextView titleView = (TextView) songLayout.findViewById(R.id.menu_item_song_title);
-        TextView artistView = (TextView) songLayout.findViewById(R.id.menu_item_song_artist);
-        TextView albumView = (TextView) songLayout.findViewById(R.id.menu_item_song_album);
+        TextView titleView = songLayout.findViewById(R.id.menu_item_song_title);
+        TextView artistView = songLayout.findViewById(R.id.menu_item_song_artist);
+        TextView albumView = songLayout.findViewById(R.id.menu_item_song_album);
 
         Song currentSong = songs.get(position);
 

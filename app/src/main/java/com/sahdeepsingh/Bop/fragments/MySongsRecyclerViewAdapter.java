@@ -92,8 +92,8 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            songName = (TextView) view.findViewById(R.id.songName);
-            songBy = (TextView) view.findViewById(R.id.songBy);
+            songName = view.findViewById(R.id.songName);
+            songBy = view.findViewById(R.id.songBy);
             circleImageView = view.findViewById(R.id.albumArt);
         }
 

@@ -75,7 +75,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            playlistname = (TextView) view.findViewById(R.id.PlaylistName);
+            playlistname = view.findViewById(R.id.PlaylistName);
         }
 
     }

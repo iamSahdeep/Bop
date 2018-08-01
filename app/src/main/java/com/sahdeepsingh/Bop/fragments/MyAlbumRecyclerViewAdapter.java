@@ -79,7 +79,7 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            albumname = (TextView) view.findViewById(R.id.AlbumName);
+            albumname = view.findViewById(R.id.AlbumName);
             albumart = view.findViewById(R.id.albumArt1);
         }
 

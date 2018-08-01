@@ -70,7 +70,7 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            genre = (TextView) view.findViewById(R.id.GenreName);
+            genre = view.findViewById(R.id.GenreName);
         }
     }
 }

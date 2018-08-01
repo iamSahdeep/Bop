@@ -134,7 +134,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         setContentView(R.layout.activity_main_screen);
 
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         name = findViewById(R.id.bottomtextView);
         artist = findViewById(R.id.bottomtextartist);
         pp = findViewById(R.id.bottomImagebutton);
@@ -147,11 +147,11 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
         FloatingActionButton floatingActionButton = findViewById(R.id.fab_Playall);
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
 
         setupViewPager(mViewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         changeSongBR = new ChangeSongBR();
@@ -549,7 +549,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             @Override
             public void run() {
                 if (isPlaying())
-                    circularSeekBar.setProgress((int) getCurrentPosition());
+                    circularSeekBar.setProgress(getCurrentPosition());
 
                 handler.postDelayed(this, 1);
             }

@@ -15,10 +15,7 @@ import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -27,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,10 +81,10 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playing_now);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        songListView = (ListView) findViewById(R.id.list_nowplaying);
+        songListView = findViewById(R.id.list_nowplaying);
 
         circularSeekBar = findViewById(R.id.circularSeekBar);
         blurimage = findViewById(R.id.BlurImage);
