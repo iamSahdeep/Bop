@@ -240,13 +240,13 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
 
         if (Main.musicService.isShuffle())
-            shuffletoggle.setImageResource(R.drawable.ic_menu_shuffle_on);
-        else shuffletoggle.setImageResource(R.drawable.ic_menu_shuffle_off);
+            shuffletoggle.setImageResource(R.drawable.ic_shuffle_on_white);
+        else shuffletoggle.setImageResource(R.drawable.ic_shuffle_off_white);
 
 
         if (Main.musicService.isRepeat())
-            repeatToggle.setImageResource(R.drawable.ic_menu_repeat_on);
-        else repeatToggle.setImageResource(R.drawable.ic_menu_repeat_off);
+            repeatToggle.setImageResource(R.drawable.ic_repeat_on_white);
+        else repeatToggle.setImageResource(R.drawable.ic_repeat_off_white);
 
 
         shuffletoggle.setOnClickListener(new View.OnClickListener() {
@@ -254,8 +254,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             public void onClick(View view) {
                 Main.musicService.toggleShuffle();
                 if (Main.musicService.isShuffle())
-                    shuffletoggle.setImageResource(R.drawable.ic_menu_shuffle_on);
-                else shuffletoggle.setImageResource(R.drawable.ic_menu_shuffle_off);
+                    shuffletoggle.setImageResource(R.drawable.ic_shuffle_on_white);
+                else shuffletoggle.setImageResource(R.drawable.ic_shuffle_off_white);
 
             }
         });
@@ -289,8 +289,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             public void onClick(View view) {
                 Main.musicService.toggleRepeat();
                 if (Main.musicService.isRepeat())
-                    repeatToggle.setImageResource(R.drawable.ic_menu_repeat_on);
-                else repeatToggle.setImageResource(R.drawable.ic_menu_repeat_off);
+                    repeatToggle.setImageResource(R.drawable.ic_repeat_on_white);
+                else repeatToggle.setImageResource(R.drawable.ic_repeat_off_white);
             }
         });
 

@@ -49,7 +49,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         holder.songName.setSelected(true);
         String path = Main.songs.getAlbumArt(songs.get(position));
         if (path != null)
-            Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.pause).into(holder.circleImageView);
+            Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.ic_pause_dark).into(holder.circleImageView);
         else  Picasso.get().load(R.drawable.ic_cancel_dark).fit().centerCrop().into(holder.circleImageView);
         //holder.circleImageView.setImageBitmap(Main.songs.getAlbumArt(songs.get(position)));
 

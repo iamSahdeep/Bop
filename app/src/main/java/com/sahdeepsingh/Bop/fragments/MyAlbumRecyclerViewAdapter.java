@@ -46,7 +46,7 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
         List<Song> songsList = Main.songs.getSongsByAlbum(selectedAlbum);
         String path = Main.songs.getAlbumArt(songsList.get(0));
         if (path != null)
-            Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.pause).into(holder.albumart);
+            Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.ic_pause_dark).into(holder.albumart);
         else  Picasso.get().load(R.drawable.ic_cancel_dark).fit().centerCrop().into(holder.albumart);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

@@ -51,7 +51,7 @@
             android:layout_above="@id/bottomcontrolsMainscreen"
             android:layout_gravity="bottom|end"
             android:layout_margin="10dp"
-            android:src="@drawable/end" />
+            android:src="@drawable/ic_cancel_white" />
 
     </android.support.design.widget.CoordinatorLayout>
 

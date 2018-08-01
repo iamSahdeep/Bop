@@ -19,9 +19,9 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/icons8-musical-notes-26.png" />
-                                      <entry key="outputName" value="ic_music_dark" />
-                                      <entry key="theme" value="CUSTOM" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/icons8-repeat-26.png" />
+                                      <entry key="outputName" value="ic_repeat_off_white" />
+                                      <entry key="theme" value="HOLO_DARK" />
                                       <entry key="themeColor" value="000000" />
                                     </map>
                                   </option>

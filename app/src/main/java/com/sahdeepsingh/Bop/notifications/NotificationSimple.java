@@ -49,7 +49,7 @@ public class NotificationSimple {
 
         Notification.Builder builder = new Notification.Builder(c);
 
-        builder.setSmallIcon(R.drawable.play)
+        builder.setSmallIcon(R.drawable.ic_skip_white)
                 .setContentTitle(title)
                 .setContentText(text);
 
@@ -71,7 +71,7 @@ public class NotificationSimple {
 
         Notification.Builder builder = new Notification.Builder(c);
 
-        builder.setSmallIcon(R.drawable.play)
+        builder.setSmallIcon(R.drawable.ic_skip_white)
                 .setContentTitle(title)
                 .setContentText(text);
 
