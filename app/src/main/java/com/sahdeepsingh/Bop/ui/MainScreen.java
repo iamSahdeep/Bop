@@ -51,6 +51,7 @@ import com.sahdeepsingh.Bop.fragments.FragmentSongs;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.playerMain.SingleToast;
+import com.sahdeepsingh.Bop.visualizer.barVisuals;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
@@ -75,6 +76,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     public boolean paused = false;
     private boolean playbackPaused = false;
 
+    barVisuals barVisualss;
 
     ChangeSongBR changeSongBR;
     /**
@@ -141,6 +143,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         aa = findViewById(R.id.bottomImageview);
         TopName = findViewById(R.id.songMainTitle);
         TopArttist = findViewById(R.id.songMainArtist);
+
+        barVisualss = findViewById(R.id.barVisuals);
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -344,6 +349,8 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     protected void onPause() {
         super.onPause();
         unregisterReceiver(changeSongBR);
+        if (Main.musicService.isPlaying())
+        barVisualss.release();
     }
 
     class ChangeSongBR extends BroadcastReceiver {
@@ -524,6 +531,10 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     private void prepareSeekBar() {
 
+        barVisualss.setColor(ContextCompat.getColor(this, R.color.gray));
+        barVisualss.setDensity(70);
+        barVisualss.setPlayer(getAudioSessionId());
+
         circularSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
@@ -660,8 +671,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     @Override
     public int getAudioSessionId() {
-        // TODO Auto-generated method stub
-        return 0;
+        return Main.musicService.getAudioSession();
     }
 
     // Back to the normal methods

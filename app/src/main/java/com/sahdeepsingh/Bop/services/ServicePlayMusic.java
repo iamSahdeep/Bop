@@ -878,9 +878,6 @@ public class ServicePlayMusic extends Service
 
     /**
      * Toggles between Pause and Unpause.
-     *
-     * @see pausePlayer()
-     * @see unpausePlayer()
      */
     public void togglePlayback() {
         if (serviceState == ServiceState.Paused)
@@ -1103,6 +1100,11 @@ public class ServicePlayMusic extends Service
         return START_STICKY;
     }
 
+    public int getAudioSession(){
+        if (player == null)
+            return 0;
+        else return player.getAudioSessionId();
+    }
 
     /**
      * Possible states this Service can be on.

@@ -20,6 +20,7 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.Manifest.permission.RECORD_AUDIO;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -58,13 +59,14 @@ public class SplashScreen extends AppCompatActivity {
     private boolean checkPerm() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(),RECORD_AUDIO);
 
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPerm() {
 
-        ActivityCompat.requestPermissions(this, new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, RECORD_AUDIO}, PERMISSION_REQUEST_CODE);
 
     }
 
@@ -76,8 +78,9 @@ public class SplashScreen extends AppCompatActivity {
 
                     boolean ReadAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean WriteAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean RecordAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED;
 
-                    if (ReadAccepted && WriteAccepted)
+                    if (ReadAccepted && WriteAccepted && RecordAccepted)
                     {
                         if (Main.mainMenuHasNowPlayingItem) {
                             Intent intent = new Intent(SplashScreen.this, MainScreen.class);
@@ -98,7 +101,7 @@ public class SplashScreen extends AppCompatActivity {
                                             @RequiresApi(api = Build.VERSION_CODES.M)
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE},
+                                                requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE , RECORD_AUDIO},
                                                         PERMISSION_REQUEST_CODE);
                                             }
                                         });

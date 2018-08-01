@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
@@ -31,6 +33,7 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.AdapterSong;
 import com.sahdeepsingh.Bop.controls.CircularSeekBar;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.visualizer.barVisuals;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
@@ -59,6 +62,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     private ListView songListView;
     private boolean paused = false;
     private boolean playbackPaused = false;
+    barVisuals barVisualss;
 
     /**
      * Thing that maps songs to items on the ListView.
@@ -101,6 +105,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         artist = findViewById(R.id.bottomtextartist);
         pp = findViewById(R.id.bottomImagebutton);
         aa = findViewById(R.id.bottomImageview);
+
+        barVisualss = findViewById(R.id.barVisuals);
 
         songAdapter = new AdapterSong(this, Main.nowPlayingList);
         songListView.setAdapter(songAdapter);
@@ -307,6 +313,11 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
     private void prepareSeekBar() {
 
+        barVisualss.setColor(ContextCompat.getColor(this, R.color.gray));
+        barVisualss.setDensity(70);
+        barVisualss.setPlayer(getAudioSessionId());
+
+
         circularSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
@@ -454,6 +465,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     protected void onPause() {
         super.onPause();
         unregisterReceiver(changeSongBR);
+        barVisualss.release();
         paused = true;
         playbackPaused = true;
     }
@@ -555,8 +567,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
     @Override
     public int getAudioSessionId() {
-        // TODO Auto-generated method stub
-        return 0;
+        return Main.musicService.getAudioSession();
     }
 
     // Back to the normal methods
