@@ -5,11 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum.OnListFragmentInteractionListener;
+import com.sahdeepsingh.Bop.playerMain.Main;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -37,6 +42,12 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.albumname.setText(mValues.get(position));
+        String selectedAlbum = Main.songs.getAlbums().get(position);
+        List<Song> songsList = Main.songs.getSongsByAlbum(selectedAlbum);
+        String path = Main.songs.getAlbumArt(songsList.get(0));
+        if (path != null)
+            Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.pause).into(holder.albumart);
+        else  Picasso.get().load(R.drawable.ic_cancel_dark).fit().centerCrop().into(holder.albumart);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,11 +74,13 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView albumname;
+        public final ImageView albumart;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             albumname = (TextView) view.findViewById(R.id.AlbumName);
+            albumart = view.findViewById(R.id.albumArt1);
         }
 
     }
