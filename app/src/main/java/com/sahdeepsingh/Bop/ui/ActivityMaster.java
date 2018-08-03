@@ -71,7 +71,7 @@ public class ActivityMaster extends AppCompatActivity {
         ActivityMaster.this.invalidateOptionsMenu();
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         if (Main.mainMenuHasNowPlayingItem) {
-            TextView t = findViewById(R.id.bottomtextView);
+           /* TextView t = findViewById(R.id.bottomtextView);
             TextView a = findViewById(R.id.bottomtextartist);
             ImageView aa = findViewById(R.id.bottomImageview);
             Bitmap newImage;
@@ -81,7 +81,7 @@ public class ActivityMaster extends AppCompatActivity {
             aa.setImageBitmap(newImage);
             t.setText(Main.musicService.currentSong.getTitle());
             a.setText(String.format("by %s", Main.musicService.currentSong.getArtist()));
-            t.setSelected(true);
+            t.setSelected(true);*/
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
@@ -103,7 +103,7 @@ public class ActivityMaster extends AppCompatActivity {
 
         // Extra option to go to Now Playing screen
         // (only activated when there's an actual Now Playing screen)
-        if (Main.mainMenuHasNowPlayingItem)
+        if (Main.musicService.isPlaying())
             menu.findItem(R.id.nowPlayingIcon).setVisible(true);
 
         return super.onCreateOptionsMenu(menu);

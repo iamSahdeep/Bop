@@ -321,12 +321,11 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     @Override
     protected void onResume() {
         super.onResume();
-
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
 
-        if (Main.mainMenuHasNowPlayingItem) {
+        if (isPlaying()) {
             Main.musicService.notifyCurrentSong();
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
@@ -334,9 +333,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
         }
 
-        if (Main.mainMenuHasNowPlayingItem) {
-           Main.musicService.notifyCurrentSong();
-
+        if (isPlaying()) {
             if (playbackPaused) {
                 playbackPaused = false;
             }
@@ -561,6 +558,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             public void run() {
                 if (isPlaying())
                     circularSeekBar.setProgress(getCurrentPosition());
+
 
                 handler.postDelayed(this, 1);
             }

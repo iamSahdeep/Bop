@@ -17,6 +17,7 @@ import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -125,6 +126,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             if (bundle.containsKey("songPosition")) {
                 int songToPlayIndex = bundle.getInt("songPosition");
                 Main.musicService.setSong(songToPlayIndex);
+                Log.e("sD",String.valueOf(songToPlayIndex));
                 Main.musicService.playSong();
             }
             if (bundle.containsKey("playlistName")) {
@@ -344,7 +346,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             public void run() {
                 if (isPlaying())
                     circularSeekBar.setProgress(getCurrentPosition());
-
                 handler.postDelayed(this, 1);
             }
         });
@@ -494,11 +495,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     /**
      * Activity is no longer visible.
      */
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
 
     @Override
     public void start() {

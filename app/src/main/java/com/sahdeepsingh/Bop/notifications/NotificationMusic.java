@@ -234,9 +234,7 @@ public class NotificationMusic extends NotificationSimple {
     public static class NotificationStopButtonHandler extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Main.musicService.onDestroy();
-            Main.stopMusicService(context);
-            System.exit(0);
+            Main.musicService.removedFromNotification();
         }
     }
 }

@@ -391,7 +391,7 @@ public class ServicePlayMusic extends Service
 
         player.stop();
         player.release();
-        player = null;
+        player=null;
 
         Log.w(TAG, "stopMusicPlayer");
     }
@@ -699,7 +699,7 @@ public class ServicePlayMusic extends Service
 
         destroyLockScreenWidget();
         if (player != null)
-            player.release();
+            //player.release();
 
         Log.w(TAG, "onDestroy");
 
@@ -790,12 +790,11 @@ public class ServicePlayMusic extends Service
 
     public boolean isPlaying() {
         boolean returnValue = false;
-
+        if (player != null)
         try {
             returnValue = player.isPlaying();
-        } catch (IllegalStateException e) {
-            player.reset();
-            player.prepareAsync();
+        } catch (IllegalStateException | NullPointerException e) {
+
         }
 
         return returnValue;
@@ -822,7 +821,7 @@ public class ServicePlayMusic extends Service
         Uri songToPlayURI = ContentUris.withAppendedId
                 (android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         songToPlay.getId());
-
+        Log.e("qwq",songToPlayURI.toString());
         try {
             player.setDataSource(getApplicationContext(), songToPlayURI);
         } catch (IOException io) {
@@ -1235,6 +1234,14 @@ public class ServicePlayMusic extends Service
         public ServicePlayMusic getService() {
             return ServicePlayMusic.this;
         }
+    }
+    public void removedFromNotification(){
+        cancelNotification();
+        player.stop();
+        player.reset();
+        //Main.mainMenuHasNowPlayingItem = false;
+       // Main.musicService.currentSong = null;
+
     }
 
 }
