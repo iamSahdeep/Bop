@@ -196,6 +196,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
     private void showPlaylistDialog() {
         final ListView listView;
         Button create, cancel;
+        TextView playListname;
         ArrayList<String> allPlaylists = Main.songs.getPlaylistNames();
         final Dialog dialog = new Dialog(getActivity());
         dialog.setCancelable(true);
@@ -203,16 +204,13 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),R.layout.item_newplaylistdialog , allPlaylists);
         listView =  view.findViewById(R.id.playlistListview);
         listView.setAdapter(arrayAdapter);
+        playListname = view.findViewById(R.id.PlaylistName_new);
         name = view.findViewById(R.id.newPlaylistName);
-        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               name.setText(listView.getItemAtPosition(i).toString(), TextView.BufferType.EDITABLE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String namenew = listView.getItemAtPosition(i).toString();
+                name.setText(namenew);
             }
         });
         create = view.findViewById(R.id.createPlaylist);

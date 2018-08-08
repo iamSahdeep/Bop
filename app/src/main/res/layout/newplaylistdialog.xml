@@ -4,30 +4,32 @@
     android:layout_height="wrap_content"
     android:layout_margin="20dp">
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:text="Select or Create new :"
                 android:textSize="20sp"
+                android:layout_margin="10dp"
                 android:textStyle="bold"
                 android:layout_height="wrap_content" />
             <ListView
                 android:id="@+id/playlistListview"
+                android:layout_margin="15dp"
                 android:listSelector="@color/colorPrimary"
-                android:choiceMode="singleChoice"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp">
+                android:layout_width="match_parent"
+                android:layout_height="150dp">
             </ListView>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:orientation="vertical">
             <EditText
                 android:id="@+id/newPlaylistName"
@@ -38,6 +40,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:weightSum="2"
+                android:layout_marginTop="20dp"
                 android:layout_height="wrap_content">
                 <Button
                     android:id="@+id/createPlaylist"
