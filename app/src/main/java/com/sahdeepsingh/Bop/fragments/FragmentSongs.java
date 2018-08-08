@@ -1,15 +1,21 @@
 package com.sahdeepsingh.Bop.fragments;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -20,13 +26,18 @@ import com.sahdeepsingh.Bop.playerMain.Main;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class FragmentSongs extends android.app.Fragment {
+public class FragmentSongs extends android.app.Fragment implements MySongsRecyclerViewAdapter.OnClickAction {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    Activity activity = getActivity();
+    RecyclerView rv;
+    MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter;
+    ActionMode actionMode;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -71,7 +82,8 @@ public class FragmentSongs extends android.app.Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs, mListener);
+            mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs, mListener);
+            mySongsRecyclerViewAdapter.setActionModeReceiver((MySongsRecyclerViewAdapter.OnClickAction) activity);
             recyclerView.setHasFixedSize(true);
             recyclerView.setItemViewCacheSize(20);
             recyclerView.setDrawingCacheEnabled(true);
@@ -132,4 +144,77 @@ public class FragmentSongs extends android.app.Fragment {
         void onListFragmentInteraction(int item, String type);
     }
 
+    private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.selected, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.selectAll:
+                    selectAll();
+                    Toast.makeText(activity, mySongsRecyclerViewAdapter.getSelected().size() + " selected All", Toast.LENGTH_SHORT).show();
+                    mode.finish();
+                    return true;
+                case R.id.deselectAll:
+                    deselectAll();
+                    Toast.makeText(activity, mySongsRecyclerViewAdapter.getSelected().size() + " Deselected All", Toast.LENGTH_SHORT).show();
+                    mode.finish();
+                    return true;
+                case R.id.addtoPlaylist:
+                    Toast.makeText(activity, mySongsRecyclerViewAdapter.getSelected().size() + " lol", Toast.LENGTH_SHORT).show();
+                    mode.finish();
+                    return true;
+                case R.id.Append:
+                    Toast.makeText(activity, mySongsRecyclerViewAdapter.getSelected().size() + " wtf", Toast.LENGTH_SHORT).show();
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+        }
+    };
+
+    public void selectAll() {
+        mySongsRecyclerViewAdapter.selectAll();
+        if (actionMode == null) {
+            actionMode = getActivity().startActionMode(actionModeCallback);
+            actionMode.setTitle("Selected: " + mySongsRecyclerViewAdapter.getSelected().size());
+        }
+    }
+
+    public void deselectAll() {
+        mySongsRecyclerViewAdapter.clearSelected();
+        if (actionMode != null) {
+            actionMode.finish();
+            actionMode = null;
+        }
+    }
+
+    public void onClickAction() {
+        int selected = mySongsRecyclerViewAdapter.getSelected().size();
+        if (actionMode == null) {
+            actionMode = getActivity().startActionMode(actionModeCallback);
+            actionMode.setTitle("Selected: " + selected);
+        } else {
+            if (selected == 0) {
+                actionMode.finish();
+            } else {
+                actionMode.setTitle("Selected: " + selected);
+            }
+        }
+    }
 }

@@ -30,9 +30,12 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
 
     private final List<Song> songs;
     private List<Song> selected = new ArrayList<>();
-
+    OnClickAction receiver;
     private OnListFragmentInteractionListener mListener;
 
+    public interface OnClickAction {
+        public void onClickAction();
+    }
     public MySongsRecyclerViewAdapter(List<Song> items, OnListFragmentInteractionListener listener) {
         songs = items;
         mListener = listener;
@@ -67,6 +70,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
                     selected.add(song);
                     highlightView(holder);
                 }
+                receiver.onClickAction();
                 return true;
             }
         });
@@ -97,6 +101,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
                         selected.add(song);
                         highlightView(holder);
                     }
+                    receiver.onClickAction();
                 }
                 }
         });
@@ -162,6 +167,9 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         selected.clear();
         selected.addAll(songs);
         notifyDataSetChanged();
+    }
+    public void setActionModeReceiver(OnClickAction receiver) {
+        this.receiver = receiver;
     }
 
     public List<Song> getSelected() {
