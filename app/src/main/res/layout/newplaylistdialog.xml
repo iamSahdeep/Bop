@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Select or Create new :"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+            <ListView
+                android:id="@+id/playlistListview"
+                android:listSelector="@color/colorPrimary"
+                android:choiceMode="singleChoice"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp">
+            </ListView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/newPlaylistName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Playlist Name"
+                android:inputType="textPersonName" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/createPlaylist"
+                    android:layout_width="wrap_content"
+                    android:background="@color/transparent"
+                    android:text="Create"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/cancelPlaylist"
+                    android:layout_width="wrap_content"
+                    android:text="Cancel"
+                    android:background="@color/transparent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

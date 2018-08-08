@@ -1,7 +1,7 @@
 package com.sahdeepsingh.Bop.fragments;
 
 import android.app.ActionBar;
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,10 +15,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
+
+import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
@@ -34,7 +43,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter;
-    ActionMode actionMode;
+    ActionMode actionMode;EditText name;
 
 
     /**
@@ -167,7 +176,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
                     Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " Deselected All", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.addtoPlaylist:
-                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " lol", Toast.LENGTH_SHORT).show();
+                    showPlaylistDialog();
                     mode.finish();
                     return true;
                 case R.id.Append:
@@ -183,6 +192,47 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
             actionMode = null;
         }
     };
+
+    private void showPlaylistDialog() {
+        final ListView listView;
+        Button create, cancel;
+        ArrayList<String> allPlaylists = Main.songs.getPlaylistNames();
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setCancelable(true);
+        View view  = getActivity().getLayoutInflater().inflate(R.layout.newplaylistdialog, null);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),R.layout.item_newplaylistdialog , allPlaylists);
+        listView =  view.findViewById(R.id.playlistListview);
+        listView.setAdapter(arrayAdapter);
+        name = view.findViewById(R.id.newPlaylistName);
+        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+               name.setText(listView.getItemAtPosition(i).toString(), TextView.BufferType.EDITABLE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        create = view.findViewById(R.id.createPlaylist);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.songs.newPlaylist(getActivity().getApplicationContext(),"external" , name.getText().toString() ,(ArrayList<Song>) mySongsRecyclerViewAdapter.getSelected());
+                dialog.dismiss();
+            }
+        });
+        cancel = view.findViewById(R.id.cancelPlaylist);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setContentView(view);
+        dialog.show();
+    }
 
     public void selectAll() {
         mySongsRecyclerViewAdapter.selectAll();
