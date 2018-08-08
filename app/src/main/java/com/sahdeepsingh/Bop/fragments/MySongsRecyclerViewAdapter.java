@@ -52,7 +52,6 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
             Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.ic_pause_dark).into(holder.circleImageView);
         else  Picasso.get().load(R.drawable.ic_cancel_dark).fit().centerCrop().into(holder.circleImageView);
         //holder.circleImageView.setImageBitmap(Main.songs.getAlbumArt(songs.get(position)));
-
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -66,7 +66,12 @@ public class FragmentPlaylist extends Fragment {
         View view = inflater.inflate(R.layout.fragment_playlist_list, container, false);
         final FloatingActionButton floatingActionButton = getActivity().findViewById(R.id.fab_Playall);
         floatingActionButton.setImageResource(R.drawable.ic_add_white);
-        floatingActionButton.setClickable(false);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playlistAdd();
+            }
+        });
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -102,6 +107,10 @@ public class FragmentPlaylist extends Fragment {
         }
 
         return view;
+    }
+
+    private void playlistAdd() {
+
     }
 
 
