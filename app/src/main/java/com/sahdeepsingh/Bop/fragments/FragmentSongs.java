@@ -33,8 +33,6 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    Activity activity = getActivity();
-    RecyclerView rv;
     MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter;
     ActionMode actionMode;
 
@@ -83,7 +81,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs, mListener);
-            mySongsRecyclerViewAdapter.setActionModeReceiver((MySongsRecyclerViewAdapter.OnClickAction) activity);
+            mySongsRecyclerViewAdapter.setActionModeReceiver(this);
             recyclerView.setHasFixedSize(true);
             recyclerView.setItemViewCacheSize(20);
             recyclerView.setDrawingCacheEnabled(true);
@@ -162,20 +160,18 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
             switch (item.getItemId()) {
                 case R.id.selectAll:
                     selectAll();
-                    Toast.makeText(activity, mySongsRecyclerViewAdapter.getSelected().size() + " selected All", Toast.LENGTH_SHORT).show();
-                    mode.finish();
+                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " selected All", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.deselectAll:
                     deselectAll();
-                    Toast.makeText(activity, mySongsRecyclerViewAdapter.getSelected().size() + " Deselected All", Toast.LENGTH_SHORT).show();
-                    mode.finish();
+                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " Deselected All", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.addtoPlaylist:
-                    Toast.makeText(activity, mySongsRecyclerViewAdapter.getSelected().size() + " lol", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " lol", Toast.LENGTH_SHORT).show();
                     mode.finish();
                     return true;
                 case R.id.Append:
-                    Toast.makeText(activity, mySongsRecyclerViewAdapter.getSelected().size() + " wtf", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " wtf", Toast.LENGTH_SHORT).show();
                     mode.finish();
                     return true;
                 default:

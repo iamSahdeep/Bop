@@ -34,7 +34,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
     private OnListFragmentInteractionListener mListener;
 
     public interface OnClickAction {
-        public void onClickAction();
+        void onClickAction();
     }
     public MySongsRecyclerViewAdapter(List<Song> items, OnListFragmentInteractionListener listener) {
         songs = items;
