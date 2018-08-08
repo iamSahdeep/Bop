@@ -96,9 +96,7 @@ public class FragmentSongs extends android.app.Fragment {
                         }
                 }
             });
-
         }
-
         return view;
     }
 
