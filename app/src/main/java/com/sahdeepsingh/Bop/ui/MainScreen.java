@@ -55,7 +55,7 @@ import com.sahdeepsingh.Bop.visualizer.barVisuals;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
-
+import java.util.Random;
 
 
 public class MainScreen extends ActivityMaster implements MediaController.MediaPlayerControl, ActionBar.TabListener, FragmentSongs.OnListFragmentInteractionListener, FragmentPlaylist.OnListFragmentInteractionListener, FragmentGenre.OnListFragmentInteractionListener, FragmentAlbum.OnListFragmentInteractionListener {
@@ -106,6 +106,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     private Toolbar toolbar;
     private TabLayout tabLayout;
     SlidingUpPanelLayout slidingUpPanelLayout;
+    FloatingActionButton floatingActionButton;
 
     /**
      * Adds a new item "Now Playing" on the main menu, if
@@ -150,7 +151,20 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.fab_Playall);
+        floatingActionButton = findViewById(R.id.fab_Playall);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainScreen.this, PlayingNow.class);
+                Main.musicList.clear();
+                Main.musicList = Main.songs.songs;
+                Main.nowPlayingList = Main.musicList;
+                intent.putExtra("songPosition", Main.nowPlayingList.get(new Random().nextInt(Main.nowPlayingList.size())).getTrackNumber());
+                if (!Main.musicService.isShuffle())
+                    Main.musicService.toggleShuffle();
+                startActivity(intent);
+            }
+        });
 
         mViewPager = findViewById(R.id.container);
 
@@ -324,7 +338,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
-
+        floatingActionButton.setImageResource(R.drawable.ic_shuffle_on_white);
         if (isPlaying()) {
             Main.musicService.notifyCurrentSong();
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
@@ -558,8 +572,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             public void run() {
                 if (isPlaying())
                     circularSeekBar.setProgress(getCurrentPosition());
-
-
                 handler.postDelayed(this, 1);
             }
         });

@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -63,7 +64,9 @@ public class FragmentPlaylist extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_playlist_list, container, false);
-
+        final FloatingActionButton floatingActionButton = getActivity().findViewById(R.id.fab_Playall);
+        floatingActionButton.setImageResource(R.drawable.ic_add_white);
+        floatingActionButton.setClickable(false);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -87,9 +90,11 @@ public class FragmentPlaylist extends Fragment {
                             // Scrolling up
 
                             actionBar.hide();
+                            floatingActionButton.hide();
                         } else {
                             // Scrolling down
                             actionBar.show();
+                            floatingActionButton.show();
                         }
                 }
             });

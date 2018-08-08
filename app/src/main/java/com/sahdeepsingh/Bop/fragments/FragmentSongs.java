@@ -87,14 +87,13 @@ public class FragmentSongs extends android.app.Fragment {
                             // Scrolling up
 
                             actionBar.hide();
+                            floatingActionButton.hide();
+
                         } else {
                             // Scrolling down
                             actionBar.show();
+                            floatingActionButton.show();
                         }
-                    if (recyclerView.canScrollVertically(-1)) {
-                        floatingActionButton.hide();
-                    } else floatingActionButton.show();
-
                 }
             });
 
