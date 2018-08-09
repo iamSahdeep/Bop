@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +25,7 @@
                 android:layout_margin="15dp"
                 android:listSelector="@color/colorPrimary"
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
+                android:layout_height="100dp">
             </ListView>
         </LinearLayout>
         <LinearLayout
@@ -41,20 +43,23 @@
                 android:layout_width="match_parent"
                 android:weightSum="2"
                 android:layout_marginTop="20dp"
+                style="?android:attr/buttonBarStyle"
                 android:layout_height="wrap_content">
-                <Button
-                    android:id="@+id/createPlaylist"
-                    android:layout_width="wrap_content"
-                    android:background="@color/transparent"
-                    android:text="Create"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
                 <Button
                     android:id="@+id/cancelPlaylist"
                     android:layout_width="wrap_content"
                     android:text="Cancel"
                     android:background="@color/transparent"
                     android:layout_weight="1"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/createPlaylist"
+                    android:layout_width="wrap_content"
+                    android:background="@color/transparent"
+                    android:text="Create"
+                    android:layout_weight="1"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -62,4 +67,4 @@
 
     </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</LinearLayout>

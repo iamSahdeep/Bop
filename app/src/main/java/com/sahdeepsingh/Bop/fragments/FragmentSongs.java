@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -196,15 +197,14 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
     private void showPlaylistDialog() {
         final ListView listView;
         Button create, cancel;
-        TextView playListname;
         ArrayList<String> allPlaylists = Main.songs.getPlaylistNames();
         final Dialog dialog = new Dialog(getActivity());
         dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         View view  = getActivity().getLayoutInflater().inflate(R.layout.newplaylistdialog, null);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),R.layout.item_newplaylistdialog , allPlaylists);
         listView =  view.findViewById(R.id.playlistListview);
         listView.setAdapter(arrayAdapter);
-        playListname = view.findViewById(R.id.PlaylistName_new);
         name = view.findViewById(R.id.newPlaylistName);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -217,8 +217,13 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (name.getText().toString().isEmpty()){
+                    name.setError("cant be empty");
+                    return;
+                }
                 Main.songs.newPlaylist(getActivity().getApplicationContext(),"external" , name.getText().toString() ,(ArrayList<Song>) mySongsRecyclerViewAdapter.getSelected());
                 dialog.dismiss();
+                deselectAll();
             }
         });
         cancel = view.findViewById(R.id.cancelPlaylist);
@@ -226,6 +231,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                deselectAll();
             }
         });
         dialog.setContentView(view);
