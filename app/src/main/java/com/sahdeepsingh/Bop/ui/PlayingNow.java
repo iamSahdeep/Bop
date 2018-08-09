@@ -232,7 +232,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             Bitmap newImage;
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inSampleSize = 4;
-            newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
+            newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong),opts);
             if (newImage != null)
             aa.setImageBitmap(newImage);
             else aa.setImageResource(R.drawable.ic_cancel_dark);

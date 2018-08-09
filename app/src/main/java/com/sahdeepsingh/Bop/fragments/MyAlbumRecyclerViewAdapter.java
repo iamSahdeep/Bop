@@ -1,6 +1,9 @@
 package com.sahdeepsingh.Bop.fragments;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,7 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 
 /**
@@ -44,11 +48,14 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
         holder.albumname.setText(mValues.get(position));
         String selectedAlbum = Main.songs.getAlbums().get(position);
         List<Song> songsList = Main.songs.getSongsByAlbum(selectedAlbum);
-        String path = Main.songs.getAlbumArt(songsList.get(0));
-        if (path != null)
-            Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.ic_pause_dark).into(holder.albumart);
-        else  Picasso.get().load(R.drawable.ic_cancel_dark).fit().centerCrop().into(holder.albumart);
-
+        for (int i = 0; i < songsList.size(); i++) {
+            String path = Main.songs.getAlbumArt(songsList.get(i));
+            if (path != null) {
+                Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.ic_pause_dark).into(holder.albumart);
+                break;
+            } else if (i == songsList.size()-1)
+                Picasso.get().load(R.drawable.ic_cancel_dark).fit().centerCrop().into(holder.albumart);
+        }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

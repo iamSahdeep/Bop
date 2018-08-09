@@ -44,10 +44,14 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
         holder.genre.setText(mValues.get(position));
         String selectedGenre = Main.songs.getGenres().get(position);
         List<Song> songsList = Main.songs.getSongsByGenre(selectedGenre);
-        String path = Main.songs.getAlbumArt(songsList.get(0));
-        if (path != null)
-            Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.ic_pause_dark).into(holder.genreArt);
-        else  Picasso.get().load(R.drawable.ic_cancel_dark).fit().centerCrop().into(holder.genreArt);
+        for (int i = 0; i < songsList.size(); i++) {
+            String path = Main.songs.getAlbumArt(songsList.get(i));
+            if (path != null) {
+                Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.ic_pause_dark).into(holder.genreArt);
+                break;
+            } else if (i == songsList.size()-1)
+                Picasso.get().load(R.drawable.ic_cancel_dark).fit().centerCrop().into(holder.genreArt);
+        }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

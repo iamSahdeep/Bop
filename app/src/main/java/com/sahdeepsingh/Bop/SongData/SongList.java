@@ -365,9 +365,7 @@ public class SongList {
             } catch(Exception e) {
                 return null;
             }*/
-/*
-        Bitmap bitmap = getAlbumBitmap(song);
-*/
+       // Bitmap bitmap = getAlbumBitmap(song);
         Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
                 MediaStore.Audio.Albums._ID + "=?",
@@ -395,14 +393,14 @@ public class SongList {
             e.printStackTrace();
         }
 
-        if (bitmap ==null){
+        /*if (bitmap ==null){
            bitmap = BitmapFactory.decodeFile("android.resource://com.sahdeepsingh.Bop/drawable/play");
         }
         if (bitmap == null){
             bitmap = Bitmap.createBitmap(400,400, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             canvas.drawColor(Color.rgb(66, 173, 244));
-        }
+        }*/
         return bitmap;
     }
 
