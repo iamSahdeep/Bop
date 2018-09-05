@@ -365,7 +365,7 @@ public class SongList {
             } catch(Exception e) {
                 return null;
             }*/
-       // Bitmap bitmap = getAlbumBitmap(song);
+        Bitmap bitmap = getAlbumBitmap(song);
         Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
                 MediaStore.Audio.Albums._ID + "=?",
@@ -381,7 +381,7 @@ public class SongList {
 
     }
 
-    public Bitmap getAlbumBitmap(Song song){
+    private Bitmap getAlbumBitmap(Song song){
         Bitmap bitmap = null;
         Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"),Long.valueOf(song.getAlbumid()));
         try {
@@ -392,15 +392,6 @@ public class SongList {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*if (bitmap ==null){
-           bitmap = BitmapFactory.decodeFile("android.resource://com.sahdeepsingh.Bop/drawable/play");
-        }
-        if (bitmap == null){
-            bitmap = Bitmap.createBitmap(400,400, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            canvas.drawColor(Color.rgb(66, 173, 244));
-        }*/
         return bitmap;
     }
 

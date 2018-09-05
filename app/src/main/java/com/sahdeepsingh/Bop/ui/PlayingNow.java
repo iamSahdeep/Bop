@@ -20,6 +20,7 @@ import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -84,6 +85,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_playing_now);
 
         toolbar = findViewById(R.id.toolbar);

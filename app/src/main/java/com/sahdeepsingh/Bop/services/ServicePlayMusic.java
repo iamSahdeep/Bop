@@ -10,6 +10,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RemoteControlClient;
@@ -577,8 +578,7 @@ public class ServicePlayMusic extends Service
                 .putString(android.media.MediaMetadataRetriever.METADATA_KEY_ALBUM, song.getAlbum())
                 .putString(android.media.MediaMetadataRetriever.METADATA_KEY_TITLE, song.getTitle())
                 .putLong(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION, song.getDuration())
-                .putBitmap(RemoteControlClientCompat.MetadataEditorCompat.METADATA_KEY_ARTWORK,
-                        Main.songs.getAlbumBitmap(song))
+                .putBitmap(RemoteControlClientCompat.MetadataEditorCompat.METADATA_KEY_ARTWORK, BitmapFactory.decodeFile(Main.songs.getAlbumArt(song)))
 
                 // Saves (after #editMetadata())
                 .apply();

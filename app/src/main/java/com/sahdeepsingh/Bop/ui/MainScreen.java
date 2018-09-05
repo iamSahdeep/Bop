@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -134,6 +135,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         Main.settings.load(this);
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_main_screen);
 
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
