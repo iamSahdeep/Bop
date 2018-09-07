@@ -17,6 +17,7 @@ import android.view.View;
 
 import com.sahdeepsingh.Bop.R;
 
+//check credits in readme.md
 public class CircularSeekBar extends View {
 
     // Default values

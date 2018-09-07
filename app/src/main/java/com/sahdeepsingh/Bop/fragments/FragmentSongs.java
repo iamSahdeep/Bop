@@ -1,5 +1,6 @@
 package com.sahdeepsingh.Bop.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
@@ -21,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
@@ -30,17 +30,9 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.ArrayList;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class FragmentSongs extends android.app.Fragment implements MySongsRecyclerViewAdapter.OnClickAction {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter;
@@ -54,7 +46,6 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
     public FragmentSongs() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static FragmentSongs newInstance(int columnCount) {
         FragmentSongs fragment = new FragmentSongs();
@@ -181,7 +172,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
                     mode.finish();
                     return true;
                 case R.id.Append:
-                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " wtf", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " not created this method yet", Toast.LENGTH_SHORT).show();
                     mode.finish();
                     return true;
                 default:
@@ -201,7 +192,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
         final Dialog dialog = new Dialog(getActivity());
         dialog.setCancelable(true);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        View view  = getActivity().getLayoutInflater().inflate(R.layout.newplaylistdialog, null);
+        @SuppressLint("InflateParams") View view = getActivity().getLayoutInflater().inflate(R.layout.newplaylistdialog, null);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),R.layout.item_newplaylistdialog , allPlaylists);
         listView =  view.findViewById(R.id.playlistListview);
         listView.setAdapter(arrayAdapter);
@@ -258,6 +249,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
         int selected = mySongsRecyclerViewAdapter.getSelected().size();
         if (actionMode == null) {
             actionMode = getActivity().startActionMode(actionModeCallback);
+            assert actionMode != null;
             actionMode.setTitle("Selected: " + selected);
         } else {
             if (selected == 0) {

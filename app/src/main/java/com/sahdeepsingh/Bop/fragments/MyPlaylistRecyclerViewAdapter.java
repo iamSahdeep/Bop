@@ -1,6 +1,7 @@
 package com.sahdeepsingh.Bop.fragments;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,30 +18,26 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
 
     private final List<String> playlists;
     private OnListFragmentInteractionListener mListener;
 
-    public MyPlaylistRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
+    MyPlaylistRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
         playlists = items;
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_playlist, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.playlistname.setText(playlists.get(position));
         String selectedPlaylist = Main.songs.getPlaylistNames().get(position);
         List<Song> songsList = Main.songs.getSongsByPlaylist(selectedPlaylist);
@@ -81,7 +78,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
         public final TextView playlistname;
         public final ImageView albumart;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             playlistname = view.findViewById(R.id.PlaylistName);

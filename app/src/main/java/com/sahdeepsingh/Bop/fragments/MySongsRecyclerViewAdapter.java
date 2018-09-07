@@ -2,7 +2,7 @@ package com.sahdeepsingh.Bop.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,28 +21,25 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * {@link RecyclerView.Adapter} that can display  and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecyclerViewAdapter.ViewHolder> {
 
     private final List<Song> songs;
     private List<Song> selected = new ArrayList<>();
-    OnClickAction receiver;
+    private OnClickAction receiver;
     private OnListFragmentInteractionListener mListener;
 
     public interface OnClickAction {
         void onClickAction();
     }
-    public MySongsRecyclerViewAdapter(List<Song> items, OnListFragmentInteractionListener listener) {
+
+    MySongsRecyclerViewAdapter(List<Song> items, OnListFragmentInteractionListener listener) {
         songs = items;
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_songs, parent, false);
         return new ViewHolder(view);
@@ -50,7 +47,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
 
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.songName.setText(songs.get(position).getTitle());
         holder.songBy.setText(songs.get(position).getArtist());
         holder.songName.setSelected(true);
@@ -134,9 +131,9 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         public final View mView;
         public final TextView songName;
         public final TextView songBy;
-        public final CircleImageView circleImageView;
+        final CircleImageView circleImageView;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             songName = view.findViewById(R.id.songName);

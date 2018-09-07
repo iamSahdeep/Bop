@@ -49,13 +49,7 @@ public class RemoteControlHelper {
 
             sHasRemoteControlAPIs = true;
 
-        } catch (ClassNotFoundException e) {
-            // Silently fail when running on an OS before ICS.
-        } catch (NoSuchMethodException e) {
-            // Silently fail when running on an OS before ICS.
-        } catch (IllegalArgumentException e) {
-            // Silently fail when running on an OS before ICS.
-        } catch (SecurityException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalArgumentException | SecurityException e) {
             // Silently fail when running on an OS before ICS.
         }
     }
@@ -75,7 +69,6 @@ public class RemoteControlHelper {
             Log.e(TAG, e.getMessage(), e);
         }
     }
-
 
     public static void unregisterRemoteControlClient(AudioManager audioManager,
                                                      RemoteControlClientCompat remoteControlClient) {

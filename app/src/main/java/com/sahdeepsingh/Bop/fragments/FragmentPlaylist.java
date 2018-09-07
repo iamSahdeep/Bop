@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * A fragment representing a list of Items.
@@ -27,27 +25,13 @@ import java.util.Collections;
 
 public class FragmentPlaylist extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private OnListFragmentInteractionListener mListener;
-    private ArrayList<String> lol;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public FragmentPlaylist() {
-    }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static FragmentPlaylist newInstance(int columnCount) {
-        FragmentPlaylist fragment = new FragmentPlaylist();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -72,8 +56,8 @@ public class FragmentPlaylist extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            lol = Main.songs.getPlaylistNames();
-            MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(lol, mListener);
+            ArrayList<String> playlists = Main.songs.getPlaylistNames();
+            MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(playlists, mListener);
             recyclerView.setAdapter(myPlaylistRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -109,10 +93,7 @@ public class FragmentPlaylist extends Fragment {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
-        }/* else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener")
-        }*/
+        }
     }
 
     @Override

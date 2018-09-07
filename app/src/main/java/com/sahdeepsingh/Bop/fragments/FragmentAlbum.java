@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,27 +24,13 @@ import java.util.Collections;
  */
 public class FragmentAlbum extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private OnListFragmentInteractionListener mListener;
-    private ArrayList<String> albums;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public FragmentAlbum() {
-    }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static FragmentAlbum newInstance(int columnCount) {
-        FragmentAlbum fragment = new FragmentAlbum();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -59,12 +44,11 @@ public class FragmentAlbum extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_album_list, container, false);
 
-        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            albums = Main.songs.getAlbums();
+            ArrayList<String> albums = Main.songs.getAlbums();
             Collections.sort(albums);
             MyAlbumRecyclerViewAdapter myAlbumRecyclerViewAdapter = new MyAlbumRecyclerViewAdapter(albums, mListener);
             recyclerView.setAdapter(myAlbumRecyclerViewAdapter);
@@ -76,7 +60,6 @@ public class FragmentAlbum extends Fragment {
                     if (actionBar != null)
                         if (dy > 0) {
                             // Scrolling up
-
                             actionBar.hide();
                         } else {
                             // Scrolling down
@@ -94,10 +77,7 @@ public class FragmentAlbum extends Fragment {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
-        } /*else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
@@ -117,7 +97,6 @@ public class FragmentAlbum extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(int position, String type);
     }
 }

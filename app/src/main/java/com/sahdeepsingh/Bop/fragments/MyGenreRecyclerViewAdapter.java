@@ -1,6 +1,7 @@
 package com.sahdeepsingh.Bop.fragments;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,30 +18,27 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecyclerViewAdapter.ViewHolder> {
 
     private final List<String> mValues;
     private OnListFragmentInteractionListener mListener;
 
-    public MyGenreRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
+    MyGenreRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_genre, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.genre.setText(mValues.get(position));
         String selectedGenre = Main.songs.getGenres().get(position);
         List<Song> songsList = Main.songs.getSongsByGenre(selectedGenre);
@@ -77,10 +75,10 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView genre;
-        public final ImageView genreArt;
+        final TextView genre;
+        final ImageView genreArt;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             genre = view.findViewById(R.id.GenreName);

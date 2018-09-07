@@ -5,35 +5,28 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
 
-/**
- * TODO: document your custom view class.
- */
-public class BottomControlsView extends LinearLayout {
-    TextView textViewTitle = findViewById(R.id.bottomtextView);
+class BottomControlsView extends LinearLayout {
     View view;
 
     public BottomControlsView(Context context) {
         super(context);
-        init(null, 0);
+        init();
     }
 
     public BottomControlsView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs, 0);
+        init();
     }
 
     public BottomControlsView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(attrs, defStyle);
+        init();
     }
 
-    private void init(AttributeSet attrs, int defStyle) {
-
-        // Set up a default TextPaint object
+    private void init() {
         view = inflate(getContext(), R.layout.bottomcontrols, null);
         addView(view);
     }
@@ -41,6 +34,5 @@ public class BottomControlsView extends LinearLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
     }
 }

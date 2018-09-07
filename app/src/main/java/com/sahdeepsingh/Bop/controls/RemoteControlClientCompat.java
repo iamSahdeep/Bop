@@ -2,7 +2,6 @@ package com.sahdeepsingh.Bop.controls;
 
 import android.app.PendingIntent;
 import android.graphics.Bitmap;
-import android.os.Looper;
 import android.util.Log;
 
 import java.lang.reflect.Field;
@@ -66,11 +65,7 @@ public class RemoteControlClientCompat {
                 } catch (NoSuchFieldException e) {
                     Log.w(TAG, "Could not get real field: " + field.getName());
 
-                } catch (IllegalArgumentException e) {
-                    Log.w(TAG, "Error trying to pull field value for: " + field.getName()
-                            + " " + e.getMessage());
-
-                } catch (IllegalAccessException e) {
+                } catch (IllegalArgumentException | IllegalAccessException e) {
                     Log.w(TAG, "Error trying to pull field value for: " + field.getName()
                             + " " + e.getMessage());
                 }
@@ -86,13 +81,7 @@ public class RemoteControlClientCompat {
 
             sHasRemoteControlAPIs = true;
 
-        } catch (ClassNotFoundException e) {
-            // Silently fail when running on an OS before ICS.
-        } catch (NoSuchMethodException e) {
-            // Silently fail when running on an OS before ICS.
-        } catch (IllegalArgumentException e) {
-            // Silently fail when running on an OS before ICS.
-        } catch (SecurityException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalArgumentException | SecurityException e) {
             // Silently fail when running on an OS before ICS.
         }
     }
@@ -110,21 +99,6 @@ public class RemoteControlClientCompat {
                             .newInstance(pendingIntent);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    public RemoteControlClientCompat(PendingIntent pendingIntent, Looper looper) {
-
-        if (!sHasRemoteControlAPIs) {
-            return;
-        }
-
-        try {
-            mActualRemoteControlClient =
-                    sRemoteControlClientClass.getConstructor(PendingIntent.class, Looper.class)
-                            .newInstance(pendingIntent, looper);
-        } catch (Exception e) {
-            Log.e(TAG, "Error creating new instance of " + sRemoteControlClientClass.getName(), e);
         }
     }
 
@@ -156,20 +130,6 @@ public class RemoteControlClientCompat {
         return new MetadataEditorCompat(metadataEditor);
     }
 
-    /**
-     * Sets the current playback state.
-     *
-     * @param state The current playback state, one of the following values:
-     *              {@link android.media.RemoteControlClient#PLAYSTATE_STOPPED},
-     *              {@link android.media.RemoteControlClient#PLAYSTATE_PAUSED},
-     *              {@link android.media.RemoteControlClient#PLAYSTATE_PLAYING},
-     *              {@link android.media.RemoteControlClient#PLAYSTATE_FAST_FORWARDING},
-     *              {@link android.media.RemoteControlClient#PLAYSTATE_REWINDING},
-     *              {@link android.media.RemoteControlClient#PLAYSTATE_SKIPPING_FORWARDS},
-     *              {@link android.media.RemoteControlClient#PLAYSTATE_SKIPPING_BACKWARDS},
-     *              {@link android.media.RemoteControlClient#PLAYSTATE_BUFFERING},
-     *              {@link android.media.RemoteControlClient#PLAYSTATE_ERROR}.
-     */
     public void setPlaybackState(int state) {
         if (sHasRemoteControlAPIs) {
             try {
@@ -180,19 +140,6 @@ public class RemoteControlClientCompat {
         }
     }
 
-    /**
-     * Sets the flags for the media transport control buttons that this client supports.
-     *
-     * @param transportControlFlags A combination of the following flags:
-     *                              {@link android.media.RemoteControlClient#FLAG_KEY_MEDIA_PREVIOUS},
-     *                              {@link android.media.RemoteControlClient#FLAG_KEY_MEDIA_REWIND},
-     *                              {@link android.media.RemoteControlClient#FLAG_KEY_MEDIA_PLAY},
-     *                              {@link android.media.RemoteControlClient#FLAG_KEY_MEDIA_PLAY_PAUSE},
-     *                              {@link android.media.RemoteControlClient#FLAG_KEY_MEDIA_PAUSE},
-     *                              {@link android.media.RemoteControlClient#FLAG_KEY_MEDIA_STOP},
-     *                              {@link android.media.RemoteControlClient#FLAG_KEY_MEDIA_FAST_FORWARD},
-     *                              {@link android.media.RemoteControlClient#FLAG_KEY_MEDIA_NEXT}
-     */
     public void setTransportControlFlags(int transportControlFlags) {
         if (sHasRemoteControlAPIs) {
             try {
@@ -349,7 +296,7 @@ public class RemoteControlClientCompat {
          * Clears all the metadata that has been set since the MetadataEditor instance was
          * created with {@link android.media.RemoteControlClient#editMetadata(boolean)}.
          */
-        public void clear() {
+        void clear() {
             if (sHasRemoteControlAPIs) {
                 try {
                     mClearMethod.invoke(mActualMetadataEditor, (Object[]) null);
