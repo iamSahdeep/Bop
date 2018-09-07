@@ -22,7 +22,7 @@ public class NotificationSimple {
      * Counter to assure each created Notification gets
      * an unique ID at runtime.
      */
-    protected static int LAST_NOTIFICATION_ID = 1;
+    private static int LAST_NOTIFICATION_ID = 1;
     /**
      * Unique identifier for the current Notification.
      * <p>
@@ -30,9 +30,9 @@ public class NotificationSimple {
      * same ID number it'll only get updated, not
      * created from scratch.
      */
-    protected int NOTIFICATION_ID;
+    int NOTIFICATION_ID;
 
-    public NotificationSimple() {
+    NotificationSimple() {
         NOTIFICATION_ID = LAST_NOTIFICATION_ID;
         LAST_NOTIFICATION_ID++;
     }
@@ -54,6 +54,7 @@ public class NotificationSimple {
                 .setContentText(text);
 
         NotificationManager manager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
         manager.notify(NOTIFICATION_ID, builder.build());
     }
 
@@ -81,6 +82,7 @@ public class NotificationSimple {
         builder.setContentIntent(pendingIntent);
 
         NotificationManager manager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
         manager.notify(NOTIFICATION_ID, builder.build());
     }
 }

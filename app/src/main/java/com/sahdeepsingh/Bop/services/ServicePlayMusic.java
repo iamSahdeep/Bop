@@ -1,7 +1,5 @@
 package com.sahdeepsingh.Bop.services;
 
-import android.annotation.SuppressLint;
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -16,12 +14,8 @@ import android.media.MediaPlayer;
 import android.media.RemoteControlClient;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.PowerManager;
-import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -109,17 +103,17 @@ public class ServicePlayMusic extends Service
      * other classes that might be interested on it must
      * register a BroadcastReceiver to this String.
      */
-    public static final String BROADCAST_ACTION = "com.sahdeepsingh.clousic.MUSIC_SERVICE";
+    public static final String BROADCAST_ACTION = "com.sahdeepsingh.Bop.MUSIC_SERVICE";
 
     /**
      * String used to get the current state Extra on the Broadcast Intent
      */
-    public static final String BROADCAST_EXTRA_STATE = "x_japan";
+    public static final String BROADCAST_EXTRA_STATE = "current_state";
 
     /**
      * String used to get the song ID Extra on the Broadcast Intent
      */
-    public static final String BROADCAST_EXTRA_SONG_ID = "tenacious_d";
+    public static final String BROADCAST_EXTRA_SONG_ID = "song_id";
 
     // All possible messages this Service will broadcast
     // Ignore the actual values
@@ -127,44 +121,44 @@ public class ServicePlayMusic extends Service
     /**
      * Broadcast for when some music started playing
      */
-    public static final String BROADCAST_EXTRA_PLAYING = "beatles";
+    public static final String BROADCAST_EXTRA_PLAYING = "playing";
 
     /**
      * Broadcast for when some music just got paused
      */
-    public static final String BROADCAST_EXTRA_PAUSED = "santana";
+    public static final String BROADCAST_EXTRA_PAUSED = "plaused";
 
     /**
      * Broadcast for when a paused music got unpaused
      */
-    public static final String BROADCAST_EXTRA_UNPAUSED = "iron_maiden";
+    public static final String BROADCAST_EXTRA_UNPAUSED = "unpaused";
 
     /**
      * Broadcast for when current music got played until the end
      */
-    public static final String BROADCAST_EXTRA_COMPLETED = "los_hermanos";
+    public static final String BROADCAST_EXTRA_COMPLETED = "completed";
 
     /**
      * Broadcast for when the user skipped to the next song
      */
-    public static final String BROADCAST_EXTRA_SKIP_NEXT = "paul_gilbert";
+    public static final String BROADCAST_EXTRA_SKIP_NEXT = "next";
 
     /**
      * Broadcast for when the user skipped to the previous song
      */
-    public static final String BROADCAST_EXTRA_SKIP_PREVIOUS = "john_petrucci";
+    public static final String BROADCAST_EXTRA_SKIP_PREVIOUS = "previous";
     // These are the Intent actions that we are prepared to handle. Notice that the fact these
     // constants exist in our class is a mere convenience: what really defines the actions our
     // service can handle are the <action> tags in the <intent-filters> tag for our service in
     // AndroidManifest.xml.
-    public static final String BROADCAST_ORDER = "com.sahdeepsingh.clousic.MUSIC_SERVICE";
-    public static final String BROADCAST_EXTRA_GET_ORDER = "com.sahdeepsingh.clousic.dasdas.MUSIC_SERVICE";
-    public static final String BROADCAST_ORDER_PLAY = "com.sahdeepsingh.clousic.action.PLAY";
-    public static final String BROADCAST_ORDER_PAUSE = "com.sahdeepsingh.clousic.action.PAUSE";
+    public static final String BROADCAST_ORDER = "com.sahdeepsingh.Bop.MUSIC_SERVICE";
+    public static final String BROADCAST_EXTRA_GET_ORDER = "com.sahdeepsingh.Bop.dasdas.MUSIC_SERVICE";
+    public static final String BROADCAST_ORDER_PLAY = "com.sahdeepsingh.Bop.action.PLAY";
+    public static final String BROADCAST_ORDER_PAUSE = "com.sahdeepsingh.Bop.action.PAUSE";
     public static final String BROADCAST_ORDER_TOGGLE_PLAYBACK = "dlsadasd";
-    public static final String BROADCAST_ORDER_STOP = "com.sahdeepsingh.clousic.action.STOP";
-    public static final String BROADCAST_ORDER_SKIP = "com.sahdeepsingh.clousic.action.SKIP";
-    public static final String BROADCAST_ORDER_REWIND = "com.sahdeepsingh.clousic.action.REWIND";
+    public static final String BROADCAST_ORDER_STOP = "com.sahdeepsingh.Bop.action.STOP";
+    public static final String BROADCAST_ORDER_SKIP = "com.sahdeepsingh.Bop.action.SKIP";
+    public static final String BROADCAST_ORDER_REWIND = "com.sahdeepsingh.Bop.action.REWIND";
     // The tag we put on debug messages
     final static String TAG = "MusicService";
     /**
@@ -221,7 +215,7 @@ public class ServicePlayMusic extends Service
             String action = intent.getAction();
 
             // Headphones just connected (or not)
-            if (action.equals(Intent.ACTION_HEADSET_PLUG)) {
+            if (action != null && action.equals(Intent.ACTION_HEADSET_PLUG)) {
 
                 Log.w(TAG, "headset plug");
                 boolean connectedHeadphones = (intent.getIntExtra("state", 0) == 1);
@@ -291,18 +285,24 @@ public class ServicePlayMusic extends Service
             if (order == null)
                 return;
 
-            if (order.equals(ServicePlayMusic.BROADCAST_ORDER_PAUSE)) {
-                pausePlayer();
-            } else if (order.equals(ServicePlayMusic.BROADCAST_ORDER_PLAY)) {
-                unpausePlayer();
-            } else if (order.equals(ServicePlayMusic.BROADCAST_ORDER_TOGGLE_PLAYBACK)) {
-                togglePlayback();
-            } else if (order.equals(ServicePlayMusic.BROADCAST_ORDER_SKIP)) {
-                next(true);
-                playSong();
-            } else if (order.equals(ServicePlayMusic.BROADCAST_ORDER_REWIND)) {
-                previous(true);
-                playSong();
+            switch (order) {
+                case ServicePlayMusic.BROADCAST_ORDER_PAUSE:
+                    pausePlayer();
+                    break;
+                case ServicePlayMusic.BROADCAST_ORDER_PLAY:
+                    unpausePlayer();
+                    break;
+                case ServicePlayMusic.BROADCAST_ORDER_TOGGLE_PLAYBACK:
+                    togglePlayback();
+                    break;
+                case ServicePlayMusic.BROADCAST_ORDER_SKIP:
+                    next(true);
+                    playSong();
+                    break;
+                case ServicePlayMusic.BROADCAST_ORDER_REWIND:
+                    previous(true);
+                    playSong();
+                    break;
             }
 
             Log.w(TAG, "local broadcast received");
@@ -330,11 +330,6 @@ public class ServicePlayMusic extends Service
         initMusicPlayer();
 
         Context context = getApplicationContext();
-
-        // Starting the scrobbler service.
-        Intent scrobblerIntent = new Intent(context, ServiceScrobbleMusic.class);
-        context.startService(scrobblerIntent);
-
 
         // Registering our BroadcastReceiver to listen to orders
         // from inside our own application.
@@ -687,10 +682,6 @@ public class ServicePlayMusic extends Service
         cancelNotification();
 
         currentSong = null;
-
-        // Stopping the scrobbler service.
-        Intent scrobblerIntent = new Intent(context, ServiceScrobbleMusic.class);
-        context.stopService(scrobblerIntent);
 
         if (audioManager != null)
             audioManager.abandonAudioFocus(this);

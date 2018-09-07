@@ -7,33 +7,24 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -56,6 +47,7 @@ import com.sahdeepsingh.Bop.visualizer.barVisuals;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -63,32 +55,24 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
 
     public static final String BROADCAST_ACTION = "lol";
-    static final int USER_CHANGED_THEME = 1;
+
     /**
      * How long to wait to disable double-pressing to quit
      */
     private static final int BACK_PRESSED_DELAY = 2000;
 
     private static final float BLUR_RADIUS = 25f;
+
     CircularSeekBar circularSeekBar;
     ImageView blurimage, centreimage, aa;
     TextView name, artist , TopName , TopArttist;
     ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle, pp;
-    public boolean paused = false;
     private boolean playbackPaused = false;
 
     barVisuals barVisualss;
 
     ChangeSongBR changeSongBR;
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v13.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+
     private boolean backPressedOnce = false;
     /**
      * Action that actually disables double-pressing to quit
@@ -104,8 +88,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
     SlidingUpPanelLayout slidingUpPanelLayout;
     FloatingActionButton floatingActionButton;
 
@@ -113,7 +95,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
      * Adds a new item "Now Playing" on the main menu, if
      * it ain't there yet.
      */
-    public static void addNowPlayingItem(Context c) {
+    public static void addNowPlayingItem() {
 
         if (Main.mainMenuHasNowPlayingItem)
             return;
@@ -139,7 +121,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         setContentView(R.layout.activity_main_screen);
 
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         name = findViewById(R.id.bottomtextView);
         artist = findViewById(R.id.bottomtextartist);
         pp = findViewById(R.id.bottomImagebutton);
@@ -151,7 +133,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         floatingActionButton = findViewById(R.id.fab_Playall);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +154,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
         setupViewPager(mViewPager);
 
-        tabLayout = findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         changeSongBR = new ChangeSongBR();
@@ -214,7 +196,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
     }
 
@@ -325,6 +307,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         // Cancell all thrown Notifications
         NotificationMusic.cancelAll(this);
 /*
+        no
         Main.stopMusicService(this);
 */
     }
@@ -400,7 +383,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -662,7 +645,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     @Override
     public int getBufferPercentage() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -700,9 +682,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             playbackPaused = false;
         }
 
-/*
-        musicController.show();
-*/
     }
 
     /**
@@ -718,9 +697,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             playbackPaused = false;
         }
 
-/*
-        musicController.show();
-*/
     }
 
 }

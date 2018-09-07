@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -39,15 +38,12 @@ import com.sahdeepsingh.Bop.visualizer.barVisuals;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
+import java.util.Objects;
 
 import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 
 public class PlayingNow extends ActivityMaster implements MediaController.MediaPlayerControl, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
-    /**
-     * Gets called when the Activity is getting initialized.
-     */
-    private Menu menu;
     private static final float BLUR_RADIUS = 25f;
     CircularSeekBar circularSeekBar;
     ImageView blurimage, centreimage, aa;
@@ -90,7 +86,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         songListView = findViewById(R.id.list_nowplaying);
 
         circularSeekBar = findViewById(R.id.circularSeekBar);
@@ -160,7 +156,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         // While we're playing music, add an item to the
         // Main Menu that returns here.
-        MainScreen.addNowPlayingItem(this);
+        MainScreen.addNowPlayingItem();
         prepareSeekBar();
         setControllListeners();
 

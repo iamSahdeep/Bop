@@ -14,7 +14,9 @@ import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.SongData.SongList;
 import com.sahdeepsingh.Bop.services.ServicePlayMusic;
 import com.sahdeepsingh.Bop.settings.Settings;
+
 import java.util.ArrayList;
+// Main Logic u can say. Every thing works around this class
 
 public class Main {
 
@@ -37,21 +39,11 @@ public class Main {
     /**
      * Contains the songs that are going to be shown to
      * the user on a particular menu.
-     *
-     * @note IGNORE THIS - don't mess with it.
-     * <p>
-     * Every `ActivityMenu*` uses this temporary variable to
-     * store subsections of `SongList` and set `ActivityListSongs`
-     * to display it.
      */
     public static ArrayList<Song> musicList = new ArrayList<>();
 
     /**
      * List of the songs being currently played by the user.
-     * <p>
-     * (independent of the UI)
-     * <p>
-     * TODO remove this shit
      */
     public static ArrayList<Song> nowPlayingList = null;
 

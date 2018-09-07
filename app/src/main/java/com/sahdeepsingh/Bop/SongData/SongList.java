@@ -4,20 +4,11 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
-import com.sahdeepsingh.Bop.R;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,12 +37,12 @@ public class SongList {
     /**
      * Big list with all the Songs found.
      */
-    public ArrayList<Song> songs = new ArrayList<Song>();
+    public ArrayList<Song> songs = new ArrayList<>();
 
     /**
      * Big list with all the Playlists found.
      */
-    public ArrayList<Playlist> playlists = new ArrayList<Playlist>();
+    public ArrayList<Playlist> playlists = new ArrayList<>();
 
     /**
      * Maps song's genre IDs to song's genre names.
@@ -126,7 +117,7 @@ public class SongList {
         // Grab some coffee and stick to the comments.
 
         // Not implemented yet.
-        if (fromWhere == "both")
+        if (fromWhere.equals("both"))
             throw new RuntimeException("Can't scan from both locations - not implemented");
 
         // Checking for flags so we don't get called twice
@@ -192,7 +183,7 @@ public class SongList {
         String SONG_ALBUM_ID = MediaStore.Audio.Media.ALBUM_ID;
 
         // Creating the map  "Genre IDs" -> "Genre Names"
-        genreIdToGenreNameMap = new HashMap<String, String>();
+        genreIdToGenreNameMap = new HashMap<>();
 
         // This is what we'll ask of the genres
         String[] genreColumns = {
@@ -204,16 +195,17 @@ public class SongList {
         cursor = resolver.query(genreUri, genreColumns, null, null, null);
 
         // Iterating through the results and filling the map.
+        assert cursor != null;
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
             genreIdToGenreNameMap.put(cursor.getString(0), cursor.getString(1));
 
         cursor.close();
 
         // Map from Songs IDs to Genre IDs
-        songIdToGenreIdMap = new HashMap<String, String>();
+        songIdToGenreIdMap = new HashMap<>();
 
         // UPDATE URI HERE
-        if (fromWhere == "both")
+        if (fromWhere.equals("both"))
             throw new RuntimeException("Can't scan from both locations - not implemented");
 
         // For each genre, we'll query the databases to get
@@ -226,6 +218,7 @@ public class SongList {
             cursor = resolver.query(uri, new String[]{SONG_ID}, null, null, null);
 
             // Iterating through the results, populating the map
+            assert cursor != null;
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 
                 long currentSongID = cursor.getLong(cursor.getColumnIndex(SONG_ID));
@@ -255,7 +248,7 @@ public class SongList {
         //
         // It's a SQL "WHERE" clause - it becomes `WHERE IS_MUSIC=1`.
         //
-        // (note: using `IS_MUSIC!=0` takes a fuckload of time)
+        // (note: using `IS_MUSIC!=0` takes a f#$%load of time)
         final String musicsOnly = MediaStore.Audio.Media.IS_MUSIC + "=1";
 
         // Actually querying the system
@@ -295,11 +288,13 @@ public class SongList {
         } else {
             // What do I do if I can't find any songs?
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
 
         // Finally, let's sort the song list alphabetically
         // based on the song title.
-        Log.e("here","here");
+
         Collections.sort(songs, new Comparator<Song>() {
                public int compare(Song a, Song b) {
                 return a.getTitle().compareTo(b.getTitle());
@@ -325,6 +320,7 @@ public class SongList {
 
         // Going through all playlists, creating my class and populating
         // it with all the song IDs they have.
+        assert cursor != null;
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 
             Playlist playlist = new Playlist(cursor.getLong(cursor.getColumnIndex(PLAYLIST_ID)),
@@ -332,13 +328,14 @@ public class SongList {
 
             // For each playlist, get all song IDs
             Uri currentUri = MediaStore.Audio.Playlists.Members.getContentUri(fromWhere, playlist.getID());
-            Cursor cursor2 = null;
+            Cursor cursor2;
             cursor2 = resolver.query(currentUri,
                     new String[]{PLAYLIST_SONG_ID},
                     musicsOnly,
                     null, null);
 
             // Adding each song's ID to it
+            assert cursor2 != null;
             for (cursor2.moveToFirst(); !cursor2.isAfterLast(); cursor2.moveToNext()) {
                 playlist.add(cursor2.getLong(cursor2.getColumnIndex(PLAYLIST_SONG_ID)));
             }
@@ -358,6 +355,7 @@ public class SongList {
 
     public String getAlbumArt(Song song) {
         String path = "";
+        //sometimes using this way, it causes npe
            /* try {
                 Uri genericArtUri = Uri.parse("content://media/external/audio/albumart");
                 Uri actualArtUri = ContentUris.withAppendedId(genericArtUri, Long.parseLong(String.valueOf(song.getAlbumid())));
@@ -365,6 +363,8 @@ public class SongList {
             } catch(Exception e) {
                 return null;
             }*/
+
+        //dont know why, but have to include this line, otherwise no albumart will be shown anywhere!!
         Bitmap bitmap = getAlbumBitmap(song);
         Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
@@ -372,15 +372,17 @@ public class SongList {
                 new String[]{String.valueOf(song.getAlbumid())},
                 null);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
             // do whatever you need to do
         }
+        assert cursor != null;
         cursor.close();
         return path;
 
     }
 
+    //unnecessary but very useful xD
     private Bitmap getAlbumBitmap(Song song){
         Bitmap bitmap = null;
         Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"),Long.valueOf(song.getAlbumid()));
@@ -534,12 +536,8 @@ public class SongList {
      * it without worrying about changing the original.
      */
     public ArrayList<Song> getSongs() {
-        ArrayList<Song> list = new ArrayList<Song>();
 
-        for (Song song : songs)
-            list.add(song);
-
-        return list;
+        return new ArrayList<>(songs);
     }
 
     /**
@@ -569,7 +567,7 @@ public class SongList {
 
             String currentSongGenre = song.getGenre();
 
-            if (currentSongGenre == genreName)
+            if (currentSongGenre.equals(genreName))
                 currentSongs.add(song);
         }
 
@@ -623,7 +621,6 @@ public class SongList {
         for (Playlist playlist : playlists) {
             if (playlist.getName().equals(playlistName)) {
                 songIDs = playlist.getSongIds();
-                Log.e("wtf3", String.valueOf(playlist));
                 break;
             }
         }

@@ -90,7 +90,7 @@ public class ActivityMenuSettings extends PreferenceActivity
                 dialog.show();
             }
 
-            // yay!
+            // yay! stunned? look XXX then xD
             if /* */ (/* * */pref/* */./* * * * * * * */getKey/* */(/* */)/* */.equals/* */(/* */"version"/* */)/* */) /* */ {/* *//* *//* *//* *//* *//* *//* */
                 brianGriffin/* * */++/* */; /* */
                 if /* */ (brianGriffin >= 5) {
@@ -101,7 +101,6 @@ public class ActivityMenuSettings extends PreferenceActivity
 
             if (pref.getKey().equals("misc")) {
 
-                // Yay, showing the other dialog!
                 AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityMenuSettings.this);
 
                 String dialogTitle = getString(R.string.menu_settings_misc_dialog_title);
@@ -135,7 +134,6 @@ public class ActivityMenuSettings extends PreferenceActivity
         // Setting the theme from Main.Settings
         // right before creating the actual activity.
         //
-        // TODO This is a hack - I've copied the code
         //      within `ActivityMaster`. I need to find
         //      a way to unify them. Currently I can't
         //      since I cant' subclass `ActivityMaster` here
@@ -155,7 +153,6 @@ public class ActivityMenuSettings extends PreferenceActivity
 
         // Populating the View with all the items from
         // file `res/xml/preferences.xml`.
-        addPreferencesFromResource(R.xml.preferences);
 
         // We're asking to be notified when the user changes
         // any setting.

@@ -2,22 +2,15 @@ package com.sahdeepsingh.Bop.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.squareup.picasso.Picasso;
 
 /**
  * Master Activity from which every other Activity inherits
@@ -58,8 +51,6 @@ public class ActivityMaster extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-
-        //Main.startMusicService(this);
     }
 
     /**
@@ -71,24 +62,12 @@ public class ActivityMaster extends AppCompatActivity {
         ActivityMaster.this.invalidateOptionsMenu();
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         if (Main.mainMenuHasNowPlayingItem) {
-           /* TextView t = findViewById(R.id.bottomtextView);
-            TextView a = findViewById(R.id.bottomtextartist);
-            ImageView aa = findViewById(R.id.bottomImageview);
-            Bitmap newImage;
-            BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inSampleSize = 4;
-            newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
-            aa.setImageBitmap(newImage);
-            t.setText(Main.musicService.currentSong.getTitle());
-            a.setText(String.format("by %s", Main.musicService.currentSong.getArtist()));
-            t.setSelected(true);*/
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
         }
     }
-
 
     /**
      * Let's set a context menu (menu that appears when
@@ -137,7 +116,6 @@ public class ActivityMaster extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
 }
 

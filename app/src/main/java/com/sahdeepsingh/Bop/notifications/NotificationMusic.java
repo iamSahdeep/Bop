@@ -17,8 +17,6 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.ui.MainScreen;
-import com.sahdeepsingh.Bop.ui.PlayingNow;
-import com.squareup.picasso.Picasso;
 
 /**
  * Specific way to stick an on-going message on the system
@@ -39,35 +37,36 @@ public class NotificationMusic extends NotificationSimple {
     /**
      * Reference to the context that notified.
      */
-    Context context = null;
+    private Context context = null;
 
     /**
      * Reference to the service we're attached to.
      */
-    Service service = null;
+    private Service service = null;
 
     /**
      * Used to create and update the same notification.
      */
-    NotificationCompat.Builder notificationBuilder = null;
+    private NotificationCompat.Builder notificationBuilder = null;
 
     /**
      * Custom appearance of the notification, also updated.
      */
-    RemoteViews notificationView = null;
+    private RemoteViews notificationView = null;
 
     /**
      * Used to actually broadcast the notification.
      * Depends on the Activity that originally called
      * the nofitication.
      */
-    NotificationManager notificationManager = null;
+    private NotificationManager notificationManager = null;
 
     /**
      * Cancels all sent notifications.
      */
     public static void cancelAll(Context c) {
         NotificationManager manager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
         manager.cancelAll();
     }
 
@@ -156,8 +155,6 @@ public class NotificationMusic extends NotificationSimple {
 
 
         // Finally... Actually creating the Notification
-        notificationBuilder = new NotificationCompat.Builder(context);
-
         notificationBuilder.setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.ic_skip_white)
                 .setOngoing(true)

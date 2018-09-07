@@ -6,6 +6,8 @@ import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
+//just copied the code, didn't wanted to load complete lib
+//look for credits
 public class barVisuals extends visualizer {
 
     private float density = 50;
@@ -29,6 +31,7 @@ public class barVisuals extends visualizer {
         this.gap = 4;
         paint.setStyle(Paint.Style.FILL);
     }
+
     /**
      * Sets the density to the Bar visualizer i.e the number of bars
      * to be displayed. Density can vary from 10 to 256.

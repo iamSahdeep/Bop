@@ -1,7 +1,5 @@
 package com.sahdeepsingh.Bop.SongData;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class Playlist {
@@ -11,7 +9,7 @@ public class Playlist {
 
     private ArrayList<Long> songs = new ArrayList<>();
 
-    public Playlist(long id, String name) {
+    Playlist(long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -40,8 +38,6 @@ public class Playlist {
      * @return lol
      */
     public ArrayList<Long> getSongIds() {
-        Log.e("wtf", String.valueOf(songs));
-
         return new ArrayList<>(songs);
     }
 }
