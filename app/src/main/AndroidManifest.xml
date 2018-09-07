@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sahdeepsingh.Bop">
 
     <!-- So we can play songs while the device is locked -->
@@ -11,10 +12,12 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
-        android:allowBackup="true"
         android:icon="@drawable/ic_skip_white"
         android:label="@string/app_name"
-        android:theme="@style/MyMaterialTheme.Base">
+        android:allowBackup="true"
+        android:fullBackupContent="true"
+        android:theme="@style/MyMaterialTheme.Base"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ui.ActivityMenuSettings"
             android:label="@string/settings"
