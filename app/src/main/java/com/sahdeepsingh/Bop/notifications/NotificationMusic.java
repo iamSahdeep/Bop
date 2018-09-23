@@ -47,7 +47,7 @@ public class NotificationMusic extends NotificationSimple {
     /**
      * Used to create and update the same notification.
      */
-    private NotificationCompat.Builder notificationBuilder = null;
+    private NotificationCompat.Builder notificationBuilder;
 
     /**
      * Custom appearance of the notification, also updated.
@@ -153,8 +153,8 @@ public class NotificationMusic extends NotificationSimple {
         PendingIntent buttonStopPendingIntent = PendingIntent.getBroadcast(context, 0, buttonStopIntent, 0);
         notificationView.setOnClickPendingIntent(R.id.stopNoti, buttonStopPendingIntent);
 
-
         // Finally... Actually creating the Notification
+        notificationBuilder = new NotificationCompat.Builder(context, "this");
         notificationBuilder.setContentIntent(pendingIntent)
                 .setSmallIcon(R.mipmap.ic_skip)
                 .setOngoing(true)

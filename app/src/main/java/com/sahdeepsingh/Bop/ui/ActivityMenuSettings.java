@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
@@ -160,22 +159,6 @@ public class ActivityMenuSettings extends PreferenceActivity
                 .getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
 
-        // For every possible option inside this screen,
-        // let's set what will happen when the user clicks on it.
-        for (int x = 0; x < getPreferenceScreen().getPreferenceCount(); x++) {
-
-            PreferenceCategory category = (PreferenceCategory) getPreferenceScreen().getPreference(x);
-
-            for (int y = 0; y < category.getPreferenceCount(); y++) {
-                Preference preference = category.getPreference(y);
-                preference.setOnPreferenceClickListener(onClickPreference);
-
-                // Initializing the default values
-                if (preference.getKey().equals("version")) {
-                    preference.setSummary(Main.versionName);
-                }
-            }
-        }
     }
 
     /**
