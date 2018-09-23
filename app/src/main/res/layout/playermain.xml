@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/transparent"
-                        android:src="@drawable/ic_shuffle_on_white" />
+                        android:src="@mipmap/ic_suffle_on" />
 
                     <ImageButton
                         android:id="@+id/previous"
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/transparent"
-                        android:src="@drawable/ic_previous_white" />
+                        android:src="@mipmap/ic_previous" />
 
                     <ImageButton
                         android:id="@+id/playPause"
@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/transparent"
-                        android:src="@drawable/ic_pause_white" />
+                        android:src="@mipmap/ic_pause" />
 
                     <ImageButton
                         android:id="@+id/skip_next"
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/transparent"
-                        android:src="@drawable/ic_skip_white" />
+                        android:src="@mipmap/ic_skip" />
 
                     <ImageButton
                         android:id="@+id/repeat"
@@ -104,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/transparent"
-                        android:src="@drawable/ic_repeat_on_white" />
+                        android:src="@mipmap/ic_repeat_on" />
 
 
                 </LinearLayout>

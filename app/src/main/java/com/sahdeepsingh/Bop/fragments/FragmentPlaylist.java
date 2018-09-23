@@ -44,7 +44,7 @@ public class FragmentPlaylist extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_playlist_list, container, false);
         final FloatingActionButton floatingActionButton = getActivity().findViewById(R.id.fab_Playall);
-        floatingActionButton.setImageResource(R.drawable.ic_add_white);
+        floatingActionButton.setImageResource(R.mipmap.ic_add);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

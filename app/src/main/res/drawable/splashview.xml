@@ -4,7 +4,8 @@
     <item android:drawable="@color/aqua" />
 
     <item>
-        <bitmap android:src="@drawable/ic_play_white"
+        <bitmap
+            android:src="@mipmap/ic_play"
             android:gravity="center" />
 
     </item>

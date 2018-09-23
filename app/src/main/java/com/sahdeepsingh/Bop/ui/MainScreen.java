@@ -323,7 +323,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
-        floatingActionButton.setImageResource(R.drawable.ic_shuffle_on_white);
+        floatingActionButton.setImageResource(R.mipmap.ic_suffle_on);
         if (isPlaying()) {
             Main.musicService.notifyCurrentSong();
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
@@ -349,35 +349,76 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         barVisualss.release();
     }
 
-    class ChangeSongBR extends BroadcastReceiver {
+    private void setControllListeners() {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
 
-            name.setText(Main.musicService.currentSong.getTitle());
-            artist.setText(Main.musicService.currentSong.getArtist());
-            TopName.setText(Main.musicService.currentSong.getTitle());
-            TopArttist.setText(Main.musicService.currentSong.getArtist());
-            name.setSelected(true);
-            artist.setSelected(true);
-            TopName.setSelected(true);
-            TopArttist.setSelected(true);
-            workOnImages();
-            if (Main.musicService.isPaused()) {
-                PlayPause.setImageResource(R.drawable.ic_play_white);
-                pp.setImageResource(R.drawable.ic_play_white);
-            } else {
-                PlayPause.setImageResource(R.drawable.ic_pause_white);
-                pp.setImageResource(R.drawable.ic_pause_white);
+        if (Main.musicService.isShuffle())
+            shuffletoggle.setImageResource(R.mipmap.ic_suffle_on);
+        else shuffletoggle.setImageResource(R.mipmap.ic_suffle_off);
+
+
+        if (Main.musicService.isRepeat())
+            repeatToggle.setImageResource(R.mipmap.ic_repeat_on);
+        else repeatToggle.setImageResource(R.mipmap.ic_repeat_off);
+
+
+        shuffletoggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.toggleShuffle();
+                if (Main.musicService.isShuffle())
+                    shuffletoggle.setImageResource(R.mipmap.ic_suffle_on);
+                else shuffletoggle.setImageResource(R.mipmap.ic_suffle_off);
+
             }
-            Bitmap newImage;
-            BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inSampleSize = 4;
-            newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
-            if (newImage != null)
-            aa.setImageBitmap(newImage);
-            else aa.setImageResource(R.drawable.ic_cancel_dark);
-        }
+        });
+        previousSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playPrevious();
+            }
+        });
+        PlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.togglePlayback();
+                if (Main.musicService.isPaused()) {
+                    PlayPause.setImageResource(R.mipmap.ic_play);
+                    pp.setImageResource(R.mipmap.ic_play);
+                } else {
+                    PlayPause.setImageResource(R.mipmap.ic_pause);
+                    pp.setImageResource(R.mipmap.ic_pause);
+                }
+            }
+        });
+        nextSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playNext();
+            }
+        });
+        repeatToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.toggleRepeat();
+                if (Main.musicService.isRepeat())
+                    repeatToggle.setImageResource(R.mipmap.ic_repeat_on);
+                else repeatToggle.setImageResource(R.mipmap.ic_repeat_off);
+            }
+        });
+        pp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.togglePlayback();
+                if (!Main.musicService.isPaused()) {
+                    pp.setImageResource(R.mipmap.ic_pause);
+                    PlayPause.setImageResource(R.mipmap.ic_pause);
+                } else {
+                    pp.setImageResource(R.mipmap.ic_play);
+                    PlayPause.setImageResource(R.mipmap.ic_play);
+                }
+            }
+        });
 
     }
 
@@ -451,77 +492,20 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     }
 
+    private void workOnImages() {
+        File path;
+        Log.e("wtr", String.valueOf(Main.songs.getAlbumArt(Main.musicService.currentSong)));
+        if (Main.songs.getAlbumArt(Main.musicService.currentSong) != null)
+            path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
+        else path = null;
+        Bitmap bitmap;
+        if (path != null && path.exists()) {
+            bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_cancel);
+        centreimage.setImageBitmap(bitmap);
+        Bitmap blurredBitmap = blurMyImage(bitmap);
+        blurimage.setImageBitmap(blurredBitmap);
 
-    private void setControllListeners() {
-
-
-        if (Main.musicService.isShuffle())
-            shuffletoggle.setImageResource(R.drawable.ic_shuffle_on_white);
-        else shuffletoggle.setImageResource(R.drawable.ic_shuffle_off_white);
-
-
-        if (Main.musicService.isRepeat())
-            repeatToggle.setImageResource(R.drawable.ic_repeat_on_white);
-        else repeatToggle.setImageResource(R.drawable.ic_repeat_off_white);
-
-
-        shuffletoggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.toggleShuffle();
-                if (Main.musicService.isShuffle())
-                    shuffletoggle.setImageResource(R.drawable.ic_shuffle_on_white);
-                else shuffletoggle.setImageResource(R.drawable.ic_shuffle_off_white);
-
-            }
-        });
-        previousSong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playPrevious();
-            }
-        });
-        PlayPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.togglePlayback();
-                if (Main.musicService.isPaused()) {
-                    PlayPause.setImageResource(R.drawable.ic_play_white);
-                    pp.setImageResource(R.drawable.ic_play_white);
-                } else {
-                    PlayPause.setImageResource(R.drawable.ic_pause_white);
-                    pp.setImageResource(R.drawable.ic_pause_white);
-                }
-            }
-        });
-        nextSong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playNext();
-            }
-        });
-        repeatToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.toggleRepeat();
-                if (Main.musicService.isRepeat())
-                    repeatToggle.setImageResource(R.drawable.ic_repeat_on_white);
-                else repeatToggle.setImageResource(R.drawable.ic_repeat_off_white);
-            }
-        });
-        pp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.togglePlayback();
-                if (!Main.musicService.isPaused()) {
-                    pp.setImageResource(R.drawable.ic_pause_white);
-                    PlayPause.setImageResource(R.drawable.ic_pause_white);
-                } else {
-                    pp.setImageResource(R.drawable.ic_play_white);
-                    PlayPause.setImageResource(R.drawable.ic_play_white);
-                }
-            }
-        });
 
     }
 
@@ -564,20 +548,35 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         workOnImages();
     }
 
-    private void workOnImages() {
-        File path;
-        Log.e("wtr", String.valueOf(Main.songs.getAlbumArt(Main.musicService.currentSong)));
-        if (Main.songs.getAlbumArt(Main.musicService.currentSong) != null)
-            path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
-        else path = null;
-        Bitmap bitmap;
-        if (path != null && path.exists()) {
-            bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cancel_dark);
-        centreimage.setImageBitmap(bitmap);
-        Bitmap blurredBitmap = blurMyImage(bitmap);
-        blurimage.setImageBitmap(blurredBitmap);
+    class ChangeSongBR extends BroadcastReceiver {
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            name.setText(Main.musicService.currentSong.getTitle());
+            artist.setText(Main.musicService.currentSong.getArtist());
+            TopName.setText(Main.musicService.currentSong.getTitle());
+            TopArttist.setText(Main.musicService.currentSong.getArtist());
+            name.setSelected(true);
+            artist.setSelected(true);
+            TopName.setSelected(true);
+            TopArttist.setSelected(true);
+            workOnImages();
+            if (Main.musicService.isPaused()) {
+                PlayPause.setImageResource(R.mipmap.ic_play);
+                pp.setImageResource(R.mipmap.ic_play);
+            } else {
+                PlayPause.setImageResource(R.mipmap.ic_pause);
+                pp.setImageResource(R.mipmap.ic_pause);
+            }
+            Bitmap newImage;
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = 4;
+            newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
+            if (newImage != null)
+                aa.setImageBitmap(newImage);
+            else aa.setImageResource(R.mipmap.ic_cancel);
+        }
 
     }
 

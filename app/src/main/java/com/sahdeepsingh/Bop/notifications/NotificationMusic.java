@@ -113,9 +113,9 @@ public class NotificationMusic extends NotificationSimple {
 
         // Manually settings the buttons and text
         // (ignoring the defaults on the XML)
-        notificationView.setImageViewResource(R.id.pauseNoti, R.drawable.ic_pause_white);
-        notificationView.setImageViewResource(R.id.skipNoti, R.drawable.ic_skip_white);
-        notificationView.setImageViewResource(R.id.stopNoti, R.drawable.ic_cancel_white);
+        notificationView.setImageViewResource(R.id.pauseNoti, R.mipmap.ic_pause);
+        notificationView.setImageViewResource(R.id.skipNoti, R.mipmap.ic_skip);
+        notificationView.setImageViewResource(R.id.stopNoti, R.mipmap.ic_cancel);
         notificationView.setTextViewText(R.id.songNameNoti, song.getTitle());
         notificationView.setTextViewText(R.id.ArtistNameNoti, song.getArtist());
         Bitmap newImage;
@@ -124,7 +124,7 @@ public class NotificationMusic extends NotificationSimple {
         newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
         if (newImage != null)
         notificationView.setImageViewBitmap(R.id.albumArtNoti,newImage);
-        else notificationView.setImageViewResource(R.id.albumArtNoti,R.drawable.ic_cancel_white);
+        else notificationView.setImageViewResource(R.id.albumArtNoti, R.mipmap.ic_cancel);
         //String path = Main.songs.getAlbumArt(song);
 
 
@@ -156,7 +156,7 @@ public class NotificationMusic extends NotificationSimple {
 
         // Finally... Actually creating the Notification
         notificationBuilder.setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.ic_skip_white)
+                .setSmallIcon(R.mipmap.ic_skip)
                 .setOngoing(true)
                 .setStyle(new NotificationCompat.BigPictureStyle())
                 .setCustomContentView(notificationView)
@@ -183,8 +183,8 @@ public class NotificationMusic extends NotificationSimple {
             return;
 
         int iconID = ((Main.musicService.isPaused()) ?
-                R.drawable.ic_play_white :
-                R.drawable.ic_pause_white);
+                R.mipmap.ic_play :
+                R.mipmap.ic_pause);
 
         notificationView.setImageViewResource(R.id.pauseNoti, iconID);
 

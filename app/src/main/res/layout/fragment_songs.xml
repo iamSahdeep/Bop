@@ -28,7 +28,7 @@
                     android:id="@+id/albumArt"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_cancel_dark" />
+                    android:src="@mipmap/ic_cancel" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

@@ -54,8 +54,8 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         final Song song = songs.get(position);
         String path = Main.songs.getAlbumArt(songs.get(position));
         if (path != null)
-            Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.ic_pause_dark).into(holder.circleImageView);
-        else  Picasso.get().load(R.drawable.ic_cancel_dark).fit().centerCrop().into(holder.circleImageView);
+            Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_pause).into(holder.circleImageView);
+        else Picasso.get().load(R.mipmap.ic_cancel).fit().centerCrop().into(holder.circleImageView);
         //holder.circleImageView.setImageBitmap(Main.songs.getAlbumArt(songs.get(position)));
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
