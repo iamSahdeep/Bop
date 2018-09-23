@@ -566,8 +566,7 @@ public class SongList {
         for (Song song : songs) {
 
             String currentSongGenre = song.getGenre();
-
-            if (currentSongGenre.equals(genreName))
+            if (currentSongGenre != null && currentSongGenre.equals(genreName))
                 currentSongs.add(song);
         }
 

@@ -3,7 +3,6 @@ package com.sahdeepsingh.Bop.fragments;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,6 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.genre.setText(mValues.get(position));
         String selectedGenre = Main.songs.getGenres().get(position);
-        Log.e("test", String.valueOf(selectedGenre));
         List<Song> songsList = Main.songs.getSongsByGenre(selectedGenre);
         for (int i = 0; i < songsList.size(); i++) {
             String path = Main.songs.getAlbumArt(songsList.get(i));
