@@ -14,7 +14,9 @@ import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.fragments.FragmentSongs.OnListFragmentInteractionListener;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
     @NonNull
     @Override
     public String getSectionName(int position) {
-        return String.valueOf(position + 1);
+        return String.valueOf(songs.get(position).getTitle().charAt(0));
     }
 
     public interface OnClickAction {
@@ -53,31 +55,29 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        holder.songName.setText(songs.get(position).getTitle());
-        holder.songBy.setText(songs.get(position).getArtist());
+        final Song localItem = songs.get(position);
+        holder.songName.setText(localItem.getTitle());
+        holder.songBy.setText(localItem.getArtist());
         holder.songName.setSelected(true);
-        final Song song = songs.get(position);
-        holder.circleImageView.setImageBitmap(Main.songs.getAlbumBitmap(song));
-        /*String path = Main.songs.getAlbumArt(songs.get(position));
+        String path = Main.songs.getAlbumArt(localItem);
         if (path != null)
-            Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_pause).into(holder.circleImageView);
-        else Picasso.get().load(R.mipmap.ic_cancel).fit().centerCrop().into(holder.circleImageView);*/
-        //holder.circleImageView.setImageBitmap(Main.songs.getAlbumArt(songs.get(position)));
+            Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_pause).into(holder.circleImageView);
+        else Picasso.get().load(R.mipmap.ic_cancel).fit().centerCrop().into(holder.circleImageView);
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (selected.contains(song)){
-                    selected.remove(song);
+                if (selected.contains(localItem)) {
+                    selected.remove(localItem);
                     unhighlightView(holder);
                 }else {
-                    selected.add(song);
+                    selected.add(localItem);
                     highlightView(holder);
                 }
                 receiver.onClickAction();
                 return true;
             }
         });
-        if (selected.contains(song))
+        if (selected.contains(localItem))
             highlightView(holder);
         else
             unhighlightView(holder);
@@ -97,11 +97,11 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.getAdapterPosition(), "singleSong");
                 }else {
-                    if (selected.contains(song)){
-                        selected.remove(song);
+                    if (selected.contains(localItem)) {
+                        selected.remove(localItem);
                         unhighlightView(holder);
                     }else {
-                        selected.add(song);
+                        selected.add(localItem);
                         highlightView(holder);
                     }
                     receiver.onClickAction();
@@ -109,7 +109,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
                 }
         });
 
-        if (selected.contains(song))
+        if (selected.contains(localItem))
             highlightView(holder);
         else
             unhighlightView(holder);
@@ -123,6 +123,10 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         holder.mView.setBackgroundColor(Color.WHITE);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
     @Override
     public int getItemCount() {
