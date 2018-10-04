@@ -52,7 +52,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="paddingPercent" value="30" />
+                                                <entry key="paddingPercent" value="5" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -66,8 +66,8 @@
                                       <entry key="backgroundColor" value="c6e2e7" />
                                       <entry key="cropped" value="true" />
                                       <entry key="iconShape" value="CIRCLE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/1073682-multimedia-player-control/png/turn-synchronization-off.png" />
-                                      <entry key="outputName" value="ic_repeat_off" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/1073682-multimedia-player-control/png/cancel.png" />
+                                      <entry key="outputName" value="ic_cancel" />
                                     </map>
                                   </option>
                                 </PersistentState>

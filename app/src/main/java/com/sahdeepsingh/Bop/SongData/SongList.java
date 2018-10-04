@@ -4,8 +4,10 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 
@@ -383,7 +385,7 @@ public class SongList {
     }
 
     //unnecessary but very useful xD
-    private Bitmap getAlbumBitmap(Song song){
+    public Bitmap getAlbumBitmap(Song song) {
         Bitmap bitmap = null;
         Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"),Long.valueOf(song.getAlbumid()));
         try {
@@ -394,7 +396,10 @@ public class SongList {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return bitmap;
+        if (bitmap != null)
+            return bitmap;
+        else
+            return BitmapFactory.decodeResource(Resources.getSystem(), android.R.drawable.ic_delete);
     }
 
     /**

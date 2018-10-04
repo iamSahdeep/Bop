@@ -13,20 +13,25 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.fragments.FragmentSongs.OnListFragmentInteractionListener;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.squareup.picasso.Picasso;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecyclerViewAdapter.ViewHolder> {
+public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecyclerViewAdapter.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
 
     private final List<Song> songs;
     private List<Song> selected = new ArrayList<>();
     private OnClickAction receiver;
     private OnListFragmentInteractionListener mListener;
+
+    @NonNull
+    @Override
+    public String getSectionName(int position) {
+        return String.valueOf(position + 1);
+    }
 
     public interface OnClickAction {
         void onClickAction();
@@ -52,10 +57,11 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         holder.songBy.setText(songs.get(position).getArtist());
         holder.songName.setSelected(true);
         final Song song = songs.get(position);
-        String path = Main.songs.getAlbumArt(songs.get(position));
+        holder.circleImageView.setImageBitmap(Main.songs.getAlbumBitmap(song));
+        /*String path = Main.songs.getAlbumArt(songs.get(position));
         if (path != null)
             Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_pause).into(holder.circleImageView);
-        else Picasso.get().load(R.mipmap.ic_cancel).fit().centerCrop().into(holder.circleImageView);
+        else Picasso.get().load(R.mipmap.ic_cancel).fit().centerCrop().into(holder.circleImageView);*/
         //holder.circleImageView.setImageBitmap(Main.songs.getAlbumArt(songs.get(position)));
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
