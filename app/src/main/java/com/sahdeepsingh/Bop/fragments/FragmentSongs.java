@@ -83,6 +83,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
             }
             mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs, mListener);
             mySongsRecyclerViewAdapter.setActionModeReceiver(this);
+            mySongsRecyclerViewAdapter.setHasStableIds(true);
             recyclerView.setHasFixedSize(true);
             recyclerView.setItemViewCacheSize(20);
             recyclerView.setDrawingCacheEnabled(true);
