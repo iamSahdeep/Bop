@@ -71,7 +71,6 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
 
         final FloatingActionButton floatingActionButton = getActivity().findViewById(R.id.fab_Playall);
 
-
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
