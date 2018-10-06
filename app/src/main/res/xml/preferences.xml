@@ -3,103 +3,32 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:key="appearance"
-        android:title="Appearance">
+        android:title="Appearance"
+        android:key="appearance">
 
-        <!--<ListPreference
+        <ListPreference
             android:defaultValue="default"
+            android:key="themes"
+            android:summary="change Theme"
             android:entries="@array/themes"
             android:entryValues="@array/themes_values"
-            android:key="themes"
-            android:summary="@string/menu_settings_themes_subtitle"
-            android:title="@string/menu_settings_themes_title" />-->
+            android:title="Themes" />
 
-        <!--<CheckBoxPreference
-            android:defaultValue="true"
-            android:key="show_notification"
-            android:summary="@string/menu_settings_show_notification_subtitle"
-            android:title="@string/menu_settings_show_notification_title" />-->
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="show_lock_widget"
-            android:summary="@string/menu_settings_lock_widget_subtitle"
-            android:title="@string/menu_settings_lock_widget_title" />
-
-    </PreferenceCategory>
-
-    <!--<PreferenceCategory-->
-        <!--android:key="sharing"-->
-        <!--android:title="Sharing">-->
-
-        <!--<CheckBoxPreference-->
-            <!--android:defaultValue="false"-->
-            <!--android:disableDependentsState="false"-->
-            <!--android:key="lastfm"-->
-            <!--android:summary="@string/menu_settings_lastfm_subtitle"-->
-            <!--android:title="@string/menu_settings_lastfm_title" />-->
-
-        <!--<ListPreference-->
-            <!--android:defaultValue="sls"-->
-            <!--android:dependency="lastfm"-->
-            <!--android:entries="@array/lastfm_which"-->
-            <!--android:entryValues="@array/lastfm_which_values"-->
-            <!--android:key="lastfm_which"-->
-            <!--android:summary="@string/menu_settings_lastfm_which_subtitle"-->
-            <!--android:title="@string/menu_settings_lastfm_which_title" />-->
-
-    <!--</PreferenceCategory>-->
-
-    <PreferenceCategory
-        android:key="headset"
-        android:title="Headset">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pause_headphone_off"
-            android:summary="@string/menu_settings_pause_headphone_off_subtitle"
-            android:title="@string/menu_settings_pause_headphone_off_title" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="play_headphone_on"
-            android:summary="@string/menu_settings_play_headphone_on_subtitle"
-            android:title="@string/menu_settings_play_headphone_on_title" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="nowplayinglist"
-        android:title="\'Now Playing List\'">
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="repeat_list"
-            android:summary="@string/menu_settings_repeat_list_subtitle"
-            android:title="@string/menu_settings_repeat_list_title" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="scroll_on_focus"
-            android:summary="@string/menu_settings_scroll_on_focus_subtitle"
-            android:title="@string/menu_settings_scroll_on_focus_title" />
-
-    </PreferenceCategory>
-
-    <!-- These are just items, not real settings.
-         Their behavior is specified on ActivityMenuSettings
-     -->
-    <PreferenceCategory
-        android:key="other"
-        android:title="Other">
+        android:title="Other"
+        android:key="other">
         <Preference
             android:key="version"
-            android:title="@string/menu_settings_version_title" />
+            android:title="1.0.0" />
         <Preference
             android:key="info"
-            android:title="@string/menu_settings_info_title" />
+            android:title="@string/app_name" />
         <Preference
             android:key="misc"
-            android:title="@string/menu_settings_misc_title" />
+            android:title="broh" />
 
     </PreferenceCategory>
 </PreferenceScreen>
