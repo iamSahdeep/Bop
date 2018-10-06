@@ -50,7 +50,6 @@
                         android:scrollHorizontally="true"
                         android:singleLine="true"
                         android:text=""
-                        android:textColor="@color/navy"
                         android:textSize="15sp" />
 
                     <TextView
@@ -59,7 +58,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text=""
-                        android:textColor="@color/darkblue"
                         android:textSize="12sp" />
 
 
