@@ -46,11 +46,14 @@ public class ActivityMaster extends AppCompatActivity {
      * `res/values/strings.xml`, at the fields
      * we can change on the Settings menu.
      */
+    protected String currentTheme = "";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        refreshTheme();
     }
 
     /**
@@ -59,6 +62,11 @@ public class ActivityMaster extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (refreshTheme()) {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
         ActivityMaster.this.invalidateOptionsMenu();
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         if (Main.mainMenuHasNowPlayingItem) {
@@ -116,6 +124,32 @@ public class ActivityMaster extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public boolean refreshTheme() {
+
+        // Getting global theme name from the Settings.
+        // Second argument is the default value, in case
+        // something went wrong.
+        String theme = Main.settings.get("themes", "default");
+
+        if (!currentTheme.equals(theme)) {
+            switch (theme) {
+                case "default":
+                    setTheme(R.style.darkTheme);
+                    break;
+                case "light":
+                    setTheme(R.style.lightTheme);
+                    break;
+                case "dark":
+                    setTheme(R.style.darkTheme);
+                    break;
+            }
+            currentTheme = theme;
+            return true;
+        }
+        return false;
+    }
+
 
 }
 
