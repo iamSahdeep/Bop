@@ -367,7 +367,7 @@ public class SongList {
             }*/
 
         //dont know why, but have to include this line, otherwise no albumart will be shown anywhere!!
-        //Bitmap bitmap = getAlbumBitmap(song);
+        Bitmap bitmap = getAlbumBitmap(song);
         Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
                 MediaStore.Audio.Albums._ID + "=?",
