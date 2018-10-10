@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/aqua" />
+    <item android:drawable="@color/primaryLightColor" />
 
     <item>
         <bitmap
-            android:src="@mipmap/ic_play"
+            android:src="@drawable/headphones"
             android:gravity="center" />
 
     </item>
