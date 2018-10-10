@@ -124,7 +124,7 @@ public class NotificationMusic extends NotificationSimple {
         newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
         if (newImage != null)
         notificationView.setImageViewBitmap(R.id.albumArtNoti,newImage);
-        else notificationView.setImageViewResource(R.id.albumArtNoti, R.mipmap.ic_cancel);
+        else notificationView.setImageViewResource(R.id.albumArtNoti, R.mipmap.ic_launcher);
         //String path = Main.songs.getAlbumArt(song);
 
 

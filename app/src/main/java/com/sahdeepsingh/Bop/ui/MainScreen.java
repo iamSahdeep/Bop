@@ -501,7 +501,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         Bitmap bitmap;
         if (path != null && path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_cancel);
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         centreimage.setImageBitmap(bitmap);
         Bitmap blurredBitmap = blurMyImage(bitmap);
         blurimage.setImageBitmap(blurredBitmap);
@@ -575,7 +575,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
             if (newImage != null)
                 aa.setImageBitmap(newImage);
-            else aa.setImageResource(R.mipmap.ic_cancel);
+            else aa.setImageResource(R.mipmap.ic_launcher);
         }
 
     }

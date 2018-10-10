@@ -24,7 +24,7 @@
                 android:id="@+id/albumArt"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:src="@mipmap/ic_cancel" />
+                android:src="@mipmap/ic_launcher" />
 
 
             <LinearLayout
