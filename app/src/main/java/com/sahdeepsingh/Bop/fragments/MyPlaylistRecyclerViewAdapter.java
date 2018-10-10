@@ -45,8 +45,8 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
             String path = Main.songs.getAlbumArt(songsList.get(i));
             if (path != null) {
                 Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_pause).into(holder.albumart);
-            } else if (i == songsList.size()-1)
-                Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(holder.albumart);
+            } /*else if (i == songsList.size()-1)
+                Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(holder.albumart);*/
         }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

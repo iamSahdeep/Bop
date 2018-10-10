@@ -575,7 +575,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
             if (newImage != null)
                 aa.setImageBitmap(newImage);
-            else aa.setImageResource(R.mipmap.ic_launcher);
+            //else aa.setImageResource(R.mipmap.ic_launcher);
         }
 
     }
