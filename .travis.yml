@@ -13,5 +13,7 @@ android:
     - extra-google-google_play_services
 before_script:
  - chmod +x gradlew
+before_install:
+ - yes | sdkmanager --licenses
 script:
 - ./gradlew build --stacktrace
