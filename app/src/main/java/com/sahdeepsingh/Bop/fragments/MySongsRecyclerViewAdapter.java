@@ -62,7 +62,8 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         String path = Main.songs.getAlbumArt(localItem);
         if (path != null)
             Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_pause).into(holder.circleImageView);
-        else Picasso.get().load(R.mipmap.ic_cancel).fit().centerCrop().into(holder.circleImageView);
+        else
+            Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(holder.circleImageView);
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {

@@ -48,7 +48,7 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
                 Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_pause).into(holder.genreArt);
                 break;
             } else if (i == songsList.size()-1)
-                Picasso.get().load(R.mipmap.ic_cancel).fit().centerCrop().into(holder.genreArt);
+                Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(holder.genreArt);
         }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
