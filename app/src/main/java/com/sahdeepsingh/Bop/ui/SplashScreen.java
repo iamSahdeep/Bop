@@ -160,10 +160,15 @@ public class SplashScreen extends AppCompatActivity {
                 File file = new File(getIntent().getData().getPath());
                 Intent intent = new Intent(SplashScreen.this, PlayingNow.class);
                 intent.putExtra("file", file);
+                Main.musicList.clear();
+                Main.musicList.add(Main.songs.getSongbyFile(file));
+                Main.nowPlayingList = Main.musicList;
+                startActivity(intent);
+                Log.e("wtf", file.getAbsolutePath());
+            } else {
+            Intent intent = new Intent(SplashScreen.this,MainScreen.class);
                 startActivity(intent);
             }
-            Intent intent = new Intent(SplashScreen.this,MainScreen.class);
-            startActivity(intent);
         }
     }
 

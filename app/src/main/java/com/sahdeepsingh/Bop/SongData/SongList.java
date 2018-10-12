@@ -10,7 +10,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -635,6 +637,16 @@ public class SongList {
                 currentSongs.add(getSongById(songID));
 
         return currentSongs;
+    }
+
+    public Song getSongbyFile(File file) {
+        Song song = null;
+        for (Song s : songs) {
+            if (s.getFilePath().equals(file.getPath()))
+                song = s;
+        }
+        Log.e("wtf", String.valueOf(song));
+        return song;
     }
 
     /**
