@@ -115,6 +115,11 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         if (bundle != null) {
 
+            if (bundle.containsKey("file")) {
+                File file = (File) bundle.get("file");
+
+            }
+
             // There's the other optional extra - sorting rule
             if (bundle.containsKey("sort"))
                 Main.musicService.sortBy((String) bundle.get("sort"));

@@ -338,7 +338,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             }
             workonSlidingPanel();
         }
-
     }
 
     @Override

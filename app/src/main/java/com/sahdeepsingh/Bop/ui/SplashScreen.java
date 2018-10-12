@@ -17,6 +17,8 @@ import android.util.Log;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
+import java.io.File;
+
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -154,6 +156,12 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+                File file = new File(getIntent().getData().getPath());
+                Intent intent = new Intent(SplashScreen.this, PlayingNow.class);
+                intent.putExtra("file", file);
+                startActivity(intent);
+            }
             Intent intent = new Intent(SplashScreen.this,MainScreen.class);
             startActivity(intent);
         }
