@@ -121,6 +121,7 @@ public class Main {
             // Won't do anything, since variables are
             // already started with default values.
         }
+        startMusicService(c);
     }
 
     /**

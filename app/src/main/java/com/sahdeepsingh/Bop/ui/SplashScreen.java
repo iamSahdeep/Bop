@@ -163,7 +163,6 @@ public class SplashScreen extends AppCompatActivity {
                 Main.musicList.clear();
                 Main.musicList.add(Main.songs.getSongbyFile(file));
                 Main.nowPlayingList = Main.musicList;
-                Log.e("wtf", String.valueOf(Main.nowPlayingList.size()));
                 startActivity(intent);
             } else {
             Intent intent = new Intent(SplashScreen.this,MainScreen.class);

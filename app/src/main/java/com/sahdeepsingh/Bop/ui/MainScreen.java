@@ -120,6 +120,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_main_screen);
 
+
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         name = findViewById(R.id.bottomtextView);
@@ -337,6 +338,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
                 playbackPaused = false;
             }
             workonSlidingPanel();
+            barVisualss.setPlayer(getAudioSessionId());
         }
     }
 

@@ -118,8 +118,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             if (bundle.containsKey("file")) {
                 File file = (File) bundle.get("file");
                 if (Main.songs.getSongbyFile(file) != null) {
-                    Main.musicService.initMusicPlayer();
-                    Main.musicService.setList(Main.nowPlayingList);
+                    // Main.startMusicService(this);
+                    Log.e("wtf", String.valueOf(Main.musicService));
+                    Main.musicService.add(Main.songs.getSongbyFile(file));
                     Main.musicService.playSong();
                 }
             }
