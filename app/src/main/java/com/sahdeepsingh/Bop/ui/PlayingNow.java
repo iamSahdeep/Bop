@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -30,6 +31,7 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bullhead.equalizer.EqualizerFragment;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.AdapterSong;
 import com.sahdeepsingh.Bop.controls.CircularSeekBar;
@@ -46,7 +48,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
     private static final float BLUR_RADIUS = 25f;
     CircularSeekBar circularSeekBar;
-    ImageView blurimage, centreimage, aa;
+    ImageView blurimage, centreimage, aa, equalizer;
     TextView name, artist , TopName , TopArttist;
     ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle, pp;
 
@@ -104,6 +106,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         artist = findViewById(R.id.bottomtextartist);
         pp = findViewById(R.id.bottomImagebutton);
         aa = findViewById(R.id.bottomImageview);
+        equalizer = findViewById(R.id.equalizer);
 
         barVisualss = findViewById(R.id.barVisuals);
 
@@ -286,6 +289,19 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
                     PlayPause.setImageResource(R.mipmap.ic_pause);
                     pp.setImageResource(R.mipmap.ic_pause);
                 }
+            }
+        });
+
+        equalizer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
+                        .setAccentColor(Color.parseColor("#4caf50"))
+                        .setAudioSessionId(getAudioSessionId())
+                        .build();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(android.R.id.content, equalizerFragment)
+                        .commit();
             }
         });
     }
