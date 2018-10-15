@@ -295,6 +295,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         equalizer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Main.musicService.player.setLooping(true);
                 EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
                         .setAccentColor(Color.parseColor("#4caf50"))
                         .setAudioSessionId(getAudioSessionId())

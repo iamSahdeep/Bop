@@ -250,7 +250,7 @@ public class ServicePlayMusic extends Service
     /**
      * Android Media Player - we control it in here.
      */
-    private MediaPlayer player;
+    public MediaPlayer player;
     /**
      * List of songs we're  currently playing.
      */
