@@ -1,6 +1,8 @@
 package com.sahdeepsingh.Bop.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -60,16 +62,20 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         holder.songBy.setText(localItem.getArtist());
         holder.songName.setSelected(true);
         String path = Main.songs.getAlbumArt(localItem);
-        if (path != null)
+        Bitmap bitmap = null;
+        if (path != null) {
             Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_pause).into(holder.circleImageView);
+            bitmap = BitmapFactory.decodeFile(path);
+        }
         /*else
             Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(holder.circleImageView);*/
+        final Bitmap finalBitmap = bitmap;
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 if (selected.contains(localItem)) {
                     selected.remove(localItem);
-                    unhighlightView(holder);
+                    unhighlightView(holder, finalBitmap);
                 }else {
                     selected.add(localItem);
                     highlightView(holder);
@@ -81,7 +87,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         if (selected.contains(localItem))
             highlightView(holder);
         else
-            unhighlightView(holder);
+            unhighlightView(holder, bitmap);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +106,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
                 }else {
                     if (selected.contains(localItem)) {
                         selected.remove(localItem);
-                        unhighlightView(holder);
+                        unhighlightView(holder, finalBitmap);
                     }else {
                         selected.add(localItem);
                         highlightView(holder);
@@ -113,15 +119,19 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         if (selected.contains(localItem))
             highlightView(holder);
         else
-            unhighlightView(holder);
+            unhighlightView(holder, bitmap);
     }
 
     private void highlightView(ViewHolder holder) {
-        holder.mView.setBackgroundColor(Color.GRAY);
+        holder.mView.setBackgroundColor(Color.BLUE);
+        holder.circleImageView.setImageResource(R.mipmap.ic_music);
     }
 
-    private void unhighlightView(ViewHolder holder) {
+    private void unhighlightView(ViewHolder holder, Bitmap draw) {
         holder.mView.setBackgroundColor(Color.WHITE);
+        if (draw != null)
+            holder.circleImageView.setImageBitmap(draw);
+        else holder.circleImageView.setImageResource(R.mipmap.ic_launcher);
     }
 
     @Override

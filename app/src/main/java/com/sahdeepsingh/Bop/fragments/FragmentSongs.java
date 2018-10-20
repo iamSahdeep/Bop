@@ -161,11 +161,11 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
             switch (item.getItemId()) {
                 case R.id.selectAll:
                     selectAll();
-                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " selected All", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " selected", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.deselectAll:
                     deselectAll();
-                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " Deselected All", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " selected", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.addtoPlaylist:
                     showPlaylistDialog();

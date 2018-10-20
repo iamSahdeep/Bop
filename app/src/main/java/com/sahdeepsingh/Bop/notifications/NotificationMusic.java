@@ -2,6 +2,7 @@ package com.sahdeepsingh.Bop.notifications;
 
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -123,7 +124,7 @@ public class NotificationMusic extends NotificationSimple {
         opts.inSampleSize = 5;
         newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
         if (newImage != null)
-        notificationView.setImageViewBitmap(R.id.albumArtNoti,newImage);
+            notificationView.setImageViewBitmap(R.id.albumArtNoti, newImage);
         else notificationView.setImageViewResource(R.id.albumArtNoti, R.mipmap.ic_launcher);
         //String path = Main.songs.getAlbumArt(song);
 
@@ -153,25 +154,43 @@ public class NotificationMusic extends NotificationSimple {
         PendingIntent buttonStopPendingIntent = PendingIntent.getBroadcast(context, 0, buttonStopIntent, 0);
         notificationView.setOnClickPendingIntent(R.id.stopNoti, buttonStopPendingIntent);
 
+        // The id of the channel.
+        String id = "my_channel_01";
         // Finally... Actually creating the Notification
-        notificationBuilder = new NotificationCompat.Builder(context, "this");
-        notificationBuilder.setContentIntent(pendingIntent)
-                .setSmallIcon(R.mipmap.ic_skip)
-                .setOngoing(true)
-                .setStyle(new NotificationCompat.BigPictureStyle())
-                .setCustomContentView(notificationView)
-                .setCustomBigContentView(notificationView);
-
-        Notification notification = notificationBuilder.build();
+        notificationBuilder = new NotificationCompat.Builder(context, id);
 
         //Picasso.get().load(path).into(notificationView, R.id.albumArtNoti, NOTIFICATION_ID, notification);
 
 
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//		notificationManager.notify(NOTIFICATION_ID, notification);
 
+        // The user-visible name of the channel.
+        CharSequence name = "bop";
+
+        // The user-visible description of the channel.
+        String description = "music-player";
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel mChannel = null;
+            mChannel = new NotificationChannel(id, name, importance);
+
+            // Configure the notification channel.
+            mChannel.setDescription(description);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        notificationBuilder.setContentIntent(pendingIntent)
+                .setSmallIcon(R.mipmap.ic_skip)
+                .setOngoing(true)
+                .setStyle(new NotificationCompat.BigPictureStyle())
+                .setCustomContentView(notificationView)
+                .setChannelId(id)
+                .setCustomBigContentView(notificationView);
         // Sets the notification to run on the foreground.
         // (why not the former commented line?)
+        Notification notification = notificationBuilder.build();
+        notificationManager.notify(NOTIFICATION_ID, notification);
         service.startForeground(NOTIFICATION_ID, notification);
     }
 
