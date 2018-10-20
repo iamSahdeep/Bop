@@ -117,7 +117,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
     }
 
     private void highlightView(ViewHolder holder) {
-        holder.mView.setBackgroundColor(Color.GRAY);
+        holder.mView.setBackgroundColor(Color.BLUE);
     }
 
     private void unhighlightView(ViewHolder holder) {
