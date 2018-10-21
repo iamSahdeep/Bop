@@ -155,7 +155,7 @@ public class NotificationMusic extends NotificationSimple {
         notificationView.setOnClickPendingIntent(R.id.stopNoti, buttonStopPendingIntent);
 
         // The id of the channel.
-        String id = "my_channel_01";
+        String id = "Bop-MusicPlayer";
         // Finally... Actually creating the Notification
         notificationBuilder = new NotificationCompat.Builder(context, id);
 

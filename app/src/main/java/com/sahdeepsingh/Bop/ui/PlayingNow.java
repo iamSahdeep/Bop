@@ -203,7 +203,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED)
                 {
-                    BottomControls.setVisibility(View.GONE);
+                    BottomControls.setVisibility(View.INVISIBLE);
                     songNameDisplay.setAlpha(0f);
                     songNameDisplay.setVisibility(View.VISIBLE);
                     songNameDisplay.animate().alpha(1.0f).setDuration(300).setListener(null);

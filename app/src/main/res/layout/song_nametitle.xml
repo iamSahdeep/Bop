@@ -6,13 +6,11 @@
     android:animateLayoutChanges="true"
     android:background="@color/transparent"
     android:orientation="horizontal"
-    android:visibility="gone"
-    android:weightSum="8">
+    android:visibility="gone">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="7"
         android:background="@color/transparent"
         android:orientation="vertical">
 
@@ -50,11 +48,4 @@
             android:text="@string/appbar_scrolling_view_behavior"
             android:textSize="15sp" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/equalizer"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@drawable/dropdown_icon" />
 </LinearLayout>
