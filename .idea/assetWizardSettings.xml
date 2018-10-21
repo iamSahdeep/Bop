@@ -82,7 +82,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="paddingPercent" value="5" />
+                                                <entry key="paddingPercent" value="10" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -97,8 +97,8 @@
                                       <entry key="backgroundColor" value="d6dbe5" />
                                       <entry key="cropped" value="true" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/close.png" />
-                                      <entry key="outputName" value="ic_cancel" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/mixer.png" />
+                                      <entry key="outputName" value="ic_equalizer" />
                                     </map>
                                   </option>
                                 </PersistentState>
