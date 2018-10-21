@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -34,6 +35,7 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bullhead.equalizer.EqualizerFragment;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.controls.CircularSeekBar;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
@@ -64,7 +66,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     private static final float BLUR_RADIUS = 25f;
 
     CircularSeekBar circularSeekBar;
-    ImageView blurimage, centreimage, aa;
+    ImageView blurimage, centreimage, aa, equalizer;
     TextView name, artist , TopName , TopArttist;
     ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle, pp;
     private boolean playbackPaused = false;
@@ -129,7 +131,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         aa = findViewById(R.id.bottomImageview);
         TopName = findViewById(R.id.songMainTitle);
         TopArttist = findViewById(R.id.songMainArtist);
-
+        equalizer = findViewById(R.id.equalizer);
         barVisualss = findViewById(R.id.barVisuals);
 
 
@@ -178,7 +180,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED)
                 {
-                    BottomControls.setVisibility(View.GONE);
+                    BottomControls.setVisibility(View.INVISIBLE);
                     songNameDisplay.setAlpha(0f);
                     songNameDisplay.setVisibility(View.VISIBLE);
                     songNameDisplay.animate().alpha(1.0f).setDuration(300).setListener(null);
@@ -421,6 +423,19 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             }
         });
 
+        equalizer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.player.setLooping(true);
+                EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
+                        .setAccentColor(Color.parseColor("#4caf50"))
+                        .setAudioSessionId(getAudioSessionId())
+                        .build();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(android.R.id.content, equalizerFragment)
+                        .commit();
+            }
+        });
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
