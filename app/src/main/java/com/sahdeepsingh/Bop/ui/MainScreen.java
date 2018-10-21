@@ -527,8 +527,8 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     private void prepareSeekBar() {
 
-        barVisualss.setColor(ContextCompat.getColor(this, R.color.gray));
-        barVisualss.setDensity(70);
+        barVisualss.setColor(ContextCompat.getColor(this, R.color.white));
+        barVisualss.setDensity(200);
         barVisualss.setPlayer(getAudioSessionId());
 
         circularSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {

@@ -323,7 +323,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     private void prepareSeekBar() {
 
         barVisualss.setColor(ContextCompat.getColor(this, R.color.white));
-        barVisualss.setDensity(70);
+        barVisualss.setDensity(200);
         barVisualss.setPlayer(getAudioSessionId());
 
 
