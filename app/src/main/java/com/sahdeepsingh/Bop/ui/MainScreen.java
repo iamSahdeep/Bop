@@ -18,10 +18,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.support.v8.renderscript.Allocation;
-import android.support.v8.renderscript.Element;
-import android.support.v8.renderscript.RenderScript;
-import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.Window;
@@ -42,7 +38,6 @@ import com.sahdeepsingh.Bop.playerMain.SingleToast;
 import com.sahdeepsingh.Bop.view.ProgressView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.io.File;
 import java.util.Objects;
 
 
@@ -342,39 +337,25 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         setControlListeners();
         prepareSeekBar();
     }
-
-    private void workOnImages() {
-        File path;
-        if (Main.songs.getAlbumArt(Main.musicService.currentSong) != null)
-            path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
-        else path = null;
-        Bitmap bitmap;
-        if (path != null && path.exists()) {
-            bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        aa.setImageBitmap(bitmap);
-
-    }
-
     private void prepareSeekBar() {
 
         mTimeView = findViewById(R.id.mtimeview);
         mDurationView = findViewById(R.id.mdurationview);
         mProgressView = findViewById(R.id.mprogressview);
+        mProgressView.setMax((int) Main.musicService.currentSong.getDurationSeconds());
         final Handler handler = new Handler();
         MainScreen.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (isPlaying()) {
                     mProgressView.setProgress(getCurrentPosition());
-                    mTimeView.setText(DateUtils.formatElapsedTime(Main.musicService.currentSong.getDurationSeconds()));
-                    mDurationView.setText(DateUtils.formatElapsedTime(getDuration()));
+                    mDurationView.setText(DateUtils.formatElapsedTime(Main.musicService.currentSong.getDurationSeconds()));
+                    mTimeView.setText(DateUtils.formatElapsedTime(getCurrentPosition() / 1000));
                 }
-                handler.postDelayed(this, 1);
+                handler.postDelayed(this, 1000);
             }
         });
 
-        workOnImages();
     }
 
     class ChangeSongBR extends BroadcastReceiver {
@@ -384,7 +365,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
             name.setText(Main.musicService.currentSong.getTitle());
             name.setSelected(true);
-            workOnImages();
             if (Main.musicService.isPaused()) {
                 pp.setImageResource(R.mipmap.ic_play);
             } else {
@@ -396,27 +376,8 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
             if (newImage != null)
                 aa.setImageBitmap(newImage);
-            else aa.setImageResource(R.mipmap.ic_launcher);
+            else aa.setImageResource(R.mipmap.ic_launcher_round);
         }
-
-    }
-
-    private Bitmap blurMyImage(Bitmap image) {
-        if (null == image) return null;
-
-        Bitmap bitmaplol = image.copy(image.getConfig(), true);
-        RenderScript renderScript = RenderScript.create(this);
-        Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
-        Allocation tmpOut = Allocation.createFromBitmap(renderScript, bitmaplol);
-
-//Intrinsic Gausian blur filter
-        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-        theIntrinsic.setRadius(BLUR_RADIUS);
-        theIntrinsic.setInput(tmpIn);
-        theIntrinsic.forEach(tmpOut);
-        tmpOut.copyTo(bitmaplol);
-        renderScript.destroy();
-        return bitmaplol;
 
     }
 
