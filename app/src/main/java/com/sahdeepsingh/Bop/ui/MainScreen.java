@@ -58,7 +58,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     private static final float BLUR_RADIUS = 25f;
 
-    ImageView blurimage, centreimage, aa, equalizer;
+    ImageView aa;
     TextView name;
     ImageButton pp;
     private boolean playbackPaused = false;
@@ -352,10 +352,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         if (path != null && path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
         } else bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        centreimage.setImageBitmap(bitmap);
-        Bitmap blurredBitmap = blurMyImage(bitmap);
-        blurimage.setImageBitmap(blurredBitmap);
-
+        aa.setImageBitmap(bitmap);
 
     }
 

@@ -34,7 +34,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_view_item, parent, false);
+                .inflate(R.layout.fragment_songs, parent, false);
         return new ViewHolder(view);
     }
 
