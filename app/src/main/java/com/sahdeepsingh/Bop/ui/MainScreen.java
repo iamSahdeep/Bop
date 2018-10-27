@@ -343,13 +343,13 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         mDurationView = findViewById(R.id.mdurationview);
         mProgressView = findViewById(R.id.mprogressview);
         mProgressView.setMax((int) Main.musicService.currentSong.getDurationSeconds());
+        mDurationView.setText(DateUtils.formatElapsedTime(Main.musicService.currentSong.getDurationSeconds()));
         final Handler handler = new Handler();
         MainScreen.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (isPlaying()) {
-                    mProgressView.setProgress(getCurrentPosition());
-                    mDurationView.setText(DateUtils.formatElapsedTime(Main.musicService.currentSong.getDurationSeconds()));
+                    mProgressView.setProgress(getCurrentPosition() / 1000);
                     mTimeView.setText(DateUtils.formatElapsedTime(getCurrentPosition() / 1000));
                 }
                 handler.postDelayed(this, 1000);
