@@ -107,8 +107,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         name = findViewById(R.id.bottomtextView);
         pp = findViewById(R.id.bottomImagebutton);
         aa = findViewById(R.id.bottomImageview);
-        equalizer = findViewById(R.id.equalizer);
-
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -125,12 +123,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     }
 
     private void slidingUpPanelLayoutListen() {
-        slidingUpPanelLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //start playing now Activity
-            }
-        });
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
