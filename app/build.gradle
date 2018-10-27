@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.sahdeepsingh.Bop"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -43,4 +43,7 @@ dependencies {
     implementation "com.mikepenz:materialdrawer:6.0.3"
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation "com.android.support:percent:27.1.1"
+    implementation "com.github.andremion:musiccoverview:1.0.0"
+
 }
