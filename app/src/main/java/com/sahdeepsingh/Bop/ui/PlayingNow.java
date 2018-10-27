@@ -12,7 +12,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
@@ -26,7 +27,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +40,6 @@ import com.sahdeepsingh.Bop.visualizer.barVisuals;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
-import java.util.Objects;
 
 import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 
@@ -56,40 +55,19 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
     SlidingUpPanelLayout slidingUpPanelLayout;
 
-    /**
-     * List that will display all the songs.
-     */
-    private ListView songListView;
     private boolean paused = false;
     private boolean playbackPaused = false;
     barVisuals barVisualss;
 
-    /**
-     * Thing that maps songs to items on the ListView.
-     * <p>
-     * We're keeping track of it so we can refresh the ListView if the user
-     * wishes to change it's order.
-     * <p>
-     * Check out the leftmost menu and it's options.
-     */
-    private AdapterSong songAdapter;
-    /**
-     * Little menu that will show when the user
-     * clicks the ActionBar.
-     * It serves to sort the current song list.
-     */
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        setContentView(R.layout.activity_playing_now);
+        setContentView(R.layout.playerview_list);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        songListView = findViewById(R.id.list_nowplaying);
+        RecyclerView songListView = findViewById(R.id.tracks_nowplaying);
 
         circularSeekBar = findViewById(R.id.circularSeekBar);
         blurimage = findViewById(R.id.BlurImage);
@@ -109,9 +87,8 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         equalizer = findViewById(R.id.equalizer);
 
         barVisualss = findViewById(R.id.barVisuals);
-
-        songAdapter = new AdapterSong(this, Main.nowPlayingList);
-        songListView.setAdapter(songAdapter);
+        songListView.setLayoutManager(new LinearLayoutManager(this));
+        songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -159,12 +136,12 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         }
 
         // Scroll the list view to the current song.
-        songListView.setSelection(Main.musicService.currentSongPosition);
+        //songListView.getLayoutManager().scrollToPosition(Main.nowPlayingList.);
 
         // We'll get warned when the user clicks on an item
         // and when he long selects an item.
-        songListView.setOnItemClickListener(this);
-        songListView.setOnItemLongClickListener(this);
+        // songListView.setOnItemClickListener(this);
+        //  songListView.setOnItemLongClickListener(this);
 
 
         // While we're playing music, add an item to the
@@ -511,10 +488,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             paused = false;
         }
 
-        // Scroll the list view to the current song.
-        if (Main.settings.get("scroll_on_focus", true))
-            songListView.setSelection(Main.musicService.currentSongPosition);
-
     }
 
     /**
@@ -638,10 +611,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         // Prepare the music service to play the song.
         Main.musicService.setSong(position);
-
-        // Scroll the list view to the current song.
-        songListView.setSelection(position);
-
         Main.musicService.playSong();
 
         if (playbackPaused) {
