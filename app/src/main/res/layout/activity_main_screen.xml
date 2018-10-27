@@ -44,21 +44,12 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".ui.MainScreen" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_Playall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/bottomcontrolsMainscreen"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="10dp"
-            android:src="@mipmap/ic_cancel" />
-
     </android.support.design.widget.CoordinatorLayout>
 
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/bottomcontrols"
+        layout="@layout/bottomviewcontrols"
         android:gravity="center|top">
     </include>
 

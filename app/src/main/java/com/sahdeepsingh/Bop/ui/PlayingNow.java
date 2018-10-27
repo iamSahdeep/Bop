@@ -11,7 +11,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v8.renderscript.Allocation;
@@ -19,16 +22,11 @@ import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bullhead.equalizer.EqualizerFragment;
@@ -36,7 +34,6 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.AdapterSong;
 import com.sahdeepsingh.Bop.controls.CircularSeekBar;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.visualizer.barVisuals;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
@@ -46,18 +43,19 @@ import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 public class PlayingNow extends ActivityMaster implements MediaController.MediaPlayerControl, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private static final float BLUR_RADIUS = 25f;
-    CircularSeekBar circularSeekBar;
-    ImageView blurimage, centreimage, aa, equalizer;
-    TextView name, artist , TopName , TopArttist;
-    ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle, pp;
+
+    private View mCoverView;
+    private View mTitleView;
+    private View mTimeView;
+    private View mDurationView;
+    private View mProgressView;
+    private View mFabView;
+
 
     ChangeSongBR changeSongBR;
 
-    SlidingUpPanelLayout slidingUpPanelLayout;
-
     private boolean paused = false;
     private boolean playbackPaused = false;
-    barVisuals barVisualss;
 
 
     @Override
@@ -69,24 +67,13 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         RecyclerView songListView = findViewById(R.id.tracks_nowplaying);
 
-        circularSeekBar = findViewById(R.id.circularSeekBar);
-        blurimage = findViewById(R.id.BlurImage);
-        centreimage = findViewById(R.id.CircleImage);
-        shuffletoggle = findViewById(R.id.shuffle);
-        previousSong = findViewById(R.id.previous);
-        PlayPause = findViewById(R.id.playPause);
-        nextSong = findViewById(R.id.skip_next);
-        repeatToggle = findViewById(R.id.repeat);
-        slidingUpPanelLayout = findViewById(R.id.sliding_layout);
-        name = findViewById(R.id.bottomtextView);
-        TopName = findViewById(R.id.songMainTitle);
-        TopArttist = findViewById(R.id.songMainArtist);
-        artist = findViewById(R.id.bottomtextartist);
-        pp = findViewById(R.id.bottomImagebutton);
-        aa = findViewById(R.id.bottomImageview);
-        equalizer = findViewById(R.id.equalizer);
+        mCoverView = findViewById(R.id.cover);
+        mTitleView = findViewById(R.id.title);
+        mTimeView = findViewById(R.id.time);
+        mDurationView = findViewById(R.id.duration);
+        mProgressView = findViewById(R.id.progress);
+        mFabView = findViewById(R.id.fab);
 
-        barVisualss = findViewById(R.id.barVisuals);
         songListView.setLayoutManager(new LinearLayoutManager(this));
         songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
 
@@ -152,49 +139,19 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         changeSongBR = new ChangeSongBR();
 
-        slidingUpPanelLayoutListen();
-
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.removeItem(R.id.nowPlayingIcon);
-        return true;
-    }
-
-
-
-    private void slidingUpPanelLayoutListen() {
-        final LinearLayout songNameDisplay , BottomControls;
-        songNameDisplay = findViewById(R.id.SongNameTop);
-        BottomControls = findViewById(R.id.layout_item);
-        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-
-            }
-
-            @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED)
-                {
-                    BottomControls.setVisibility(View.INVISIBLE);
-                    songNameDisplay.setAlpha(0f);
-                    songNameDisplay.setVisibility(View.VISIBLE);
-                    songNameDisplay.animate().alpha(1.0f).setDuration(300).setListener(null);
-                }else if (newState == SlidingUpPanelLayout.PanelState.DRAGGING){
-                    BottomControls.setAlpha(0f);
-                    songNameDisplay.setAlpha(0f);
-                }else{
-                    songNameDisplay.setVisibility(View.GONE);
-                    BottomControls.setAlpha(0f);
-                    BottomControls.setVisibility(View.VISIBLE);
-                    BottomControls.animate().alpha(1.0f).setDuration(300).setListener(null);
-                }
-            }
-        });
+    public void onFabClick(View view) {
+        //noinspection unchecked
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                new android.support.v4.util.Pair<View, String>(mCoverView, ViewCompat.getTransitionName(mCoverView)),
+                new android.support.v4.util.Pair<View, String>(mTitleView, ViewCompat.getTransitionName(mTitleView)),
+                new android.support.v4.util.Pair<View, String>(mTimeView, ViewCompat.getTransitionName(mTimeView)),
+                new android.support.v4.util.Pair<View, String>(mDurationView, ViewCompat.getTransitionName(mDurationView)),
+                new android.support.v4.util.Pair<View, String>(mProgressView, ViewCompat.getTransitionName(mProgressView)),
+                new android.support.v4.util.Pair<View, String>(mFabView, ViewCompat.getTransitionName(mFabView)));
+        ActivityCompat.startActivity(this, new Intent(this, PlayerView.class), options.toBundle());
     }
 
     private void setControllListeners() {
