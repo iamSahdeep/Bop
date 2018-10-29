@@ -1,6 +1,7 @@
 package com.sahdeepsingh.Bop.ui;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,9 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.LayoutRes;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.view.ViewCompat;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +25,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +42,8 @@ import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 public class PlayingNow extends AppCompatActivity implements MediaController.MediaPlayerControl, AdapterView.OnItemClickListener {
 
     private TextView mTitleView;
-    private ImageView mFabView;
+    private LinearLayout mTitleViewq;
+    private FloatingActionButton mFabView;
     private TextView mTimeView;
     private TextView mDurationView;
     private ProgressView mProgressView;
@@ -96,7 +97,14 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         mDurationView = findViewById(R.id.duration);
         mProgressView = findViewById(R.id.progress);
         mFabView = findViewById(R.id.fab);
+        mTitleViewq = findViewById(R.id.title);
 
+        mFabView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFabClick();
+            }
+        });
         songListView.setLayoutManager(new LinearLayoutManager(this));
         songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
 
@@ -108,8 +116,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
             if (bundle.containsKey("file")) {
                 File file = (File) bundle.get("file");
                 if (Main.songs.getSongbyFile(file) != null) {
-                    // Main.startMusicService(this);
-                    Log.e("wtf", String.valueOf(Main.musicService));
                     Main.musicService.add(Main.songs.getSongbyFile(file));
                     Main.musicService.playSong();
                 }
@@ -161,16 +167,16 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         changeSongBR = new ChangeSongBR();
     }
 
-    public void onFabClick(View view) {
+    public void onFabClick() {
         //noinspection unchecked
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                new android.support.v4.util.Pair<View, String>(mCoverView, ViewCompat.getTransitionName(mCoverView)),
-                new android.support.v4.util.Pair<View, String>(mTitleView, ViewCompat.getTransitionName(mTitleView)),
-                new android.support.v4.util.Pair<View, String>(mTimeView, ViewCompat.getTransitionName(mTimeView)),
-                new android.support.v4.util.Pair<View, String>(mDurationView, ViewCompat.getTransitionName(mDurationView)),
-                new android.support.v4.util.Pair<View, String>(mProgressView, ViewCompat.getTransitionName(mProgressView)),
-                new android.support.v4.util.Pair<View, String>(mFabView, ViewCompat.getTransitionName(mFabView)));
-        ActivityCompat.startActivity(this, new Intent(this, PlayerView.class), options.toBundle());
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
+                new android.util.Pair<View, String>(mCoverView, "cover"),
+                new android.util.Pair<View, String>(mTitleViewq, "title"),
+                new android.util.Pair<View, String>(mTimeView, "time"),
+                new android.util.Pair<View, String>(mDurationView, "duration"),
+                new android.util.Pair<View, String>(mProgressView, "progress"),
+                new android.util.Pair<View, String>(mFabView, "fab"));
+        startActivity(new Intent(this, PlayerView.class), options.toBundle());
     }
 
     private void workOnImages() {
@@ -215,13 +221,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
             } else {
                 mFabView.setImageResource(R.mipmap.ic_play);
             }
-            Bitmap newImage;
-            BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inSampleSize = 4;
-            newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong), opts);
-            if (newImage != null)
-                mCoverView.setImageBitmap(newImage);
-            //else aa.setImageResource(R.mipmap.ic_launcher);
         }
 
     }
@@ -311,7 +310,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         if (paused) {
             paused = false;
         }
-
     }
 
     /**

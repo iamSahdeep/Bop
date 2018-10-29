@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         app:layout_marginTopPercent="10%" />
 
-    <com.sample.andremion.musicplayer.view.ProgressView
+    <com.sahdeepsingh.Bop.view.ProgressView
         android:id="@+id/progress"
         android:layout_centerInParent="true"
         android:transitionName="@string/transition_name_progress"

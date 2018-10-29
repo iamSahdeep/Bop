@@ -190,6 +190,6 @@ public class Main {
 
     //just for debugging
     public static void shit(String msg) {
-
+        Log.e("shit", msg);
     }
 }

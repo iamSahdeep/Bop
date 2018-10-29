@@ -355,7 +355,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
                 handler.postDelayed(this, 1000);
             }
         });
-
     }
 
     class ChangeSongBR extends BroadcastReceiver {

@@ -2,19 +2,28 @@ package com.sahdeepsingh.Bop.ui;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.andremion.music.MusicCoverView;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.view.ProgressView;
 import com.sahdeepsingh.Bop.view.TransitionAdapter;
 
 public class PlayerView extends AppCompatActivity {
 
     private MusicCoverView mCoverView;
+    private LinearLayout mTitleView;
+    private FloatingActionButton mFabView;
+    private TextView mTimeView;
+    private TextView mDurationView;
+    private ProgressView mProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +34,12 @@ public class PlayerView extends AppCompatActivity {
         setContentView(R.layout.playerview);
 
         mCoverView = (MusicCoverView) findViewById(R.id.cover);
+        mTitleView = findViewById(R.id.title);
+        mTimeView = findViewById(R.id.time);
+        mDurationView = findViewById(R.id.duration);
+        mProgressView = findViewById(R.id.progress);
+        mFabView = findViewById(R.id.fab);
+
         mCoverView.setCallbacks(new MusicCoverView.Callbacks() {
             @Override
             public void onMorphEnd(MusicCoverView coverView) {
