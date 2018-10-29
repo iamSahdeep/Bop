@@ -19,10 +19,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v8.renderscript.Allocation;
-import android.support.v8.renderscript.Element;
-import android.support.v8.renderscript.RenderScript;
-import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
@@ -45,8 +41,6 @@ import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 
 public class PlayingNow extends AppCompatActivity implements MediaController.MediaPlayerControl, AdapterView.OnItemClickListener {
 
-    private static final float BLUR_RADIUS = 25f;
-
     private TextView mTitleView;
     private ImageView mFabView;
     private TextView mTimeView;
@@ -56,8 +50,8 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
     private final Handler mUpdateProgressHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            final int position = getCurrentPosition();
-            final int duration = (int) Main.musicService.currentSong.getDuration();
+            final int position = getCurrentPosition() / 1000;
+            final int duration = (int) Main.musicService.currentSong.getDurationSeconds();
             onUpdateProgress(position, duration);
             sendEmptyMessageDelayed(0, DateUtils.SECOND_IN_MILLIS);
         }
@@ -165,8 +159,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         MainScreen.addNowPlayingItem();
         prepareSeekBar();
         changeSongBR = new ChangeSongBR();
-
-
     }
 
     public void onFabClick(View view) {
@@ -194,7 +186,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
 
     private void prepareSeekBar() {
 
-        final Handler handler = new Handler();
+        /*final Handler handler = new Handler();
         PlayingNow.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -205,7 +197,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
                 }
                 handler.postDelayed(this, 1);
             }
-        });
+        });*/
 
         workOnImages();
     }
@@ -234,30 +226,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
 
     }
 
-    private Bitmap blurMyImage(Bitmap image) {
-        if (null == image) return null;
-
-        Bitmap bitmaplol = image.copy(image.getConfig(), true);
-        RenderScript renderScript = RenderScript.create(this);
-        Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
-        Allocation tmpOut = Allocation.createFromBitmap(renderScript, bitmaplol);
-
-//Intrinsic Gausian blur filter
-        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-        theIntrinsic.setRadius(BLUR_RADIUS);
-        theIntrinsic.setInput(tmpIn);
-        theIntrinsic.forEach(tmpOut);
-        tmpOut.copyTo(bitmaplol);
-        renderScript.destroy();
-        return bitmaplol;
-
-    }
-
-
-    /**
-     * Shows a Dialog asking the user for a new Playlist name,
-     * creating it if so possible.
-     */
     private void newPlaylist() {
 
         // The input box where user will type new name
