@@ -9,7 +9,6 @@
         </style>
 
     <style name="lightTheme" parent="MaterialDrawerTheme.Light.TranslucentStatus">
-
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorPrimary">@color/primaryColor</item>
     </style>
