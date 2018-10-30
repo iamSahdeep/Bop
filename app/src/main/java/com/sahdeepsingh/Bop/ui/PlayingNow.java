@@ -1,5 +1,7 @@
 package com.sahdeepsingh.Bop.ui;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,110 +10,98 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
-import android.support.v8.renderscript.Allocation;
-import android.support.v8.renderscript.Element;
-import android.support.v8.renderscript.RenderScript;
-import android.support.v8.renderscript.ScriptIntrinsicBlur;
+import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bullhead.equalizer.EqualizerFragment;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.AdapterSong;
-import com.sahdeepsingh.Bop.controls.CircularSeekBar;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.visualizer.barVisuals;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.sahdeepsingh.Bop.view.ProgressView;
 
 import java.io.File;
-import java.util.Objects;
 
 import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 
-public class PlayingNow extends ActivityMaster implements MediaController.MediaPlayerControl, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class PlayingNow extends AppCompatActivity implements MediaController.MediaPlayerControl, AdapterView.OnItemClickListener {
 
-    private static final float BLUR_RADIUS = 25f;
-    CircularSeekBar circularSeekBar;
-    ImageView blurimage, centreimage, aa, equalizer;
-    TextView name, artist , TopName , TopArttist;
-    ImageButton shuffletoggle, previousSong, PlayPause, nextSong, repeatToggle, pp;
+    private TextView mTitleView, mCounterView;
+    private LinearLayout mTitleViewq;
+    private FloatingActionButton mFabView;
+    private TextView mTimeView;
+    private TextView mDurationView;
+    private ProgressView mProgressView;
+    @SuppressLint("HandlerLeak")
+    private final Handler mUpdateProgressHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            final int position = getCurrentPosition() / 1000;
+            final int duration = (int) Main.musicService.currentSong.getDurationSeconds();
+            onUpdateProgress(position, duration);
+            sendEmptyMessageDelayed(0, DateUtils.SECOND_IN_MILLIS);
+        }
+    };
 
     ChangeSongBR changeSongBR;
 
-    SlidingUpPanelLayout slidingUpPanelLayout;
-
-    /**
-     * List that will display all the songs.
-     */
-    private ListView songListView;
     private boolean paused = false;
     private boolean playbackPaused = false;
-    barVisuals barVisualss;
+    private ImageView mCoverView;
 
-    /**
-     * Thing that maps songs to items on the ListView.
-     * <p>
-     * We're keeping track of it so we can refresh the ListView if the user
-     * wishes to change it's order.
-     * <p>
-     * Check out the leftmost menu and it's options.
-     */
-    private AdapterSong songAdapter;
-    /**
-     * Little menu that will show when the user
-     * clicks the ActionBar.
-     * It serves to sort the current song list.
-     */
-    private Toolbar toolbar;
+    private void onUpdateProgress(int position, int duration) {
+        if (mTimeView != null) {
+            mTimeView.setText(DateUtils.formatElapsedTime(position));
+        }
+        if (mDurationView != null) {
+            mDurationView.setText(DateUtils.formatElapsedTime(duration));
+        }
+        if (mProgressView != null) {
+            mProgressView.setProgress(position);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        setContentView(R.layout.activity_playing_now);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        songListView = findViewById(R.id.list_nowplaying);
+        setContentView(R.layout.playerview_list);
 
-        circularSeekBar = findViewById(R.id.circularSeekBar);
-        blurimage = findViewById(R.id.BlurImage);
-        centreimage = findViewById(R.id.CircleImage);
-        shuffletoggle = findViewById(R.id.shuffle);
-        previousSong = findViewById(R.id.previous);
-        PlayPause = findViewById(R.id.playPause);
-        nextSong = findViewById(R.id.skip_next);
-        repeatToggle = findViewById(R.id.repeat);
-        slidingUpPanelLayout = findViewById(R.id.sliding_layout);
-        name = findViewById(R.id.bottomtextView);
-        TopName = findViewById(R.id.songMainTitle);
-        TopArttist = findViewById(R.id.songMainArtist);
-        artist = findViewById(R.id.bottomtextartist);
-        pp = findViewById(R.id.bottomImagebutton);
-        aa = findViewById(R.id.bottomImageview);
-        equalizer = findViewById(R.id.equalizer);
+        RecyclerView songListView = findViewById(R.id.tracks_nowplaying);
 
-        barVisualss = findViewById(R.id.barVisuals);
+        mCoverView = findViewById(R.id.cover);
+        mTitleView = findViewById(R.id.titleTrack);
+        mTimeView = findViewById(R.id.time);
+        mDurationView = findViewById(R.id.duration);
+        mProgressView = findViewById(R.id.progress);
+        mFabView = findViewById(R.id.fab);
+        mTitleViewq = findViewById(R.id.title);
+        mCounterView = findViewById(R.id.counter);
 
-        songAdapter = new AdapterSong(this, Main.nowPlayingList);
-        songListView.setAdapter(songAdapter);
+        mFabView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFabClick();
+            }
+        });
+        songListView.setLayoutManager(new LinearLayoutManager(this));
+        songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -121,8 +111,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             if (bundle.containsKey("file")) {
                 File file = (File) bundle.get("file");
                 if (Main.songs.getSongbyFile(file) != null) {
-                    // Main.startMusicService(this);
-                    Log.e("wtf", String.valueOf(Main.musicService));
                     Main.musicService.add(Main.songs.getSongbyFile(file));
                     Main.musicService.playSong();
                 }
@@ -137,7 +125,7 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
             if (bundle.containsKey("songPosition")) {
                 int songToPlayIndex = bundle.getInt("songPosition");
                 Main.musicService.setSong(songToPlayIndex);
-                Log.e("sD",String.valueOf(songToPlayIndex));
+                Log.e("sD", String.valueOf(songToPlayIndex));
                 Main.musicService.playSong();
             }
             if (bundle.containsKey("playlistName")) {
@@ -159,152 +147,31 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         }
 
         // Scroll the list view to the current song.
-        songListView.setSelection(Main.musicService.currentSongPosition);
+        //songListView.getLayoutManager().scrollToPosition(Main.nowPlayingList.);
 
         // We'll get warned when the user clicks on an item
         // and when he long selects an item.
-        songListView.setOnItemClickListener(this);
-        songListView.setOnItemLongClickListener(this);
+        // songListView.setOnItemClickListener(this);
+        //  songListView.setOnItemLongClickListener(this);
 
 
         // While we're playing music, add an item to the
         // Main Menu that returns here.
         MainScreen.addNowPlayingItem();
         prepareSeekBar();
-        setControllListeners();
-
         changeSongBR = new ChangeSongBR();
-
-        slidingUpPanelLayoutListen();
-
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.removeItem(R.id.nowPlayingIcon);
-        return true;
-    }
-
-
-
-    private void slidingUpPanelLayoutListen() {
-        final LinearLayout songNameDisplay , BottomControls;
-        songNameDisplay = findViewById(R.id.SongNameTop);
-        BottomControls = findViewById(R.id.layout_item);
-        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-
-            }
-
-            @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED)
-                {
-                    BottomControls.setVisibility(View.INVISIBLE);
-                    songNameDisplay.setAlpha(0f);
-                    songNameDisplay.setVisibility(View.VISIBLE);
-                    songNameDisplay.animate().alpha(1.0f).setDuration(300).setListener(null);
-                }else if (newState == SlidingUpPanelLayout.PanelState.DRAGGING){
-                    BottomControls.setAlpha(0f);
-                    songNameDisplay.setAlpha(0f);
-                }else{
-                    songNameDisplay.setVisibility(View.GONE);
-                    BottomControls.setAlpha(0f);
-                    BottomControls.setVisibility(View.VISIBLE);
-                    BottomControls.animate().alpha(1.0f).setDuration(300).setListener(null);
-                }
-            }
-        });
-    }
-
-    private void setControllListeners() {
-
-
-        if (Main.musicService.isShuffle())
-            shuffletoggle.setImageResource(R.mipmap.ic_suffle_on);
-        else shuffletoggle.setImageResource(R.mipmap.ic_suffle_off);
-
-
-        if (Main.musicService.isRepeat())
-            repeatToggle.setImageResource(R.mipmap.ic_repeat_on);
-        else repeatToggle.setImageResource(R.mipmap.ic_repeat_off);
-
-
-        shuffletoggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.toggleShuffle();
-                if (Main.musicService.isShuffle())
-                    shuffletoggle.setImageResource(R.mipmap.ic_suffle_on);
-                else shuffletoggle.setImageResource(R.mipmap.ic_suffle_off);
-
-            }
-        });
-        previousSong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playPrevious();
-            }
-        });
-        PlayPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.togglePlayback();
-                if (Main.musicService.isPaused()) {
-                    PlayPause.setImageResource(R.mipmap.ic_play);
-                    pp.setImageResource(R.mipmap.ic_play);
-                } else {
-                    PlayPause.setImageResource(R.mipmap.ic_pause);
-                    pp.setImageResource(R.mipmap.ic_pause);
-                }
-            }
-        });
-        nextSong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playNext();
-            }
-        });
-        repeatToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.toggleRepeat();
-                if (Main.musicService.isRepeat())
-                    repeatToggle.setImageResource(R.mipmap.ic_repeat_on);
-                else repeatToggle.setImageResource(R.mipmap.ic_repeat_off);
-            }
-        });
-
-        pp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.togglePlayback();
-                if (Main.musicService.isPaused()) {
-                    PlayPause.setImageResource(R.mipmap.ic_play);
-                    pp.setImageResource(R.mipmap.ic_play);
-                } else {
-                    PlayPause.setImageResource(R.mipmap.ic_pause);
-                    pp.setImageResource(R.mipmap.ic_pause);
-                }
-            }
-        });
-
-        equalizer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.player.setLooping(true);
-                EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
-                        .setAccentColor(Color.parseColor("#4caf50"))
-                        .setAudioSessionId(getAudioSessionId())
-                        .build();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(android.R.id.content, equalizerFragment)
-                        .commit();
-            }
-        });
+    public void onFabClick() {
+        //noinspection unchecked
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
+                new android.util.Pair<View, String>(mCoverView, "cover"),
+                new android.util.Pair<View, String>(mTitleViewq, "title"),
+                new android.util.Pair<View, String>(mTimeView, "time"),
+                new android.util.Pair<View, String>(mDurationView, "duration"),
+                new android.util.Pair<View, String>(mProgressView, "progress"),
+                new android.util.Pair<View, String>(mFabView, "fab"));
+        startActivity(new Intent(this, PlayerView.class), options.toBundle());
     }
 
     private void workOnImages() {
@@ -314,48 +181,24 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         Bitmap bitmap;
         if (path != null && path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        centreimage.setImageBitmap(bitmap);
-        Bitmap blurredBitmap = blurMyImage(bitmap);
-        blurimage.setImageBitmap(blurredBitmap);
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.back);
+        mCoverView.setImageBitmap(bitmap);
     }
 
     private void prepareSeekBar() {
 
-        barVisualss.setColor(ContextCompat.getColor(this, R.color.white));
-        barVisualss.setDensity(200);
-        barVisualss.setPlayer(getAudioSessionId());
-
-
-        circularSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
-                if (fromUser)
-                    seekTo(progress);
-            }
-
-            @Override
-            public void onStopTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-        });
-
-
-        circularSeekBar.setMax((int) Main.musicService.currentSong.getDuration());
-        final Handler handler = new Handler();
+        /*final Handler handler = new Handler();
         PlayingNow.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (isPlaying())
-                    circularSeekBar.setProgress(getCurrentPosition());
+                if (isPlaying()) {
+
+                    mTimeView.setText(DateUtils.formatElapsedTime(Main.musicService.currentSong.getDurationSeconds()));
+                    mDurationView.setText(DateUtils.formatElapsedTime(getDuration()));
+                }
                 handler.postDelayed(this, 1);
             }
-        });
+        });*/
 
         workOnImages();
     }
@@ -364,57 +207,19 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            name.setText(Main.musicService.currentSong.getTitle());
-            artist.setText(Main.musicService.currentSong.getArtist());
-            TopName.setText(Main.musicService.currentSong.getTitle());
-            TopArttist.setText(Main.musicService.currentSong.getArtist());
-            name.setSelected(true);
-            artist.setSelected(true);
-            TopName.setSelected(true);
-            TopArttist.setSelected(true);
+            mUpdateProgressHandler.sendEmptyMessage(0);
+            mTitleView.setText(Main.musicService.currentSong.getTitle());
+            mTitleView.setSelected(true);
+            mCounterView.setText(String.valueOf(Main.nowPlayingList.size()) + " Songs");
             workOnImages();
             if (!Main.musicService.isPaused()) {
-                pp.setImageResource(R.mipmap.ic_pause);
-                PlayPause.setImageResource(R.mipmap.ic_pause);
+                mFabView.setImageResource(R.mipmap.ic_pause);
             } else {
-                pp.setImageResource(R.mipmap.ic_play);
-                PlayPause.setImageResource(R.mipmap.ic_play);
+                mFabView.setImageResource(R.mipmap.ic_play);
             }
-            Bitmap newImage;
-            BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inSampleSize = 4;
-            newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong), opts);
-            if (newImage != null)
-                aa.setImageBitmap(newImage);
-            //else aa.setImageResource(R.mipmap.ic_launcher);
         }
-
     }
 
-    private Bitmap blurMyImage(Bitmap image) {
-        if (null == image) return null;
-
-        Bitmap bitmaplol = image.copy(image.getConfig(), true);
-        RenderScript renderScript = RenderScript.create(this);
-        Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
-        Allocation tmpOut = Allocation.createFromBitmap(renderScript, bitmaplol);
-
-//Intrinsic Gausian blur filter
-        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-        theIntrinsic.setRadius(BLUR_RADIUS);
-        theIntrinsic.setInput(tmpIn);
-        theIntrinsic.forEach(tmpOut);
-        tmpOut.copyTo(bitmaplol);
-        renderScript.destroy();
-        return bitmaplol;
-
-    }
-
-
-    /**
-     * Shows a Dialog asking the user for a new Playlist name,
-     * creating it if so possible.
-     */
     private void newPlaylist() {
 
         // The input box where user will type new name
@@ -475,14 +280,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     }
 
 
-    @Override
-    public void onBackPressed() {
-        if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        else super.onBackPressed();
-
-    }
-
     /**
      * Another Activity is taking focus. (either from user going to another
      * Activity or home)
@@ -491,7 +288,6 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
     protected void onPause() {
         super.onPause();
         unregisterReceiver(changeSongBR);
-        barVisualss.release();
         paused = true;
         playbackPaused = true;
     }
@@ -506,15 +302,9 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
         Main.musicService.notifyCurrentSong();
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         if (paused) {
             paused = false;
         }
-
-        // Scroll the list view to the current song.
-        if (Main.settings.get("scroll_on_focus", true))
-            songListView.setSelection(Main.musicService.currentSongPosition);
-
     }
 
     /**
@@ -638,34 +428,11 @@ public class PlayingNow extends ActivityMaster implements MediaController.MediaP
 
         // Prepare the music service to play the song.
         Main.musicService.setSong(position);
-
-        // Scroll the list view to the current song.
-        songListView.setSelection(position);
-
         Main.musicService.playSong();
 
         if (playbackPaused) {
             playbackPaused = false;
         }
         onResume();
-    }
-
-    /**
-     * When the user long clicks a music inside the "Now Playing List".
-     */
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view,
-                                   int position, long id) {
-
-        Toast.makeText(this, Main.musicService.getSong(position).getGenre(),
-                Toast.LENGTH_LONG).show();
-
-        // Just a catch - if we return `false`, when an user
-        // long clicks an item, the list will react as if
-        // we've long clicked AND clicked.
-        //
-        // So by returning `false`, it will call both
-        // `onItemLongClick` and `onItemClick`!
-        return true;
     }
 }

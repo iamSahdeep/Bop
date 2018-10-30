@@ -83,7 +83,6 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="paddingPercent" value="10" />
-                                                <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -97,8 +96,8 @@
                                       <entry key="backgroundColor" value="d6dbe5" />
                                       <entry key="cropped" value="true" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/mixer.png" />
-                                      <entry key="outputName" value="ic_equalizer" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/show-more-button-with-three-dots.png" />
+                                      <entry key="outputName" value="ic_3dots" />
                                     </map>
                                   </option>
                                 </PersistentState>

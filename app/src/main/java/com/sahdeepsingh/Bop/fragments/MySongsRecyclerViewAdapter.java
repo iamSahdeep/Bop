@@ -67,8 +67,6 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
             Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_pause).into(holder.circleImageView);
             bitmap = BitmapFactory.decodeFile(path);
         }
-        /*else
-            Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(holder.circleImageView);*/
         final Bitmap finalBitmap = bitmap;
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

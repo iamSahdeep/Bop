@@ -187,4 +187,9 @@ public class Main {
         c.finishAffinity();
 
     }
+
+    //just for debugging
+    public static void shit(String msg) {
+        Log.e("shit", msg);
+    }
 }
