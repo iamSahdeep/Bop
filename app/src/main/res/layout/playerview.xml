@@ -60,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/timers_anchor"
+        android:textColor="@color/white"
         android:layout_toStartOf="@id/timers_anchor"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:transitionName="@string/transition_name_time"
@@ -71,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/timers_anchor"
         android:layout_toEndOf="@id/timers_anchor"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/white"
         android:transitionName="@string/transition_name_duration"
         tools:text="04:30" />
 

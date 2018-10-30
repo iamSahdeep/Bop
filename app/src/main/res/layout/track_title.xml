@@ -8,6 +8,7 @@
         android:id="@+id/titleTrack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Song Name"
         android:singleLine="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />

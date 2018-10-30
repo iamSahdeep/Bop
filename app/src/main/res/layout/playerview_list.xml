@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray"
     android:fitsSystemWindows="true">
 
     <com.andremion.music.MusicCoverView
@@ -48,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:transitionName="@string/transition_name_time"
+                android:textColor="@color/white"
                 tools:text="02:30" />
 
             <com.sahdeepsingh.Bop.view.ProgressView
@@ -65,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:transitionName="@string/transition_name_duration"
+                android:textColor="@color/white"
                 tools:text="04:30" />
 
             <Space
@@ -90,6 +93,7 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="Current Playlist"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
@@ -98,6 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
+            android:textColor="@color/white"
             android:text="0 songs"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
