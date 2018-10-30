@@ -57,7 +57,9 @@
         <activity
             android:name=".ui.MainScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".ui.PlayingNow"
             android:screenOrientation="portrait" />
@@ -82,7 +84,9 @@
                     tools:ignore="AppLinkUrlError" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PlayerView"></activity>
+        <activity android:name=".ui.PlayerView">
+
+        </activity>
     </application>
 
 </manifest>
