@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,7 +40,7 @@ import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 
 public class PlayingNow extends AppCompatActivity implements MediaController.MediaPlayerControl, AdapterView.OnItemClickListener {
 
-    private TextView mTitleView;
+    private TextView mTitleView, mCounterView;
     private LinearLayout mTitleViewq;
     private FloatingActionButton mFabView;
     private TextView mTimeView;
@@ -77,11 +76,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
     }
 
     @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        super.setContentView(layoutResID);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
@@ -98,6 +92,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         mProgressView = findViewById(R.id.progress);
         mFabView = findViewById(R.id.fab);
         mTitleViewq = findViewById(R.id.title);
+        mCounterView = findViewById(R.id.counter);
 
         mFabView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,7 +181,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         Bitmap bitmap;
         if (path != null && path.exists()) {
             bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.back);
         mCoverView.setImageBitmap(bitmap);
     }
 
@@ -215,6 +210,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
             mUpdateProgressHandler.sendEmptyMessage(0);
             mTitleView.setText(Main.musicService.currentSong.getTitle());
             mTitleView.setSelected(true);
+            mCounterView.setText(String.valueOf(Main.nowPlayingList.size()) + " Songs");
             workOnImages();
             if (!Main.musicService.isPaused()) {
                 mFabView.setImageResource(R.mipmap.ic_pause);
@@ -222,7 +218,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
                 mFabView.setImageResource(R.mipmap.ic_play);
             }
         }
-
     }
 
     private void newPlaylist() {
