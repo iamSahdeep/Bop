@@ -18,6 +18,7 @@ import android.transition.Transition;
 import android.view.View;
 import android.view.Window;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andremion.music.MusicCoverView;
@@ -59,7 +60,8 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.playerview);
-
+        RelativeLayout wq = findViewById(R.id.fdsg);
+        wq.bringToFront();
         mCoverView = findViewById(R.id.cover);
         mTitleView = findViewById(R.id.titleTrack);
         mTimeView = findViewById(R.id.time);
