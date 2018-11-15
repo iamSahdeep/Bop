@@ -134,9 +134,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
         switch (type) {
             case "singleSong":
-                Main.musicList.clear();
-                Main.musicList.add(Main.songs.songs.get(position));
-                Main.nowPlayingList = Main.musicList;
+               /* Main.musicList.clear();
+                Main.musicList.add(Main.songs.songs.get(position));*/
+                Main.nowPlayingList = Main.songs.songs;
                 intent.putExtra("songPosition", position);
                 startActivity(intent);
 

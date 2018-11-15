@@ -18,7 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -46,6 +45,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
     private TextView mTimeView;
     private TextView mDurationView;
     private ProgressView mProgressView;
+    private RecyclerView songListView;
     @SuppressLint("HandlerLeak")
     private final Handler mUpdateProgressHandler = new Handler() {
         @Override
@@ -83,7 +83,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
 
         setContentView(R.layout.playerview_list);
 
-        RecyclerView songListView = findViewById(R.id.tracks_nowplaying);
+        songListView = findViewById(R.id.tracks_nowplaying);
 
         mCoverView = findViewById(R.id.cover);
         mTitleView = findViewById(R.id.titleTrack);
@@ -125,7 +125,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
             if (bundle.containsKey("songPosition")) {
                 int songToPlayIndex = bundle.getInt("songPosition");
                 Main.musicService.setSong(songToPlayIndex);
-                Log.e("sD", String.valueOf(songToPlayIndex));
                 Main.musicService.playSong();
             }
             if (bundle.containsKey("playlistName")) {
@@ -210,7 +209,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
             mUpdateProgressHandler.sendEmptyMessage(0);
             mTitleView.setText(Main.musicService.currentSong.getTitle());
             mTitleView.setSelected(true);
-            mCounterView.setText(String.valueOf(Main.nowPlayingList.size()) + " Songs");
+            mCounterView.setText(String.format("%s Songs", String.valueOf(Main.nowPlayingList.size())));
             workOnImages();
             if (!Main.musicService.isPaused()) {
                 mFabView.setImageResource(R.mipmap.ic_pause);
