@@ -179,10 +179,8 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     @Override
     public void onBackPressed() {
-        if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        else {
-            if (this.backPressedOnce) {
+
+        if (this.backPressedOnce) {
                 // Default behavior, quit it
                 super.onBackPressed();
                 Main.forceExit(this);
@@ -196,7 +194,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
             backPressedHandler.postDelayed(backPressedTimeoutAction, BACK_PRESSED_DELAY);
         }
-    }
+
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -241,13 +239,6 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
-        if (isPlaying()) {
-            Main.musicService.notifyCurrentSong();
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        } else {
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
-        }
 
         if (isPlaying()) {
             if (playbackPaused) {

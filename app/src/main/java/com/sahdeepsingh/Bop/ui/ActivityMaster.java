@@ -70,7 +70,7 @@ public class ActivityMaster extends AppCompatActivity {
         ActivityMaster.this.invalidateOptionsMenu();
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         if (Main.mainMenuHasNowPlayingItem) {
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         } else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
