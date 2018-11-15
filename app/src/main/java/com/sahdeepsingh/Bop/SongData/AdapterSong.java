@@ -1,6 +1,7 @@
 package com.sahdeepsingh.Bop.SongData;
 
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.viszzz.barVisuals;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -34,7 +36,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_songs, parent, false);
+                .inflate(R.layout.fragment_songs_playlist, parent, false);
         return new ViewHolder(view);
     }
 
@@ -48,7 +50,13 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
         if (path != null) {
             Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_pause).into(holder.circleImageView);
         }
-
+        if (Main.mainMenuHasNowPlayingItem) {
+            if (Main.musicService.currentSong == localItem) {
+                holder.barVisuals.setColor(ContextCompat.getColor(holder.barVisuals.getContext(), R.color.white));
+                holder.barVisuals.setDensity(1);
+                holder.barVisuals.setPlayer(Main.musicService.getAudioSession());
+            }
+        }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +75,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
         public final View mView;
         public final TextView songName;
         public final TextView songBy;
+        barVisuals barVisuals;
         final CircleImageView circleImageView;
 
         ViewHolder(View view) {
@@ -75,6 +84,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
             songName = view.findViewById(R.id.songName);
             songBy = view.findViewById(R.id.songBy);
             circleImageView = view.findViewById(R.id.albumArt);
+            barVisuals = view.findViewById(R.id.barvisuals);
         }
 
     }
