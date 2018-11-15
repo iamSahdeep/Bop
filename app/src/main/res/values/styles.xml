@@ -13,7 +13,7 @@
         <item name="colorPrimary">@color/primaryColor</item>
     </style>
 
-    <style name="darkTheme" parent="lightTheme">
+    <style name="darkTheme" parent="MaterialDrawerTheme.TranslucentStatus">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/primaryLightColor</item>

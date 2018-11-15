@@ -62,7 +62,8 @@
         </activity>
         <activity
             android:name=".ui.PlayingNow"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/darkTheme" />
         <activity
             android:name=".ui.SplashScreen"
             android:screenOrientation="portrait"
