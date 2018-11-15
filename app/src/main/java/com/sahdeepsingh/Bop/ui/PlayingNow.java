@@ -207,6 +207,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         @Override
         public void onReceive(Context context, Intent intent) {
             mUpdateProgressHandler.sendEmptyMessage(0);
+            songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
             songListView.scrollToPosition(Main.musicService.currentSongPosition);
             mTitleView.setText(Main.musicService.currentSong.getTitle());
             mTitleView.setSelected(true);
