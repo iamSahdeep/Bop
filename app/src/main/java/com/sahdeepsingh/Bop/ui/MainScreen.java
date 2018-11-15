@@ -239,7 +239,13 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_ACTION);
         registerReceiver(changeSongBR, intentFilter);
-
+        if (isPlaying()) {
+            Main.musicService.notifyCurrentSong();
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        } else {
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
+        }
         if (isPlaying()) {
             if (playbackPaused) {
                 playbackPaused = false;
