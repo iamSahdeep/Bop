@@ -51,11 +51,16 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
             Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_pause).into(holder.circleImageView);
         }
         if (Main.mainMenuHasNowPlayingItem) {
-            if (Main.musicService.currentSong == localItem) {
+            if (Main.musicService.currentSong.getTitle().equals(localItem.getTitle())) {
+                holder.barVisuals.setVisibility(View.VISIBLE);
                 holder.barVisuals.setColor(ContextCompat.getColor(holder.barVisuals.getContext(), R.color.white));
                 holder.barVisuals.setDensity(1);
                 holder.barVisuals.setPlayer(Main.musicService.getAudioSession());
+            } else {
+                holder.barVisuals.setVisibility(View.GONE);
             }
+        } else {
+            holder.barVisuals.setVisibility(View.GONE);
         }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
