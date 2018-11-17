@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.transition.Transition;
@@ -26,6 +27,7 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.view.ProgressView;
 import com.sahdeepsingh.Bop.view.TransitionAdapter;
+import com.sahdeepsingh.Bop.viszzz.CircleBarVisualizer;
 
 import java.io.File;
 
@@ -48,6 +50,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
     private TextView mTimeView;
     private TextView mDurationView;
     private ProgressView mProgressView;
+    private CircleBarVisualizer circleBarVisualizer;
     ChangeSongBR changeSongBR;
     private TextView mTitleView;
     private boolean paused = false;
@@ -68,6 +71,8 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         mDurationView = findViewById(R.id.duration);
         mProgressView = findViewById(R.id.progress);
         mFabView = findViewById(R.id.fab);
+        circleBarVisualizer = findViewById(R.id.visualizer);
+        circleBarVisualizer.setColor(ContextCompat.getColor(this, R.color.white));
 
         mCoverView.setCallbacks(new MusicCoverView.Callbacks() {
             @Override
@@ -258,6 +263,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         @Override
         public void onReceive(Context context, Intent intent) {
             mUpdateProgressHandler.sendEmptyMessage(0);
+            circleBarVisualizer.setPlayer(getAudioSessionId());
             mTitleView.setText(Main.musicService.currentSong.getTitle());
             mTitleView.setSelected(true);
             workOnImages();
