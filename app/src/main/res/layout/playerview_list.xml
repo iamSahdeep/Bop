@@ -51,7 +51,7 @@
                 android:transitionName="@string/transition_name_time"
                 tools:text="02:30" />
 
-            <com.sahdeepsingh.Bop.view.ProgressView
+            <SeekBar
                 android:id="@+id/progress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

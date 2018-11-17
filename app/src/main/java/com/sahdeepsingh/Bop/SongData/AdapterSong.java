@@ -78,7 +78,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
+        final View mView;
         public final TextView songName;
         public final TextView songBy;
         barVisuals barVisuals;

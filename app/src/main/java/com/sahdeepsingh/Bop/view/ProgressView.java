@@ -25,13 +25,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 
 import com.sahdeepsingh.Bop.R;
 
 
-public class ProgressView extends View {
+public class ProgressView extends SeekBar {
 
     private static final float STROKE_SIZE = 4;
     private static final float START_ANGLE = 135;

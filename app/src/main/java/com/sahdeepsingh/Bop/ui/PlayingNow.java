@@ -1,6 +1,5 @@
 package com.sahdeepsingh.Bop.ui;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -12,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,13 +22,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.AdapterSong;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.view.ProgressView;
 
 import java.io.File;
 
@@ -43,18 +41,8 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
     private FloatingActionButton mFabView;
     private TextView mTimeView;
     private TextView mDurationView;
-    private ProgressView mProgressView;
+    private SeekBar seekArc;
     private RecyclerView songListView;
-    @SuppressLint("HandlerLeak")
-    private final Handler mUpdateProgressHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            final int position = getCurrentPosition() / 1000;
-            final int duration = (int) Main.musicService.currentSong.getDurationSeconds();
-            onUpdateProgress(position, duration);
-            sendEmptyMessageDelayed(0, DateUtils.SECOND_IN_MILLIS);
-        }
-    };
 
     ChangeSongBR changeSongBR;
 
@@ -69,8 +57,8 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         if (mDurationView != null) {
             mDurationView.setText(DateUtils.formatElapsedTime(duration));
         }
-        if (mProgressView != null) {
-            mProgressView.setProgress(position);
+        if (seekArc != null) {
+            seekArc.setProgress(getCurrentPosition());
         }
     }
 
@@ -88,7 +76,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         mTitleView = findViewById(R.id.titleTrack);
         mTimeView = findViewById(R.id.time);
         mDurationView = findViewById(R.id.duration);
-        mProgressView = findViewById(R.id.progress);
+        seekArc = findViewById(R.id.progress);
         mFabView = findViewById(R.id.fab);
         mTitleViewq = findViewById(R.id.title);
         mCounterView = findViewById(R.id.counter);
@@ -167,7 +155,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
                 new android.util.Pair<View, String>(mTitleViewq, "title"),
                 new android.util.Pair<View, String>(mTimeView, "time"),
                 new android.util.Pair<View, String>(mDurationView, "duration"),
-                new android.util.Pair<View, String>(mProgressView, "progress"),
+                new android.util.Pair<View, String>(seekArc, "progress"),
                 new android.util.Pair<View, String>(mFabView, "fab"));
         startActivity(new Intent(this, PlayerView.class), options.toBundle());
     }
@@ -185,18 +173,38 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
 
     private void prepareSeekBar() {
 
-        /*final Handler handler = new Handler();
+        seekArc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (b) {
+                    seekTo(i);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        seekArc.setMax((int) Main.musicService.currentSong.getDuration());
+        final Handler handler = new Handler();
         PlayingNow.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (isPlaying()) {
-
-                    mTimeView.setText(DateUtils.formatElapsedTime(Main.musicService.currentSong.getDurationSeconds()));
-                    mDurationView.setText(DateUtils.formatElapsedTime(getDuration()));
+                    int position = getCurrentPosition() / 1000;
+                    int duration = (int) Main.musicService.currentSong.getDurationSeconds();
+                    onUpdateProgress(position, duration);
                 }
                 handler.postDelayed(this, 1);
             }
-        });*/
+        });
 
         workOnImages();
     }
@@ -205,7 +213,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            mUpdateProgressHandler.sendEmptyMessage(0);
             songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
             songListView.scrollToPosition(Main.musicService.currentSongPosition);
             mTitleView.setText(Main.musicService.currentSong.getTitle());
