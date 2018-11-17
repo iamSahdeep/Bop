@@ -65,7 +65,8 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Nothing to do
+                Main.musicService.setSong(holder.getAdapterPosition());
+                Main.musicService.playSong();
             }
         });
     }

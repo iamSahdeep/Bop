@@ -13,7 +13,8 @@
         android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher"
         android:transitionName="@string/transition_name_cover"
-        app:layout_heightPercent="35%" />
+        app:layout_heightPercent="35%"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <View
         android:id="@+id/pane"
@@ -109,6 +110,7 @@
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
+            android:scaleType="centerCrop"
             android:focusable="true"
             android:src="@mipmap/ic_3dots" />
 
