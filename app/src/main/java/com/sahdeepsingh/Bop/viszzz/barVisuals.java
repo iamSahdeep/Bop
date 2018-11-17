@@ -43,8 +43,8 @@ public class barVisuals extends visualizer {
         this.density = density;
         if (density > 256) {
             this.density = 256;
-        } else if (density < 10) {
-            this.density = 10;
+        } else if (density < 4) {
+            this.density = 4;
         }
     }
 
