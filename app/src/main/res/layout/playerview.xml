@@ -90,6 +90,7 @@
         android:id="@+id/ordering"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/time"
         android:layout_centerHorizontal="true"
         android:transitionGroup="true">
@@ -125,7 +126,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
         android:transitionGroup="true"
-        app:layout_marginBottomPercent="5%">
+        app:layout_marginBottomPercent="4%">
 
         <ImageView
             android:id="@+id/previous"
