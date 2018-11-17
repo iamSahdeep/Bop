@@ -20,7 +20,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,7 +36,7 @@ import java.io.File;
 
 import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 
-public class PlayingNow extends AppCompatActivity implements MediaController.MediaPlayerControl, AdapterView.OnItemClickListener {
+public class PlayingNow extends AppCompatActivity implements MediaController.MediaPlayerControl {
 
     private TextView mTitleView, mCounterView;
     private LinearLayout mTitleViewq;
@@ -420,20 +419,4 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
 */
     }
 
-    /**
-     * When the user selects a music inside the "Now Playing List", we'll start
-     * playing it right away.
-     */
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        // Prepare the music service to play the song.
-        Main.musicService.setSong(position);
-        Main.musicService.playSong();
-
-        if (playbackPaused) {
-            playbackPaused = false;
-        }
-        onResume();
-    }
 }
