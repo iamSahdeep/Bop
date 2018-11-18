@@ -1,6 +1,5 @@
 package com.sahdeepsingh.Bop.ui;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -25,31 +23,22 @@ import android.widget.TextView;
 import com.andremion.music.MusicCoverView;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.view.ProgressView;
 import com.sahdeepsingh.Bop.view.TransitionAdapter;
 import com.sahdeepsingh.Bop.viszzz.CircleBarVisualizer;
 
 import java.io.File;
+
+import me.tankery.lib.circularseekbar.CircularSeekBar;
 
 import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 
 public class PlayerView extends AppCompatActivity implements MediaController.MediaPlayerControl {
 
     private MusicCoverView mCoverView;
-    @SuppressLint("HandlerLeak")
-    private final Handler mUpdateProgressHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            final int position = getCurrentPosition() / 1000;
-            final int duration = (int) Main.musicService.currentSong.getDurationSeconds();
-            onUpdateProgress(position, duration);
-            sendEmptyMessageDelayed(0, DateUtils.SECOND_IN_MILLIS);
-        }
-    };
     private FloatingActionButton mFabView;
     private TextView mTimeView;
     private TextView mDurationView;
-    private ProgressView mProgressView;
+    private CircularSeekBar mProgressView;
     private CircleBarVisualizer circleBarVisualizer;
     ChangeSongBR changeSongBR;
     private TextView mTitleView;
@@ -92,6 +81,9 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
                 mCoverView.start();
             }
         });
+
+
+        prepareSeekBar();
         changeSongBR = new ChangeSongBR();
 
     }
@@ -246,6 +238,44 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
 */
     }
 
+    private void prepareSeekBar() {
+
+        mProgressView.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(CircularSeekBar circularSeekBar, float progress, boolean fromUser) {
+                if (fromUser) {
+                    seekTo((int) progress);
+                }
+            }
+
+            @Override
+            public void onStopTrackingTouch(CircularSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(CircularSeekBar seekBar) {
+
+            }
+        });
+
+        mProgressView.setMax((int) Main.musicService.currentSong.getDuration());
+        final Handler handler = new Handler();
+        PlayerView.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isPlaying()) {
+                    int position = getCurrentPosition() / 1000;
+                    int duration = (int) Main.musicService.currentSong.getDurationSeconds();
+                    onUpdateProgress(position, duration);
+                }
+                handler.postDelayed(this, 1);
+            }
+        });
+
+        workOnImages();
+    }
+
     private void onUpdateProgress(int position, int duration) {
         if (mTimeView != null) {
             mTimeView.setText(DateUtils.formatElapsedTime(position));
@@ -254,7 +284,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
             mDurationView.setText(DateUtils.formatElapsedTime(duration));
         }
         if (mProgressView != null) {
-            mProgressView.setProgress(position);
+            mProgressView.setProgress(position * 1000);
         }
     }
 
@@ -262,7 +292,6 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            mUpdateProgressHandler.sendEmptyMessage(0);
             circleBarVisualizer.setPlayer(getAudioSessionId());
             mTitleView.setText(Main.musicService.currentSong.getTitle());
             mTitleView.setSelected(true);

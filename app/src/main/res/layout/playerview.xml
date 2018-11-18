@@ -31,12 +31,20 @@
         android:layout_centerHorizontal="true"
         app:layout_marginTopPercent="10%" />
 
-    <com.sahdeepsingh.Bop.view.ProgressView
+    <me.tankery.lib.circularseekbar.CircularSeekBar
         android:id="@+id/progress"
         android:layout_centerInParent="true"
         android:transitionName="@string/transition_name_progress"
         app:layout_aspectRatio="100%"
+        app:cs_circle_stroke_width="8dp"
+        app:cs_circle_style="round"
+        app:cs_end_angle="30"
+        app:cs_maintain_equal_circle="false"
+        app:cs_negative_enabled="false"
+        app:cs_pointer_stroke_width="14dp"
+        app:cs_start_angle="-210"
         app:layout_heightPercent="33%" />
+
     <com.sahdeepsingh.Bop.viszzz.CircleBarVisualizer
         android:id="@+id/visualizer"
         android:layout_width="wrap_content"
@@ -52,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:background="@color/colorPane"
         android:onClick="onFabClick"
         android:scaleType="center"
         android:src="@drawable/ic_pause_animatable"
@@ -59,10 +68,10 @@
 
     <Space
         android:id="@+id/timers_anchor"
-        android:layout_margin="30dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/cover"
         android:layout_centerHorizontal="true"
+        android:layout_margin="30dp"
         app:layout_widthPercent="25%" />
 
     <TextView
@@ -70,9 +79,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/timers_anchor"
-        android:textColor="@color/white"
         android:layout_toStartOf="@id/timers_anchor"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/white"
         android:transitionName="@string/transition_name_time"
         tools:text="02:30" />
 
@@ -90,9 +99,9 @@
         android:id="@+id/ordering"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_below="@id/time"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
         android:transitionGroup="true">
 
         <ImageView
