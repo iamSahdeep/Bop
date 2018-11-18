@@ -102,7 +102,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:src="@mipmap/ic_repeat_on" />
+            android:src="@drawable/ic_repeat_on" />
 
         <Space
             android:layout_width="@dimen/activity_horizontal_margin"
@@ -115,7 +115,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:src="@mipmap/ic_suffle_on" />
+            android:src="@drawable/ic_shuffle_on" />
 
     </LinearLayout>
 
@@ -129,32 +129,32 @@
         app:layout_marginBottomPercent="4%">
 
         <ImageView
-            android:id="@+id/previous"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_previous" />
-
-        <ImageView
             android:id="@+id/rewind"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_previous" />
+            android:src="@drawable/ic_rewind" />
 
         <ImageView
-            android:id="@+id/forward"
+            android:id="@+id/previous"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_skip" />
+            android:src="@drawable/ic_previous" />
 
         <ImageView
             android:id="@+id/next"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_skip" />
+            android:src="@drawable/ic_skip" />
+
+        <ImageView
+            android:id="@+id/forward"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_forward" />
 
     </LinearLayout>
 

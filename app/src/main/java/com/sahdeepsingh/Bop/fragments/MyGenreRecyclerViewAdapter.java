@@ -45,7 +45,7 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
         for (int i = 0; i < songsList.size(); i++) {
             String path = Main.songs.getAlbumArt(songsList.get(i));
             if (path != null) {
-                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_pause).into(holder.genreArt);
+                Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.ic_pause).into(holder.genreArt);
                 break;
             } /*else if (i == songsList.size()-1)
                 Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(holder.genreArt);*/

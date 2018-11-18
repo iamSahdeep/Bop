@@ -220,9 +220,9 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
             mCounterView.setText(String.format("%s Songs", String.valueOf(Main.nowPlayingList.size())));
             workOnImages();
             if (!Main.musicService.isPaused()) {
-                mFabView.setImageResource(R.mipmap.ic_pause);
+                mFabView.setImageResource(R.drawable.ic_pause);
             } else {
-                mFabView.setImageResource(R.mipmap.ic_play);
+                mFabView.setImageResource(R.drawable.ic_play);
             }
         }
     }

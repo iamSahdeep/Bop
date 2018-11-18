@@ -18,6 +18,6 @@
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/primaryLightColor</item>
         <item name="actionModeBackground">@color/primaryColor</item>
-        <item name="actionModeCloseDrawable">@mipmap/ic_cancel</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_cancel</item>
     </style>
 </resources>

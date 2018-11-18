@@ -64,7 +64,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         String path = Main.songs.getAlbumArt(localItem);
         Bitmap bitmap = null;
         if (path != null) {
-            Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_pause).into(holder.circleImageView);
+            Picasso.get().load(new File(path)).centerCrop().fit().error(R.drawable.ic_pause).into(holder.circleImageView);
             bitmap = BitmapFactory.decodeFile(path);
         }
         final Bitmap finalBitmap = bitmap;
@@ -122,7 +122,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
 
     private void highlightView(ViewHolder holder) {
         holder.mView.setBackgroundColor(Color.BLUE);
-        holder.circleImageView.setImageResource(R.mipmap.ic_music);
+        holder.circleImageView.setImageResource(R.drawable.ic_music);
     }
 
     private void unhighlightView(ViewHolder holder, Bitmap draw) {

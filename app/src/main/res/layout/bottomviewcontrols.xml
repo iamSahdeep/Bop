@@ -87,6 +87,6 @@
         android:layout_weight=".7"
         android:background="@color/transparent"
         android:scaleType="fitXY"
-        android:src="@mipmap/ic_play" />
+        android:src="@drawable/ic_play" />
 </LinearLayout>
 

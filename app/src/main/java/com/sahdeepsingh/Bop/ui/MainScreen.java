@@ -267,9 +267,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             public void onClick(View view) {
                 Main.musicService.togglePlayback();
                 if (!Main.musicService.isPaused()) {
-                    pp.setImageResource(R.mipmap.ic_pause);
+                    pp.setImageResource(R.drawable.ic_pause);
                 } else {
-                    pp.setImageResource(R.mipmap.ic_play);
+                    pp.setImageResource(R.drawable.ic_play);
                 }
             }
         });
@@ -362,9 +362,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
             name.setText(Main.musicService.currentSong.getTitle());
             name.setSelected(true);
             if (Main.musicService.isPaused()) {
-                pp.setImageResource(R.mipmap.ic_play);
+                pp.setImageResource(R.drawable.ic_play);
             } else {
-                pp.setImageResource(R.mipmap.ic_pause);
+                pp.setImageResource(R.drawable.ic_pause);
             }
             Bitmap newImage;
             BitmapFactory.Options opts = new BitmapFactory.Options();

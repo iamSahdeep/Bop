@@ -48,7 +48,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
         holder.songName.setSelected(true);
         String path = Main.songs.getAlbumArt(localItem);
         if (path != null) {
-            Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_pause).into(holder.circleImageView);
+            Picasso.get().load(new File(path)).centerCrop().fit().error(R.drawable.ic_pause).into(holder.circleImageView);
         }
         if (Main.mainMenuHasNowPlayingItem) {
             if (Main.musicService.currentSong.getTitle().equals(localItem.getTitle())) {

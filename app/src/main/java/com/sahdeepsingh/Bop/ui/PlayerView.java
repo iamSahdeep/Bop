@@ -268,9 +268,9 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
             mTitleView.setSelected(true);
             workOnImages();
             if (!Main.musicService.isPaused()) {
-                mFabView.setImageResource(R.mipmap.ic_pause);
+                mFabView.setImageResource(R.drawable.ic_pause);
             } else {
-                mFabView.setImageResource(R.mipmap.ic_play);
+                mFabView.setImageResource(R.drawable.ic_play);
             }
         }
     }

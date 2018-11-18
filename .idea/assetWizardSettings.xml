@@ -29,12 +29,25 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="paddingPercent" value="5" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/1073682-multimedia-player-control/png/add.png" />
-                                      <entry key="outputName" value="ic_add" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Desktop/png/004-fast-forward-1.png" />
+                                      <entry key="outputName" value="ic_rewind" />
+                                      <entry key="theme" value="HOLO_DARK" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -62,7 +75,6 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="428e92" />
                                       <entry key="backgroundLayerName" value="ic_launcher_background" />
                                       <entry key="foregroundImage" value="$USER_HOME$/Downloads/headphones.png" />
                                       <entry key="foregroundLayerName" value="ic_launcher_foreground" />
@@ -77,6 +89,28 @@
                                 <PersistentState>
                                   <option name="children">
                                     <map>
+                                      <entry key="clipArt">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="ffffff" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                      <entry key="clipartAsset">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="url" value="jar:file:/opt/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_add_to_photos_black_24dp.xml" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                       <entry key="image">
                                         <value>
                                           <PersistentState>
@@ -93,9 +127,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="backgroundColor" value="d6dbe5" />
                                       <entry key="cropped" value="true" />
-                                      <entry key="iconShape" value="NONE" />
                                       <entry key="imageAsset" value="$USER_HOME$/Downloads/show-more-button-with-three-dots.png" />
                                       <entry key="outputName" value="ic_3dots" />
                                     </map>
@@ -119,7 +151,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="LAUNCHER_LEGACY" />
+                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>

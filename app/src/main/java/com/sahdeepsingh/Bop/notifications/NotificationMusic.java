@@ -114,9 +114,9 @@ public class NotificationMusic extends NotificationSimple {
 
         // Manually settings the buttons and text
         // (ignoring the defaults on the XML)
-        notificationView.setImageViewResource(R.id.pauseNoti, R.mipmap.ic_pause);
-        notificationView.setImageViewResource(R.id.skipNoti, R.mipmap.ic_skip);
-        notificationView.setImageViewResource(R.id.stopNoti, R.mipmap.ic_cancel);
+        notificationView.setImageViewResource(R.id.pauseNoti, R.drawable.ic_pause);
+        notificationView.setImageViewResource(R.id.skipNoti, R.drawable.ic_skip);
+        notificationView.setImageViewResource(R.id.stopNoti, R.drawable.ic_cancel);
         notificationView.setTextViewText(R.id.songNameNoti, song.getTitle());
         notificationView.setTextViewText(R.id.ArtistNameNoti, song.getArtist());
         Bitmap newImage;
@@ -181,7 +181,7 @@ public class NotificationMusic extends NotificationSimple {
         }
 
         notificationBuilder.setContentIntent(pendingIntent)
-                .setSmallIcon(R.mipmap.ic_skip)
+                .setSmallIcon(R.drawable.ic_skip)
                 .setOngoing(true)
                 .setStyle(new NotificationCompat.BigPictureStyle())
                 .setCustomContentView(notificationView)
@@ -202,8 +202,8 @@ public class NotificationMusic extends NotificationSimple {
             return;
 
         int iconID = ((Main.musicService.isPaused()) ?
-                R.mipmap.ic_play :
-                R.mipmap.ic_pause);
+                R.drawable.ic_play :
+                R.drawable.ic_pause);
 
         notificationView.setImageViewResource(R.id.pauseNoti, iconID);
 

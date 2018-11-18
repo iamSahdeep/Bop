@@ -59,7 +59,7 @@
             android:layout_height="40dp"
             android:layout_weight=".84"
             android:background="#373737"
-            android:src="@mipmap/ic_play" />
+            android:src="@drawable/ic_play" />
 
         <ImageView
             android:layout_width="1dp"
@@ -73,7 +73,7 @@
             android:layout_height="40dp"
             android:layout_weight=".83"
             android:background="#373737"
-            android:src="@mipmap/ic_skip" />
+            android:src="@drawable/ic_skip" />
 
         <ImageView
             android:layout_width="1dp"
@@ -87,7 +87,7 @@
             android:layout_height="40dp"
             android:layout_weight=".83"
             android:background="#373737"
-            android:src="@mipmap/ic_cancel" />
+            android:src="@drawable/ic_cancel" />
 
     </LinearLayout>
 

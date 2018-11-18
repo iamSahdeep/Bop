@@ -112,7 +112,7 @@
             android:clickable="true"
             android:scaleType="centerCrop"
             android:focusable="true"
-            android:src="@mipmap/ic_3dots" />
+            android:src="@drawable/ic_3dots" />
 
     </RelativeLayout>
 
@@ -133,7 +133,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/fab_vertical_margin"
         android:scaleType="center"
-        android:src="@mipmap/ic_pause"
+        android:src="@drawable/ic_pause"
         android:transitionName="@string/transition_name_fab"
         app:fabSize="mini" />
 
