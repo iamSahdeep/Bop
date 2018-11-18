@@ -116,12 +116,20 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
         android:id="@+id/tracks_nowplaying"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/playlist"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:nestedScrollingEnabled="false"
+        app:fastScrollAutoHide="true"
+        app:fastScrollAutoHideDelay="1500"
+        app:fastScrollPopupBgColor="@color/primaryColor"
+        app:fastScrollPopupTextColor="@color/primaryTextColor"
+        app:fastScrollThumbColor="@color/primaryDarkColor"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".fragments.FragmentSongs"
+        tools:itemCount="4"
         tools:listitem="@layout/recycler_view_item" />
 
     <android.support.design.widget.FloatingActionButton

@@ -126,7 +126,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
     }
 
     private void unhighlightView(ViewHolder holder, Bitmap draw) {
-        holder.mView.setBackgroundColor(Color.WHITE);
+        holder.mView.setBackgroundColor(Color.TRANSPARENT);
         if (draw != null)
             holder.circleImageView.setImageBitmap(draw);
         else holder.circleImageView.setImageResource(R.mipmap.ic_launcher);
