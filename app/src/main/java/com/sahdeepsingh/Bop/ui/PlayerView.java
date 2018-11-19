@@ -162,8 +162,18 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         });
     }
 
-    public void onFabClick(View view) {
+    @Override
+    public void onBackPressed() {
         mCoverView.stop();
+    }
+
+    public void onFabClick(View view) {
+        Main.musicService.togglePlayback();
+        if (!Main.musicService.isPaused()) {
+            mFabView.setImageResource(R.drawable.ic_pause);
+        } else {
+            mFabView.setImageResource(R.drawable.ic_play);
+        }
     }
 
     private void workOnImages() {
@@ -207,6 +217,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
     @Override
     public void start() {
         Main.musicService.unpausePlayer();
+        mFabView.setImageResource(R.drawable.ic_pause);
     }
 
     /**
@@ -215,6 +226,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
     @Override
     public void pause() {
         Main.musicService.pausePlayer();
+        mFabView.setImageResource(R.drawable.ic_play);
     }
 
     @Override

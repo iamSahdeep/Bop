@@ -58,11 +58,11 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
+        android:elevation="10dp"
         android:layout_height="wrap_content"
+        app:backgroundTint="@color/colorPane"
         android:layout_centerInParent="true"
-        android:background="@color/colorPane"
         android:onClick="onFabClick"
-        android:scaleType="center"
         android:src="@drawable/ic_pause_animatable"
         android:transitionName="@string/transition_name_fab" />
 
