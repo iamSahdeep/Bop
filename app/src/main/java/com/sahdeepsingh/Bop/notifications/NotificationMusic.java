@@ -181,7 +181,7 @@ public class NotificationMusic extends NotificationSimple {
         }
 
         notificationBuilder.setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.ic_skip)
+                .setSmallIcon(R.mipmap.ic_launcher_foreground)
                 .setOngoing(true)
                 .setStyle(new NotificationCompat.BigPictureStyle())
                 .setCustomContentView(notificationView)
