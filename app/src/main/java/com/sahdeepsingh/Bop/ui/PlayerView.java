@@ -16,6 +16,7 @@ import android.text.format.DateUtils;
 import android.transition.Transition;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,6 +45,8 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
     private TextView mTitleView;
     private boolean paused = false;
     private boolean playbackPaused = false;
+
+    ImageView next, previous, rewind, forward, shuffle, repeat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +84,82 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
                 mCoverView.start();
             }
         });
-
-
+        setclickListeners();
         prepareSeekBar();
         changeSongBR = new ChangeSongBR();
 
+    }
+
+    private void setclickListeners() {
+
+        next = findViewById(R.id.next);
+        previous = findViewById(R.id.previous);
+        forward = findViewById(R.id.forward);
+        rewind = findViewById(R.id.rewind);
+        shuffle = findViewById(R.id.shuffle);
+        repeat = findViewById(R.id.repeat);
+
+        if (!Main.musicService.isShuffle()) {
+            shuffle.setImageResource(R.mipmap.ic_suffle_off);
+        } else {
+            shuffle.setImageResource(R.drawable.ic_shuffle_on);
+        }
+        if (!Main.musicService.isRepeat()) {
+            repeat.setImageResource(R.mipmap.ic_repeat_off);
+        } else {
+            repeat.setImageResource(R.drawable.ic_repeat_on);
+        }
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playNext();
+            }
+        });
+
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playPrevious();
+            }
+        });
+
+        forward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seekTo(getCurrentPosition() + 10000);
+            }
+        });
+
+        rewind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seekTo(getCurrentPosition() - 10000);
+            }
+        });
+
+        shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.toggleShuffle();
+                if (!Main.musicService.isShuffle()) {
+                    shuffle.setImageResource(R.mipmap.ic_suffle_off);
+                } else {
+                    shuffle.setImageResource(R.drawable.ic_shuffle_on);
+                }
+            }
+        });
+
+        repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicService.toggleRepeat();
+                if (!Main.musicService.isRepeat()) {
+                    repeat.setImageResource(R.mipmap.ic_repeat_off);
+                } else {
+                    repeat.setImageResource(R.drawable.ic_repeat_on);
+                }
+            }
+        });
     }
 
     public void onFabClick(View view) {
@@ -259,7 +333,6 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
             }
         });
 
-        mProgressView.setMax((int) Main.musicService.currentSong.getDuration());
         final Handler handler = new Handler();
         PlayerView.this.runOnUiThread(new Runnable() {
             @Override
@@ -292,6 +365,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
 
         @Override
         public void onReceive(Context context, Intent intent) {
+
             circleBarVisualizer.setPlayer(getAudioSessionId());
             mTitleView.setText(Main.musicService.currentSong.getTitle());
             mTitleView.setSelected(true);

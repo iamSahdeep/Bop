@@ -213,6 +213,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            seekArc.setMax((int) Main.musicService.currentSong.getDuration());
             songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
             songListView.scrollToPosition(Main.musicService.currentSongPosition);
             mTitleView.setText(Main.musicService.currentSong.getTitle());
