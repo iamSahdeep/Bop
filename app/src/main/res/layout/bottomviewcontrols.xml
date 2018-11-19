@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
+    android:background="@color/md_grey_700"
     android:orientation="horizontal"
     android:visibility="visible"
     android:weightSum="5">
@@ -15,7 +16,7 @@
         android:layout_weight="1"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher_foreground" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -86,7 +87,7 @@
         android:layout_marginBottom="10dp"
         android:layout_weight=".7"
         android:background="@color/transparent"
-        android:scaleType="fitXY"
+        android:scaleType="center"
         android:src="@drawable/ic_play" />
 </LinearLayout>
 

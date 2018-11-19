@@ -7,7 +7,7 @@
         android:key="appearance">
 
         <ListPreference
-            android:defaultValue="default"
+            android:defaultValue="Light"
             android:key="themes"
             android:summary="change Theme"
             android:entries="@array/themes"

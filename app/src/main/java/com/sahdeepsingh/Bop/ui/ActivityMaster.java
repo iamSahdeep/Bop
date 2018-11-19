@@ -133,9 +133,6 @@ public class ActivityMaster extends AppCompatActivity {
 
         if (!currentTheme.equals(theme)) {
             switch (theme) {
-                case "default":
-                    setTheme(R.style.darkTheme);
-                    break;
                 case "light":
                     setTheme(R.style.lightTheme);
                     break;
