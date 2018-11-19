@@ -81,12 +81,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         mTitleViewq = findViewById(R.id.title);
         mCounterView = findViewById(R.id.counter);
 
-        mFabView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onFabClick();
-            }
-        });
         songListView.setLayoutManager(new LinearLayoutManager(this));
         songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
 
@@ -148,7 +142,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
         changeSongBR = new ChangeSongBR();
     }
 
-    public void onFabClick() {
+    public void initTransistion(View view) {
         //noinspection unchecked
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
                 new android.util.Pair<View, String>(mCoverView, "cover"),

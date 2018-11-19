@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
+        android:onClick="initTransistion"
         android:src="@mipmap/ic_launcher"
         android:transitionName="@string/transition_name_cover"
         app:layout_heightPercent="35%"
@@ -141,7 +142,8 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/fab_vertical_margin"
         android:scaleType="center"
-        android:src="@drawable/ic_pause"
+        android:onClick="initTransistion"
+        android:src="@drawable/ic_music"
         android:transitionName="@string/transition_name_fab"
         app:fabSize="mini" />
 
