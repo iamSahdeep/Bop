@@ -51,7 +51,6 @@ public class ActivityMaster extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         refreshTheme();
     }
