@@ -70,7 +70,9 @@ public class ActivityMaster extends AppCompatActivity {
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         slidingUpPanelLayout.setTouchEnabled(false);
         if (Main.mainMenuHasNowPlayingItem) {
+            Main.musicService.notifyCurrentSong();
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
         } else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
