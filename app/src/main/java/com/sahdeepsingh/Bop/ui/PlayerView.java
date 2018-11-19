@@ -365,7 +365,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            mProgressView.setMax((int) Main.musicService.currentSong.getDuration());
             circleBarVisualizer.setPlayer(getAudioSessionId());
             mTitleView.setText(Main.musicService.currentSong.getTitle());
             mTitleView.setSelected(true);
