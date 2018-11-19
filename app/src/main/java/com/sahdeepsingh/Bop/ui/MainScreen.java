@@ -126,6 +126,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         viewPager.setAdapter(mSectionsPagerAdapter);
     }
 
+    public void openPlayer(View view) {
+        startActivity(new Intent(this, PlayingNow.class));
+    }
 
     @Override
     public void onListFragmentInteraction(int position, String type) {
@@ -241,7 +244,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         registerReceiver(changeSongBR, intentFilter);
         if (isPlaying()) {
             Main.musicService.notifyCurrentSong();
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         } else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));

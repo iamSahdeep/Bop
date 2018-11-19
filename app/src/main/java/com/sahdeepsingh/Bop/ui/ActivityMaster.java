@@ -68,6 +68,7 @@ public class ActivityMaster extends AppCompatActivity {
         }
         ActivityMaster.this.invalidateOptionsMenu();
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
+        slidingUpPanelLayout.setTouchEnabled(false);
         if (Main.mainMenuHasNowPlayingItem) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         } else {
