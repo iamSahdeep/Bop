@@ -207,7 +207,8 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
                     name.setError("cant be empty");
                     return;
                 }
-                Main.songs.newPlaylist(getActivity().getApplicationContext(),"external" , name.getText().toString() ,(ArrayList<Song>) mySongsRecyclerViewAdapter.getSelected());
+                Main.songs.newPlaylist(getActivity().getApplication(), "external", name.getText().toString(), (ArrayList<Song>) mySongsRecyclerViewAdapter.getSelected());
+                getActivity().recreate();
                 dialog.dismiss();
                 deselectAll();
             }
