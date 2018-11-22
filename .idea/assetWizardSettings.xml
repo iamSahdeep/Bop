@@ -45,8 +45,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Desktop/png/004-fast-forward-1.png" />
-                                      <entry key="outputName" value="ic_rewind" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Desktop/ic_repeat_one_24px_1237196.png" />
+                                      <entry key="outputName" value="ic_repeat_one" />
                                       <entry key="theme" value="HOLO_DARK" />
                                     </map>
                                   </option>

@@ -136,6 +136,7 @@
         android:id="@+id/controls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
         android:transitionGroup="true"
