@@ -263,7 +263,8 @@ public class ServicePlayMusic extends Service
      * Random number generator for the Shuffle Mode.
      */
     private Random randomNumberGenerator;
-    private boolean repeatMode = false;
+    // 0 single, 1 repeaton , 2repeat off
+    private int repeatMode = 0;
     /**
      * Spawns an on-going notification with our current
      * playing song.
@@ -640,7 +641,7 @@ public class ServicePlayMusic extends Service
         broadcastState(ServicePlayMusic.BROADCAST_EXTRA_COMPLETED);
 
         // Repeating current song if desired
-        if (repeatMode) {
+        if (repeatMode == 0) {
             playSong();
             return;
         }
@@ -903,7 +904,10 @@ public class ServicePlayMusic extends Service
      * when completed).
      */
     public void toggleRepeat() {
-        repeatMode = !repeatMode;
+        if (repeatMode == 2)
+            repeatMode = 0;
+        else repeatMode += 1;
+
     }
 
     /**
@@ -911,7 +915,7 @@ public class ServicePlayMusic extends Service
      *
      * @return If Repeat mode is on/off.
      */
-    public boolean isRepeat() {
+    public int isRepeat() {
         return repeatMode;
     }
 

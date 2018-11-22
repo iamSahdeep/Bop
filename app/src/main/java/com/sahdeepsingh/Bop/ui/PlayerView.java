@@ -104,11 +104,12 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         } else {
             shuffle.setImageResource(R.drawable.ic_shuffle_on);
         }
-        if (!Main.musicService.isRepeat()) {
-            repeat.setImageResource(R.drawable.ic_repeat_off);
-        } else {
+        if (Main.musicService.isRepeat() == 0) {
+            repeat.setImageResource(R.drawable.ic_repeat_one);
+        } else if (Main.musicService.isRepeat() == 1) {
             repeat.setImageResource(R.drawable.ic_repeat_on);
-        }
+        } else repeat.setImageResource(R.drawable.ic_repeat_off);
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,11 +154,11 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
             @Override
             public void onClick(View view) {
                 Main.musicService.toggleRepeat();
-                if (!Main.musicService.isRepeat()) {
-                    repeat.setImageResource(R.drawable.ic_repeat_off);
-                } else {
+                if (Main.musicService.isRepeat() == 0) {
+                    repeat.setImageResource(R.drawable.ic_repeat_one);
+                } else if (Main.musicService.isRepeat() == 1) {
                     repeat.setImageResource(R.drawable.ic_repeat_on);
-                }
+                } else repeat.setImageResource(R.drawable.ic_repeat_off);
             }
         });
     }
