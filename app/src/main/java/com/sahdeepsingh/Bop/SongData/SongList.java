@@ -659,7 +659,7 @@ public class SongList {
 
         ContentResolver resolver = c.getContentResolver();
 
-        Uri playlistUri = ((fromWhere.equals("internal")) ?
+        Uri playlistUri = ((fromWhere == "internal") ?
                 android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI :
                 android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI);
 
@@ -694,7 +694,7 @@ public class SongList {
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
             if (name.equals(cursor.getString(cursor.getColumnIndex(PLAYLIST_NAME))))
                 playlistID = cursor.getLong(cursor.getColumnIndex(PLAYLIST_ID));
-
+        cursor.close();
         // Now, to it's songs
         Uri songUri = Uri.withAppendedPath(newPlaylistUri, MediaStore.Audio.Playlists.Members.CONTENT_DIRECTORY);
         int songOrder = 1;
@@ -717,6 +717,5 @@ public class SongList {
             newPlaylist.add(song.getId());
 
         playlists.add(newPlaylist);
-        cursor.close();
     }
 }

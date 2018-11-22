@@ -209,6 +209,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
                 }
                 Main.songs.newPlaylist(getActivity().getApplication(), "external", name.getText().toString(), (ArrayList<Song>) mySongsRecyclerViewAdapter.getSelected());
                 getActivity().recreate();
+                Toast.makeText(getActivity(), "Playlist Created", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 deselectAll();
             }
