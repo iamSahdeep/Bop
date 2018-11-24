@@ -20,6 +20,6 @@ Download link..
 
 ## Features
 
-- To start syncing your workspace, just sign in with Google in the menu.
+- yet to be added
 
 # Credits
