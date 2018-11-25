@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -22,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andremion.music.MusicCoverView;
+import com.bullhead.equalizer.EqualizerFragment;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.view.TransitionAdapter;
@@ -163,10 +165,6 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        mCoverView.stop();
-    }
 
     public void onFabClick(View view) {
         Main.musicService.togglePlayback();
@@ -391,4 +389,20 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         }
     }
 
+    public void equalizer(View view) {
+        Main.musicService.player.setLooping(true);
+        EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
+                .setAccentColor(Color.parseColor("#4caf50"))
+                .setAudioSessionId(getAudioSessionId())
+                .build();
+        getSupportFragmentManager().beginTransaction()
+                .replace(android.R.id.content, equalizerFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        mCoverView.stop();
+    }
 }

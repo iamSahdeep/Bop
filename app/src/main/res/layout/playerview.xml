@@ -23,9 +23,19 @@
         app:layout_heightPercent="35%"
         app:shape="circle" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="5dp"
+        android:onClick="equalizer"
+        android:src="@drawable/ic_equalizer" />
+
     <include
         android:id="@+id/title"
         layout="@layout/track_title"
+        android:layout_margin="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
