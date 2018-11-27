@@ -46,7 +46,7 @@ public class FragmentPlaylist extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+            recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
             ArrayList<String> playlists = Main.songs.getPlaylistNames();
             MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(playlists, mListener);
             recyclerView.setAdapter(myPlaylistRecyclerViewAdapter);
@@ -70,10 +70,6 @@ public class FragmentPlaylist extends Fragment {
         }
 
         return view;
-    }
-
-    private void playlistAdd() {
-
     }
 
 

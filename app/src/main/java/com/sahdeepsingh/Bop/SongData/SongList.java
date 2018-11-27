@@ -734,7 +734,7 @@ public class SongList {
         resolver.delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, where, whereVal);
     }
 
-    private String getPlayListId(String selectedplaylist) {
+    public String getPlayListId(String selectedplaylist) {
         String id = "";
         if (getPlaylistNames().contains(selectedplaylist)) {
             for (Playlist playlist : playlists) {
@@ -779,7 +779,7 @@ public class SongList {
     }
 
     public void addSongsToplaylist(Context c, String name, ArrayList<Song> songsToAdd) {
-        long playlistID = Long.getLong(getPlayListId(name));
+        long playlistID = Long.parseLong(getPlayListId(name));
         for (Song s : songsToAdd
                 ) {
             addToPlaylist(c.getContentResolver(), playlistID, s.getId());
