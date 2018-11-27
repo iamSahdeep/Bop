@@ -802,7 +802,6 @@ public class ServicePlayMusic extends Service
     public void playSong() {
 
         player.reset();
-
         // Get the song ID from the list, extract the ID and
         // get an URL based on it
         Song songToPlay = songs.get(currentSongPosition);
@@ -1233,9 +1232,9 @@ public class ServicePlayMusic extends Service
     public void removedFromNotification(){
         cancelNotification();
         player.stop();
-        player.reset();
-        //Main.mainMenuHasNowPlayingItem = false;
-       // Main.musicService.currentSong = null;
+        // Main.musicService.stopMusicPlayer();
+        Main.mainMenuHasNowPlayingItem = false;
+        Main.musicService.currentSong = null;
 
     }
 
