@@ -111,7 +111,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
                         playlists.remove(newPosition);
                         notifyItemRemoved(newPosition);
                         notifyItemRangeChanged(newPosition, playlists.size());
-                        Toast.makeText(view.getContext(), "Done! Changes might take time.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Done!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
