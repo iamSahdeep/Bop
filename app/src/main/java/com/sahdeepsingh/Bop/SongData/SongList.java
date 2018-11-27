@@ -657,13 +657,19 @@ public class SongList {
      */
     public void newPlaylist(Context c, String fromWhere, String name, ArrayList<Song> songsToAdd) {
 
+        // CHECK IF PLAYLIST EXISTS!
+
+        if (getPlaylistNames().contains(name)) {
+            addSongsToplaylist(c, name, songsToAdd);
+            return;
+        }
+
+
         ContentResolver resolver = c.getContentResolver();
 
         Uri playlistUri = ((fromWhere == "internal") ?
                 android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI :
                 android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI);
-
-        // CHECK IF PLAYLIST EXISTS!
 
         // Setting the new playlists' values
         ContentValues values = new ContentValues();
@@ -717,5 +723,66 @@ public class SongList {
             newPlaylist.add(song.getId());
 
         playlists.add(newPlaylist);
+    }
+
+    public void deletePlaylist(Context context, String selectedplaylist) {
+// // Log.i(TAG, "deletePlaylist");
+        String playlistid = getPlayListId(selectedplaylist);
+        ContentResolver resolver = context.getContentResolver();
+        String where = MediaStore.Audio.Playlists._ID + "=?";
+        String[] whereVal = {playlistid};
+        resolver.delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, where, whereVal);
+    }
+
+    private String getPlayListId(String selectedplaylist) {
+        String id = "";
+        if (getPlaylistNames().contains(selectedplaylist)) {
+            for (Playlist playlist : playlists) {
+                if (selectedplaylist.equals(playlist.getName()))
+                    id = String.valueOf(playlist.getID());
+            }
+        }
+        return id;
+    }
+
+    public void renamePlaylist(Context context, String newplaylist, long playlist_id) {
+        ContentResolver resolver = context.getContentResolver();
+        ContentValues values = new ContentValues();
+        String where = MediaStore.Audio.Playlists._ID + " =? ";
+        String[] whereVal = {Long.toString(playlist_id)};
+        values.put(MediaStore.Audio.Playlists.NAME, newplaylist);
+        resolver.update(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values, where, whereVal);
+    }
+
+    public void deletePlaylistTrack(Context context, long playlistId, long audioId) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
+        String filter = MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + audioId;
+        resolver.delete(uri, filter, null);
+    }
+
+    public void addToPlaylist(ContentResolver resolver, long playlistid, long audioId) {
+
+        String[] cols = new String[]{
+                "count(*)"
+        };
+        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistid);
+        Cursor cur = resolver.query(uri, cols, null, null, null);
+        assert cur != null;
+        cur.moveToFirst();
+        final int base = cur.getInt(0);
+        cur.close();
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, (int) (base + audioId));
+        values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
+        resolver.insert(uri, values);
+    }
+
+    public void addSongsToplaylist(Context c, String name, ArrayList<Song> songsToAdd) {
+        long playlistID = Long.getLong(getPlayListId(name));
+        for (Song s : songsToAdd
+                ) {
+            addToPlaylist(c.getContentResolver(), playlistID, s.getId());
+        }
     }
 }
