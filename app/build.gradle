@@ -23,6 +23,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
@@ -47,5 +51,6 @@ dependencies {
     implementation "com.android.support:percent:27.1.1"
     implementation "com.github.andremion:musiccoverview:1.0.0"
     implementation 'me.tankery.lib:circularSeekBar:1.1.7'
+    implementation "com.mikepenz:crossfadedrawerlayout:1.0.1@aar"
 
 }

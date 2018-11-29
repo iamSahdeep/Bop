@@ -16,10 +16,12 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,6 +29,19 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikepenz.crossfadedrawerlayout.view.CrossfadeDrawerLayout;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.MiniDrawer;
+import com.mikepenz.materialdrawer.interfaces.ICrossfader;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.util.DrawerUIUtils;
+import com.mikepenz.materialize.util.UIUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
 import com.sahdeepsingh.Bop.fragments.FragmentGenre;
@@ -51,7 +66,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
      */
     private static final int BACK_PRESSED_DELAY = 2000;
 
-    private static final float BLUR_RADIUS = 25f;
+    // private static final float BLUR_RADIUS = 25f;
 
     ImageView aa;
     TextView name;
@@ -60,6 +75,10 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     private TextView mTimeView;
     private TextView mDurationView;
     private ProgressView mProgressView;
+
+    Drawer drawer;
+    CrossfadeDrawerLayout crossfadeDrawerLayout;
+    AccountHeader accountHeader;
 
     ChangeSongBR changeSongBR;
 
@@ -105,6 +124,14 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (drawer.isDrawerOpen()) {
+                    drawer.closeDrawer();
+                } else drawer.openDrawer();
+            }
+        });
         mViewPager = findViewById(R.id.container);
 
         setupViewPager(mViewPager);
@@ -113,11 +140,92 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         tabLayout.setupWithViewPager(mViewPager);
 
         changeSongBR = new ChangeSongBR();
-        slidingUpPanelLayoutListen();
+        createDrawer();
 
     }
 
-    private void slidingUpPanelLayoutListen() {
+    private void createDrawer() {
+
+        accountHeader = new AccountHeaderBuilder().withActivity(this)
+                .withHeaderBackground(R.color.orange)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Bop - Music Player").withIcon(R.mipmap.ic_launcher)
+                ).build();
+
+        drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withAccountHeader(accountHeader)
+                .withDrawerLayout(R.layout.crossfade_material_drawer)
+                .withHasStableIds(true)
+                .withDrawerWidthDp(72)
+                .withGenerateMiniDrawer(true)
+                .withCloseOnClick(true)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName("Now Playing").withIcon(R.drawable.ic_music).withIdentifier(1).withSelectable(false),
+                        new PrimaryDrawerItem().withName("All Songs").withIcon(R.drawable.ic_music).withIdentifier(2).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Playlist").withIcon(R.drawable.ic_music).withIdentifier(3).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Genres").withIcon(R.drawable.ic_music).withIdentifier(4).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Albums").withIcon(R.drawable.ic_music).withIdentifier(5).withSelectable(true),
+                        new SectionDrawerItem().withName("more").withDivider(true),
+                        new SecondaryDrawerItem().withName("Support").withIcon(R.drawable.ic_music).withIdentifier(20).withSelectable(false),
+                        new SecondaryDrawerItem().withName("Feedback").withIcon(R.drawable.ic_music).withIdentifier(21).withSelectable(false))
+                .addStickyDrawerItems(
+                        new SecondaryDrawerItem().withName("Settings").withIcon(R.drawable.ic_music).withIdentifier(321).withSelectable(false),
+                        new SecondaryDrawerItem().withName("Exit").withIcon(R.drawable.ic_music).withIdentifier(342).withSelectable(false)
+                ).withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    if (drawerItem != null) {
+                        Intent intent;
+                        if (drawerItem.getIdentifier() == 1) {
+                            if (Main.mainMenuHasNowPlayingItem) {
+                                intent = new Intent(this, PlayingNow.class);
+                                startActivity(intent);
+                            } else
+                                Toast.makeText(getApplicationContext(), "no playlist", Toast.LENGTH_SHORT).show();
+                        } else if (drawerItem.getIdentifier() == 2) {
+                            drawer.closeDrawer();
+                        } else if (drawerItem.getIdentifier() == 3) {
+                            mViewPager.setCurrentItem(1, true);
+                            drawer.closeDrawer();
+                        } else if (drawerItem.getIdentifier() == 4) {
+                            mViewPager.setCurrentItem(2, true);
+                            drawer.closeDrawer();
+                        } else if (drawerItem.getIdentifier() == 5) {
+                            mViewPager.setCurrentItem(3, true);
+                            drawer.closeDrawer();
+                        } else if (drawerItem.getIdentifier() == 321) {
+                            intent = new Intent(this, ActivityMenuSettings.class);
+                            startActivity(intent);
+                        } else if (drawerItem.getIdentifier() == 342) {
+                            Main.forceExit(this);
+                            finishAffinity();
+                        }
+                    }
+                    return false;
+                })
+                .build();
+
+        crossfadeDrawerLayout = (CrossfadeDrawerLayout) drawer.getDrawerLayout();
+        crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
+        MiniDrawer miniDrawer = drawer.getMiniDrawer();
+        View view = miniDrawer.build(this);
+        view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialize.R.color.background_material_dark));
+        crossfadeDrawerLayout.getSmallView().addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        miniDrawer.withCrossFader(new ICrossfader() {
+            @Override
+            public void crossfade() {
+                boolean isFaded = isCrossfaded();
+                crossfadeDrawerLayout.crossfade(500);
+                if (isFaded) {
+                    drawer.getDrawerLayout().closeDrawer(GravityCompat.START);
+                }
+            }
+
+            @Override
+            public boolean isCrossfaded() {
+                return crossfadeDrawerLayout.isCrossfaded();
+            }
+        });
+
 
     }
 
@@ -182,8 +290,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
     @Override
     public void onBackPressed() {
-
-        if (this.backPressedOnce) {
+        if (drawer.isDrawerOpen())
+            drawer.closeDrawer();
+        else if (this.backPressedOnce) {
                 // Default behavior, quit it
                 super.onBackPressed();
                 Main.forceExit(this);
