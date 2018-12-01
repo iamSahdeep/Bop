@@ -1,5 +1,14 @@
 # CHANGELOG.md
 
+## 0.2 (unreleased)
+### versionCode = 3
+ 
+Features:
+
+  - NavigationDrawer  -> [7013b0ba309f2a9901e319e8cd8faddbec72494e](https://github.com/iamSahdeep/Bop/commit/7013b0ba309f2a9901e319e8cd8faddbec72494e)
+  - Minor UI changes  -> [c8d6a495d155a3993d33da7ae910c5a7b42aa0f0](https://github.com/iamSahdeep/Bop/commit/c8d6a495d155a3993d33da7ae910c5a7b42aa0f0)
+  
+  
 ## 0.1 (unreleased)
 ### versionCode = 2
  
@@ -10,6 +19,7 @@ Features:
 Bug Fixes:
 
   - service issue resolved -> [dd6c261f51d7c5517c94646c422371092c7133de](https://github.com/iamSahdeep/Bop/tree/dd6c261f51d7c5517c94646c422371092c7133de)
+
 
 ## 0.1 (unreleased)
 ### versionCode = 1

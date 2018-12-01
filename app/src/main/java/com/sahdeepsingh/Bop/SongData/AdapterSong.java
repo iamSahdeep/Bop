@@ -53,7 +53,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
         if (Main.mainMenuHasNowPlayingItem) {
             if (Main.musicService.currentSong.getTitle().equals(localItem.getTitle())) {
                 holder.barVisuals.setVisibility(View.VISIBLE);
-                holder.barVisuals.setColor(ContextCompat.getColor(holder.barVisuals.getContext(), R.color.white));
+                holder.barVisuals.setColor(ContextCompat.getColor(holder.barVisuals.getContext(), R.color.accent));
                 holder.barVisuals.setDensity(1);
                 holder.barVisuals.setPlayer(Main.musicService.getAudioSession());
             } else {

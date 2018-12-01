@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -66,7 +65,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         mProgressView = findViewById(R.id.progress);
         mFabView = findViewById(R.id.fab);
         circleBarVisualizer = findViewById(R.id.visualizer);
-        circleBarVisualizer.setColor(ContextCompat.getColor(this, R.color.white));
+        circleBarVisualizer.setColor(ContextCompat.getColor(this, R.color.primaryLightColor));
 
         mCoverView.setCallbacks(new MusicCoverView.Callbacks() {
             @Override
@@ -392,7 +391,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
     public void equalizer(View view) {
         Main.musicService.player.setLooping(true);
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
-                .setAccentColor(Color.parseColor("#4caf50"))
+                .setAccentColor(ContextCompat.getColor(this, R.color.accent))
                 .setAudioSessionId(getAudioSessionId())
                 .build();
         getSupportFragmentManager().beginTransaction()

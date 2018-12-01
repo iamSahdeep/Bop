@@ -16,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
-import android.view.GestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -46,8 +45,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
     private RecyclerView songListView;
 
     ChangeSongBR changeSongBR;
-
-    GestureDetector gestureDetector;
 
     private boolean paused = false;
     private boolean playbackPaused = false;
@@ -218,11 +215,6 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
             mTitleView.setSelected(true);
             mCounterView.setText(String.format("%s Songs", String.valueOf(Main.nowPlayingList.size())));
             workOnImages();
-            if (!Main.musicService.isPaused()) {
-                mFabView.setImageResource(R.drawable.ic_pause);
-            } else {
-                mFabView.setImageResource(R.drawable.ic_play);
-            }
         }
     }
 
