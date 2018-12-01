@@ -52,5 +52,7 @@ dependencies {
     implementation "com.github.andremion:musiccoverview:1.0.0"
     implementation 'me.tankery.lib:circularSeekBar:1.1.7'
     implementation "com.mikepenz:crossfadedrawerlayout:1.0.1@aar"
+    implementation 'com.android.support:customtabs:27.1.1'
+
 
 }

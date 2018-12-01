@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -50,6 +51,7 @@ import com.sahdeepsingh.Bop.fragments.FragmentSongs;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.playerMain.SingleToast;
+import com.sahdeepsingh.Bop.utils.utils;
 import com.sahdeepsingh.Bop.view.ProgressView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -161,17 +163,17 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
                 .withGenerateMiniDrawer(true)
                 .withCloseOnClick(true)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("Now Playing").withIcon(R.drawable.ic_music).withIdentifier(1).withSelectable(false),
-                        new PrimaryDrawerItem().withName("All Songs").withIcon(R.drawable.ic_music).withIdentifier(2).withSelectable(true),
-                        new PrimaryDrawerItem().withName("Playlist").withIcon(R.drawable.ic_music).withIdentifier(3).withSelectable(true),
-                        new PrimaryDrawerItem().withName("Genres").withIcon(R.drawable.ic_music).withIdentifier(4).withSelectable(true),
-                        new PrimaryDrawerItem().withName("Albums").withIcon(R.drawable.ic_music).withIdentifier(5).withSelectable(true),
-                        new SectionDrawerItem().withName("more").withDivider(true),
-                        new SecondaryDrawerItem().withName("Support").withIcon(R.drawable.ic_music).withIdentifier(20).withSelectable(false),
-                        new SecondaryDrawerItem().withName("Feedback").withIcon(R.drawable.ic_music).withIdentifier(21).withSelectable(false))
+                        new PrimaryDrawerItem().withName("Now Playing").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_play))).withIdentifier(1).withSelectable(false),
+                        new PrimaryDrawerItem().withName("All Songs").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_music))).withIdentifier(2).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Playlist").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_playlist))).withIdentifier(3).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Genres").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_genre))).withIdentifier(4).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Albums").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_album))).withIdentifier(5).withSelectable(true),
+                        new SectionDrawerItem().withName("More").withDivider(true),
+                        new SecondaryDrawerItem().withName("Support").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_support))).withIdentifier(20).withSelectable(false),
+                        new SecondaryDrawerItem().withName("Feedback").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_feedback))).withIdentifier(21).withSelectable(false))
                 .addStickyDrawerItems(
-                        new SecondaryDrawerItem().withName("Settings").withIcon(R.drawable.ic_music).withIdentifier(321).withSelectable(false),
-                        new SecondaryDrawerItem().withName("Exit").withIcon(R.drawable.ic_music).withIdentifier(342).withSelectable(false)
+                        new SecondaryDrawerItem().withName("Settings").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_setting))).withIdentifier(321).withSelectable(false),
+                        new SecondaryDrawerItem().withName("Exit").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_exit))).withIdentifier(342).withSelectable(false)
                 ).withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     if (drawerItem != null) {
                         Intent intent;
@@ -191,6 +193,14 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 5) {
                             mViewPager.setCurrentItem(3, true);
+                            drawer.closeDrawer();
+                        } else if (drawerItem.getIdentifier() == 20) {
+                            utils.openCustomTabs(MainScreen.this, "https://github.com/iamSahdeep/Bop/issues");
+                            drawer.closeDrawer();
+                        } else if (drawerItem.getIdentifier() == 21) {
+                            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                            emailIntent.setData(Uri.parse("mailto: emicladevelopers@gmail.com"));
+                            startActivity(Intent.createChooser(emailIntent, "Send feedback"));
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 321) {
                             intent = new Intent(this, ActivityMenuSettings.class);

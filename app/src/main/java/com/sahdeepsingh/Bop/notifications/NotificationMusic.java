@@ -172,11 +172,12 @@ public class NotificationMusic extends NotificationSimple {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel mChannel = null;
+            NotificationChannel mChannel;
             mChannel = new NotificationChannel(id, name, importance);
 
             // Configure the notification channel.
             mChannel.setDescription(description);
+            mChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
             notificationManager.createNotificationChannel(mChannel);
         }
 
