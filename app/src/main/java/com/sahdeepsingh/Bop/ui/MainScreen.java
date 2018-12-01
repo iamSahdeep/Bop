@@ -150,8 +150,9 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
 
         accountHeader = new AccountHeaderBuilder().withActivity(this)
                 .withHeaderBackground(R.color.accent)
+                .withSelectionListEnabled(false)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Bop - Music Player").withIcon(R.mipmap.ic_launcher)
+                        new ProfileDrawerItem().withName("Bop - Music Player").withIcon(R.mipmap.ic_launcher_round)
                 ).build();
 
         drawer = new DrawerBuilder()
@@ -213,6 +214,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
                     return false;
                 })
                 .build();
+
 
         crossfadeDrawerLayout = (CrossfadeDrawerLayout) drawer.getDrawerLayout();
         crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));

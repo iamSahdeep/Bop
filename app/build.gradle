@@ -54,5 +54,4 @@ dependencies {
     implementation "com.mikepenz:crossfadedrawerlayout:1.0.1@aar"
     implementation 'com.android.support:customtabs:27.1.1'
 
-
 }
