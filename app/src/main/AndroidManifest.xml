@@ -7,8 +7,6 @@
 
     <!-- So we can play songs while the device is locked -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!-- So we can save new Playlists on the disc -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -19,8 +17,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/lightTheme"
-        tools:replace="android:icon"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:icon">
         <activity
             android:name=".ui.ActivityMenuSettings"
             android:label="@string/settings"
@@ -40,13 +38,8 @@
         <receiver android:name=".notifications.NotificationMusic$NotificationPlayButtonHandler" />
         <receiver android:name=".notifications.NotificationMusic$NotificationSkipButtonHandler" />
         <receiver android:name=".notifications.NotificationMusic$NotificationStopButtonHandler" />
-        <!--
-          This static class will keep an eye when the following
-          -  activities happen.
-        -->
         <receiver android:name=".services.ServicePlayMusic$ExternalBroadcastReceiver">
             <intent-filter>
-
                 <!-- Disconnected Headphones -->
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />
             </intent-filter>
@@ -61,24 +54,23 @@
             android:screenOrientation="portrait">
 
         </activity>
+
         <activity
             android:name=".ui.PlayingNow"
             android:screenOrientation="portrait"
             android:theme="@style/darkTheme" />
+
         <activity
             android:name=".ui.SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data
                     android:mimeType="audio/mpeg"
                     android:pathPattern=".*mp3"
@@ -86,9 +78,9 @@
                     tools:ignore="AppLinkUrlError" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PlayerView">
 
-        </activity>
+        <activity android:name=".ui.PlayerView"></activity>
+
     </application>
 
 </manifest>

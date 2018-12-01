@@ -5,7 +5,6 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ActionMode;
@@ -31,8 +30,6 @@ import java.util.ArrayList;
 
 public class FragmentSongs extends android.app.Fragment implements MySongsRecyclerViewAdapter.OnClickAction {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter;
     ActionMode actionMode;EditText name;
@@ -45,66 +42,50 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
     public FragmentSongs() {
     }
 
-    @SuppressWarnings("unused")
-    public static FragmentSongs newInstance(int columnCount) {
-        FragmentSongs fragment = new FragmentSongs();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+    //Action mode for selecting songs and creating playlist.
+    private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.selected, menu);
+            return true;
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_songs_list, container, false);
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.selectAll:
+                    selectAll();
+                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " selected", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.deselectAll:
+                    deselectAll();
+                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " selected", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.addtoPlaylist:
+                    showPlaylistDialog();
+                    mode.finish();
+                    return true;
+                case R.id.Append:
+                    Toast.makeText(getActivity(), " Not created this method yet", Toast.LENGTH_SHORT).show();
+                    // mode.finish();
+                    return true;
+                default:
+                    return false;
             }
-            mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs, mListener);
-            mySongsRecyclerViewAdapter.setActionModeReceiver(this);
-            mySongsRecyclerViewAdapter.setHasStableIds(true);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setItemViewCacheSize(100);
-            recyclerView.setDrawingCacheEnabled(true);
-            recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-            recyclerView.setAdapter(mySongsRecyclerViewAdapter);
-            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    ActionBar actionBar = getActivity().getActionBar();
-                    if (actionBar != null)
-                        if (dy > 0) {
-                            // Scrolling up
-
-                            actionBar.hide();
-
-                        } else {
-                            // Scrolling down
-                            actionBar.show();
-                        }
-                }
-            });
         }
-        return view;
-    }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+        }
+    };
 
 
     @Override
@@ -138,48 +119,47 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
         void onListFragmentInteraction(int item, String type);
     }
 
-    private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.selected, menu);
-            return true;
-        }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_songs_list, container, false);
 
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
+        // Set the adapter
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs, mListener);
+            mySongsRecyclerViewAdapter.setActionModeReceiver(this);
+            mySongsRecyclerViewAdapter.setHasStableIds(true);
+            //recyclerView properties for fast scrolling but doesnt work much
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setItemViewCacheSize(100);
+            recyclerView.setDrawingCacheEnabled(true);
+            recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+            recyclerView.setAdapter(mySongsRecyclerViewAdapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    ActionBar actionBar = getActivity().getActionBar();
+                    if (actionBar != null)
+                        if (dy > 0) {
+                            // Scrolling up
 
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.selectAll:
-                    selectAll();
-                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " selected", Toast.LENGTH_SHORT).show();
-                    return true;
-                case R.id.deselectAll:
-                    deselectAll();
-                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " selected", Toast.LENGTH_SHORT).show();
-                    return true;
-                case R.id.addtoPlaylist:
-                    showPlaylistDialog();
-                    mode.finish();
-                    return true;
-                case R.id.Append:
-                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " not created this method yet", Toast.LENGTH_SHORT).show();
-                    mode.finish();
-                    return true;
-                default:
-                    return false;
-            }
-        }
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            actionMode = null;
-        }
-    };
+                            actionBar.hide();
 
+                        } else {
+                            // Scrolling down
+                            actionBar.show();
+                        }
+                }
+            });
+        }
+        return view;
+    }
+
+    //Playlist dialog for creating Playlist through action mode
     private void showPlaylistDialog() {
         final ListView listView;
         Button create, cancel;
@@ -207,10 +187,12 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
                     name.setError("cant be empty");
                     return;
                 }
+                Main.showProgressDialog(getActivity());
                 Main.songs.newPlaylist(getActivity().getApplication(), "external", name.getText().toString(), (ArrayList<Song>) mySongsRecyclerViewAdapter.getSelected());
                 getActivity().recreate();
-                Toast.makeText(getActivity(), "Playlist Created", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
+                Main.hideProgressDialog();
                 deselectAll();
             }
         });

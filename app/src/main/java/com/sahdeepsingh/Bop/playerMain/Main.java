@@ -1,6 +1,7 @@
 package com.sahdeepsingh.Bop.playerMain;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.SongData.SongList;
 import com.sahdeepsingh.Bop.services.ServicePlayMusic;
@@ -24,6 +26,8 @@ public class Main {
      * All the songs on the device.
      */
     public static SongList songs = new SongList();
+
+    public static ProgressDialog mProgressDialog;
 
     /**
      * All the app's configurations/preferences/settings.
@@ -191,5 +195,21 @@ public class Main {
     //just for debugging
     public static void shit(String msg) {
         Log.e("shit", msg);
+    }
+
+    public static void showProgressDialog(Context c) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(c, R.style.progressTheme);
+            mProgressDialog.setIndeterminate(true);
+        }
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        mProgressDialog.show();
+    }
+
+    public static void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 }

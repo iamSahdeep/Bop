@@ -149,7 +149,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     private void createDrawer() {
 
         accountHeader = new AccountHeaderBuilder().withActivity(this)
-                .withHeaderBackground(R.color.orange)
+                .withHeaderBackground(R.color.accent)
                 .addProfiles(
                         new ProfileDrawerItem().withName("Bop - Music Player").withIcon(R.mipmap.ic_launcher)
                 ).build();

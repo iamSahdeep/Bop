@@ -23,8 +23,6 @@ public class utils {
         RenderScript renderScript = RenderScript.create(context);
         Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
         Allocation tmpOut = Allocation.createFromBitmap(renderScript, bitmaplol);
-
-//Intrinsic Gausian blur filter
         ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
         theIntrinsic.setRadius(77f);
         theIntrinsic.setInput(tmpIn);
@@ -52,4 +50,5 @@ public class utils {
         CustomTabsIntent customTabsIntent = builderq.build();
         customTabsIntent.launchUrl(context, Uri.parse(url));
     }
+
 }

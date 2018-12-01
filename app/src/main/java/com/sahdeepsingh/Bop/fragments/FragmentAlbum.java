@@ -16,6 +16,8 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import java.util.ArrayList;
 import java.util.Collections;
 
+// Fragment for Albums
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -47,7 +49,7 @@ public class FragmentAlbum extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+            recyclerView.setLayoutManager(new GridLayoutManager(context, 2)); //can change to create grid layout
             ArrayList<String> albums = Main.songs.getAlbums();
             Collections.sort(albums);
             MyAlbumRecyclerViewAdapter myAlbumRecyclerViewAdapter = new MyAlbumRecyclerViewAdapter(albums, mListener);
@@ -59,10 +61,10 @@ public class FragmentAlbum extends Fragment {
                     ActionBar actionBar = getActivity().getActionBar();
                     if (actionBar != null)
                         if (dy > 0) {
-                            // Scrolling up
+                            // Scrolling up & hiding action bar
                             actionBar.hide();
                         } else {
-                            // Scrolling down
+                            // Scrolling down & displaying action bar
                             actionBar.show();
                         }
                 }
@@ -97,6 +99,7 @@ public class FragmentAlbum extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
+        //sending position of the album and type ( look the switch statement)
         void onListFragmentInteraction(int position, String type);
     }
 }
