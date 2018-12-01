@@ -6,7 +6,7 @@
 Features:
 
   - NavigationDrawer  -> [7013b0ba309f2a9901e319e8cd8faddbec72494e](https://github.com/iamSahdeep/Bop/commit/7013b0ba309f2a9901e319e8cd8faddbec72494e)
-  - Minor UI changes  -> [c8d6a495d155a3993d33da7ae910c5a7b42aa0f0](https://github.com/iamSahdeep/Bop/commit/c8d6a495d155a3993d33da7ae910c5a7b42aa0f0)
+  - Minor UI changes  -> [f957574696c1ab8e285450a815a9e4adaf192ceb](https://github.com/iamSahdeep/Bop/commit/f957574696c1ab8e285450a815a9e4adaf192ceb)
   
   
 ## 0.1 (unreleased)
