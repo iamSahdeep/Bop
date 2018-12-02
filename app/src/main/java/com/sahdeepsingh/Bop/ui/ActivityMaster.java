@@ -3,7 +3,6 @@ package com.sahdeepsingh.Bop.ui;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
@@ -65,8 +64,9 @@ public class ActivityMaster extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (refreshMode()) {
-            Handler handler = new Handler();
-            handler.postDelayed(this::recreate, 10);
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
         }
         ActivityMaster.this.invalidateOptionsMenu();
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);

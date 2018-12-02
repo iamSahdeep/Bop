@@ -2,7 +2,6 @@ package com.sahdeepsingh.Bop.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatDelegate;
@@ -16,6 +15,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         String mode = Main.settings.get("modes", "Day");
         switch (mode) {
             case "Day":
@@ -32,7 +33,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 break;
         }
 
-        super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
         PreferenceManager
                 .getDefaultSharedPreferences(this)
@@ -42,8 +42,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (s.equals("modes")) {
-            Handler handler = new Handler();
-            handler.postDelayed(this::recreate, 1);
+            this.recreate();
         }
 
     }

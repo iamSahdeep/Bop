@@ -385,7 +385,8 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(changeSongBR);
+        if (refreshMode())
+            unregisterReceiver(changeSongBR);
     }
 
     private void setControlListeners() {
