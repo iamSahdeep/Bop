@@ -5,6 +5,8 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
 
+        <item name="colorPrimaryDark">?attr/primaryDarkColor</item>
+        <item name="colorPrimary">?attr/primaryColor</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
