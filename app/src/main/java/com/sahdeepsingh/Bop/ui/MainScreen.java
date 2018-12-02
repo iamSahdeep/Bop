@@ -204,7 +204,7 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
                             startActivity(Intent.createChooser(emailIntent, "Send feedback"));
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 321) {
-                            intent = new Intent(this, ActivityMenuSettings.class);
+                            intent = new Intent(this, SettingsActivity.class);
                             startActivity(intent);
                         } else if (drawerItem.getIdentifier() == 342) {
                             Main.forceExit(this);
@@ -220,7 +220,10 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
         crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
         MiniDrawer miniDrawer = drawer.getMiniDrawer();
         View view = miniDrawer.build(this);
-        view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialize.R.color.background_material_dark));
+        if (currentMode.equals("Night"))
+            view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialize.R.color.background_material_dark));
+        else
+            view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialize.R.color.background_material_light));
         crossfadeDrawerLayout.getSmallView().addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         miniDrawer.withCrossFader(new ICrossfader() {
             @Override

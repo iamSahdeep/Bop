@@ -3,7 +3,9 @@ package com.sahdeepsingh.Bop.ui;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,7 +16,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 /**
  * Master Activity from which every other Activity inherits
- * (except for `ActivityMenuSettings`).
+ * (except for `Activityettings`).
  * <p>
  * If contains some things they all have in common:
  * <p>
@@ -46,13 +48,14 @@ public class ActivityMaster extends AppCompatActivity {
      * `res/values/strings.xml`, at the fields
      * we can change on the Settings menu.
      */
-    protected String currentTheme = "";
+    protected String currentMode = "";
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        refreshTheme();
+        refreshMode();
     }
 
     /**
@@ -61,10 +64,9 @@ public class ActivityMaster extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (refreshTheme()) {
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
+        if (refreshMode()) {
+            Handler handler = new Handler();
+            handler.postDelayed(this::recreate, 10);
         }
         ActivityMaster.this.invalidateOptionsMenu();
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
@@ -115,7 +117,7 @@ public class ActivityMaster extends AppCompatActivity {
                 break;
 
             case R.id.context_menu_settings:
-                startActivity(new Intent(this, ActivityMenuSettings.class));
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
 
             case R.id.nowPlayingIcon:
@@ -127,23 +129,26 @@ public class ActivityMaster extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean refreshTheme() {
+    public boolean refreshMode() {
 
-        // Getting global theme name from the Settings.
-        // Second argument is the default value, in case
-        // something went wrong.
-        String theme = Main.settings.get("themes", "default");
+        String mode = Main.settings.get("modes", "Day");
 
-        if (!currentTheme.equals(theme)) {
-            switch (theme) {
-                case "light":
-                    setTheme(R.style.lightTheme);
+        if (!currentMode.equals(mode)) {
+            switch (mode) {
+                case "Day":
+                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     break;
-                case "dark":
-                    setTheme(R.style.darkTheme);
+                case "Night":
+                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    break;
+                case "System":
+                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                    break;
+                case "Automatic":
+                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
                     break;
             }
-            currentTheme = theme;
+            currentMode = mode;
             return true;
         }
         return false;

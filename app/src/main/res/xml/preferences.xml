@@ -1,34 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         android:title="Appearance"
         android:key="appearance">
 
+        <!--  <ListPreference
+              android:defaultValue="Day"
+              android:key="mode"
+              android:summary="Day/Night mode"
+              android:entries=""
+              android:entryValues=""
+              android:title="Mode"/>-->
+
         <ListPreference
-            android:defaultValue="Light"
-            android:key="themes"
-            android:summary="change Theme"
-            android:entries="@array/themes"
-            android:entryValues="@array/themes_values"
+            android:defaultValue="Day"
+            android:entries="@array/modes"
+            android:entryValues="@array/modes_values"
+            android:key="modes"
+            android:summary="Day/Night mode"
             android:title="Themes" />
 
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="Other"
-        android:key="other">
-        <Preference
-            android:key="version"
-            android:title="1.0.0" />
-        <Preference
-            android:key="info"
-            android:title="@string/app_name" />
-        <Preference
-            android:key="misc"
-            android:title="broh" />
+    <PreferenceCategory android:title="General">
+        <EditTextPreference
+            android:defaultValue="@string/default_gallery_storage"
+            android:key="@string/key_gallery_name"
+            android:summary="@string/default_gallery_storage"
+            android:title="@string/title_gallery_storage" />
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/key_upload_over_wifi"
+            android:summary="@string/summary_upload_over_wifi"
+            android:title="@string/title_auto_upload" />
+
+        <ListPreference
+            android:defaultValue="3"
+            android:dialogTitle="@string/title_upload_quality"
+            android:entries="@array/pref_upload_quality_entries"
+            android:entryValues="@array/pref_upload_quality_values"
+            android:key="@string/key_upload_quality"
+            android:summary="@string/summary_upload_video_quality"
+            android:title="@string/title_upload_quality" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_title_notifications">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/notifications_new_message"
+            android:title="@string/title_new_notification_sound" />
+
+        <RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:dependency="notifications_new_message"
+            android:key="@string/key_notifications_new_message_ringtone"
+            android:ringtoneType="notification"
+            android:summary="@string/summary_choose_ringtone"
+            android:title="@string/pref_ringtone_silent" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_vibrate"
+            android:summary="@string/summary_vibrate"
+            android:title="@string/title_vibrate" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_header_about">
+
+        <Preference
+            android:selectable="false"
+            android:summary="@string/summary_about" />
+
+        <Preference
+            android:summary="@string/app_version"
+            android:title="@string/title_version" />
+
+        <Preference
+            android:key="@string/key_send_feedback"
+            android:summary="@string/summary_support"
+            android:title="@string/title_send_feedback" />
+
+        <!-- preference opens url in browser -->
+        <Preference
+            android:summary="@string/summary_faq"
+            android:title="@string/title_faq">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_faq" />
+        </Preference>
+
+        <Preference android:title="@string/privacy_policy">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_privacy" />
+        </Preference>
+
+        <Preference android:title="@string/title_terms">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_terms" />
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

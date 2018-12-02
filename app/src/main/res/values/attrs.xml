@@ -32,4 +32,10 @@
         <attr name="cs_end_angle" format="float" />
         <attr name="cs_disable_progress_glow" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="Theme">
+        <attr name="primaryColor" format="color|reference" />
+        <attr name="primaryLightColor" format="color|reference" />
+        <attr name="primaryDarkColor" format="reference|color" />
+    </declare-styleable>
 </resources>
