@@ -216,14 +216,16 @@ public class MainScreen extends ActivityMaster implements MediaController.MediaP
                 .build();
 
 
+
         crossfadeDrawerLayout = (CrossfadeDrawerLayout) drawer.getDrawerLayout();
         crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
         MiniDrawer miniDrawer = drawer.getMiniDrawer();
         View view = miniDrawer.build(this);
-        if (currentMode.equals("Night"))
+        if (currentMode.equals("Night")) {
             view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialize.R.color.background_material_dark));
-        else
+        } else {
             view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialize.R.color.background_material_light));
+        }
         crossfadeDrawerLayout.getSmallView().addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         miniDrawer.withCrossFader(new ICrossfader() {
             @Override

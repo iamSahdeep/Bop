@@ -35,11 +35,9 @@ public class utils {
 
     public static Drawable getThemedIcon(Context c, Drawable drawable) {
         String theme = Main.settings.get("modes", "Day");
-        if (theme.equals("Night"))
-            return drawable;
-        else {
+        if (theme.equals("Day"))
             drawable.mutate().setColorFilter(ContextCompat.getColor(c, R.color.md_grey_800), PorterDuff.Mode.MULTIPLY);
-        }
+
         return drawable;
     }
 
