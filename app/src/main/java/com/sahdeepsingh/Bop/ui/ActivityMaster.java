@@ -48,6 +48,7 @@ public class ActivityMaster extends AppCompatActivity {
      * we can change on the Settings menu.
      */
     protected String currentMode = "";
+    protected String currentTheme = "";
 
 
 
@@ -55,6 +56,7 @@ public class ActivityMaster extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         refreshMode();
+        refreshTheme();
     }
 
     /**
@@ -64,6 +66,11 @@ public class ActivityMaster extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (refreshMode()) {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
+        if (refreshTheme()) {
             Intent intent = getIntent();
             finish();
             startActivity(intent);
@@ -149,6 +156,76 @@ public class ActivityMaster extends AppCompatActivity {
                     break;
             }
             currentMode = mode;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean refreshTheme() {
+
+        String theme = Main.settings.get("themes", "Red");
+
+        if (!currentTheme.equals(theme)) {
+            switch (theme) {
+                case "Red":
+                    setTheme(R.style.AppTheme_RED);
+                    break;
+                case "Pink":
+                    setTheme(R.style.AppTheme_PINK);
+                    break;
+                case "Purple":
+                    setTheme(R.style.AppTheme_PURPLE);
+                    break;
+                case "DeepPurple":
+                    setTheme(R.style.AppTheme_DEEPPURPLE);
+                    break;
+                case "Indigo":
+                    setTheme(R.style.AppTheme_INDIGO);
+                    break;
+                case "Blue":
+                    setTheme(R.style.AppTheme_BLUE);
+                    break;
+                case "LightBlue":
+                    setTheme(R.style.AppTheme_LIGHTBLUE);
+                    break;
+                case "Cyan":
+                    setTheme(R.style.AppTheme_CYAN);
+                    break;
+                case "Teal":
+                    setTheme(R.style.AppTheme_TEAL);
+                    break;
+                case "Green":
+                    setTheme(R.style.AppTheme_GREEN);
+                    break;
+                case "LightGreen":
+                    setTheme(R.style.AppTheme_LIGHTGREEN);
+                    break;
+                case "Lime":
+                    setTheme(R.style.AppTheme_LIME);
+                    break;
+                case "Yellow":
+                    setTheme(R.style.AppTheme_YELLOW);
+                    break;
+                case "Amber":
+                    setTheme(R.style.AppTheme_YELLOW);
+                    break;
+                case "Orange":
+                    setTheme(R.style.AppTheme_ORANGE);
+                    break;
+                case "DeepOrange":
+                    setTheme(R.style.AppTheme_DEEPORANGE);
+                    break;
+                case "Brown":
+                    setTheme(R.style.AppTheme_BROWN);
+                    break;
+                case "Gray":
+                    setTheme(R.style.AppTheme_GRAY);
+                    break;
+                case "BlueGray":
+                    setTheme(R.style.AppTheme_BLUEGRAY);
+                    break;
+            }
+            currentTheme = theme;
             return true;
         }
         return false;

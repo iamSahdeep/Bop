@@ -121,6 +121,50 @@
         <item>Automatic</item>
     </string-array>
 
+    <string-array name="themes">
+        <item>Red</item>
+        <item>Pink</item>
+        <item>Purple</item>
+        <item>DeepPurple</item>
+        <item>Indigo</item>
+        <item>Blue</item>
+        <item>LightBlue</item>
+        <item>Cyan</item>
+        <item>Teal</item>
+        <item>Green</item>
+        <item>LightGreen</item>
+        <item>Lime</item>
+        <item>Yellow</item>
+        <item>Amber</item>
+        <item>Orange</item>
+        <item>DeepOrange</item>
+        <item>Brown</item>
+        <item>Gray</item>
+        <item>BlueGray</item>
+    </string-array>
+
+    <string-array name="themes_values">
+        <item>Red</item>
+        <item>Pink</item>
+        <item>Purple</item>
+        <item>DeepPurple</item>
+        <item>Indigo</item>
+        <item>Blue</item>
+        <item>LightBlue</item>
+        <item>Cyan</item>
+        <item>Teal</item>
+        <item>Green</item>
+        <item>LightGreen</item>
+        <item>Lime</item>
+        <item>Yellow</item>
+        <item>Amber</item>
+        <item>Orange</item>
+        <item>DeepOrange</item>
+        <item>Brown</item>
+        <item>Gray</item>
+        <item>BlueGray</item>
+    </string-array>
+
     <string name="title_activity_main_screen">MainScreen</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>

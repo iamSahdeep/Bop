@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AppCompat.DayNight.DarkActionBar" parent="MaterialDrawerTheme.TranslucentStatus" />
+
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar"></style>
+</resources>

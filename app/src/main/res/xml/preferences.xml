@@ -5,13 +5,6 @@
         android:title="Appearance"
         android:key="appearance">
 
-        <!--  <ListPreference
-              android:defaultValue="Day"
-              android:key="mode"
-              android:summary="Day/Night mode"
-              android:entries=""
-              android:entryValues=""
-              android:title="Mode"/>-->
 
         <ListPreference
             android:defaultValue="Day"
@@ -19,6 +12,14 @@
             android:entryValues="@array/modes_values"
             android:key="modes"
             android:summary="Day/Night mode"
+            android:title="Mode" />
+
+        <ListPreference
+            android:defaultValue="Red"
+            android:entries="@array/themes"
+            android:entryValues="@array/themes_values"
+            android:key="themes"
+            android:summary="choose color"
             android:title="Themes" />
 
 

@@ -5,16 +5,11 @@
     </style>
 
     <style name="lightTheme" parent="MaterialDrawerTheme.Light.TranslucentStatus">
-        <item name="primaryDarkColor">@color/primaryDarkColor</item>
-        <item name="primaryColor">@color/primaryColor</item>
+
     </style>
 
     <style name="darkTheme" parent="MaterialDrawerTheme.TranslucentStatus">
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="primaryDarkColor">@color/primaryDarkColor</item>
-        <item name="colorAccent">@color/primaryLightColor</item>
-        <item name="actionModeBackground">@color/primaryColor</item>
-        <item name="actionModeCloseDrawable">@drawable/ic_cancel</item>
+
     </style>
 
     <style name="progressTheme" parent="android:Theme.Holo.Dialog">
@@ -39,9 +34,9 @@
         <item name="android:topDark">@color/transparent</item>
     </style>
 
+    <style name="Theme.AppCompat.DayNight.DarkActionBar" parent="MaterialDrawerTheme.Light.TranslucentStatus" />
 
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
-
     </style>
 
     <style name="AppTheme.NoActionBar">
