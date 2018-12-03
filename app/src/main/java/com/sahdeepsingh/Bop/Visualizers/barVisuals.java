@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.viszzz;
+package com.sahdeepsingh.Bop.Visualizers;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,8 +6,8 @@ import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-//just copied the code, didn't wanted to load complete lib
-//look for credits
+/* just copied the code, didn't wanted to load complete lib or could do it :/
+  credits, gautam sir */
 public class barVisuals extends visualizer {
 
     private float density = 50;
@@ -57,10 +57,10 @@ public class barVisuals extends visualizer {
 
             for (int i = 0; i < density; i++) {
                 int bytePosition = (int) Math.ceil(i * div);
-                int top = canvas.getHeight() +
-                        ((byte) (Math.abs(bytes[bytePosition]) + 128)) * canvas.getHeight() / 128;
+                int top = getHeight() +
+                        ((byte) (Math.abs(bytes[bytePosition]) + 128)) * getHeight() / 128;
                 float barX = (i * barWidth) + (barWidth / 2);
-                canvas.drawLine(barX, canvas.getHeight(), barX, top, paint);
+                canvas.drawLine(barX, getHeight(), barX, top, paint);
             }
             super.onDraw(canvas);
         }

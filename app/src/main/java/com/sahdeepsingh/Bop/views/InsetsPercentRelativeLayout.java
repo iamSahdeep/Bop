@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sahdeepsingh.Bop.view;
+package com.sahdeepsingh.Bop.views;
 
 import android.content.Context;
 import android.support.percent.PercentRelativeLayout;
@@ -23,6 +23,7 @@ import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
+/* Don't know whats this, just copied, look copyright above for credits*/
 public class InsetsPercentRelativeLayout extends PercentRelativeLayout {
 
     public InsetsPercentRelativeLayout(Context context) {

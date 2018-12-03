@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/notification"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -12,13 +13,15 @@
         android:background="#373737"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="6">
+        android:weightSum="6"
+        tools:ignore="UselessParent">
 
         <ImageView
             android:id="@+id/albumArtNoti"
             android:layout_width="0dp"
             android:layout_height="75dp"
             android:layout_weight="1.3"
+            android:contentDescription="@string/album_art"
             android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
@@ -33,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="Song Name"
+                android:text="@string/song_name"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="17sp" />
 
@@ -42,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="Artist Name"
+                android:text="@string/menu_music_artists"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -51,6 +54,7 @@
             android:layout_width="1dp"
             android:layout_height="30dp"
             android:layout_margin="3dp"
+            android:contentDescription="@string/view"
             android:src="#bcbcbc" />
 
         <ImageView
@@ -58,38 +62,43 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight=".84"
-            android:scaleType="center"
             android:background="#373737"
+            android:contentDescription="@string/play_pause"
+            android:scaleType="center"
             android:src="@drawable/ic_play" />
 
         <ImageView
             android:layout_width="1dp"
             android:layout_height="30dp"
             android:layout_margin="3dp"
+            android:contentDescription="@string/view"
             android:src="#bcbcbc" />
 
         <ImageView
             android:id="@+id/skipNoti"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:scaleType="center"
             android:layout_weight=".83"
             android:background="#373737"
+            android:contentDescription="@string/next"
+            android:scaleType="center"
             android:src="@drawable/ic_skip" />
 
         <ImageView
             android:layout_width="1dp"
             android:layout_height="30dp"
             android:layout_margin="3dp"
+            android:contentDescription="@string/view"
             android:src="#bcbcbc" />
 
         <ImageView
             android:id="@+id/stopNoti"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:scaleType="center"
             android:layout_weight=".83"
             android:background="#373737"
+            android:contentDescription="@string/cancel"
+            android:scaleType="center"
             android:src="@drawable/ic_cancel" />
 
     </LinearLayout>

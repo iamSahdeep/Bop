@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.Visualizers.barVisuals;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.viszzz.barVisuals;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

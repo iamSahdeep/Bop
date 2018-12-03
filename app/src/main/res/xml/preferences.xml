@@ -62,7 +62,7 @@
             android:key="@string/key_notifications_new_message_ringtone"
             android:ringtoneType="notification"
             android:summary="@string/summary_choose_ringtone"
-            android:title="@string/pref_ringtone_silent" />
+            android:title="@string/choose_email_client" />
 
         <SwitchPreference
             android:defaultValue="true"

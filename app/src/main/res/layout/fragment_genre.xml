@@ -24,6 +24,7 @@
                 android:id="@+id/albumArtGenre"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:contentDescription="@string/album_art"
                 android:src="@mipmap/ic_launcher" />
 
 

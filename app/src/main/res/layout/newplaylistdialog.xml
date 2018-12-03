@@ -4,63 +4,72 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:ignore="UselessParent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
-                android:text="Select or Create new :"
-                android:textSize="20sp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:layout_height="wrap_content" />
+                android:text="@string/select_or_create_new"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
             <ListView
                 android:id="@+id/playlistListview"
-                android:layout_margin="15dp"
-                android:listSelector="?attr/primaryColor"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
-            </ListView>
+                android:layout_height="100dp"
+                android:layout_margin="5dp"
+                android:listSelector="?attr/primaryColor" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:orientation="vertical">
+
             <EditText
                 android:id="@+id/newPlaylistName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Playlist Name"
-                android:inputType="textPersonName" />
+                android:hint="@string/playlist_name"
+                android:inputType="textPersonName"
+                tools:ignore="Autofill" />
+
             <LinearLayout
-                android:layout_width="match_parent"
-                android:weightSum="2"
-                android:layout_marginTop="20dp"
                 style="?android:attr/buttonBarStyle"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:weightSum="2">
+
                 <Button
                     android:id="@+id/cancelPlaylist"
-                    android:layout_width="wrap_content"
-                    android:text="Cancel"
-                    android:background="@color/transparent"
-                    android:layout_weight="1"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:text="@string/cancel" />
+
                 <Button
                     android:id="@+id/createPlaylist"
-                    android:layout_width="wrap_content"
-                    android:background="@color/transparent"
-                    android:text="Create"
-                    android:layout_weight="1"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:text="@string/create" />
             </LinearLayout>
 
         </LinearLayout>

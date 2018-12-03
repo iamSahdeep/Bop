@@ -17,9 +17,12 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
 public class utils {
+
+    private static final int[] TEMP_ARRAY = new int[1];
+
+    /* For blurring the image*/
     public static Bitmap blurMyImage(Bitmap image, Context context) {
         if (null == image) return null;
-
         Bitmap bitmaplol = image.copy(image.getConfig(), true);
         RenderScript renderScript = RenderScript.create(context);
         Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
@@ -34,24 +37,25 @@ public class utils {
 
     }
 
+    /*get Themed icons, used in Navigation Drawer in MAinScreen*/
     public static Drawable getThemedIcon(Context c, Drawable drawable) {
+        //Need to find the method to get day night values when automatic and System option is selected
         String theme = Main.settings.get("modes", "Day");
         if (theme.equals("Day"))
             drawable.mutate().setColorFilter(ContextCompat.getColor(c, R.color.md_grey_800), PorterDuff.Mode.MULTIPLY);
-
         return drawable;
     }
 
+    /*Custom Tabs powered by chrome xD*/
     public static void openCustomTabs(Context context, String url) {
         CustomTabsIntent.Builder builderq = new CustomTabsIntent.Builder();
-        builderq.setToolbarColor(context.getResources().getColor(R.color.accent));
+        builderq.setToolbarColor(context.getResources().getColor(getThemeAttrColor(context, R.attr.primaryColor)));
         builderq.addDefaultShareMenuItem().enableUrlBarHiding();
         CustomTabsIntent customTabsIntent = builderq.build();
         customTabsIntent.launchUrl(context, Uri.parse(url));
     }
 
-    private static final int[] TEMP_ARRAY = new int[1];
-
+    /*Get color from attr*/
     public static int getThemeAttrColor(Context context, int attr) {
         TEMP_ARRAY[0] = attr;
         TypedArray a = context.obtainStyledAttributes(null, TEMP_ARRAY);

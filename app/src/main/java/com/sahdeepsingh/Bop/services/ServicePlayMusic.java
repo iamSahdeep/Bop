@@ -21,13 +21,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.sahdeepsingh.Bop.Activities.MainScreen;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.controls.RemoteControlClientCompat;
 import com.sahdeepsingh.Bop.controls.RemoteControlHelper;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.ui.MainScreen;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -242,7 +242,7 @@ public class ServicePlayMusic extends Service
                 String headsetName = intent.getStringExtra("name");
 
                 if (connectedHeadphones) {
-                    String text = context.getString(R.string.service_music_play_headphone_on, headsetName);
+                    String text = context.getString(R.string.headphone_connected) + headsetName;
 
                     Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
                 }
@@ -1160,7 +1160,7 @@ public class ServicePlayMusic extends Service
                     return;
 
                 // ADD SETTINGS HERE
-                String text = context.getString(R.string.service_music_play_headphone_off);
+                String text = "Headphones Disconnected";
                 Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 
                 // send an intent to our MusicService to telling it to pause the audio

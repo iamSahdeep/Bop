@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.ui;
+package com.sahdeepsingh.Bop.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;

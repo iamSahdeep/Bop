@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sahdeepsingh.Bop.view.InsetsPercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sahdeepsingh.Bop.views.InsetsPercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,6 +16,7 @@
     <com.andremion.music.MusicCoverView
         android:id="@+id/cover"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_centerInParent="true"
         android:scaleType="centerInside"
         android:src="@drawable/back"
@@ -29,37 +30,40 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="5dp"
+        android:contentDescription="@string/equalizer"
         android:onClick="equalizer"
         android:src="@drawable/ic_equalizer" />
 
     <include
         android:id="@+id/title"
         layout="@layout/track_title"
-        android:layout_margin="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_margin="50dp"
         app:layout_marginTopPercent="10%" />
 
     <me.tankery.lib.circularseekbar.CircularSeekBar
         android:id="@+id/progress"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_centerInParent="true"
         android:transitionName="@string/transition_name_progress"
-        app:layout_aspectRatio="100%"
-        app:cs_circle_stroke_width="8dp"
         app:cs_circle_color="@color/colorPane"
         app:cs_circle_progress_color="@color/gray"
-        app:cs_pointer_halo_color="@color/gray"
-        app:cs_pointer_halo_color_ontouch="@color/gray"
+        app:cs_circle_stroke_width="8dp"
         app:cs_circle_style="round"
         app:cs_end_angle="30"
         app:cs_maintain_equal_circle="false"
         app:cs_negative_enabled="false"
+        app:cs_pointer_halo_color="@color/gray"
+        app:cs_pointer_halo_color_ontouch="@color/gray"
         app:cs_pointer_stroke_width="14dp"
         app:cs_start_angle="-210"
+        app:layout_aspectRatio="100%"
         app:layout_heightPercent="33%" />
 
-    <com.sahdeepsingh.Bop.viszzz.CircleBarVisualizer
+    <com.sahdeepsingh.Bop.Visualizers.CircleBarVisualizer
         android:id="@+id/visualizer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,16 +76,17 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
-        android:elevation="10dp"
         android:layout_height="wrap_content"
-        app:backgroundTint="@color/colorPane"
         android:layout_centerInParent="true"
+        android:elevation="10dp"
         android:onClick="onFabClick"
         android:src="@drawable/ic_pause_animatable"
-        android:transitionName="@string/transition_name_fab" />
+        android:transitionName="@string/transition_name_fab"
+        app:backgroundTint="@color/colorPane" />
 
     <Space
         android:id="@+id/timers_anchor"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/cover"
         android:layout_centerHorizontal="true"
@@ -124,6 +129,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
+            android:contentDescription="@string/repeat"
             android:focusable="true"
             android:src="@drawable/ic_repeat_on" />
 
@@ -137,6 +143,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
+            android:contentDescription="@string/shuffle"
             android:focusable="true"
             android:src="@drawable/ic_shuffle_on" />
 
@@ -146,8 +153,8 @@
         android:id="@+id/controls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginEnd="2dp"
         android:gravity="center_horizontal"
         android:transitionGroup="true"
         app:layout_marginBottomPercent="4%">
@@ -157,6 +164,7 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/rewind"
             android:src="@drawable/ic_rewind" />
 
         <ImageView
@@ -164,6 +172,7 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/previous"
             android:src="@drawable/ic_previous" />
 
         <ImageView
@@ -171,6 +180,7 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/next"
             android:src="@drawable/ic_skip" />
 
         <ImageView
@@ -178,8 +188,9 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/forward"
             android:src="@drawable/ic_forward" />
 
     </LinearLayout>
 
-</com.sahdeepsingh.Bop.view.InsetsPercentRelativeLayout>
+</com.sahdeepsingh.Bop.views.InsetsPercentRelativeLayout>

@@ -24,6 +24,7 @@
                 android:id="@+id/albumArt1"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:contentDescription="@string/album_art"
                 android:src="@mipmap/ic_launcher" />
 
 
@@ -38,7 +39,7 @@
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/appbar_scrolling_view_behavior"
+                    android:text="@string/song_name"
                     android:textSize="15sp"/>
 
             </LinearLayout>

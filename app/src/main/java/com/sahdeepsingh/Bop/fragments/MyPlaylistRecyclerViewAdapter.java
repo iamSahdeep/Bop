@@ -30,7 +30,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     private final List<String> playlists;
     private OnListFragmentInteractionListener mListener;
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private int anyExpanded = -1;
     private ViewHolder expandedViewholder;
 
@@ -55,7 +55,8 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
         for (int i = 0; i < songsList.size(); i++) {
             String path = Main.songs.getAlbumArt(songsList.get(i));
             if (path != null) {
-                Picasso.get().load(new File(path)).fit().centerCrop().error(R.drawable.ic_pause).into(holder.albumart);
+                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).into(holder.albumart);
+                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).into(holder.albumartD);
             }
         }
         holder.total.setText(String.valueOf(songsList.size()) + " songs");
@@ -174,10 +175,10 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
         mRecyclerView = recyclerView;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         View mView;
         TextView playlistname;
-        ImageView albumart;
+        ImageView albumart, albumartD;
         TextView total;
         ImageButton edit, delete, more;
         LinearLayout expandable;
@@ -187,6 +188,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
             mView = view;
             playlistname = view.findViewById(R.id.PlaylistName);
             albumart = view.findViewById(R.id.albumArt);
+            albumartD = view.findViewById(R.id.albumArtD);
             total = view.findViewById(R.id.totalSongs);
             edit = view.findViewById(R.id.editName);
             delete = view.findViewById(R.id.deletePlaylist);

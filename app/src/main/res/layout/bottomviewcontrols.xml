@@ -14,9 +14,10 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:onClick="openPlayer"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/album_art"
         android:scaleType="fitXY"
+        android:onClick="openPlayer"
         android:src="@mipmap/ic_launcher_foreground" />
 
     <LinearLayout
@@ -56,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/transition_name_time" />
 
-            <com.sahdeepsingh.Bop.view.ProgressView
+            <com.sahdeepsingh.Bop.views.ProgressView
                 android:id="@+id/mprogressview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -86,12 +87,13 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:focusable="true"
         android:layout_marginBottom="10dp"
         android:layout_weight=".7"
         android:background="@color/transparent"
+        android:clickable="true"
+        android:contentDescription="@string/play_pause"
         android:scaleType="center"
+        android:focusable="true"
         android:src="@drawable/ic_play" />
 </LinearLayout>
 

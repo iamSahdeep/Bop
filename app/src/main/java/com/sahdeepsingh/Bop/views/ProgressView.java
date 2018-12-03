@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2016. André Mion
  *
@@ -15,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sahdeepsingh.Bop.view;
+package com.sahdeepsingh.Bop.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -26,12 +25,11 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 
 import com.sahdeepsingh.Bop.R;
 
 
-public class ProgressView extends SeekBar {
+public class ProgressView extends android.support.v7.widget.AppCompatSeekBar {
 
     private static final float STROKE_SIZE = 4;
     private static final float START_ANGLE = 135;

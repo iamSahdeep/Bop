@@ -1,10 +1,8 @@
-package com.sahdeepsingh.Bop.ui;
+package com.sahdeepsingh.Bop.Activities;
 
 import android.app.ActivityOptions;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -18,13 +16,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.AdapterSong;
@@ -32,7 +28,7 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.io.File;
 
-import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
+import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;
 
 public class PlayingNowList extends AppCompatActivity implements MediaController.MediaPlayerControl {
 
@@ -217,66 +213,6 @@ public class PlayingNowList extends AppCompatActivity implements MediaController
             workOnImages();
         }
     }
-
-    private void newPlaylist() {
-
-        // The input box where user will type new name
-        final EditText input = new EditText(PlayingNowList.this);
-
-        // Labels
-        String dialogTitle = PlayingNowList.this.getString(R.string.menu_now_playing_dialog_create_playlist_title);
-        String dialogText = PlayingNowList.this.getString(R.string.menu_now_playing_dialog_create_playlist_subtitle);
-        String buttonOK = PlayingNowList.this.getString(R.string.menu_now_playing_dialog_create_playlist_button_ok);
-        String buttonCancel = PlayingNowList.this.getString(R.string.menu_now_playing_dialog_create_playlist_button_cancel);
-
-        // Creating the dialog box that asks the user,
-        // with the question and options.
-        new AlertDialog.Builder(PlayingNowList.this)
-                .setTitle(dialogTitle)
-                .setMessage(dialogText)
-                .setView(input)
-
-                // Creates the OK button, attaching the action to create the Playlist
-                .setPositiveButton(buttonOK, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                        String playlistName = input.getText().toString();
-
-                        // TODO: Must somehow update the Playlist Activity if it's
-                        //       on the background!
-                        //       The ListView only updates when Playlist Menu gets
-                        //       created from scratch.
-                        Main.songs.newPlaylist(PlayingNowList.this, "external", playlistName, Main.nowPlayingList);
-
-                        String createPlaylistText = PlayingNowList.this.getString(R.string.menu_now_playing_dialog_create_playlist_success, playlistName);
-
-                        // Congratulating the user with the
-                        // new Playlist name
-                        Toast.makeText(PlayingNowList.this,
-                                createPlaylistText,
-                                Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    // Creates the CANCEL button, that
-                    // doesn't do nothing
-                    // (since a Playlist is only created
-                    // when pressing OK).
-                })
-                .setNegativeButton(buttonCancel,
-                        new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // Do nothing, yay!
-                            }
-
-                            // Lol, this is where we actually call the Dialog.
-                            // Note for newcomers: The code continues to execute.
-                            // This is an asynchronous task.
-                        }).show();
-    }
-
 
     /**
      * Another Activity is taking focus. (either from user going to another

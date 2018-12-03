@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.viszzz;
+package com.sahdeepsingh.Bop.Visualizers;
 
 import android.content.Context;
 import android.graphics.Color;

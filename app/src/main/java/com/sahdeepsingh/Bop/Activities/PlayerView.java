@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.ui;
+package com.sahdeepsingh.Bop.Activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,16 +24,16 @@ import android.widget.TextView;
 import com.andremion.music.MusicCoverView;
 import com.bullhead.equalizer.EqualizerFragment;
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.Visualizers.CircleBarVisualizer;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
-import com.sahdeepsingh.Bop.view.TransitionAdapter;
-import com.sahdeepsingh.Bop.viszzz.CircleBarVisualizer;
+import com.sahdeepsingh.Bop.views.TransitionAdapter;
 
 import java.io.File;
 
 import me.tankery.lib.circularseekbar.CircularSeekBar;
 
-import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
+import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;
 
 public class PlayerView extends AppCompatActivity implements MediaController.MediaPlayerControl {
 

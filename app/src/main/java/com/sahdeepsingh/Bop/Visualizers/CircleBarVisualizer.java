@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.viszzz;
+package com.sahdeepsingh.Bop.Visualizers;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -60,7 +60,7 @@ public class CircleBarVisualizer extends visualizer {
 
             for (int i = 0; i < 120; i++, angle += 3) {
                 int x = (int) Math.ceil(i * 8.5);
-                int t = ((byte) (-Math.abs(bytes[x]) + 128)) * (canvas.getHeight() / 4) / 128;
+                int t = ((byte) (-Math.abs(bytes[x]) + 128)) * (getHeight() / 4) / 128;
 
                 points[i * 4] = (float) (getWidth() / 2
                         + radius

@@ -10,17 +10,17 @@
         android:id="@+id/Append"
         android:icon="@drawable/ic_append"
         app:showAsAction="always"
-        android:title="Append" />
+        android:title="@string/append" />
 
     <item
         android:id="@+id/selectAll"
         app:showAsAction="ifRoom"
-        android:title="Select All" />
+        android:title="@string/select_all" />
 
     <item
         android:id="@+id/deselectAll"
         app:showAsAction="ifRoom"
-        android:title="Deselect All" />
+        android:title="@string/deselect_all" />
 
 
 </menu>

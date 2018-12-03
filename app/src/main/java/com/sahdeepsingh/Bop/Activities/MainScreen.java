@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.ui;
+package com.sahdeepsingh.Bop.Activities;
 
 
 import android.app.ActionBar;
@@ -51,7 +51,7 @@ import com.sahdeepsingh.Bop.fragments.FragmentSongs;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
-import com.sahdeepsingh.Bop.view.ProgressView;
+import com.sahdeepsingh.Bop.views.ProgressView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Objects;

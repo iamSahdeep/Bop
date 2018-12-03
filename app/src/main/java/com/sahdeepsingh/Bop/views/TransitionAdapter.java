@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sahdeepsingh.Bop.view;
+package com.sahdeepsingh.Bop.views;
 
 import android.transition.Transition;
 

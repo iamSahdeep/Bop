@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.ui;
+package com.sahdeepsingh.Bop.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

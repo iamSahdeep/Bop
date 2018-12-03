@@ -4,105 +4,22 @@
     <string name="app_name">Bop-MusicPlayer</string>
     <string name="app_name_short">Bop</string>
 
-    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
-    <string name="now_playing">Now Playing List</string>
-    <string name="all_songs">All Songs</string>
+    <string name="now_playing">Now Playing</string>
     <string name="settings">Settings</string>
     <string name="shuffle">Shuffle</string>
     <string name="repeat">Repeat</string>
     <string name="songs">Songs</string>
     <string name="end">Quit</string>
 
-
-    <string name="menu_main_music">Music</string>
-    <string name="menu_main_settings">Settings</string>
-    <string name="menu_main_shuffle">Shuffle All Songs</string>
-    <string name="menu_main_now_playing">Now Playing</string>
-
-    <!--whats these numbers??????-->
-    <string name="menu_main_scanning">Scanning songs on the device&#8230;</string>
-
     <string name="menu_main_scanning_ok">Finished scanning songs</string>
     <string name="menu_main_scanning_not_ok">Error while scanning songs</string>
     <string name="menu_main_back_to_exit">Press back again to exit</string>
 
-    <string name="menu_music_playlists">Playlists</string>
     <string name="menu_music_artists">Artists</string>
-    <string name="menu_music_songs">All Songs</string>
     <string name="menu_music_albums">Albums</string>
-    <string name="menu_music_genres">Genres</string>
-    <string name="menu_music_years">Years</string>
-    <string name="menu_music_proceed_error">Cannot proceed: I\'m scanning the device for songs.</string>
 
-    <string name="notification_button_play">Play</string>
-    <string name="notification_button_skip">Skip</string>
-
-    <string name="menu_settings_themes_title">Theme</string>
-    <string name="menu_settings_themes_subtitle">Colors used on the application.</string>
-
-    <!--no usage will remove as service is also removed-->
-    <string name="menu_settings_lastfm_title">Share songs on Last.fm</string>
-    <string name="menu_settings_lastfm_subtitle">You must have one of the apps below installed.</string>
-
-    <string name="menu_settings_lastfm_which_title">Last.fm Scrobbler</string>
-    <string name="menu_settings_lastfm_which_subtitle">Which application I\'ll use to scrobble to Last.fm (you have to install at least one of those).</string>
-
-
-    <string name="menu_settings_show_notification_title">Ongoing Notification</string>
-    <string name="menu_settings_show_notification_subtitle">Shows a system notification when I\'m playing a song. You can control the music player from there.</string>
-
-
-    <string name="menu_settings_lock_widget_title">Lockscreen Widget</string>
-    <string name="menu_settings_lock_widget_subtitle">Displays music controls on the locked screen.\nNote: Restart application to apply changes.</string>
-
-
-    <string name="menu_settings_pause_headphone_off_title">Pause when Unplugged</string>
-    <string name="menu_settings_pause_headphone_off_subtitle">Should I pause the music when the headphone is disconnected?</string>
-
-
-    <string name="menu_settings_play_headphone_on_title">Play when Inserted</string>
-    <string name="menu_settings_play_headphone_on_subtitle">Should I resume the music when the headphone is reconnected?</string>
-
-
-    <string name="menu_settings_repeat_list_title">Repeat when finished</string>
-    <string name="menu_settings_repeat_list_subtitle">When finishing the \"Now Playing List\", should I start it all over again?</string>
-
-
-    <string name="menu_settings_scroll_on_focus_title">Scroll when returning</string>
-    <string name="menu_settings_scroll_on_focus_subtitle">When returning to the \"Now Playing List\", should I scroll it to the currently playing song?</string>
-
-
-    <string name="menu_settings_info_dialog_title">Music Library Info</string>
-    <string name="menu_settings_info_dialog_text">%1$d songs\n%2$d albums\n%3$s artists\n%4$d playlists\n\nNext versions will have more stuff here.</string>
-
-
-    <string name="menu_settings_misc_dialog_title">Misc. Info</string>
-    <string name="menu_settings_misc_dialog_text">For now there\'s nothing here.\nPerhaps on a next version&#8230;</string>
-
-
-    <string name="menu_settings_version_title">Main Version</string>
-    <string name="menu_settings_info_title">Music Library Info</string>
-    <string name="menu_settings_misc_title">Misc. Info</string>
-
-
-    <string name="menu_now_playing_action_bar_sort_title">Sort by Title</string>
-    <string name="menu_now_playing_action_bar_sort_artist">Sort by Artist</string>
-    <string name="menu_now_playing_action_bar_sort_album">Sort by Album</string>
-    <string name="menu_now_playing_action_bar_sort_track">Sort by Track Number</string>
-    <string name="menu_now_playing_action_bar_sort_random">Sort Randomly</string>
-    <string name="menu_now_playing_action_bar_new_playlist">Create new Playlist</string>
-
-    <string name="menu_now_playing_dialog_create_playlist_title">Name the new Playlist</string>
-    <string name="menu_now_playing_dialog_create_playlist_subtitle">Enter a name for your new playlist</string>
-    <string name="menu_now_playing_dialog_create_playlist_button_ok">OK</string>
-    <string name="menu_now_playing_dialog_create_playlist_button_cancel">Cancel</string>
-    <string name="menu_now_playing_dialog_create_playlist_success">Playlist %1$s successfully created</string>
-
-
-    <string name="service_music_play_headphone_on">Headphone connected (%1$s)</string>
-    <string name="service_music_play_headphone_off">Headphone disconnected</string>
 
     <!-- Values for the Settings Activity
 	 -->
@@ -165,14 +82,6 @@
         <item>BlueGray</item>
     </string-array>
 
-    <string name="title_activity_main_screen">MainScreen</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_to_playlist">Add to Playlist</string>
 
     <string name="transition_name_title" translatable="false">title</string>
@@ -183,167 +92,6 @@
     <string name="transition_name_fab" translatable="false">fab</string>
     <string name="play_vector_path" translatable="false">M6,5 l12,7 l0,0 l-12,0z M6,12 l12,0 l0,0 l-12,7z</string>
     <string name="pause_vector_path" translatable="false">M5,6 l14,0 l0,4 l-14,0z M5,14 l14,0 l0,4 l-14,0z</string>
-    <string name="title_activity_settings">SettingsActivity</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
-
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-        "Bold, graphic, intentional.\n\n"
-
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-
-        "Motion provides meaning.\n\n"
-
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
-
-        "3D world.\n\n"
-
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
-
-        "Light and shadow.\n\n"
-
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
-
-        "Resting elevation.\n\n"
-
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
-
-        "Component elevations.\n\n"
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        "Responsive elevation and dynamic elevation offsets.\n\n"
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        "Avoiding elevation interference.\n\n"
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
-    </string>
-
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
 
 
     <!--will delete later-->
@@ -381,6 +129,29 @@
     <string name="key_notifications_new_message_ringtone">key_notifications_new_message_ringtone</string>
     <string name="key_vibrate">key_vibrate</string>
     <string name="key_send_feedback">key_send_feedback</string>
+    <string name="album_art">Album Art</string>
+    <string name="play_pause">Play Pause</string>
+    <string name="song_name">Song Name</string>
+    <string name="more">more</string>
+    <string name="total">total</string>
+    <string name="edit">Edit</string>
+    <string name="delete">delete</string>
+    <string name="select_or_create_new">Select or Create new :</string>
+    <string name="playlist_name">Playlist Name</string>
+    <string name="create">Create</string>
+    <string name="view">View</string>
+    <string name="next">Next</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="previous">Previous</string>
+    <string name="rewind">Rewind</string>
+    <string name="forward">Forward</string>
+    <string name="current_playlist">Current Playlist</string>
+    <string name="options">Options</string>
+    <string name="avatar">Avatar</string>
+    <string name="append">Append</string>
+    <string name="select_all">Select All</string>
+    <string name="deselect_all">Deselect All</string>
+    <string name="headphone_connected">Headphones Connected :</string>
 
     <string-array name="pref_upload_quality_entries">
         <item>360p</item>

@@ -1,6 +1,7 @@
-package com.sahdeepsingh.Bop.ui;
+package com.sahdeepsingh.Bop.Activities;
 
-/* This is code not meant to be seen by humans.
+/* LOL I laughed here, another masterpiece from KMP
+ * This is code not meant to be seen by humans.
  * Do not try to figure out or (even worse) modify it.
  *
  * The angry gods of "Gambiarra" will seek and destroy your
@@ -143,7 +144,7 @@ XXX
                                 this
 
                                 ,
-                                "Main-chan, by BDNachi"
+                                "Bop - Music Player"
 
 
                                 ,

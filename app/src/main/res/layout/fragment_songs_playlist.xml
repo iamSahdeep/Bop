@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
@@ -10,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -52,18 +54,19 @@
 
         </LinearLayout>
 
-        <com.sahdeepsingh.Bop.viszzz.barVisuals
+        <com.sahdeepsingh.Bop.Visualizers.barVisuals
             android:id="@+id/barvisuals"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:visibility="gone"
             android:layout_gravity="center"
-            android:layout_margin="5dp" />
+            android:layout_margin="5dp"
+            android:visibility="gone" />
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
+            android:contentDescription="@string/options"
             android:src="@drawable/ic_3dots" />
 
     </LinearLayout>
