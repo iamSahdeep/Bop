@@ -1,5 +1,17 @@
 # CHANGELOG.md
 
+## 0.3 (unreleased)
+### versionCode = 4
+ 
+Features:
+
+  - Multiple Themes  -> [86ed927e4364029833fcee5521e3c1133453d34f](https://github.com/iamSahdeep/Bop/commit/86ed927e4364029833fcee5521e3c1133453d34f)
+  - Day/Night Mode  -> [d6049c1b391699d4ec4ab91256d65021f8e8bcc2](https://github.com/iamSahdeep/Bop/commit/d6049c1b391699d4ec4ab91256d65021f8e8bcc2)
+
+Bug Fixes:
+
+  - Fix : Memory Leak -> [d5f61d2c7770dc38d8f2f5f7afd4f0286b2b38ab](https://github.com/iamSahdeep/Bop/tree/d5f61d2c7770dc38d8f2f5f7afd4f0286b2b38ab)
+  
 ## 0.2 (unreleased)
 ### versionCode = 3
  
