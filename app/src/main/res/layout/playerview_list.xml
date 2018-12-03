@@ -58,6 +58,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_padding"
                 android:layout_marginEnd="@dimen/inner_padding"
+                android:thumbTint="@color/primaryColor"
+                app:backgroundTint="@color/primaryLightColor"
                 android:layout_weight="1"
                 android:transitionName="@string/transition_name_progress" />
 
@@ -144,6 +146,7 @@
         android:scaleType="center"
         android:onClick="initTransistion"
         android:src="@drawable/ic_music"
+        app:backgroundTint="@color/primaryLightColor"
         android:transitionName="@string/transition_name_fab"
         app:fabSize="mini" />
 

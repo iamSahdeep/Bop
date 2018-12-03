@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    android:background="@color/md_grey_700"
+    android:background="?attr/primaryLightColor"
     android:orientation="horizontal"
     android:visibility="visible"
     android:weightSum="5">
@@ -78,7 +78,7 @@
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:layout_weight="0.02"
-        android:background="@color/white" />
+        android:background="?attr/primaryDarkColor" />
 
     <ImageButton
         android:id="@+id/bottomImagebutton"
