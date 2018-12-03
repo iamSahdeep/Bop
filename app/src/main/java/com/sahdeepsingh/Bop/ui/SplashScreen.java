@@ -35,7 +35,7 @@ public class SplashScreen extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!checkPerm()) {
                 requestPerm();
-            }else{
+            } else {
                 if (Main.mainMenuHasNowPlayingItem) {
                     Intent intent = new Intent(SplashScreen.this, MainScreen.class);
                     startActivity(intent);
@@ -44,7 +44,7 @@ public class SplashScreen extends AppCompatActivity {
                     scanSongs(false);
                 }
             }
-        }else {
+        } else {
             if (Main.mainMenuHasNowPlayingItem) {
                 Intent intent = new Intent(SplashScreen.this, MainScreen.class);
                 startActivity(intent);
@@ -58,7 +58,7 @@ public class SplashScreen extends AppCompatActivity {
     private boolean checkPerm() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(),RECORD_AUDIO);
+        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
 
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED;
     }
@@ -79,8 +79,7 @@ public class SplashScreen extends AppCompatActivity {
                     boolean WriteAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     boolean RecordAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED;
 
-                    if (ReadAccepted && WriteAccepted && RecordAccepted)
-                    {
+                    if (ReadAccepted && WriteAccepted && RecordAccepted) {
                         if (Main.mainMenuHasNowPlayingItem) {
                             Intent intent = new Intent(SplashScreen.this, MainScreen.class);
                             startActivity(intent);
@@ -96,7 +95,7 @@ public class SplashScreen extends AppCompatActivity {
                                             @RequiresApi(api = Build.VERSION_CODES.M)
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE , RECORD_AUDIO},
+                                                requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, RECORD_AUDIO},
                                                         PERMISSION_REQUEST_CODE);
                                             }
                                         });
@@ -158,19 +157,18 @@ public class SplashScreen extends AppCompatActivity {
             super.onPostExecute(result);
             if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
                 File file = new File(getIntent().getData().getPath());
-                Intent intent = new Intent(SplashScreen.this, PlayingNow.class);
+                Intent intent = new Intent(SplashScreen.this, PlayingNowList.class);
                 intent.putExtra("file", file);
                 Main.musicList.clear();
                 Main.musicList.add(Main.songs.getSongbyFile(file));
                 Main.nowPlayingList = Main.musicList;
                 startActivity(intent);
             } else {
-            Intent intent = new Intent(SplashScreen.this,MainScreen.class);
+                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
                 startActivity(intent);
             }
         }
     }
-
 
 
 }

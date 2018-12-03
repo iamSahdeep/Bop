@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 
+// Transition for the player, that animation when user clicks fab to get to MainPlayerView
+
 public class AnimatedVectorDrawableCompat {
 
     private static final Handler sHandler = new AnimatedVectorDrawableHandler();

@@ -34,7 +34,7 @@ import java.io.File;
 
 import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 
-public class PlayingNow extends AppCompatActivity implements MediaController.MediaPlayerControl {
+public class PlayingNowList extends AppCompatActivity implements MediaController.MediaPlayerControl {
 
     private TextView mTitleView, mCounterView;
     private LinearLayout mTitleViewq;
@@ -189,7 +189,7 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
 
         seekArc.setMax((int) Main.musicService.currentSong.getDuration());
         final Handler handler = new Handler();
-        PlayingNow.this.runOnUiThread(new Runnable() {
+        PlayingNowList.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (isPlaying()) {
@@ -221,17 +221,17 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
     private void newPlaylist() {
 
         // The input box where user will type new name
-        final EditText input = new EditText(PlayingNow.this);
+        final EditText input = new EditText(PlayingNowList.this);
 
         // Labels
-        String dialogTitle = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_title);
-        String dialogText = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_subtitle);
-        String buttonOK = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_button_ok);
-        String buttonCancel = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_button_cancel);
+        String dialogTitle = PlayingNowList.this.getString(R.string.menu_now_playing_dialog_create_playlist_title);
+        String dialogText = PlayingNowList.this.getString(R.string.menu_now_playing_dialog_create_playlist_subtitle);
+        String buttonOK = PlayingNowList.this.getString(R.string.menu_now_playing_dialog_create_playlist_button_ok);
+        String buttonCancel = PlayingNowList.this.getString(R.string.menu_now_playing_dialog_create_playlist_button_cancel);
 
         // Creating the dialog box that asks the user,
         // with the question and options.
-        new AlertDialog.Builder(PlayingNow.this)
+        new AlertDialog.Builder(PlayingNowList.this)
                 .setTitle(dialogTitle)
                 .setMessage(dialogText)
                 .setView(input)
@@ -247,13 +247,13 @@ public class PlayingNow extends AppCompatActivity implements MediaController.Med
                         //       on the background!
                         //       The ListView only updates when Playlist Menu gets
                         //       created from scratch.
-                        Main.songs.newPlaylist(PlayingNow.this, "external", playlistName, Main.nowPlayingList);
+                        Main.songs.newPlaylist(PlayingNowList.this, "external", playlistName, Main.nowPlayingList);
 
-                        String createPlaylistText = PlayingNow.this.getString(R.string.menu_now_playing_dialog_create_playlist_success, playlistName);
+                        String createPlaylistText = PlayingNowList.this.getString(R.string.menu_now_playing_dialog_create_playlist_success, playlistName);
 
                         // Congratulating the user with the
                         // new Playlist name
-                        Toast.makeText(PlayingNow.this,
+                        Toast.makeText(PlayingNowList.this,
                                 createPlaylistText,
                                 Toast.LENGTH_SHORT).show();
 

@@ -15,7 +15,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 /**
  * Master Activity from which every other Activity inherits
- * (except for `Activityettings`).
+ * (except for `SettingsActivity`).
  * <p>
  * If contains some things they all have in common:
  * <p>
@@ -37,11 +37,11 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
  * - http://stackoverflow.com/a/4673209
  * - http://stackoverflow.com/a/11875930
  */
-@SuppressLint("Registered") // No need to register this class on AndroidManifest
-public class ActivityMaster extends AppCompatActivity {
+@SuppressLint("Registered")
+public class BaseActivity extends AppCompatActivity {
 
     /**
-     * Keeping track of the current theme name.
+     * Keeping track of the current theme and Mode name.
      *
      * @note It's name and valid values are defined on
      * `res/values/strings.xml`, at the fields
@@ -51,10 +51,10 @@ public class ActivityMaster extends AppCompatActivity {
     protected String currentTheme = "";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Checking if changes were made, look these methods for better understanding
         refreshMode();
         refreshTheme();
     }
@@ -65,6 +65,13 @@ public class ActivityMaster extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        /**
+         * Why called it again?
+         * Cause we want to apply changes when activity resumes.
+         * and If Changes were made we will recreate the Activity
+         * recreate() was not working will try later
+         * you know this happens :/
+         **/
         if (refreshMode()) {
             Intent intent = getIntent();
             finish();
@@ -75,7 +82,10 @@ public class ActivityMaster extends AppCompatActivity {
             finish();
             startActivity(intent);
         }
-        ActivityMaster.this.invalidateOptionsMenu();
+
+        BaseActivity.this.invalidateOptionsMenu();
+
+        /* Sliding  Panel OR Not Sliding Panel, Yup we don't need it to be Sliding */
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         slidingUpPanelLayout.setTouchEnabled(false);
         if (Main.mainMenuHasNowPlayingItem) {
@@ -91,6 +101,7 @@ public class ActivityMaster extends AppCompatActivity {
     /**
      * Let's set a context menu (menu that appears when
      * the user presses the "menu" button).
+     * Its unnecessary as i have added these option in side NAV
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,7 +129,7 @@ public class ActivityMaster extends AppCompatActivity {
         switch (item.getItemId()) {
 
             // I know it's bad to force quiting the program,
-            // but I just love when applications have this option
+            // but I just love when applications have this option. xD
             case R.id.context_menu_end:
                 Main.forceExit(this);
                 break;
@@ -128,7 +139,7 @@ public class ActivityMaster extends AppCompatActivity {
                 break;
 
             case R.id.nowPlayingIcon:
-                startActivity(new Intent(this,PlayingNow.class));
+                startActivity(new Intent(this, PlayingNowList.class));
                 break;
 
         }
@@ -136,6 +147,7 @@ public class ActivityMaster extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /* For refreshing the Day/Night Mode */
     public boolean refreshMode() {
 
         String mode = Main.settings.get("modes", "Day");
@@ -161,6 +173,7 @@ public class ActivityMaster extends AppCompatActivity {
         return false;
     }
 
+    /* Multi Color Theme for the Application, look credits for this many themes */
     public boolean refreshTheme() {
 
         String theme = Main.settings.get("themes", "Red");
@@ -230,7 +243,4 @@ public class ActivityMaster extends AppCompatActivity {
         }
         return false;
     }
-
-
 }
-

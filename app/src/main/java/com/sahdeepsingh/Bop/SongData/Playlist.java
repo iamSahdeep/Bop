@@ -34,8 +34,6 @@ public class Playlist {
 
     /**
      * Returns a list with all the songs inside this Playlist.
-     *
-     * @return lol
      */
     public ArrayList<Long> getSongIds() {
         return new ArrayList<>(songs);

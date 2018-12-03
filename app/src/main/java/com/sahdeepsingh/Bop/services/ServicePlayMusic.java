@@ -35,6 +35,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+// KMP! KMP! KMP!
+// No unnecessary changes required
 
 /**
  * Service that makes the music play and notifies every action.
@@ -222,7 +224,7 @@ public class ServicePlayMusic extends Service
                 boolean connectedMicrophone = (intent.getIntExtra("microphone", 0) == 1) && connectedHeadphones;
 
                 // User just connected headphone and the player was paused,
-                // so we shoud restart the music.
+                // so we should restart the music.
                 if (connectedMicrophone && (serviceState == ServiceState.Paused)) {
 
                     // Will only do it if it's Setting is enabled, of course
@@ -388,7 +390,7 @@ public class ServicePlayMusic extends Service
 
         player.stop();
         player.release();
-        player=null;
+        player = null;
 
         Log.w(TAG, "stopMusicPlayer");
     }
@@ -693,7 +695,7 @@ public class ServicePlayMusic extends Service
         if (player != null)
             //player.release();
 
-        Log.w(TAG, "onDestroy");
+            Log.w(TAG, "onDestroy");
 
         unregisterReceiver(headsetBroadcastReceiver);
         super.onDestroy();
@@ -783,11 +785,11 @@ public class ServicePlayMusic extends Service
     public boolean isPlaying() {
         boolean returnValue = false;
         if (player != null)
-        try {
-            returnValue = player.isPlaying();
-        } catch (IllegalStateException | NullPointerException e) {
+            try {
+                returnValue = player.isPlaying();
+            } catch (IllegalStateException | NullPointerException e) {
 
-        }
+            }
 
         return returnValue;
     }
@@ -812,7 +814,7 @@ public class ServicePlayMusic extends Service
         Uri songToPlayURI = ContentUris.withAppendedId
                 (android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         songToPlay.getId());
-        Log.e("qwq",songToPlayURI.toString());
+        Log.e("qwq", songToPlayURI.toString());
         try {
             player.setDataSource(getApplicationContext(), songToPlayURI);
         } catch (IOException io) {
@@ -966,44 +968,46 @@ public class ServicePlayMusic extends Service
                 0 :
                 currentSong.getId());
 
-        if (rule.equals("title"))
-            Collections.sort(songs, new Comparator<Song>() {
-                public int compare(Song a, Song b) {
-                    return a.getTitle().compareTo(b.getTitle());
-                }
-            });
+        switch (rule) {
+            case "title":
+                Collections.sort(songs, new Comparator<Song>() {
+                    public int compare(Song a, Song b) {
+                        return a.getTitle().compareTo(b.getTitle());
+                    }
+                });
+                break;
+            case "artist":
+                Collections.sort(songs, new Comparator<Song>() {
+                    public int compare(Song a, Song b) {
+                        return a.getArtist().compareTo(b.getArtist());
+                    }
+                });
+                break;
+            case "album":
+                Collections.sort(songs, new Comparator<Song>() {
+                    public int compare(Song a, Song b) {
+                        return a.getAlbum().compareTo(b.getAlbum());
+                    }
+                });
+                break;
+            case "track":
+                Collections.sort(songs, new Comparator<Song>() {
+                    public int compare(Song a, Song b) {
+                        int left = a.getTrackNumber();
+                        int right = b.getTrackNumber();
 
-        else if (rule.equals("artist"))
-            Collections.sort(songs, new Comparator<Song>() {
-                public int compare(Song a, Song b) {
-                    return a.getArtist().compareTo(b.getArtist());
-                }
-            });
+                        if (left == right)
+                            return 0;
 
-        else if (rule.equals("album"))
-            Collections.sort(songs, new Comparator<Song>() {
-                public int compare(Song a, Song b) {
-                    return a.getAlbum().compareTo(b.getAlbum());
-                }
-            });
-
-        else if (rule.equals("track"))
-            Collections.sort(songs, new Comparator<Song>() {
-                public int compare(Song a, Song b) {
-                    int left = a.getTrackNumber();
-                    int right = b.getTrackNumber();
-
-                    if (left == right)
-                        return 0;
-
-                    return ((left < right) ?
-                            -1 :
-                            1);
-                }
-            });
-
-        else if (rule.equals("random")) {
-            Collections.shuffle(songs, randomNumberGenerator);
+                        return ((left < right) ?
+                                -1 :
+                                1);
+                    }
+                });
+                break;
+            case "random":
+                Collections.shuffle(songs, randomNumberGenerator);
+                break;
         }
 
 
@@ -1093,7 +1097,7 @@ public class ServicePlayMusic extends Service
         return START_STICKY;
     }
 
-    public int getAudioSession(){
+    public int getAudioSession() {
         if (player == null)
             return 0;
         else return player.getAudioSessionId();
@@ -1229,7 +1233,8 @@ public class ServicePlayMusic extends Service
             return ServicePlayMusic.this;
         }
     }
-    public void removedFromNotification(){
+
+    public void removedFromNotification() {
         cancelNotification();
         player.stop();
         // Main.musicService.stopMusicPlayer();

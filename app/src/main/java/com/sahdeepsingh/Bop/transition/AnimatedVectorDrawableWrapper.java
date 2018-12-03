@@ -11,6 +11,8 @@ import android.support.v4.util.ArrayMap;
 
 import java.util.ArrayList;
 
+//Look For credits in Readme for this awesome animation and UI
+
 public class AnimatedVectorDrawableWrapper extends Animator {
 
     private final AnimatedVectorDrawable mAnimatedVectorDrawable;

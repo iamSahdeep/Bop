@@ -25,6 +25,7 @@ import com.andremion.music.MusicCoverView;
 import com.bullhead.equalizer.EqualizerFragment;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.utils;
 import com.sahdeepsingh.Bop.view.TransitionAdapter;
 import com.sahdeepsingh.Bop.viszzz.CircleBarVisualizer;
 
@@ -36,18 +37,17 @@ import static com.sahdeepsingh.Bop.ui.MainScreen.BROADCAST_ACTION;
 
 public class PlayerView extends AppCompatActivity implements MediaController.MediaPlayerControl {
 
+    ChangeSongBR changeSongBR;
+    ImageView next, previous, rewind, forward, shuffle, repeat;
     private MusicCoverView mCoverView;
     private FloatingActionButton mFabView;
     private TextView mTimeView;
     private TextView mDurationView;
     private CircularSeekBar mProgressView;
     private CircleBarVisualizer circleBarVisualizer;
-    ChangeSongBR changeSongBR;
     private TextView mTitleView;
     private boolean paused = false;
     private boolean playbackPaused = false;
-
-    ImageView next, previous, rewind, forward, shuffle, repeat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         mProgressView = findViewById(R.id.progress);
         mFabView = findViewById(R.id.fab);
         circleBarVisualizer = findViewById(R.id.visualizer);
-        circleBarVisualizer.setColor(ContextCompat.getColor(this, R.color.primaryLightColor));
+        circleBarVisualizer.setColor(ContextCompat.getColor(this, utils.getThemeAttrColor(this, R.attr.primaryLightColor)));
 
         mCoverView.setCallbacks(new MusicCoverView.Callbacks() {
             @Override
@@ -371,6 +371,23 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         }
     }
 
+    public void equalizer(View view) {
+        Main.musicService.player.setLooping(true);
+        EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
+                .setAccentColor(ContextCompat.getColor(this, utils.getThemeAttrColor(this, R.attr.primaryColor)))
+                .setAudioSessionId(getAudioSessionId())
+                .build();
+        getSupportFragmentManager().beginTransaction()
+                .replace(android.R.id.content, equalizerFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        mCoverView.stop();
+    }
+
     class ChangeSongBR extends BroadcastReceiver {
 
         @Override
@@ -386,22 +403,5 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
                 mFabView.setImageResource(R.drawable.ic_play);
             }
         }
-    }
-
-    public void equalizer(View view) {
-        Main.musicService.player.setLooping(true);
-        EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
-                .setAccentColor(ContextCompat.getColor(this, R.color.accent))
-                .setAudioSessionId(getAudioSessionId())
-                .build();
-        getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, equalizerFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void onBackPressed() {
-        mCoverView.stop();
     }
 }

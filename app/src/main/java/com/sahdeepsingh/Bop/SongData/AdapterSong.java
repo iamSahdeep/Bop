@@ -18,6 +18,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+// Adapter for Current Playlist in PlayerList
+
 /**
  * Maps `Songs` inside `ArrayLists` into `TextView` fields.
  * <p>

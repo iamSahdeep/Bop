@@ -19,6 +19,8 @@ import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.ui.MainScreen;
 
+//Copied from KMP
+
 /**
  * Specific way to stick an on-going message on the system
  * with the current song I'm playing.
@@ -58,7 +60,7 @@ public class NotificationMusic extends NotificationSimple {
     /**
      * Used to actually broadcast the notification.
      * Depends on the Activity that originally called
-     * the nofitication.
+     * the notification.
      */
     private NotificationManager notificationManager = null;
 
@@ -126,10 +128,8 @@ public class NotificationMusic extends NotificationSimple {
         if (newImage != null)
             notificationView.setImageViewBitmap(R.id.albumArtNoti, newImage);
         else notificationView.setImageViewResource(R.id.albumArtNoti, R.mipmap.ic_launcher);
-        //String path = Main.songs.getAlbumArt(song);
 
-
-        // On the notification we have two buttons - Play and Skip
+        // On the notification we have three buttons - Play, close and Skip
         // Here we make sure the class `NotificationButtonHandler`
         // gets called when user selects one of those.
         //
@@ -147,7 +147,7 @@ public class NotificationMusic extends NotificationSimple {
         PendingIntent buttonSkipPendingIntent = PendingIntent.getBroadcast(context, 0, buttonSkipIntent, 0);
         notificationView.setOnClickPendingIntent(R.id.skipNoti, buttonSkipPendingIntent);
 
-        // And now, building and attaching the Skip button.
+        // And now, building and attaching the cancel button.
         Intent buttonStopIntent = new Intent(context, NotificationStopButtonHandler.class);
         buttonStopIntent.putExtra("action", "stop");
 
@@ -158,9 +158,6 @@ public class NotificationMusic extends NotificationSimple {
         String id = "Bop-MusicPlayer";
         // Finally... Actually creating the Notification
         notificationBuilder = new NotificationCompat.Builder(context, id);
-
-        //Picasso.get().load(path).into(notificationView, R.id.albumArtNoti, NOTIFICATION_ID, notification);
-
 
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -188,8 +185,8 @@ public class NotificationMusic extends NotificationSimple {
                 .setCustomContentView(notificationView)
                 .setChannelId(id)
                 .setCustomBigContentView(notificationView);
+
         // Sets the notification to run on the foreground.
-        // (why not the former commented line?)
         Notification notification = notificationBuilder.build();
         notificationManager.notify(NOTIFICATION_ID, notification);
         service.startForeground(NOTIFICATION_ID, notification);
@@ -210,10 +207,7 @@ public class NotificationMusic extends NotificationSimple {
 
         notificationBuilder.setContent(notificationView);
 
-//		notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
-
         // Sets the notification to run on the foreground.
-        // (why not the former commented line?)
         service.startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
 
@@ -248,6 +242,9 @@ public class NotificationMusic extends NotificationSimple {
         }
     }
 
+    /**
+     * When user clicks the "cancel" button
+     */
     public static class NotificationStopButtonHandler extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

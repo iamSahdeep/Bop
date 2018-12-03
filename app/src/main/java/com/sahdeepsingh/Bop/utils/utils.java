@@ -1,6 +1,7 @@
 package com.sahdeepsingh.Bop.utils;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -47,6 +48,18 @@ public class utils {
         builderq.addDefaultShareMenuItem().enableUrlBarHiding();
         CustomTabsIntent customTabsIntent = builderq.build();
         customTabsIntent.launchUrl(context, Uri.parse(url));
+    }
+
+    private static final int[] TEMP_ARRAY = new int[1];
+
+    public static int getThemeAttrColor(Context context, int attr) {
+        TEMP_ARRAY[0] = attr;
+        TypedArray a = context.obtainStyledAttributes(null, TEMP_ARRAY);
+        try {
+            return a.getColor(0, 0);
+        } finally {
+            a.recycle();
+        }
     }
 
 }

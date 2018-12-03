@@ -18,7 +18,7 @@ import com.sahdeepsingh.Bop.services.ServicePlayMusic;
 import com.sahdeepsingh.Bop.settings.Settings;
 
 import java.util.ArrayList;
-// Main Logic u can say. Every thing works around this class
+// Main Logic u can say. Every thing works around this class, again KMP <3
 
 public class Main {
 
@@ -27,6 +27,9 @@ public class Main {
      */
     public static SongList songs = new SongList();
 
+    /**
+     * Progress dialog for loading screen
+     */
     public static ProgressDialog mProgressDialog;
 
     /**
@@ -61,7 +64,7 @@ public class Main {
     public static boolean mainMenuHasNowPlayingItem = false;
 
     // GENERAL PROGRAM INFO
-    public static String applicationName = "Clousic";
+    public static String applicationName = "Bop - Music Player";
     public static String packageName = "<unknown>";
     public static String versionName = "<unknown>";
     public static int versionCode = -1;
@@ -193,8 +196,8 @@ public class Main {
     }
 
     //just for debugging
-    public static void shit(String msg) {
-        Log.e("shit", msg);
+    public static void logger(String msg) {
+        Log.e("Logger", msg);
     }
 
     public static void showProgressDialog(Context c) {

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+// Kmp :/
+
 /**
  * Interface to the application's settings.
  * <p>
