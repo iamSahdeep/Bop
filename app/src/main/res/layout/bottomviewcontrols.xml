@@ -36,9 +36,8 @@
             android:layout_marginLeft="5dip"
             android:layout_marginTop="5dip"
             android:layout_marginRight="5dip"
-            android:ellipsize="marquee"
+            android:textColor="?attr/primaryColor"
             android:focusable="true"
-            android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:text=""
@@ -54,6 +53,7 @@
             <TextView
                 android:id="@+id/mtimeview"
                 android:layout_width="wrap_content"
+                android:textColor="?attr/primaryColor"
                 android:layout_height="wrap_content"
                 android:text="@string/transition_name_time" />
 
@@ -67,6 +67,7 @@
 
             <TextView
                 android:id="@+id/mdurationview"
+                android:textColor="?attr/primaryColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/transition_name_time" />
@@ -90,6 +91,7 @@
         android:layout_marginBottom="10dp"
         android:layout_weight=".7"
         android:background="@color/transparent"
+        android:tint="?attr/primaryColor"
         android:clickable="true"
         android:contentDescription="@string/play_pause"
         android:scaleType="center"

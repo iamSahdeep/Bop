@@ -37,5 +37,6 @@
         <attr name="primaryColor" format="color|reference" />
         <attr name="primaryLightColor" format="color|reference" />
         <attr name="primaryDarkColor" format="reference|color" />
+        <attr name="colorAccent" format="color|reference" />
     </declare-styleable>
 </resources>

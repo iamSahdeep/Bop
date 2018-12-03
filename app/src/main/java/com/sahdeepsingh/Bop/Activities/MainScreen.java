@@ -419,7 +419,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         mProgressView.setMax((int) Main.musicService.currentSong.getDurationSeconds());
         mDurationViewSP.setText(DateUtils.formatElapsedTime(Main.musicService.currentSong.getDurationSeconds()));
 
-        final Handler handler = new Handler();
+        Handler handler = new Handler();
         MainScreen.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {

@@ -49,18 +49,20 @@ public class utils {
     /*Custom Tabs powered by chrome xD*/
     public static void openCustomTabs(Context context, String url) {
         CustomTabsIntent.Builder builderq = new CustomTabsIntent.Builder();
-        builderq.setToolbarColor(context.getResources().getColor(getThemeAttrColor(context, R.attr.primaryColor)));
+        builderq.setToolbarColor(context.getResources().getColor(R.color.primaryColor));
         builderq.addDefaultShareMenuItem().enableUrlBarHiding();
         CustomTabsIntent customTabsIntent = builderq.build();
         customTabsIntent.launchUrl(context, Uri.parse(url));
     }
 
-    /*Get color from attr*/
+    /*Get color from attr but not working*/
     public static int getThemeAttrColor(Context context, int attr) {
         TEMP_ARRAY[0] = attr;
-        TypedArray a = context.obtainStyledAttributes(null, TEMP_ARRAY);
+        TypedArray a = context.getTheme().obtainStyledAttributes(TEMP_ARRAY);
         try {
-            return a.getColor(0, 0);
+            return a.getColor(3, context.getResources().getColor(R.color.accent));
+        } catch (Exception e) {
+            return R.color.accent;
         } finally {
             a.recycle();
         }

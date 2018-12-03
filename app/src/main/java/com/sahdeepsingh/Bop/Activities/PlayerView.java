@@ -26,7 +26,6 @@ import com.bullhead.equalizer.EqualizerFragment;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.Visualizers.CircleBarVisualizer;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.utils.utils;
 import com.sahdeepsingh.Bop.views.TransitionAdapter;
 
 import java.io.File;
@@ -65,7 +64,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         mProgressView = findViewById(R.id.progress);
         mFabView = findViewById(R.id.fab);
         circleBarVisualizer = findViewById(R.id.visualizer);
-        circleBarVisualizer.setColor(ContextCompat.getColor(this, utils.getThemeAttrColor(this, R.attr.primaryLightColor)));
+        circleBarVisualizer.setColor(ContextCompat.getColor(this, R.color.primaryLightColor));
 
         mCoverView.setCallbacks(new MusicCoverView.Callbacks() {
             @Override
@@ -374,7 +373,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
     public void equalizer(View view) {
         Main.musicService.player.setLooping(true);
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
-                .setAccentColor(ContextCompat.getColor(this, utils.getThemeAttrColor(this, R.attr.primaryColor)))
+                .setAccentColor(ContextCompat.getColor(this, R.color.primaryColor))
                 .setAudioSessionId(getAudioSessionId())
                 .build();
         getSupportFragmentManager().beginTransaction()
