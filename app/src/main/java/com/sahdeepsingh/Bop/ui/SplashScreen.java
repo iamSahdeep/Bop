@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +19,7 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.RECORD_AUDIO;
@@ -70,7 +72,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0) {
@@ -122,16 +124,17 @@ public class SplashScreen extends AppCompatActivity {
     void scanSongs(boolean forceScan) {
 
         if ((forceScan) || (!Main.songs.isInitialized())) {
-
-            /*SingleToast.show(MainScreen.this,
-                    getString(R.string.menu_main_scanning),
-                    Toast.LENGTH_LONG);*/
-
-            new SplashScreen.ScanSongs().execute();
+            new SplashScreen.ScanSongs(this).execute();
         }
     }
 
-    class ScanSongs extends AsyncTask<String, Integer, String> {
+    static class ScanSongs extends AsyncTask<String, Integer, String> {
+
+        private WeakReference<SplashScreen> activityReference;
+
+        ScanSongs(SplashScreen context) {
+            activityReference = new WeakReference<>(context);
+        }
 
         /**
          * The action we'll do in the background.
@@ -139,13 +142,17 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
+            // get a reference to the activity if it is still there
+            SplashScreen activity = activityReference.get();
+            if (activity == null || activity.isFinishing()) return "lol";
+
             try {
-                Main.songs.scanSongs(SplashScreen.this, "external");
-                return SplashScreen.this.getString(R.string.menu_main_scanning_ok);
+                Main.songs.scanSongs(activity, "external");
+                return activity.getString(R.string.menu_main_scanning_ok);
             } catch (Exception e) {
                 Log.e("Couldn't execute", e.toString());
                 e.printStackTrace();
-                return SplashScreen.this.getString(R.string.menu_main_scanning_not_ok);
+                return activity.getString(R.string.menu_main_scanning_not_ok);
             }
         }
 
@@ -155,20 +162,21 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
-                File file = new File(getIntent().getData().getPath());
-                Intent intent = new Intent(SplashScreen.this, PlayingNowList.class);
+            SplashScreen activity = activityReference.get();
+            if (activity == null || activity.isFinishing()) return;
+
+            if (Intent.ACTION_VIEW.equals(activity.getIntent().getAction())) {
+                File file = new File(activity.getIntent().getData().getPath());
+                Intent intent = new Intent(activity, PlayingNowList.class);
                 intent.putExtra("file", file);
                 Main.musicList.clear();
                 Main.musicList.add(Main.songs.getSongbyFile(file));
                 Main.nowPlayingList = Main.musicList;
-                startActivity(intent);
+                activity.startActivity(intent);
             } else {
-                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
-                startActivity(intent);
+                Intent intent = new Intent(activity, MainScreen.class);
+                activity.startActivity(intent);
             }
         }
     }
-
-
 }
