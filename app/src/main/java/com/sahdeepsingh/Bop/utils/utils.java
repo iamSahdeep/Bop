@@ -1,11 +1,13 @@
 package com.sahdeepsingh.Bop.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v8.renderscript.Allocation;
@@ -66,6 +68,19 @@ public class utils {
         } finally {
             a.recycle();
         }
+    }
+
+    public static void sendFeedback(Context context) {
+        String body = "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
+                String.valueOf(Main.versionCode) + "\n App Version: " + Main.versionName + "\n Device Brand: " + Build.BRAND +
+                "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
+
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto: emicladevelopers@gmail.com"));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Query / Feedback");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+        emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(Intent.createChooser(emailIntent, "Send feedback"));
     }
 
 }

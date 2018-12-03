@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -192,9 +191,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                             utils.openCustomTabs(MainScreen.this, "https://github.com/iamSahdeep/Bop/issues");
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 21) {
-                            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                            emailIntent.setData(Uri.parse("mailto: emicladevelopers@gmail.com"));
-                            startActivity(Intent.createChooser(emailIntent, "Send feedback"));
+                            utils.sendFeedback(MainScreen.this);
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 321) {
                             intent = new Intent(this, SettingsActivity.class);

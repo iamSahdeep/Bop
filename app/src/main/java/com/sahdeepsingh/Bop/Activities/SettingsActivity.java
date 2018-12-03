@@ -2,19 +2,44 @@ package com.sahdeepsingh.Bop.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.settings.AppCompatPreferenceActivity;
+import com.sahdeepsingh.Bop.utils.utils;
 
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.settings_layout);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        getFragmentManager().beginTransaction().replace(R.id.settings_frame, new MainPreferenceFragment()).commit();
+        PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         String mode = Main.settings.get("modes", "Day");
         switch (mode) {
@@ -93,27 +118,40 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 setTheme(R.style.AppTheme_BLUEGRAY);
                 break;
         }
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
-        PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if (s.equals("modes")) {
+        if (s.equals("modes") || s.equals("themes")) {
             //not working don't know why, will work on it later
-            recreate();
+            //recreate();
+            Toast.makeText(this, "Changes Done", Toast.LENGTH_SHORT).show();
         }
 
     }
 
     public static class MainPreferenceFragment extends PreferenceFragment {
+
+        Preference version, feedback;
+
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
-        }
-    }
 
+            version = findPreference("version");
+            version.setSummary(Main.versionName);
+
+            feedback = findPreference(getResources().getString(R.string.key_send_feedback));
+            feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    utils.sendFeedback(getActivity());
+                    return true;
+                }
+            });
+
+        }
+
+    }
 }
