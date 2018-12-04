@@ -2,10 +2,12 @@ package com.sahdeepsingh.Bop.SongData;
 
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
@@ -50,7 +52,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
         holder.songName.setSelected(true);
         String path = Main.songs.getAlbumArt(localItem);
         if (path != null) {
-            Picasso.get().load(new File(path)).centerCrop().fit().error(R.drawable.ic_pause).into(holder.circleImageView);
+            Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_launcher).into(holder.circleImageView);
         }
         if (Main.mainMenuHasNowPlayingItem) {
             if (Main.musicService.currentSong.getTitle().equals(localItem.getTitle())) {
@@ -71,6 +73,35 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
                 Main.musicService.playSong();
             }
         });
+        holder.songOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(view.getContext(), holder.songOptions);
+                popup.inflate(R.menu.song_options);
+                popup.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.one:
+                            if (Main.musicService.currentSongPosition == holder.getAdapterPosition()) {
+                                Main.musicService.next(true);
+                                Main.musicService.playSong();
+                            }
+                            Main.nowPlayingList.remove(holder.getAdapterPosition());
+                            notifyItemRemoved(holder.getAdapterPosition());
+                            notifyItemRangeChanged(holder.getAdapterPosition(), mValues.size());
+                            return true;
+                        case R.id.two:
+                            //handle menu2 click
+                            return true;
+                        case R.id.three:
+                            //handle menu3 click
+                            return true;
+                        default:
+                            return false;
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 
 
@@ -84,6 +115,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
         public final TextView songName;
         public final TextView songBy;
         barVisuals barVisuals;
+        ImageView songOptions;
         final CircleImageView circleImageView;
 
         ViewHolder(View view) {
@@ -93,8 +125,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
             songBy = view.findViewById(R.id.songBy);
             circleImageView = view.findViewById(R.id.albumArt);
             barVisuals = view.findViewById(R.id.barvisuals);
+            songOptions = view.findViewById(R.id.songOptions);
         }
-
     }
-
 }

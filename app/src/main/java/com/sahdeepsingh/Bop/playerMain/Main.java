@@ -1,6 +1,8 @@
 package com.sahdeepsingh.Bop.playerMain;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,6 +12,14 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
@@ -215,4 +225,56 @@ public class Main {
             mProgressDialog.dismiss();
         }
     }
+
+    public static void showPlaylistDialog(Activity a, ArrayList<Song> songs) {
+        final ListView listView;
+        EditText name;
+        Button create, cancel;
+        ArrayList<String> allPlaylists = Main.songs.getPlaylistNames();
+        final Dialog dialog = new Dialog(a);
+        dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        @SuppressLint("InflateParams") View view = a.getLayoutInflater().inflate(R.layout.newplaylistdialog, null);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(a, R.layout.item_newplaylistdialog, allPlaylists);
+        listView = view.findViewById(R.id.playlistListview);
+        listView.setAdapter(arrayAdapter);
+        name = view.findViewById(R.id.newPlaylistName);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String namenew = listView.getItemAtPosition(i).toString();
+                name.setText(namenew);
+            }
+        });
+        create = view.findViewById(R.id.createPlaylist);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (name.getText().toString().isEmpty()) {
+                    name.setError("cant be empty");
+                    return;
+                }
+                Main.showProgressDialog(a);
+                Main.songs.newPlaylist(a.getApplication(), "external", name.getText().toString(), songs);
+                a.recreate();
+                Toast.makeText(a, "Done", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                Main.hideProgressDialog();
+            }
+        });
+        cancel = view.findViewById(R.id.cancelPlaylist);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+
+
+
+
 }

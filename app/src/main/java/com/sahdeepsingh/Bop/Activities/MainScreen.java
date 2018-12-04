@@ -53,6 +53,7 @@ import com.sahdeepsingh.Bop.utils.utils;
 import com.sahdeepsingh.Bop.views.ProgressView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -251,7 +252,9 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
         switch (type) {
             case "singleSong":
-                Main.nowPlayingList = Main.songs.songs;
+                Main.musicList.clear();
+                Main.musicList = new ArrayList<>(Main.songs.songs);
+                Main.nowPlayingList = Main.musicList;
                 intent.putExtra("songPosition", position);
                 startActivity(intent);
                 break;

@@ -154,6 +154,8 @@
     <string name="headphone_connected">Headphones Connected :</string>
     <string name="privacy_url">https://github.com/iamSahdeep/Bop/blob/master/privacy_policy.md</string>
     <string name="readme_url">https://github.com/iamSahdeep/Bop/blob/master/README.md</string>
+    <string name="information">Information</string>
+    <string name="remove">Remove</string>
 
     <string-array name="pref_upload_quality_entries">
         <item>360p</item>

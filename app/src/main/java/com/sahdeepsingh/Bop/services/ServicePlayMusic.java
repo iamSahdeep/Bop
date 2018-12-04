@@ -661,7 +661,6 @@ public class ServicePlayMusic extends Service
 
             else
                 destroySelf();
-
             return;
         }
         // Common case - skipped a track or anything

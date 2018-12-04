@@ -101,6 +101,7 @@ public class PlayingNowList extends AppCompatActivity implements MediaController
             // inside the now playing list, start playing it
             if (bundle.containsKey("songPosition")) {
                 int songToPlayIndex = bundle.getInt("songPosition");
+                Main.musicService.setList(Main.nowPlayingList);
                 Main.musicService.setSong(songToPlayIndex);
                 Main.musicService.playSong();
             }

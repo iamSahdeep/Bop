@@ -23,8 +23,7 @@
             android:name=".Activities.SettingsActivity"
             android:label="@string/settings"
             android:launchMode="singleTop"
-            android:parentActivityName=".Activities.MainScreen"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".Activities.MainScreen" />
         <activity
             android:name=".Activities.XXX"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
@@ -51,15 +50,12 @@
 
         <activity
             android:name=".Activities.MainScreen"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:label="@string/app_name" />
         <activity
             android:name=".Activities.PlayingNowList"
-            android:screenOrientation="portrait"
             android:theme="@style/darkTheme" />
         <activity
             android:name=".Activities.SplashScreen"
-            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
