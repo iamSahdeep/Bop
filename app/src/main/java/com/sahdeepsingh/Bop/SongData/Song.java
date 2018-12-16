@@ -10,7 +10,7 @@ package com.sahdeepsingh.Bop.SongData;
  * anywhere on the system)
  * - filePath (full path for the file on the filesystem).
  */
-public class Song {
+public class Song implements Cloneable {
 
     private long id;
     private String filePath;
@@ -133,6 +133,12 @@ public class Song {
     public long getDurationMinutes() {
         return getDurationSeconds() / 60;
     }
+
+    @Override
+    public Song clone() throws CloneNotSupportedException {
+        return (Song) super.clone();
+    }
+
 
 }
 

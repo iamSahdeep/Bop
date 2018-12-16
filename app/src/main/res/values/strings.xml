@@ -178,5 +178,9 @@
     <string name="recent">Recent</string>
     <string name="recent_playlist">Recent Playlist</string>
     <string name="playlist">Playlist</string>
+    <string name="lastplaylist">Last Playlist</string>
+    <string name="albums">Albums</string>
+    <string name="generes">Generes</string>
+    <string name="all_songs">All Songs</string>
 
 </resources>
