@@ -28,12 +28,9 @@ import com.sahdeepsingh.Bop.services.ServicePlayMusic;
 import com.sahdeepsingh.Bop.settings.Settings;
 
 import java.util.ArrayList;
-import java.util.List;
 // Main Logic u can say. Every thing works around this class, again KMP <3
 
 public class Main {
-
-    public static List<Song> recentlyPlayed = new ArrayList<>();
 
     /**
      * All the songs on the device.

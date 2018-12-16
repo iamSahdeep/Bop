@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -27,8 +26,6 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.mikepenz.crossfadedrawerlayout.view.CrossfadeDrawerLayout;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -43,7 +40,6 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.mikepenz.materialize.util.UIUtils;
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
 import com.sahdeepsingh.Bop.fragments.FragmentGenre;
 import com.sahdeepsingh.Bop.fragments.FragmentPlaylist;
@@ -55,9 +51,7 @@ import com.sahdeepsingh.Bop.utils.utils;
 import com.sahdeepsingh.Bop.views.ProgressView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -138,8 +132,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         changeSongBR = new ChangeSongBR();
 
         createDrawer();
-
-        loadSavedData();
     }
 
     private void createDrawer() {
@@ -567,19 +559,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             else albumArtSP.setImageResource(R.mipmap.ic_launcher_foreground);
         }
 
-    }
-
-    public void loadSavedData() {
-        SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
-        try {
-            Gson gson = new Gson();
-            String json4 = mPrefs.getString("recentlyPlayed", "");
-            Type type = new TypeToken<List<Song>>() {
-            }.getType();
-            Main.recentlyPlayed = gson.fromJson(json4, type);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }
