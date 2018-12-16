@@ -174,5 +174,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="background">background</string>
+    <string name="recent">Recent</string>
+    <string name="recent_playlist">Recent Playlist</string>
+    <string name="playlist">Playlist</string>
 
 </resources>
