@@ -47,6 +47,7 @@ import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
 import com.sahdeepsingh.Bop.fragments.FragmentGenre;
 import com.sahdeepsingh.Bop.fragments.FragmentPlaylist;
 import com.sahdeepsingh.Bop.fragments.FragmentSongs;
+import com.sahdeepsingh.Bop.fragments.HomeFragment;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
@@ -57,7 +58,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class MainScreen extends BaseActivity implements MediaController.MediaPlayerControl, ActionBar.TabListener, FragmentSongs.OnListFragmentInteractionListener, FragmentPlaylist.OnListFragmentInteractionListener, FragmentGenre.OnListFragmentInteractionListener, FragmentAlbum.OnListFragmentInteractionListener {
+public class MainScreen extends BaseActivity implements MediaController.MediaPlayerControl, FragmentSongs.OnListFragmentInteractionListener, FragmentPlaylist.OnListFragmentInteractionListener, FragmentGenre.OnListFragmentInteractionListener, FragmentAlbum.OnListFragmentInteractionListener {
 
 
     public static final String BROADCAST_ACTION = "lol";
@@ -131,9 +132,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-        TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
         changeSongBR = new ChangeSongBR();
 
         createDrawer();
@@ -158,6 +156,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                 .withCloseOnClick(true)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("Now Playing").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_play))).withIdentifier(1).withSelectable(false),
+                        new PrimaryDrawerItem().withName("Home").withIcon(utils.getThemedIcon(this,getDrawable(R.drawable.ic_shuffle_on))).withIdentifier(6).withSelectable(true),
                         new PrimaryDrawerItem().withName("All Songs").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_music))).withIdentifier(2).withSelectable(true),
                         new PrimaryDrawerItem().withName("Playlist").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_playlist))).withIdentifier(3).withSelectable(true),
                         new PrimaryDrawerItem().withName("Genres").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_genre))).withIdentifier(4).withSelectable(true),
@@ -178,15 +177,19 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                             } else
                                 Toast.makeText(getApplicationContext(), "no playlist", Toast.LENGTH_SHORT).show();
                         } else if (drawerItem.getIdentifier() == 2) {
-                            drawer.closeDrawer();
-                        } else if (drawerItem.getIdentifier() == 3) {
                             mViewPager.setCurrentItem(1, true);
                             drawer.closeDrawer();
-                        } else if (drawerItem.getIdentifier() == 4) {
+                        } else if (drawerItem.getIdentifier() == 3) {
                             mViewPager.setCurrentItem(2, true);
                             drawer.closeDrawer();
-                        } else if (drawerItem.getIdentifier() == 5) {
+                        } else if (drawerItem.getIdentifier() == 4) {
                             mViewPager.setCurrentItem(3, true);
+                            drawer.closeDrawer();
+                        } else if (drawerItem.getIdentifier() == 5) {
+                            mViewPager.setCurrentItem(4, true);
+                            drawer.closeDrawer();
+                        } else if (drawerItem.getIdentifier() == 6) {
+                            mViewPager.setCurrentItem(0, true);
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 20) {
                             utils.openCustomTabs(MainScreen.this, "https://github.com/iamSahdeep/Bop/issues");
@@ -310,22 +313,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         Toast.makeText(this, getString(R.string.menu_main_back_to_exit), Toast.LENGTH_SHORT).show();
 
         backPressedHandler.postDelayed(backPressedTimeoutAction, BACK_PRESSED_DELAY);
-    }
-
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
     /**
@@ -514,16 +501,17 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 */
             switch (position) {
                 case 0:
-                    return new FragmentSongs();
+                    return new HomeFragment();
                 case 1:
-                    return new FragmentPlaylist();
-                case 2:
-                    return new FragmentGenre();
-                case 3:
-                    return new FragmentAlbum();
-
-                default:
                     return new FragmentSongs();
+                case 2:
+                    return new FragmentPlaylist();
+                case 3:
+                    return new FragmentGenre();
+                case 4:
+                    return new FragmentAlbum();
+                default:
+                    return new HomeFragment();
 
 
             }
@@ -531,20 +519,22 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
-            return 4;
+            // Show 5 total pages.
+            return 5;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Songs";
+                    return "Home";
                 case 1:
-                    return "PlayList";
+                    return "Songs";
                 case 2:
-                    return "Genre";
+                    return "Playlist";
                 case 3:
+                    return "Genres";
+                case 4 :
                     return "Albums";
             }
             return null;
