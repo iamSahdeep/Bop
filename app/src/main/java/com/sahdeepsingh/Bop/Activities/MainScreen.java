@@ -296,9 +296,13 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen())
+        if (drawer.isDrawerOpen()) {
             drawer.closeDrawer();
-        else if (this.backPressedOnce) {
+            return;
+        } else if (mViewPager.getCurrentItem() != 0) {
+            mViewPager.setCurrentItem(0, true);
+            return;
+        } else if (this.backPressedOnce) {
             super.onBackPressed();
             Main.forceExit(this);
             finishAffinity();
