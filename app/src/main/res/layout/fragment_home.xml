@@ -73,7 +73,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="@color/gray" />
+                        android:background="@drawable/back" />
 
                     <ImageView
                         android:id="@+id/recentBanner"
@@ -81,7 +81,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="@color/gray" />
+                        android:background="@drawable/back" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -97,7 +97,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="@color/gray" />
+                        android:background="@drawable/back" />
 
                     <ImageView
                         android:id="@+id/savedDNABanner"
@@ -105,7 +105,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="@color/gray" />
+                        android:background="@drawable/back" />
                 </LinearLayout>
 
             </RelativeLayout>
@@ -120,11 +120,6 @@
                 android:textAlignment="gravity"
                 android:textColor="#888" />
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_below="@+id/copyright_text"
-                android:background="#111111" />
 
         </RelativeLayout>
 

@@ -168,7 +168,7 @@ public class NotificationMusic extends NotificationSimple {
         String description = "music-player";
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel mChannel;
             mChannel = new NotificationChannel(id, name, importance);
 
