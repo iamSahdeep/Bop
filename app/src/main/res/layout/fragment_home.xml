@@ -35,7 +35,6 @@
                         android:alpha="1"
                         android:contentDescription="@string/background"
                         android:background="@drawable/back"
-                        android:foreground="@color/colorPane"
                         android:scaleType="centerCrop" />
 
                     <TextView
@@ -67,19 +66,27 @@
                     android:layout_marginTop="0dp"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/favBanner"
+                    <TextView
+                        android:id="@+id/playlistBanner"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/playlist"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
                         android:layout_weight="1"
                         android:background="@drawable/back" />
 
-                    <ImageView
-                        android:id="@+id/recentBanner"
+                    <TextView
+                        android:id="@+id/genreBanner"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/generes"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
                         android:layout_weight="1"
                         android:background="@drawable/back" />
                 </LinearLayout>
@@ -91,21 +98,18 @@
                     android:layout_marginTop="0dp"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/folderBanner"
+                    <TextView
+                        android:id="@+id/albumBanner"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/albums"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
                         android:layout_weight="1"
                         android:background="@drawable/back" />
 
-                    <ImageView
-                        android:id="@+id/savedDNABanner"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/back" />
                 </LinearLayout>
 
             </RelativeLayout>
@@ -114,10 +118,12 @@
                 android:id="@+id/copyright_text"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginTop="10dp"
                 android:layout_below="@+id/bannerContainer"
                 android:gravity="center"
-                android:text="@string/app_name_short"
+                android:text="---  Bop  ---"
                 android:textAlignment="gravity"
+                android:textSize="25sp"
                 android:textColor="#888" />
 
 

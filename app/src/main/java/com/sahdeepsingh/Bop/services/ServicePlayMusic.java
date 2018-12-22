@@ -88,7 +88,7 @@ import java.util.Random;
  * <p>
  * Thanks:
  * - Google's MediaPlayer guide - has info on AudioFocus,
- * Services and lotsa stuff
+ * Services and lots of stuff
  * http://developer.android.com/guide/topics/media/mediaplayer.html
  */
 public class ServicePlayMusic extends Service
@@ -265,7 +265,7 @@ public class ServicePlayMusic extends Service
      * Random number generator for the Shuffle Mode.
      */
     private Random randomNumberGenerator;
-    // 0 single, 1 repeaton , 2repeat off
+    // 0 single, 1 repeat on , 2 repeat off
     private int repeatMode = 0;
     /**
      * Spawns an on-going notification with our current
@@ -813,7 +813,6 @@ public class ServicePlayMusic extends Service
         Uri songToPlayURI = ContentUris.withAppendedId
                 (android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         songToPlay.getId());
-        Log.e("qwq", songToPlayURI.toString());
         try {
             player.setDataSource(getApplicationContext(), songToPlayURI);
         } catch (IOException io) {
