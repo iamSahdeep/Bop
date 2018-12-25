@@ -1,4 +1,4 @@
-# Bop - Music Player [![GitHub (pre-)release](https://img.shields.io/github/release-pre/iamSahdeep/Bop.svg?style=popout-square)](https://github.com/iamSahdeep/Bop/releases/tag/0.3)
+# Bop - Music Player [![GitHub (pre-)release](https://img.shields.io/github/release-pre/iamSahdeep/Bop.svg?style=popout-square)](https://github.com/iamSahdeep/Bop/releases/tag/v0.5)
 
 
 [![Build Status](https://travis-ci.org/iamSahdeep/Bop.svg?branch=master)](https://travis-ci.org/iamSahdeep/Bop) [![GitHub All Releases](https://img.shields.io/github/downloads/iamSahdeep/bop/total.svg)](https://github.com/iamSahdeep/Bop/releases) 
