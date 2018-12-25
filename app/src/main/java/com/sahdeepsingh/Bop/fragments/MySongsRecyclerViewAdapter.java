@@ -121,8 +121,8 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
     }
 
     private void highlightView(ViewHolder holder) {
-        holder.mView.setBackgroundColor(Color.BLUE);
-        holder.circleImageView.setImageResource(R.drawable.ic_music);
+        holder.mView.setBackgroundColor(Color.parseColor("#C0C0C0"));
+        holder.circleImageView.setImageResource(R.drawable.ic_check);
     }
 
     private void unhighlightView(ViewHolder holder, Bitmap draw) {

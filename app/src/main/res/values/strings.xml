@@ -182,5 +182,6 @@
     <string name="albums"> Albums</string>
     <string name="generes"> Generes</string>
     <string name="all_songs"> All Songs</string>
+    <string name="save_playlist">Save Playlist</string>
 
 </resources>

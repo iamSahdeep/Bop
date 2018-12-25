@@ -1,6 +1,7 @@
 package com.sahdeepsingh.Bop.Activities;
 
 import android.app.ActivityOptions;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,21 +13,30 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.AdapterSong;
+import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;
 
@@ -201,6 +211,27 @@ public class PlayingNowList extends AppCompatActivity implements MediaController
         workOnImages();
     }
 
+    public void playlistOptions(View view) {
+        PopupMenu popup = new PopupMenu(view.getContext(), view);
+        popup.inflate(R.menu.playlist_options);
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.one:
+                    showPlaylistDialog();
+                    return true;
+                /*case R.id.two:
+                    //handle menu2 click
+                    return true;
+                case R.id.three:
+                    //handle menu3 click
+                    return true;*/
+                default:
+                    return false;
+            }
+        });
+        popup.show();
+    }
+
     class ChangeSongBR extends BroadcastReceiver {
 
         @Override
@@ -353,5 +384,51 @@ public class PlayingNowList extends AppCompatActivity implements MediaController
         musicController.show();
 */
     }
+
+    private void showPlaylistDialog() {
+        final ListView listView;
+        Button create, cancel;
+        ArrayList<String> allPlaylists = Main.songs.getPlaylistNames();
+        final Dialog dialog = new Dialog(this);
+        dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        View view = getLayoutInflater().inflate(R.layout.newplaylistdialog, null);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.item_newplaylistdialog, allPlaylists);
+        listView = view.findViewById(R.id.playlistListview);
+        listView.setAdapter(arrayAdapter);
+        EditText name = view.findViewById(R.id.newPlaylistName);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String namenew = listView.getItemAtPosition(i).toString();
+                name.setText(namenew);
+            }
+        });
+        create = view.findViewById(R.id.createPlaylist);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (name.getText().toString().isEmpty()) {
+                    name.setError("cant be empty");
+                    return;
+                }
+                Main.showProgressDialog(PlayingNowList.this);
+                Main.songs.newPlaylist(PlayingNowList.this, "external", name.getText().toString(), (ArrayList<Song>) Main.nowPlayingList);
+                Toast.makeText(PlayingNowList.this, "Done", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                Main.hideProgressDialog();
+            }
+        });
+        cancel = view.findViewById(R.id.cancelPlaylist);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
 
 }

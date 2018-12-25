@@ -115,6 +115,7 @@
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
+            android:onClick="playlistOptions"
             android:contentDescription="@string/options"
             android:focusable="true"
             android:scaleType="fitCenter"

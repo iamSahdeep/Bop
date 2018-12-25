@@ -89,12 +89,12 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
                             notifyItemRemoved(holder.getAdapterPosition());
                             notifyItemRangeChanged(holder.getAdapterPosition(), mValues.size());
                             return true;
-                        case R.id.two:
+                        /*case R.id.two:
                             //handle menu2 click
                             return true;
                         case R.id.three:
                             //handle menu3 click
-                            return true;
+                            return true;*/
                         default:
                             return false;
                     }
