@@ -7,124 +7,101 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/graphicbackground"
+        android:background="@drawable/back"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"
+            android:layout_marginTop="15dp"
             android:padding="0dp">
 
-            <RelativeLayout
-                android:id="@+id/bannerContainer"
+            <Button
+                android:id="@+id/allsongsBanner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp">
-
-                <RelativeLayout
-                    android:id="@+id/localBanner"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:alpha="1"
-                        android:contentDescription="@string/background"
-                        android:background="@drawable/back"
-                        android:scaleType="centerCrop" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="19dp"
-                        android:text="@string/all_songs"
-                        android:textSize="30sp" />
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="-20dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="20dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_play" />
-
-                </RelativeLayout>
+                android:layout_height="100dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/buttonshape"
+                android:backgroundTint="@color/colorPane"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/all_songs"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
 
                 <LinearLayout
-                    android:id="@+id/linearBanner1"
+                    android:id="@+id/playGenreBanner"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:layout_below="@+id/localBanner"
+                    android:layout_below="@+id/allsongsBanner"
                     android:layout_marginTop="0dp"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <Button
                         android:id="@+id/playlistBanner"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:gravity="center_vertical"
+                        android:background="@drawable/buttonshape"
                         android:text="@string/playlist"
                         android:textColor="@color/white"
                         android:textSize="30sp"
                         android:layout_weight="1"
-                        android:background="@drawable/back" />
+                        android:backgroundTint="@color/colorPane"
+                        android:gravity="center" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/genreBanner"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:gravity="center_vertical"
+                        android:background="@drawable/buttonshape"
                         android:text="@string/generes"
                         android:textColor="@color/white"
                         android:textSize="30sp"
                         android:layout_weight="1"
-                        android:background="@drawable/back" />
+                        android:backgroundTint="@color/colorPane"
+                        android:gravity="center" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/albumBannerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:layout_below="@+id/linearBanner1"
+                    android:layout_below="@+id/playGenreBanner"
                     android:layout_marginTop="0dp"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <Button
                         android:id="@+id/albumBanner"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:gravity="center_vertical"
+                        android:background="@drawable/buttonshape"
                         android:text="@string/albums"
                         android:textColor="@color/white"
                         android:textSize="30sp"
                         android:layout_weight="1"
-                        android:background="@drawable/back" />
+                        android:backgroundTint="@color/colorPane"
+                        android:gravity="center" />
 
                 </LinearLayout>
-
-            </RelativeLayout>
 
             <TextView
                 android:id="@+id/copyright_text"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/bannerContainer"
+                android:layout_below="@+id/albumBannerLayout"
                 android:gravity="center"
+                android:background="@drawable/buttonshape"
+                android:backgroundTint="@color/colorPane"
                 android:text="---  Bop  ---"
                 android:textAlignment="gravity"
                 android:textSize="25sp"
-                android:textColor="#888" />
+                android:textColor="@color/white" />
 
 
         </RelativeLayout>
