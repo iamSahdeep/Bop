@@ -125,6 +125,9 @@ public class SplashScreen extends AppCompatActivity {
 
         if ((forceScan) || (!Main.songs.isInitialized())) {
             new SplashScreen.ScanSongs(this).execute();
+        } else {
+            Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+            startActivity(intent);
         }
     }
 
