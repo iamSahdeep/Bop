@@ -28,9 +28,26 @@ A basic Music playing application for media files in your mobile, currently in d
 <a href="https://github.com/iamSahdeep/Bop/blob/master/assets"> more </a>
 
 
-
-## Features
-
-- yet to be added
-
 # Credits
+   - [@alexdantas](https://github.com/alexdantas) for [KMP](https://github.com/alexdantas/kure-music-player) from which I have taken lots of code and logic.
+   - [@andremion](https://github.com/andremion) for [this](https://github.com/andremion/Music-Player) awesome UI and transition.
+   - [GautamChibde](https://github.com/GautamChibde) for awesome [Visualizers](https://github.com/GautamChibde/android-audio-visualizer).
+   - [@pkjvit](https://github.com/pkjvit) for lots of [Themes](https://github.com/pkjvit/Android-Multi-Theme-UI).
+   - [FlatIcon](https://www.flaticon.com/), [icons8](https://icons8.com/icons/pack/media-controls) and [freepik](https://www.freepik.com/) for icons and images used in application.
+   - and many more for those awesome libraries. Check the list of [Libraries](https://github.com/iamSahdeep/Bop/blob/master/app/build.gradle) used.
+
+# License
+
+    Copyright [2018] [Sahdeep Singh]
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

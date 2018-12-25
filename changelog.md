@@ -1,5 +1,19 @@
 # CHANGELOG.md
 
+## 0.5 (unreleased)
+### versionCode = 5
+
+Features:
+
+  - New HomeScreen UI -> [fc0fc6cbaa616b0db444c60ebbff8fbba6b6d3cf](https://github.com/iamSahdeep/Bop/commit/fc0fc6cbaa616b0db444c60ebbff8fbba6b6d3cf)
+  - Save playlist from current playing list and more changes -> [fc0fc6cbaa616b0db444c60ebbff8fbba6b6d3cf](https://github.com/iamSahdeep/Bop/commit/fc0fc6cbaa616b0db444c60ebbff8fbba6b6d3cf)
+  - Remove Song from currentPlaylist  -> [a0f523c54b7e1100b3dfb3827f68f49263dafe99](https://github.com/iamSahdeep/Bop/commit/a0f523c54b7e1100b3dfb3827f68f49263dafe99)
+
+Bug Fixes:
+
+  - Fix : SplashScreen (if restarted App) -> [51537d312632d9fd47e9c5f91242ad315059f2fe](https://github.com/iamSahdeep/Bop/tree/51537d312632d9fd47e9c5f91242ad315059f2fe)
+  - Fix : Unknown notification sound (on Every action) -> [92df482f5776bd9b55fae8255ca69c3575bec363](https://github.com/iamSahdeep/Bop/tree/92df482f5776bd9b55fae8255ca69c3575bec363)
+
 ## 0.3 (unreleased)
 ### versionCode = 4
  
