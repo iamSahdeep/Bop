@@ -16,8 +16,6 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.utils.utils;
 
 public class HomeFragment extends Fragment {
-    NestedScrollView graphicBack;
-    Button playlist, genere, album, allSongs;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -34,40 +32,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        allSongs = view.findViewById(R.id.allsongsBanner);
-        graphicBack = view.findViewById(R.id.graphicbackground);
-        playlist = view.findViewById(R.id.playlistBanner);
-        album = view.findViewById(R.id.albumBanner);
-        genere = view.findViewById(R.id.genreBanner);
-        graphicBack.setBackground(new BitmapDrawable(getResources(), utils.blurMyImage(BitmapFactory.decodeResource(getResources(), R.drawable.back), getActivity())));
-        allSongs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ViewPager viewPager = getActivity().findViewById(R.id.container);
-                viewPager.setCurrentItem(1, true);
-            }
-        });
-        playlist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ViewPager viewPager = getActivity().findViewById(R.id.container);
-                viewPager.setCurrentItem(2, true);
-            }
-        });
-        genere.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ViewPager viewPager = getActivity().findViewById(R.id.container);
-                viewPager.setCurrentItem(3, true);
-            }
-        });
-        album.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ViewPager viewPager = getActivity().findViewById(R.id.container);
-                viewPager.setCurrentItem(4, true);
-            }
-        });
+
         return view;
     }
 
