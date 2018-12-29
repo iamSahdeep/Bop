@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:clipToPadding="false"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
 
     <ScrollView
@@ -30,21 +29,25 @@
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Search"
+                    android:hint="@string/search"
                     android:layout_weight="1"
                     android:paddingTop="5dp"
                     android:layout_marginStart="10dp"
                     android:paddingBottom="5dp"
                     android:background="#00000000"
                     android:shadowColor="@color/white"
-                    android:shadowDy="1.2"/>
+                    android:inputType="textNoSuggestions"
+                    android:shadowDy="1.2"
+                    tools:ignore="Autofill" />
 
                 <ImageView
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:layout_width="35dp"
+                    android:background="#80808080"
                     android:layout_height="35dp"
-                    android:src="@drawable/ic_search"/>
+                    android:contentDescription="@string/search"
+                    android:src="@drawable/ic_search" />
 
 
             </LinearLayout>
@@ -61,14 +64,14 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Latest Courses"
+                    android:text="@string/songs"
                     android:textSize="17sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:text="VIEW ALL"/>
+                    android:text="@string/recent"
+                    android:textSize="14sp" />
             </LinearLayout>
 
 
@@ -86,109 +89,15 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:orientation="horizontal">
-                    <LinearLayout
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerRecent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/searchback"
-                        android:orientation="vertical">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/imageView1"
-                            android:layout_width="250dp"
-                            android:layout_height="150dp"
-                            android:src="@mipmap/ic_launcher"
-                            android:scaleType="centerCrop" />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Product UX Design"
-                            android:layout_marginTop="3dp"
-                            android:textColor="#585e66"
-                            android:textSize="15sp"/>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="$59.99"
-                                android:textSize="13sp"/>
-
-                            <ImageView
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="5dp"
-                                android:src="@mipmap/ic_launcher"/>
-
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="7sp"
-                                android:layout_marginStart="4dp"
-                                android:layout_gravity="center"
-                                android:text="29 Hours"/>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/searchback"
-                        android:orientation="vertical">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:layout_width="250dp"
-                            android:layout_height="150dp"
-                            android:src="@mipmap/ic_launcher"
-                            android:scaleType="centerCrop" />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Product UX Design"
-                            android:layout_marginTop="3dp"
-                            android:textColor="#585e66"
-                            android:textSize="15sp"/>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="$59.99"
-                                android:textSize="13sp"/>
-
-                            <ImageView
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="5dp"
-                                android:src="@mipmap/ic_launcher"/>
-
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="7sp"
-                                android:layout_marginStart="4dp"
-                                android:layout_gravity="center"
-                                android:text="29 Hours"/>
-                        </LinearLayout>
-                    </LinearLayout>
+                        android:orientation="horizontal"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/recent_songs_item" />
 
                 </LinearLayout>
 
@@ -200,6 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -209,15 +119,12 @@
                     android:paddingLeft="10dp"
                     android:orientation="horizontal">
 
-
-
-
                     <LinearLayout
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/searchback"
                         android:orientation="vertical"
-                        android:layout_marginRight="10sp">
+                        android:layout_marginEnd="10sp">
 
 
                         <TextView
