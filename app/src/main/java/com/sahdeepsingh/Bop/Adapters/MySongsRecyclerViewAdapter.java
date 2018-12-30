@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.fragments;
+package com.sahdeepsingh.Bop.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -41,7 +41,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         void onClickAction();
     }
 
-    MySongsRecyclerViewAdapter(List<Song> items, OnListFragmentInteractionListener listener) {
+    public MySongsRecyclerViewAdapter(List<Song> items, OnListFragmentInteractionListener listener) {
         songs = items;
         mListener = listener;
     }

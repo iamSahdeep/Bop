@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.SongData;
+package com.sahdeepsingh.Bop.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.Visualizers.barVisuals;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.squareup.picasso.Picasso;

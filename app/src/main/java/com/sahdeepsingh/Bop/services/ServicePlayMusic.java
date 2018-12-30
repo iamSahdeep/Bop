@@ -806,7 +806,7 @@ public class ServicePlayMusic extends Service
         // Get the song ID from the list, extract the ID and
         // get an URL based on it
         Song songToPlay = songs.get(currentSongPosition);
-
+        Main.songs.addsong_toRecent(getApplicationContext(), songToPlay);
         currentSong = songToPlay;
 
         // Append the external URI with our songs'

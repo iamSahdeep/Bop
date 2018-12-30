@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.fragments;
+package com.sahdeepsingh.Bop.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -24,7 +24,7 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
     private final List<String> mValues;
     private OnListFragmentInteractionListener mListener;
 
-    MyGenreRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
+    public MyGenreRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -55,8 +55,8 @@ public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecy
             public void onClick(View v) {
 
                 Context context = holder.mView.getContext();
-                if (context instanceof FragmentGenre.OnListFragmentInteractionListener) {
-                    mListener = (FragmentGenre.OnListFragmentInteractionListener) context;
+                if (context instanceof OnListFragmentInteractionListener) {
+                    mListener = (OnListFragmentInteractionListener) context;
                 } else {
                     throw new RuntimeException(context.toString()
                             + " must implement OnListFragmentInteractionListener");

@@ -19,7 +19,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.ViewHolder> {
 
     private List<Song> songs;
-
     public RecentSongsAdapter(List<Song> songs) {
         this.songs = songs;
     }
@@ -29,26 +28,26 @@ public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recent_songs_item, parent, false);
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         if (getItemCount() != 0) {
             holder.songName.setText(songs.get(position).getTitle());
             holder.songBy.setText(songs.get(position).getArtist());
             Picasso.get().load(Main.songs.getAlbumArt(songs.get(position))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.circleImageView);
-        } else {
-            holder.songName.setText(R.string.no);
-            holder.songBy.setText(R.string.recent_songs);
-            holder.circleImageView.setImageResource(R.drawable.back);
         }
     }
 
 
     @Override
     public int getItemCount() {
-        return songs.size();
+        if (songs != null)
+            return songs.size();
+        else return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

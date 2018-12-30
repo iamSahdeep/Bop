@@ -30,8 +30,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sahdeepsingh.Bop.Adapters.AdapterSong;
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.SongData.AdapterSong;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 

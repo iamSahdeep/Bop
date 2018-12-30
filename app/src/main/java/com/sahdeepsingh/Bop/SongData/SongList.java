@@ -4,19 +4,26 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 // KMP <3
 
@@ -791,5 +798,33 @@ public class SongList {
                 ) {
             addToPlaylist(c.getContentResolver(), playlistID, s.getId());
         }
+    }
+
+    public void addsong_toRecent(Context context, Song song) {
+        List<Song> recent = getRecentSongs(context);
+        if (recent == null)
+            recent = new ArrayList<Song>();
+        recent.add(0, song);
+        if (recent.size() > 10) {
+            recent.remove(recent.size() - 1);
+        }
+
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext());
+        SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(recent);
+        prefsEditor.putString("RecentSongs", json);
+        prefsEditor.apply();
+    }
+
+    public List<Song> getRecentSongs(Context context) {
+        Type type = new TypeToken<List<Song>>() {
+        }.getType();
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext());
+        Gson gson = new Gson();
+        String json = appSharedPrefs.getString("RecentSongs", "");
+        return gson.fromJson(json, type);
     }
 }
