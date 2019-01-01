@@ -44,7 +44,7 @@ import java.util.List;
  * and their songs:
  * http://stackoverflow.com/q/11292125
  */
-public class SongList {
+public class Data {
 
     /**
      * Big list with all the Songs found.
@@ -851,6 +851,6 @@ public class SongList {
         });
         if (songs.size() > 10) {
             return songs.subList(0, 9);
-        } else return songs.subList(0, songs.size() - 1);
+        } else return songs.subList(0, songs.size());
     }
 }

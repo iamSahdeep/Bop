@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
         recentRecycler.setAdapter(recentSongsAdapter);
 
         RecyclerView mostPlayedRecycler = view.findViewById(R.id.recyclerMostPlayed);
-        mostPlayedRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mostPlayedRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, true));
         mostPlayedSongsAdapter = new MostPlayedSongsAdapter(getActivity(), mostPlayedSongs);
         mostPlayedRecycler.setAdapter(mostPlayedSongsAdapter);
 

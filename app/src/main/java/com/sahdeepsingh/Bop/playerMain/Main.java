@@ -22,8 +22,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.SongData.Data;
 import com.sahdeepsingh.Bop.SongData.Song;
-import com.sahdeepsingh.Bop.SongData.SongList;
 import com.sahdeepsingh.Bop.services.ServicePlayMusic;
 import com.sahdeepsingh.Bop.settings.Settings;
 
@@ -35,7 +35,7 @@ public class Main {
     /**
      * All the songs on the device.
      */
-    public static SongList songs = new SongList();
+    public static Data songs = new Data();
 
     /**
      * Progress dialog for loading screen
