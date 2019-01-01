@@ -11,6 +11,7 @@
         android:id="@+id/mostPlayedCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:padding="8dp"
         android:text="@string/times_played"
         android:textSize="12sp" />
@@ -47,6 +48,7 @@
                 android:id="@+id/mostPlayedSongName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:text="@string/song_name"
                 android:textSize="11sp" />
 
@@ -54,6 +56,7 @@
                 android:id="@+id/mostPlayedArtistName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:text="@string/artist"
                 android:textSize="11sp" />
 
