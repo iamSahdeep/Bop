@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.squareup.picasso.Picasso;
 
@@ -18,8 +17,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.ViewHolder> {
 
-    private List<Song> songs;
-    public RecentSongsAdapter(List<Song> songs) {
+    private List<Long> songs;
+
+    public RecentSongsAdapter(List<Long> songs) {
         this.songs = songs;
     }
 
@@ -36,9 +36,9 @@ public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         if (getItemCount() != 0) {
-            holder.songName.setText(songs.get(position).getTitle());
-            holder.songBy.setText(songs.get(position).getArtist());
-            Picasso.get().load(Main.songs.getAlbumArt(songs.get(position))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.circleImageView);
+            holder.songName.setText(Main.songs.getSongById(songs.get(position)).getTitle());
+            holder.songBy.setText(Main.songs.getSongById(songs.get(position)).getArtist());
+            Picasso.get().load(Main.songs.getAlbumArt(Main.songs.getSongById(songs.get(position)))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.circleImageView);
         }
     }
 

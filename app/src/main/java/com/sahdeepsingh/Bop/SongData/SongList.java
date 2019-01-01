@@ -801,10 +801,11 @@ public class SongList {
     }
 
     public void addsong_toRecent(Context context, Song song) {
-        List<Song> recent = getRecentSongs(context);
+        List<Long> recent = getRecentSongs(context);
         if (recent == null)
-            recent = new ArrayList<Song>();
-        recent.add(0, song);
+            recent = new ArrayList<>();
+        recent.remove(song.getId());
+        recent.add(0, song.getId());
         if (recent.size() > 10) {
             recent.remove(recent.size() - 1);
         }
@@ -818,8 +819,8 @@ public class SongList {
         prefsEditor.apply();
     }
 
-    public List<Song> getRecentSongs(Context context) {
-        Type type = new TypeToken<List<Song>>() {
+    public List<Long> getRecentSongs(Context context) {
+        Type type = new TypeToken<List<Long>>() {
         }.getType();
         SharedPreferences appSharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(context.getApplicationContext());
