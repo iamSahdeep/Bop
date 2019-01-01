@@ -828,4 +828,29 @@ public class SongList {
         String json = appSharedPrefs.getString("RecentSongs", "");
         return gson.fromJson(json, type);
     }
+
+    public void addcountSongsPlayed(Context context, Song song) {
+        SharedPreferences preferences = context.getSharedPreferences("SongsPlayedCount", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        int count = preferences.getInt(String.valueOf(song.getId()), 0);
+        editor.putInt(String.valueOf(song.getId()), ++count);
+        editor.apply();
+    }
+
+    public int getcountSongsPlayed(Context context, Song song) {
+        SharedPreferences preferences = context.getSharedPreferences("SongsPlayedCount", Context.MODE_PRIVATE);
+        return preferences.getInt(String.valueOf(song.getId()), 0);
+    }
+
+    public List<Song> getMostPlayedSongs(Context context) {
+        List<Song> songs = getSongs();
+        Collections.sort(songs, (song, t1) -> {
+            if (getcountSongsPlayed(context, song) < getcountSongsPlayed(context, t1))
+                return -1;
+            else return 1;
+        });
+        if (songs.size() > 10) {
+            return songs.subList(0, 9);
+        } else return songs.subList(0, songs.size() - 1);
+    }
 }
