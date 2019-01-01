@@ -8,45 +8,49 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
         android:scrollbars="none"
         tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="60dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="60dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/searchback"
-                android:layout_marginTop="16dp">
+                android:orientation="horizontal">
 
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/search"
-                    android:layout_weight="1"
-                    android:paddingTop="5dp"
                     android:layout_marginStart="10dp"
-                    android:paddingBottom="5dp"
+                    android:layout_weight="1"
                     android:background="#00000000"
-                    android:shadowColor="@color/white"
+                    android:hint="@string/search"
                     android:inputType="textNoSuggestions"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:shadowColor="@color/white"
                     android:shadowDy="1.2"
                     tools:ignore="Autofill" />
 
                 <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="#80808080"
+                    android:contentDescription="@string/search"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:layout_width="35dp"
-                    android:background="#80808080"
-                    android:layout_height="35dp"
-                    android:contentDescription="@string/search"
                     android:src="@drawable/ic_search" />
 
 
@@ -55,23 +59,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/songs"
-                    android:textSize="17sp"/>
+                    android:layout_weight="1"
+                    android:text="@string/recent_songs"
+                    android:textSize="17sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/recent"
-                    android:textSize="14sp" />
             </LinearLayout>
 
 
@@ -86,9 +85,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
+                    android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:orientation="horizontal">
+                    android:paddingRight="10dp">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerRecent"
@@ -125,6 +124,22 @@
             </HorizontalScrollView>
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/most_played"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -136,173 +151,40 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:clipToPadding="false"
-                    android:paddingRight="10dp"
+                    android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:orientation="horizontal">
+                    android:paddingRight="10dp">
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerMostPlayed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/most_played_songs_item" />
 
                     <LinearLayout
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/searchback"
-                        android:orientation="vertical"
-                        android:layout_marginEnd="10sp">
-
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Continue Learning.."
-                            android:padding="8dp"
-                            android:textSize="11sp"/>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:background="#979797"/>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginBottom="8dp"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:src="@mipmap/ic_launcher"
-                                android:scaleType="centerCrop"/>
-
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Web Design 101"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:textSize="11sp"/>
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="90%"
-                                        android:textSize="10sp"/>
-
-                                    <ImageView
-                                        android:layout_width="10sp"
-                                        android:layout_height="10sp"
-                                        android:src="@mipmap/ic_launcher"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_marginRight="5dp"
-                                        android:layout_gravity="center"/>
-
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="2hrs left"
-                                        android:textSize="10sp" />
-                                </LinearLayout>
-
-                            </LinearLayout>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/searchback"
+                        android:id="@+id/noMostPlayedSongs"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:gravity="center"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/no" />
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Continue Learning.."
-                            android:padding="8dp"
-                            android:textSize="11sp"/>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:background="#979797"/>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginBottom="8dp"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:src="@mipmap/ic_launcher"
-                                android:scaleType="centerCrop"/>
-
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Web Design 101"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:textSize="11sp" />
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:textColor="#a0a0a0"
-                                        android:text="90%"
-                                        android:textSize="10sp"/>
-
-                                    <ImageView
-                                        android:layout_width="10sp"
-                                        android:layout_height="10sp"
-                                        android:src="@mipmap/ic_launcher"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_marginRight="5dp"
-                                        android:layout_gravity="center"/>
-
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="2hrs left"
-                                        android:textSize="10sp"
-                                        android:textColor="#a0a0a0"/>
-                                </LinearLayout>
-
-                            </LinearLayout>
-                        </LinearLayout>
+                            android:layout_gravity="center"
+                            android:text="@string/recent_songs" />
 
                     </LinearLayout>
-
 
 
                 </LinearLayout>
@@ -312,24 +194,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="Categories"
-                    android:textSize="17sp"/>
+                    android:textSize="17sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
                     android:text="VIEW ALL"
-                    android:textColor="#dd3e3e"/>
+                    android:textColor="#dd3e3e"
+                    android:textSize="12sp" />
             </LinearLayout>
 
 
@@ -343,85 +225,86 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/searchback"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/searchback"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
+                            android:layout_gravity="center"
                             android:scaleType="centerCrop"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/ic_launcher"/>
+                            android:src="@mipmap/ic_launcher" />
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
                             android:text="Communication"
-                            android:gravity="center"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="3dp"/>
+                            android:textSize="12sp" />
 
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/searchback"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/searchback"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@mipmap/ic_launcher"/>
+                            android:src="@mipmap/ic_launcher" />
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
                             android:text="Marketing"
-                            android:gravity="center"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="3dp"/>
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/searchback"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/searchback"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@mipmap/ic_launcher"/>
+                            android:src="@mipmap/ic_launcher" />
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:text="Content"
-                            android:gravity="center"
                             android:layout_gravity="center"
-                            android:layout_marginTop="3dp"/>
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
+                            android:text="Content"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
@@ -435,80 +318,81 @@
 
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_margin="5dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
                         android:background="@drawable/searchback"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
+                            android:layout_gravity="center"
                             android:scaleType="centerCrop"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/ic_launcher"/>
+                            android:src="@mipmap/ic_launcher" />
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
                             android:text="Ads"
-                            android:gravity="center"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="3dp"/>
+                            android:textSize="12sp" />
 
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/searchback"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/searchback"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@mipmap/ic_launcher"/>
+                            android:src="@mipmap/ic_launcher" />
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
                             android:text="Analytics"
-                            android:gravity="center"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="3dp"/>
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/searchback"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/searchback"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@mipmap/ic_launcher"/>
+                            android:src="@mipmap/ic_launcher" />
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:text="Support"
-                            android:gravity="center"
                             android:layout_gravity="center"
-                            android:layout_marginTop="3dp"/>
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
+                            android:text="Support"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
