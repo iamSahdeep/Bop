@@ -203,15 +203,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Categories"
+                    android:text="Everything"
                     android:textSize="17sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="VIEW ALL"
-                    android:textColor="#dd3e3e"
-                    android:textSize="12sp" />
             </LinearLayout>
 
 
@@ -230,6 +224,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/openAllSongs"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -242,7 +237,7 @@
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:scaleType="centerCrop"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@drawable/back" />
 
 
                         <TextView
@@ -251,12 +246,13 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="3dp"
                             android:gravity="center"
-                            android:text="Communication"
+                            android:text="@string/all_songs"
                             android:textSize="12sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/openPlaylists"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -268,7 +264,7 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@drawable/back" />
 
 
                         <TextView
@@ -277,12 +273,13 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="3dp"
                             android:gravity="center"
-                            android:text="Marketing"
+                            android:text="@string/playlist"
                             android:textSize="12sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/openAlbums"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -294,7 +291,7 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@drawable/back" />
 
 
                         <TextView
@@ -303,7 +300,7 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="3dp"
                             android:gravity="center"
-                            android:text="Content"
+                            android:text="@string/albums"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -318,6 +315,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/openGenres"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -330,7 +328,7 @@
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:scaleType="centerCrop"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@drawable/back" />
 
 
                         <TextView
@@ -339,65 +337,74 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="3dp"
                             android:gravity="center"
-                            android:text="Ads"
+                            android:text="@string/generes"
                             android:textSize="12sp" />
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/searchback"
-                        android:orientation="vertical">
+                    <!-- <LinearLayout
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="5dp"
+                         android:layout_weight="1"
+                         android:background="@drawable/searchback"
+                         android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/ic_launcher" />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="3dp"
-                            android:gravity="center"
-                            android:text="Analytics"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/searchback"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/ic_launcher" />
+                         <ImageView
+                             android:layout_width="50dp"
+                             android:layout_height="50dp"
+                             android:layout_gravity="center"
+                             android:src="@mipmap/ic_launcher" />
 
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="3dp"
-                            android:gravity="center"
-                            android:text="Support"
-                            android:textSize="12sp" />
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center"
+                             android:layout_marginTop="3dp"
+                             android:gravity="center"
+                             android:text="Analytics"
+                             android:textSize="12sp" />
 
-                    </LinearLayout>
+                     </LinearLayout>
+
+                     <LinearLayout
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="5dp"
+                         android:layout_weight="1"
+                         android:background="@drawable/searchback"
+                         android:orientation="vertical">
+
+                         <ImageView
+                             android:layout_width="50dp"
+                             android:layout_height="50dp"
+                             android:layout_gravity="center"
+                             android:src="@mipmap/ic_launcher" />
+
+
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center"
+                             android:layout_marginTop="3dp"
+                             android:gravity="center"
+                             android:text="Support"
+                             android:textSize="12sp" />
+
+                     </LinearLayout>-->
 
                 </LinearLayout>
             </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="@string/app_name"
+                android:textSize="20sp" />
 
 
         </LinearLayout>

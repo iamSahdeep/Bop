@@ -1,6 +1,7 @@
 package com.sahdeepsingh.Bop.Adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,11 @@ public class MostPlayedSongsAdapter extends RecyclerView.Adapter<MostPlayedSongs
         if (getItemCount() != 0) {
             holder.songName.setText(songs.get(position).getTitle());
             holder.songBy.setText(songs.get(position).getArtist());
-            Picasso.get().load(Main.songs.getAlbumArt(songs.get(position))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.imageView);
+            try {
+                holder.imageView.setImageURI(Uri.parse(Main.songs.getAlbumArt(songs.get(position))));
+            } catch (NullPointerException e) {
+                Picasso.get().load(Main.songs.getAlbumArt(songs.get(position))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.imageView);
+            }
             holder.TimesPlayed.setText(String.valueOf(Main.songs.getcountSongsPlayed(context, songs.get(position))));
         }
     }

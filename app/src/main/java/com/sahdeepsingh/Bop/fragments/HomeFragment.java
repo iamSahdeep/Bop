@@ -18,12 +18,13 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 public class HomeFragment extends Fragment {
 
     RecentSongsAdapter recentSongsAdapter;
     MostPlayedSongsAdapter mostPlayedSongsAdapter;
-    LinearLayout recents, mostPlayed;
+    LinearLayout recents, mostPlayed, openAllSongs, openAlbums, openPlaylists, openGenres;
 
 
     public HomeFragment() {
@@ -44,6 +45,20 @@ public class HomeFragment extends Fragment {
 
         recents = view.findViewById(R.id.noRecentSongs);
         mostPlayed = view.findViewById(R.id.noMostPlayedSongs);
+        openAllSongs = view.findViewById(R.id.openAllSongs);
+        openAlbums = view.findViewById(R.id.openAlbums);
+        openPlaylists = view.findViewById(R.id.openPlaylists);
+        openGenres = view.findViewById(R.id.openGenres);
+
+        ViewPager mViewPager = getActivity().findViewById(R.id.container);
+
+        openAllSongs.setOnClickListener(view14 -> mViewPager.setCurrentItem(1, true));
+
+        openGenres.setOnClickListener(view13 -> mViewPager.setCurrentItem(4, true));
+
+        openPlaylists.setOnClickListener(view12 -> mViewPager.setCurrentItem(2, true));
+
+        openAlbums.setOnClickListener(view1 -> mViewPager.setCurrentItem(3, true));
 
         List<Long> recentSongs = Main.songs.getRecentSongs(getActivity());
         List<Song> mostPlayedSongs = Main.songs.getMostPlayedSongs(getActivity());
@@ -62,7 +77,7 @@ public class HomeFragment extends Fragment {
         recentRecycler.setAdapter(recentSongsAdapter);
 
         RecyclerView mostPlayedRecycler = view.findViewById(R.id.recyclerMostPlayed);
-        mostPlayedRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, true));
+        mostPlayedRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
         mostPlayedSongsAdapter = new MostPlayedSongsAdapter(getActivity(), mostPlayedSongs);
         mostPlayedRecycler.setAdapter(mostPlayedSongsAdapter);
 

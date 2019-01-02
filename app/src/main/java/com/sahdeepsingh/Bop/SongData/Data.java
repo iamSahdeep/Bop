@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -839,16 +840,22 @@ public class Data {
 
     public int getcountSongsPlayed(Context context, Song song) {
         SharedPreferences preferences = context.getSharedPreferences("SongsPlayedCount", Context.MODE_PRIVATE);
+        Main.logger(String.valueOf(preferences.getInt(String.valueOf(song.getId()), 0)));
         return preferences.getInt(String.valueOf(song.getId()), 0);
     }
 
     public List<Song> getMostPlayedSongs(Context context) {
         List<Song> songs = getSongs();
-        Collections.sort(songs, (song, t1) -> {
-            if (getcountSongsPlayed(context, song) < getcountSongsPlayed(context, t1))
-                return -1;
-            else return 1;
-        });
+        if (songs == null)
+            return null;
+        Collections.sort(songs, (song, t1) -> getcountSongsPlayed(context, t1) - getcountSongsPlayed(context, song));
+        if (getcountSongsPlayed(context, songs.get(0)) == 0)
+            return null;
+        for (int i = 0; i < songs.size(); i++) {
+            if (getcountSongsPlayed(context, songs.get(i)) == 0) {
+                songs.remove(i);
+            }
+        }
         if (songs.size() > 10) {
             return songs.subList(0, 9);
         } else return songs.subList(0, songs.size());

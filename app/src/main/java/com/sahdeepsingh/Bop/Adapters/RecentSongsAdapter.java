@@ -1,5 +1,6 @@
 package com.sahdeepsingh.Bop.Adapters;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,11 @@ public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.
         if (getItemCount() != 0) {
             holder.songName.setText(Main.songs.getSongById(songs.get(position)).getTitle());
             holder.songBy.setText(Main.songs.getSongById(songs.get(position)).getArtist());
-            Picasso.get().load(Main.songs.getAlbumArt(Main.songs.getSongById(songs.get(position)))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.circleImageView);
+            try {
+                holder.circleImageView.setImageURI(Uri.parse(Main.songs.getAlbumArt(Main.songs.getSongById(songs.get(position)))));
+            } catch (NullPointerException e) {
+                Picasso.get().load(Main.songs.getAlbumArt(Main.songs.getSongById(songs.get(position)))).into(holder.circleImageView);
+            }
         }
     }
 
