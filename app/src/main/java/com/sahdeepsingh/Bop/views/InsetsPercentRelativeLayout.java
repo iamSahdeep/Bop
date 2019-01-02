@@ -17,11 +17,12 @@
 package com.sahdeepsingh.Bop.views;
 
 import android.content.Context;
-import android.support.percent.PercentRelativeLayout;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.percentlayout.widget.PercentRelativeLayout;
 
 /* Don't know whats this, just copied, look copyright above for credits*/
 public class InsetsPercentRelativeLayout extends PercentRelativeLayout {
@@ -36,7 +37,7 @@ public class InsetsPercentRelativeLayout extends PercentRelativeLayout {
 
     public InsetsPercentRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        ViewCompat.setOnApplyWindowInsetsListener(this, new android.support.v4.view.OnApplyWindowInsetsListener() {
+        ViewCompat.setOnApplyWindowInsetsListener(this, new androidx.core.view.OnApplyWindowInsetsListener() {
             @Override
             public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
                 setWindowInsets(insets);

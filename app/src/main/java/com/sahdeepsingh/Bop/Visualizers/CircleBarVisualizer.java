@@ -3,8 +3,9 @@ package com.sahdeepsingh.Bop.Visualizers;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+
+import androidx.annotation.Nullable;
 
 /**
  * Custom view that creates a Circle and Bar visualizer effect for

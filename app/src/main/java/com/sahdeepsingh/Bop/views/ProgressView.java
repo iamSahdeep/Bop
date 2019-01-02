@@ -29,7 +29,7 @@ import android.widget.ProgressBar;
 import com.sahdeepsingh.Bop.R;
 
 
-public class ProgressView extends android.support.v7.widget.AppCompatSeekBar {
+public class ProgressView extends androidx.appcompat.widget.AppCompatSeekBar {
 
     private static final float STROKE_SIZE = 4;
     private static final float START_ANGLE = 135;

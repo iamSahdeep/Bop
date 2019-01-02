@@ -3,8 +3,6 @@ package com.sahdeepsingh.Bop.Adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -25,6 +23,9 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
 

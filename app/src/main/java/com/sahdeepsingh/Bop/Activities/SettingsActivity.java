@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,6 +12,9 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.settings.AppCompatPreferenceActivity;
 import com.sahdeepsingh.Bop.utils.utils;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
