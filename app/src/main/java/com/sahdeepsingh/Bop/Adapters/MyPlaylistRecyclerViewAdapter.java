@@ -1,10 +1,8 @@
-package com.sahdeepsingh.Bop.fragments;
+package com.sahdeepsingh.Bop.Adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -26,6 +24,9 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
 
     private final List<String> playlists;
@@ -34,7 +35,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
     private int anyExpanded = -1;
     private ViewHolder expandedViewholder;
 
-    MyPlaylistRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
+    public MyPlaylistRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
         playlists = items;
         mListener = listener;
     }
@@ -64,8 +65,8 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
             @Override
             public void onClick(View v) {
                 Context context = holder.mView.getContext();
-                if (context instanceof FragmentPlaylist.OnListFragmentInteractionListener) {
-                    mListener = (FragmentPlaylist.OnListFragmentInteractionListener) context;
+                if (context instanceof OnListFragmentInteractionListener) {
+                    mListener = (OnListFragmentInteractionListener) context;
                 } else {
                     throw new RuntimeException(context.toString()
                             + " must implement OnListFragmentInteractionListener");

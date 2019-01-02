@@ -7,9 +7,10 @@ import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.util.ArrayMap;
 
 import java.util.ArrayList;
+
+import androidx.collection.ArrayMap;
 
 //Look For credits in Readme for this awesome animation and UI
 

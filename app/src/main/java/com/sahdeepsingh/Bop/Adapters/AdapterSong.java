@@ -1,9 +1,5 @@
-package com.sahdeepsingh.Bop.SongData;
+package com.sahdeepsingh.Bop.Adapters;
 
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.Visualizers.barVisuals;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.squareup.picasso.Picasso;
@@ -18,6 +15,10 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 // Adapter for Current Playlist in PlayerList

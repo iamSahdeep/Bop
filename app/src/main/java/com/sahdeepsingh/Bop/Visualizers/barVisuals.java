@@ -3,8 +3,9 @@ package com.sahdeepsingh.Bop.Visualizers;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+
+import androidx.annotation.Nullable;
 
 /* just copied the code, didn't wanted to load complete lib or could do it :/
   credits, gautam sir */

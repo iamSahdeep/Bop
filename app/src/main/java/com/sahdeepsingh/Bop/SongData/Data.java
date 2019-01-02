@@ -4,19 +4,27 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 // KMP <3
 
@@ -37,7 +45,7 @@ import java.util.HashMap;
  * and their songs:
  * http://stackoverflow.com/q/11292125
  */
-public class SongList {
+public class Data {
 
     /**
      * Big list with all the Songs found.
@@ -791,5 +799,65 @@ public class SongList {
                 ) {
             addToPlaylist(c.getContentResolver(), playlistID, s.getId());
         }
+    }
+
+    public void addsong_toRecent(Context context, Song song) {
+        List<Long> recent = getRecentSongs(context);
+        if (recent == null)
+            recent = new ArrayList<>();
+        recent.remove(song.getId());
+        recent.add(0, song.getId());
+        if (recent.size() > 10) {
+            recent.remove(recent.size() - 1);
+        }
+
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext());
+        SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(recent);
+        prefsEditor.putString("RecentSongs", json);
+        prefsEditor.apply();
+    }
+
+    public List<Long> getRecentSongs(Context context) {
+        Type type = new TypeToken<List<Long>>() {
+        }.getType();
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext());
+        Gson gson = new Gson();
+        String json = appSharedPrefs.getString("RecentSongs", "");
+        return gson.fromJson(json, type);
+    }
+
+    public void addcountSongsPlayed(Context context, Song song) {
+        SharedPreferences preferences = context.getSharedPreferences("SongsPlayedCount", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        int count = preferences.getInt(String.valueOf(song.getId()), 0);
+        editor.putInt(String.valueOf(song.getId()), ++count);
+        editor.apply();
+    }
+
+    public int getcountSongsPlayed(Context context, Song song) {
+        SharedPreferences preferences = context.getSharedPreferences("SongsPlayedCount", Context.MODE_PRIVATE);
+        Main.logger(String.valueOf(preferences.getInt(String.valueOf(song.getId()), 0)));
+        return preferences.getInt(String.valueOf(song.getId()), 0);
+    }
+
+    public List<Song> getMostPlayedSongs(Context context) {
+        List<Song> songs = getSongs();
+        if (songs == null)
+            return null;
+        Collections.sort(songs, (song, t1) -> getcountSongsPlayed(context, t1) - getcountSongsPlayed(context, song));
+        if (getcountSongsPlayed(context, songs.get(0)) == 0)
+            return null;
+        for (int i = 0; i < songs.size(); i++) {
+            if (getcountSongsPlayed(context, songs.get(i)) == 0) {
+                songs.remove(i);
+            }
+        }
+        if (songs.size() > 10) {
+            return songs.subList(0, 9);
+        } else return songs.subList(0, songs.size());
     }
 }

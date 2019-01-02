@@ -9,9 +9,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.transition.Transition;
 import android.view.View;
@@ -23,6 +20,7 @@ import android.widget.TextView;
 
 import com.andremion.music.MusicCoverView;
 import com.bullhead.equalizer.EqualizerFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.Visualizers.CircleBarVisualizer;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -30,6 +28,8 @@ import com.sahdeepsingh.Bop.views.TransitionAdapter;
 
 import java.io.File;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import me.tankery.lib.circularseekbar.CircularSeekBar;
 
 import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;

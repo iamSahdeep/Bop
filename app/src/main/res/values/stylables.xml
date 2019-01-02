@@ -2,7 +2,7 @@
 <resources>
 
     <declare-styleable name="CircularSeekBar">
-        <attr name="progress" format="integer" />
+        <attr name="progress_" format="integer" />
         <attr name="max" format="integer" />
         <attr name="move_outside_circle" format="boolean" />
         <attr name="maintain_equal_circle" format="boolean" />

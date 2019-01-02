@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -34,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 // KMP! KMP! KMP!
 // No unnecessary changes required
@@ -806,7 +807,8 @@ public class ServicePlayMusic extends Service
         // Get the song ID from the list, extract the ID and
         // get an URL based on it
         Song songToPlay = songs.get(currentSongPosition);
-
+        Main.songs.addsong_toRecent(getApplicationContext(), songToPlay);
+        Main.songs.addcountSongsPlayed(getApplicationContext(), songToPlay);
         currentSong = songToPlay;
 
         // Append the external URI with our songs'
