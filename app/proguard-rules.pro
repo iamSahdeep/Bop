@@ -21,6 +21,8 @@
 #-renamesourcefileattribute SourceFile
 
 -dontwarn okhttp3.internal.platform.ConscryptPlatform
+-dontwarn com.sothree.slidinguppanel.SlidingUpPanelLayout
+-dontwarn com.simplecityapps.recyclerview_fastscroll.views.FastScrollPopup
 
 -keepclasseswithmembernames class * {
     native <methods>;
