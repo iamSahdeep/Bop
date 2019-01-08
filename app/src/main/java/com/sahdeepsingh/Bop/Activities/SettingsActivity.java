@@ -21,6 +21,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setupTheme();
         setContentView(R.layout.settings_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -38,26 +40,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 .registerOnSharedPreferenceChangeListener(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        String mode = Main.settings.get("modes", "Day");
-        switch (mode) {
-            case "Day":
-                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                break;
-            case "Night":
-                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                break;
-            case "System":
-                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                break;
-            case "Automatic":
-                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
-                break;
-        }
-
+    private void setupTheme() {
         String theme = Main.settings.get("themes", "Red");
 
         switch (theme) {
@@ -119,6 +102,28 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 setTheme(R.style.AppTheme_BLUEGRAY);
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String mode = Main.settings.get("modes", "Day");
+        switch (mode) {
+            case "Day":
+                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case "Night":
+                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case "System":
+                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+            case "Automatic":
+                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+                break;
+        }
+
     }
 
     @Override

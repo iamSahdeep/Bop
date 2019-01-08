@@ -127,9 +127,8 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
         View view = inflater.inflate(R.layout.fragment_songs_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+        RecyclerView recyclerView = view.findViewById(R.id.list);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs, mListener);
             mySongsRecyclerViewAdapter.setActionModeReceiver(this);
@@ -157,7 +156,6 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
                         }
                 }
             });
-        }
         return view;
     }
 
