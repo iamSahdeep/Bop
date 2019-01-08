@@ -20,14 +20,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/materialize_statusbar"
             android:background="@color/transparent"
+            app:elevation="0dp"
             android:theme="@style/ThemeOverlay.AppCompat">
 
             <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                android:elevation="0dp"
-                    android:layout_height="?attr/actionBarSize"
-                    android:fitsSystemWindows="true"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:fitsSystemWindows="true"
                 app:navigationIcon="@drawable/ic_ham" />
 
         </com.google.android.material.appbar.AppBarLayout>

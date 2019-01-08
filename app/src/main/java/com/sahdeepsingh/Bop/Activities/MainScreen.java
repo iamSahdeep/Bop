@@ -211,6 +211,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                 })
                 .build();
 
+        //noinspection deprecation
         crossfadeDrawerLayout = (CrossfadeDrawerLayout) drawer.getDrawerLayout();
         crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
         MiniDrawer miniDrawer = drawer.getMiniDrawer();
