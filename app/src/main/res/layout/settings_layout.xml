@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/primaryColor"
+        android:background="@color/transparent"
         android:fitsSystemWindows="true"
         app:navigationIcon="@drawable/ic_backarrow"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />

@@ -183,4 +183,10 @@ public class SplashScreen extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Main.startMusicService(this);
+    }
 }

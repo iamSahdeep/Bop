@@ -18,15 +18,17 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:layout_marginTop="@dimen/materialize_statusbar"
+            android:background="@color/transparent"
+            app:elevation="0dp"
+            android:theme="@style/ThemeOverlay.AppCompat">
 
             <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:fitsSystemWindows="true"
-                    app:navigationIcon="@drawable/ic_ham"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:fitsSystemWindows="true"
+                app:navigationIcon="@drawable/ic_ham" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

@@ -16,6 +16,7 @@ import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -108,6 +109,8 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         super.onCreate(savedInstanceState);
 
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_main_screen);
 
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
@@ -117,6 +120,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_ham)));
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,6 +211,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                 })
                 .build();
 
+        //noinspection deprecation
         crossfadeDrawerLayout = (CrossfadeDrawerLayout) drawer.getDrawerLayout();
         crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
         MiniDrawer miniDrawer = drawer.getMiniDrawer();
@@ -363,8 +368,9 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     @Override
     protected void onPause() {
         super.onPause();
+
         /*Why I have used refreshMode here?
-         * It took me a lot of time understand why my app was crashing and throwing error : changeSongBR not Registered
+         * It took me a lot of time to understand why my app was crashing and throwing error : changeSongBR not Registered
          * So, As we are using refreshMode() in BaseActivity in onResume i.e, in "super" of this activity
          * Like, when onResume of this activity is called its super.onResume is called first
          * Which  means we have not yet registered the BroadCast Receiver : changeSongBR, look at onResume of this activity
