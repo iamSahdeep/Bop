@@ -74,7 +74,7 @@
             </LinearLayout>
 
 
-            <HorizontalScrollView
+            <ScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -120,7 +120,7 @@
 
                 </LinearLayout>
 
-            </HorizontalScrollView>
+            </ScrollView>
 
 
             <LinearLayout
@@ -140,7 +140,7 @@
 
             </LinearLayout>
 
-            <HorizontalScrollView
+            <ScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
@@ -188,7 +188,7 @@
 
                 </LinearLayout>
 
-            </HorizontalScrollView>
+            </ScrollView>
 
             <LinearLayout
                 android:layout_width="match_parent"
