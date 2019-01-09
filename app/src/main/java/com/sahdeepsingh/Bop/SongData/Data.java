@@ -10,12 +10,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +26,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 // KMP <3
 
@@ -813,8 +812,7 @@ public class Data {
             recent.remove(recent.size() - 1);
         }
 
-        SharedPreferences appSharedPrefs = PreferenceManager
-                .getDefaultSharedPreferences(context.getApplicationContext());
+        SharedPreferences appSharedPrefs = context.getSharedPreferences("com.sahdeepsingh.bop.RecentSongs", Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(recent);
@@ -825,8 +823,7 @@ public class Data {
     public List<Long> getRecentSongs(Context context) {
         Type type = new TypeToken<List<Long>>() {
         }.getType();
-        SharedPreferences appSharedPrefs = PreferenceManager
-                .getDefaultSharedPreferences(context.getApplicationContext());
+        SharedPreferences appSharedPrefs = context.getSharedPreferences("com.sahdeepsingh.bop.RecentSongs", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = appSharedPrefs.getString("RecentSongs", "");
         return gson.fromJson(json, type);
@@ -851,15 +848,15 @@ public class Data {
 
         if (getSongs() == null)
             return null;
-        Map<String, Integer> map = new HashMap<>();
+        HashMap<String, Integer> map = new HashMap<>();
         for (Song s :
                 getSongs()) {
             map.put(String.valueOf(s.getId()), getcountSongsPlayed(context, s));
         }
-        Map<String, Integer> sorted = new TreeMap<>(Collections.reverseOrder());
-        sorted.putAll(map);
+        Map<String, Integer> mapSorted = utils.sortMapByValue(map);
+
         for (Map.Entry<String, Integer> s :
-                sorted.entrySet()) {
+                mapSorted.entrySet()) {
             if (s.getValue() > 0)
                 songs.add(getSongById(Long.parseLong(s.getKey())));
             if (songs.size() >= 10)

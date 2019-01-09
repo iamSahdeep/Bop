@@ -36,6 +36,7 @@ public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        if (getItemCount() > 0) {
             holder.songName.setText(Main.songs.getSongById(songs.get(position)).getTitle());
             holder.songBy.setText(Main.songs.getSongById(songs.get(position)).getArtist());
             try {
@@ -43,15 +44,15 @@ public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.
             } catch (NullPointerException e) {
                 Picasso.get().load(Main.songs.getAlbumArt(Main.songs.getSongById(songs.get(position)))).into(holder.circleImageView);
             }
-
+        }
     }
 
 
     @Override
     public int getItemCount() {
-        if (songs == null)
-            return 0;
-        else return songs.size();
+        if (songs != null)
+            return songs.size();
+        else return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
