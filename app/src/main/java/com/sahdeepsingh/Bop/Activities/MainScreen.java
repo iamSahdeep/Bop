@@ -135,6 +135,9 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         setupViewPager(mViewPager);
 
         changeSongBR = new ChangeSongBR();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BROADCAST_ACTION);
+        registerReceiver(changeSongBR, intentFilter);
 
         createDrawer();
     }
@@ -327,6 +330,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
      */
     @Override
     protected void onDestroy() {
+        unregisterReceiver(changeSongBR);
         super.onDestroy();
 
         if (backPressedHandler != null)
@@ -343,10 +347,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     @Override
     protected void onResume() {
         super.onResume();
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BROADCAST_ACTION);
-        registerReceiver(changeSongBR, intentFilter);
 
         if (Main.mainMenuHasNowPlayingItem) {
             Main.musicService.notifyCurrentSong();
@@ -381,9 +381,21 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
          * So, we are using this Or we can use try and catch block but
          * That's a bummer :(
          * */
-        if (refreshMode())
-            unregisterReceiver(changeSongBR);
+
+
+
+
+       /* if (refreshMode())
+            unregisterReceiver(changeSongBR);*/
+
+        /** *
+         * TADA!!!
+         * a simple trick here to prevent memory leak is
+         * to transfer broadcast in onCreate and onDestroy methods
+         * also call @unregisterBR before super.onDestroy in that method
+         * **/
     }
+
 
     private void setControlListeners() {
 
