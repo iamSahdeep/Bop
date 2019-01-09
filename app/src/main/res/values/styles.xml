@@ -39,8 +39,6 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimaryDark">?attr/primaryDarkColor</item>
         <item name="colorPrimary">?attr/primaryColor</item>
-        <item name="android:windowLightStatusBar">true</item>
-
     </style>
 
     <style name="AppTheme.NoActionBar">

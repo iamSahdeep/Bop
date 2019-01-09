@@ -25,6 +25,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 // KMP <3
 
@@ -831,7 +833,7 @@ public class Data {
     }
 
     public void addcountSongsPlayed(Context context, Song song) {
-        SharedPreferences preferences = context.getSharedPreferences("SongsPlayedCount", Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences("com.sahdeepsingh.bop.SongsPlayedCount", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         int count = preferences.getInt(String.valueOf(song.getId()), 0);
         editor.putInt(String.valueOf(song.getId()), ++count);
@@ -839,25 +841,30 @@ public class Data {
     }
 
     public int getcountSongsPlayed(Context context, Song song) {
-        SharedPreferences preferences = context.getSharedPreferences("SongsPlayedCount", Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences("com.sahdeepsingh.bop.SongsPlayedCount", Context.MODE_PRIVATE);
         Main.logger(String.valueOf(preferences.getInt(String.valueOf(song.getId()), 0)));
         return preferences.getInt(String.valueOf(song.getId()), 0);
     }
 
     public List<Song> getMostPlayedSongs(Context context) {
-        List<Song> songs = getSongs();
-        if (songs == null)
+        List<Song> songs = new ArrayList<>();
+
+        if (getSongs() == null)
             return null;
-        Collections.sort(songs, (song, t1) -> getcountSongsPlayed(context, t1) - getcountSongsPlayed(context, song));
-        if (getcountSongsPlayed(context, songs.get(0)) == 0)
-            return null;
-        for (int i = 0; i < songs.size(); i++) {
-            if (getcountSongsPlayed(context, songs.get(i)) == 0) {
-                songs.remove(i);
-            }
+        Map<String, Integer> map = new HashMap<>();
+        for (Song s :
+                getSongs()) {
+            map.put(String.valueOf(s.getId()), getcountSongsPlayed(context, s));
         }
-        if (songs.size() > 10) {
-            return songs.subList(0, 9);
-        } else return songs.subList(0, songs.size());
+        Map<String, Integer> sorted = new TreeMap<>(Collections.reverseOrder());
+        sorted.putAll(map);
+        for (Map.Entry<String, Integer> s :
+                sorted.entrySet()) {
+            if (s.getValue() > 0)
+                songs.add(getSongById(Long.parseLong(s.getKey())));
+            if (songs.size() >= 10)
+                break;
+        }
+        return songs;
     }
 }

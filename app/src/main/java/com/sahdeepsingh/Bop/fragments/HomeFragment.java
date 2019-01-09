@@ -72,12 +72,16 @@ public class HomeFragment extends Fragment {
         } else mostPlayed.setVisibility(View.GONE);
 
         RecyclerView recentRecycler = view.findViewById(R.id.recyclerRecent);
-        recentRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recentRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recentRecycler.setHasFixedSize(true);
+        recentRecycler.setNestedScrollingEnabled(false);
         recentSongsAdapter = new RecentSongsAdapter(recentSongs);
         recentRecycler.setAdapter(recentSongsAdapter);
 
         RecyclerView mostPlayedRecycler = view.findViewById(R.id.recyclerMostPlayed);
-        mostPlayedRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mostPlayedRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        mostPlayedRecycler.setHasFixedSize(true);
+        mostPlayedRecycler.setNestedScrollingEnabled(false);
         mostPlayedSongsAdapter = new MostPlayedSongsAdapter(getActivity(), mostPlayedSongs);
         mostPlayedRecycler.setAdapter(mostPlayedSongsAdapter);
 
