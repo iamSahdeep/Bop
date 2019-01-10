@@ -3,13 +3,9 @@ package com.sahdeepsingh.Bop.Activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -85,68 +81,6 @@ public class BaseActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        BaseActivity.this.invalidateOptionsMenu();
-
-        /* Sliding  Panel OR Not Sliding Panel, Yup we don't need it to be Sliding */
-        SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.sliding_layout);
-        slidingUpPanelLayout.setTouchEnabled(false);
-        if (Main.mainMenuHasNowPlayingItem) {
-            Main.musicService.notifyCurrentSong();
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
-        } else {
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
-        }
-    }
-
-    /**
-     * Let's set a context menu (menu that appears when
-     * the user presses the "menu" button).
-     * Its unnecessary as i have added these option in side NAV
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Default options specified on the XML
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_context, menu);
-
-        // Extra option to go to Now Playing screen
-        // (only activated when there's an actual Now Playing screen)
-        if (Main.musicService.isPlaying())
-            menu.findItem(R.id.nowPlayingIcon).setVisible(true);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    /**
-     * This method gets called whenever the user clicks an
-     * item on the context menu.
-     */
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-
-            // I know it's bad to force quiting the program,
-            // but I just love when applications have this option. xD
-            case R.id.context_menu_end:
-                Main.forceExit(this);
-                break;
-
-            case R.id.context_menu_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-
-            case R.id.nowPlayingIcon:
-                startActivity(new Intent(this, PlayingNowList.class));
-                break;
-
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /* For refreshing the Day/Night Mode */

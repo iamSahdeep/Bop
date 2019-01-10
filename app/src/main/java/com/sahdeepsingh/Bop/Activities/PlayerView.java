@@ -29,13 +29,11 @@ import com.sahdeepsingh.Bop.views.TransitionAdapter;
 
 import java.io.File;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import me.tankery.lib.circularseekbar.CircularSeekBar;
 
 import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;
 
-public class PlayerView extends AppCompatActivity implements MediaController.MediaPlayerControl {
+public class PlayerView extends BaseActivity implements MediaController.MediaPlayerControl {
 
     ChangeSongBR changeSongBR;
     ImageView next, previous, rewind, forward, shuffle, repeat;
@@ -65,7 +63,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
         mProgressView = findViewById(R.id.progress);
         mFabView = findViewById(R.id.fab);
         circleBarVisualizer = findViewById(R.id.visualizer);
-        circleBarVisualizer.setColor(ContextCompat.getColor(this, R.color.primaryLightColor));
+        circleBarVisualizer.setColor(utils.getThemeAttrColor(this, R.styleable.Theme_primaryColor));
 
         mCoverView.setCallbacks(new MusicCoverView.Callbacks() {
             @Override
@@ -374,7 +372,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
     public void equalizer(View view) {
         Main.musicService.player.setLooping(true);
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
-                .setAccentColor(utils.getThemeAttrColor(PlayerView.this, R.styleable.Theme_colorAccent))
+                .setAccentColor(utils.getThemeAttrColor(PlayerView.this, R.styleable.Theme_primaryDarkColor))
                 .setAudioSessionId(getAudioSessionId())
                 .build();
         getSupportFragmentManager().beginTransaction()

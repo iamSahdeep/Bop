@@ -34,14 +34,13 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import java.io.File;
 import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;
 
-public class PlayingNowList extends AppCompatActivity implements MediaController.MediaPlayerControl {
+public class PlayingNowList extends BaseActivity implements MediaController.MediaPlayerControl {
 
     private TextView mTitleView, mCounterView;
     private LinearLayout mTitleViewq;

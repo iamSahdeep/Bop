@@ -59,9 +59,9 @@
                 android:layout_marginStart="@dimen/inner_padding"
                 android:layout_marginEnd="@dimen/inner_padding"
                 android:layout_weight="1"
-                android:thumbTint="@color/primaryColor"
+                android:thumbTint="?attr/primaryColor"
                 android:transitionName="@string/transition_name_progress"
-                app:backgroundTint="@color/primaryLightColor" />
+                app:backgroundTint="?attr/primaryLightColor" />
 
             <TextView
                 android:id="@+id/duration"
@@ -131,9 +131,8 @@
         android:nestedScrollingEnabled="false"
         app:fastScrollAutoHide="true"
         app:fastScrollAutoHideDelay="1500"
-        app:fastScrollPopupBgColor="@color/primaryColor"
-        app:fastScrollPopupTextColor="@color/primaryTextColor"
-        app:fastScrollThumbColor="@color/primaryDarkColor"
+        app:fastScrollPopupBgColor="?attr/primaryColor"
+        app:fastScrollThumbColor="?attr/primaryDarkColor"
         app:layoutManager="LinearLayoutManager"
         tools:context=".fragments.FragmentSongs"
         tools:itemCount="4"
@@ -151,7 +150,7 @@
         android:scaleType="center"
         android:src="@drawable/ic_music"
         android:transitionName="@string/transition_name_fab"
-        app:backgroundTint="@color/primaryLightColor"
+        app:backgroundTint="?attr/colorAccent"
         app:fabSize="mini" />
 
 </com.sahdeepsingh.Bop.views.InsetsPercentRelativeLayout>

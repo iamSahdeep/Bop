@@ -21,7 +21,7 @@
         android:scaleType="centerInside"
         android:src="@drawable/back"
         android:transitionName="@string/transition_name_cover"
-        app:layout_heightPercent="35%"
+        app:layout_heightPercent="30%"
         app:shape="circle" />
 
     <ImageView
@@ -49,19 +49,19 @@
         android:layout_height="0dp"
         android:layout_centerInParent="true"
         android:transitionName="@string/transition_name_progress"
-        app:cs_circle_color="@color/colorPane"
-        app:cs_circle_progress_color="@color/gray"
+        app:cs_circle_color="?attr/primaryLightColor"
+        app:cs_circle_progress_color="?attr/primaryColor"
         app:cs_circle_stroke_width="8dp"
         app:cs_circle_style="round"
         app:cs_end_angle="30"
         app:cs_maintain_equal_circle="false"
         app:cs_negative_enabled="false"
-        app:cs_pointer_halo_color="@color/gray"
+        app:cs_pointer_halo_color="?attr/colorAccent"
         app:cs_pointer_halo_color_ontouch="@color/gray"
         app:cs_pointer_stroke_width="14dp"
         app:cs_start_angle="-210"
         app:layout_aspectRatio="100%"
-        app:layout_heightPercent="33%" />
+        app:layout_heightPercent="28%" />
 
     <com.sahdeepsingh.Bop.Visualizers.CircleBarVisualizer
         android:id="@+id/visualizer"
@@ -71,7 +71,7 @@
         android:clickable="false"
         android:outlineProvider="bounds"
         app:layout_aspectRatio="100%"
-        app:layout_heightPercent="55%" />
+        app:layout_heightPercent="50%" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
