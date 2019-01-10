@@ -55,9 +55,10 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Checking if changes were made, look these methods for better understanding
-        refreshMode();
         refreshTheme();
+        refreshMode();
     }
 
     /**
@@ -160,12 +161,6 @@ public class BaseActivity extends AppCompatActivity {
                     break;
                 case "Night":
                     getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    break;
-                case "System":
-                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                    break;
-                case "Automatic":
-                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
                     break;
             }
             currentMode = mode;

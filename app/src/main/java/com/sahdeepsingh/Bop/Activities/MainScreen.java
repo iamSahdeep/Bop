@@ -15,8 +15,6 @@ import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -52,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.legacy.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -105,12 +104,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         Main.settings.load(this);
-
         super.onCreate(savedInstanceState);
-
-        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_main_screen);
 
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
@@ -140,6 +134,9 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         registerReceiver(changeSongBR, intentFilter);
 
         createDrawer();
+        if (Main.settings.get("modes", "Day").equals("Day"))
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.md_white_1000));
+        else getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.md_grey_800));
     }
 
     private void createDrawer() {

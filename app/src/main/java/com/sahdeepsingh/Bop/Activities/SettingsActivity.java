@@ -116,12 +116,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             case "Night":
                 getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
-            case "System":
-                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                break;
-            case "Automatic":
-                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
-                break;
         }
 
     }

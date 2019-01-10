@@ -27,15 +27,11 @@
     <string-array name="modes">
         <item>Day</item>
         <item>Night</item>
-        <item>System</item>
-        <item>Automatic</item>
     </string-array>
 
     <string-array name="modes_values">
         <item>Day</item>
         <item>Night</item>
-        <item>System</item>
-        <item>Automatic</item>
     </string-array>
 
     <string-array name="themes">
