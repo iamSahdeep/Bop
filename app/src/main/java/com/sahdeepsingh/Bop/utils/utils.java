@@ -66,16 +66,9 @@ public class utils {
     }
 
     /*Get color from attr, but not working*/
-    public static int getThemeAttrColor(Context context, int attr) {
-        TEMP_ARRAY[0] = attr;
-        TypedArray a = context.getTheme().obtainStyledAttributes(TEMP_ARRAY);
-        try {
-            return a.getColor(3, context.getResources().getColor(R.color.accent));
-        } catch (Exception e) {
-            return R.color.accent;
-        } finally {
-            a.recycle();
-        }
+    public static int getThemeAttrColor(Context context, int NumberfromThemeStylable) {
+        TypedArray ta = context.getTheme().obtainStyledAttributes(R.styleable.Theme);
+        return ta.getColor(NumberfromThemeStylable, context.getResources().getColor(R.color.colorAccent));
     }
 
     public static void sendFeedback(Context context) {

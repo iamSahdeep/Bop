@@ -136,7 +136,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         createDrawer();
         if (Main.settings.get("modes", "Day").equals("Day"))
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.md_white_1000));
-        else getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.md_grey_800));
+        else getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.md_grey_900));
     }
 
     private void createDrawer() {

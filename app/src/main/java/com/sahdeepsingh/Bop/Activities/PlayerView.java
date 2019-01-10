@@ -24,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.Visualizers.CircleBarVisualizer;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.utils;
 import com.sahdeepsingh.Bop.views.TransitionAdapter;
 
 import java.io.File;
@@ -373,7 +374,7 @@ public class PlayerView extends AppCompatActivity implements MediaController.Med
     public void equalizer(View view) {
         Main.musicService.player.setLooping(true);
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
-                .setAccentColor(ContextCompat.getColor(this, R.color.primaryColor))
+                .setAccentColor(utils.getThemeAttrColor(PlayerView.this, R.styleable.Theme_colorAccent))
                 .setAudioSessionId(getAudioSessionId())
                 .build();
         getSupportFragmentManager().beginTransaction()

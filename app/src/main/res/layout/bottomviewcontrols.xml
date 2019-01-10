@@ -4,7 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    android:background="?attr/primaryLightColor"
     android:orientation="horizontal"
     android:visibility="visible"
     android:weightSum="5">
@@ -36,7 +35,6 @@
             android:layout_marginLeft="5dip"
             android:layout_marginTop="5dip"
             android:layout_marginRight="5dip"
-            android:textColor="?attr/primaryColor"
             android:focusable="true"
             android:scrollHorizontally="true"
             android:singleLine="true"
@@ -53,7 +51,6 @@
             <TextView
                 android:id="@+id/mtimeview"
                 android:layout_width="wrap_content"
-                android:textColor="?attr/primaryColor"
                 android:layout_height="wrap_content"
                 android:text="@string/transition_name_time" />
 
@@ -67,7 +64,6 @@
 
             <TextView
                 android:id="@+id/mdurationview"
-                android:textColor="?attr/primaryColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/transition_name_time" />

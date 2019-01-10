@@ -99,6 +99,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             actionMode = null;
+            deselectAll();
         }
     };
 
