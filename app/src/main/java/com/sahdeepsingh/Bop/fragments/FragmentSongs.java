@@ -1,9 +1,10 @@
 package com.sahdeepsingh.Bop.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -51,6 +52,18 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.selected, menu);
+            Drawable drawable1 = menu.getItem(0).getIcon();
+            Drawable drawable2 = menu.getItem(1).getIcon();
+            drawable1.mutate();
+            drawable2.mutate();
+            if (!Main.settings.get("modes", "Day").equals("Day")) {
+                drawable1.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
+                drawable2.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
+            } else {
+                drawable1.setColorFilter(getResources().getColor(R.color.md_grey_900), PorterDuff.Mode.SRC_IN);
+                drawable2.setColorFilter(getResources().getColor(R.color.md_grey_900), PorterDuff.Mode.SRC_IN);
+            }
+
             return true;
         }
 
@@ -133,29 +146,12 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
             mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs, mListener);
             mySongsRecyclerViewAdapter.setActionModeReceiver(this);
             mySongsRecyclerViewAdapter.setHasStableIds(true);
-            //recyclerView properties for fast scrolling but doesnt work much
+        //recyclerView properties for fast scrolling but doesn't work much
             recyclerView.setHasFixedSize(true);
             recyclerView.setItemViewCacheSize(100);
             recyclerView.setDrawingCacheEnabled(true);
             recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
             recyclerView.setAdapter(mySongsRecyclerViewAdapter);
-            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    ActionBar actionBar = getActivity().getActionBar();
-                    if (actionBar != null)
-                        if (dy > 0) {
-                            // Scrolling up
-
-                            actionBar.hide();
-
-                        } else {
-                            // Scrolling down
-                            actionBar.show();
-                        }
-                }
-            });
         return view;
     }
 
