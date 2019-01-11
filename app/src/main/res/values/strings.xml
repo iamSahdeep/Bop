@@ -185,5 +185,6 @@
     <string name="most_played">Most Played</string>
     <string name="times_played">Times Played</string>
     <string name="artist">Artist</string>
+    <string name="play_all">Play all</string>
 
 </resources>

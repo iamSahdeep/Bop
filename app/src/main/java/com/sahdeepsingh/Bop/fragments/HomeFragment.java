@@ -2,18 +2,22 @@ package com.sahdeepsingh.Bop.fragments;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.Adapters.MostPlayedSongsAdapter;
 import com.sahdeepsingh.Bop.Adapters.RecentSongsAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +29,7 @@ public class HomeFragment extends Fragment {
     RecentSongsAdapter recentSongsAdapter;
     MostPlayedSongsAdapter mostPlayedSongsAdapter;
     LinearLayout recents, mostPlayed, openAllSongs, openAlbums, openPlaylists, openGenres;
+    TextView recentAll, MPAll;
 
 
     public HomeFragment() {
@@ -49,6 +54,8 @@ public class HomeFragment extends Fragment {
         openAlbums = view.findViewById(R.id.openAlbums);
         openPlaylists = view.findViewById(R.id.openPlaylists);
         openGenres = view.findViewById(R.id.openGenres);
+        recentAll = view.findViewById(R.id.playAllRecents);
+        MPAll = view.findViewById(R.id.playAllMP);
 
         ViewPager mViewPager = getActivity().findViewById(R.id.container);
 
@@ -84,6 +91,34 @@ public class HomeFragment extends Fragment {
         mostPlayedRecycler.setNestedScrollingEnabled(false);
         mostPlayedSongsAdapter = new MostPlayedSongsAdapter(getActivity(), mostPlayedSongs);
         mostPlayedRecycler.setAdapter(mostPlayedSongsAdapter);
+
+        recentAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicList.clear();
+                List<Long> temmp = Main.songs.getRecentSongs(getActivity());
+                for (int i = 0; i < temmp.size(); i++) {
+                    Main.musicList.add(Main.songs.getSongById(temmp.get(i)));
+                }
+                Main.nowPlayingList = Main.musicList;
+                Main.musicService.setList(Main.nowPlayingList);
+                Intent intent = new Intent(getActivity(), PlayingNowList.class);
+                intent.putExtra("playlistname", "Recent Songs");
+                getActivity().startActivity(intent);
+            }
+        });
+        MPAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicList.clear();
+                Main.musicList = (ArrayList<Song>) Main.songs.getMostPlayedSongs(getActivity());
+                Main.nowPlayingList = Main.musicList;
+                Main.musicService.setList(Main.nowPlayingList);
+                Intent intent = new Intent(getActivity(), PlayingNowList.class);
+                intent.putExtra("playlistname", "Most played");
+                getActivity().startActivity(intent);
+            }
+        });
 
         return view;
     }

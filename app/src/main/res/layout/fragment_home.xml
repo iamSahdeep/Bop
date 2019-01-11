@@ -71,6 +71,14 @@
                     android:text="@string/recent_songs"
                     android:textSize="17sp" />
 
+                <TextView
+                    android:id="@+id/playAllRecents"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/play_all"
+                    android:textSize="15sp" />
+
             </LinearLayout>
 
 
@@ -137,6 +145,14 @@
                     android:layout_weight="1"
                     android:text="@string/most_played"
                     android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/playAllMP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/play_all"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
