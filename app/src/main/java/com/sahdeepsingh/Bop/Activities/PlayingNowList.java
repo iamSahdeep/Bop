@@ -33,6 +33,7 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,7 +43,7 @@ import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;
 
 public class PlayingNowList extends BaseActivity implements MediaController.MediaPlayerControl {
 
-    private TextView mTitleView, mCounterView;
+    private TextView mTitleView, mCounterView, mPlaylistName;
     private LinearLayout mTitleViewq;
     private FloatingActionButton mFabView;
     private TextView mTimeView;
@@ -86,60 +87,16 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
         mFabView = findViewById(R.id.fab);
         mTitleViewq = findViewById(R.id.title);
         mCounterView = findViewById(R.id.counter);
+        mPlaylistName = findViewById(R.id.name);
 
         songListView.setLayoutManager(new LinearLayoutManager(this));
         songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-
-        if (bundle != null) {
-
-            if (bundle.containsKey("file")) {
-                File file = (File) bundle.get("file");
-                if (Main.songs.getSongbyFile(file) != null) {
-                    Main.musicService.add(Main.songs.getSongbyFile(file));
-                    Main.musicService.playSong();
-                }
-            }
-
-            // There's the other optional extra - sorting rule
-            if (bundle.containsKey("sort"))
-                Main.musicService.sortBy((String) bundle.get("sort"));
-
-            // If we received an extra with the song position
-            // inside the now playing list, start playing it
-            if (bundle.containsKey("songPosition")) {
-                int songToPlayIndex = bundle.getInt("songPosition");
-                Main.musicService.setList(Main.nowPlayingList);
-                Main.musicService.setSong(songToPlayIndex);
-                Main.musicService.playSong();
-            }
-            if (bundle.containsKey("playlistName")) {
-                if (!Main.nowPlayingList.isEmpty())
-                    Main.musicService.setList(Main.musicList);
-                Main.musicService.playSong();
-
-            }
-            if (bundle.containsKey("genreName")) {
-                if (!Main.nowPlayingList.isEmpty())
-                    Main.musicService.setList(Main.musicList);
-                Main.musicService.playSong();
-            }
-            if (bundle.containsKey("albumName")) {
-                if (!Main.nowPlayingList.isEmpty())
-                    Main.musicService.setList(Main.musicList);
-                Main.musicService.playSong();
-            }
+        if (getIntent().getExtras() != null) {
+            mPlaylistName.setText(Objects.requireNonNull(getIntent().getExtras()).getString("playlistname", "Current Playlist"));
+            Main.musicService.playSong();
         }
 
-        // Scroll the list view to the current song.
-        //songListView.getLayoutManager().scrollToPosition(Main.nowPlayingList.);
-
-        // We'll get warned when the user clicks on an item
-        // and when he long selects an item.
-        // songListView.setOnItemClickListener(this);
-        //  songListView.setOnItemLongClickListener(this);
 
 
         // While we're playing music, add an item to the

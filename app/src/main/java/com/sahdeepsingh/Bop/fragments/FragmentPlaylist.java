@@ -14,19 +14,12 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
-
 public class FragmentPlaylist extends Fragment {
 
-    private OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -50,11 +43,11 @@ public class FragmentPlaylist extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
             ArrayList<String> playlists = Main.songs.getPlaylistNames();
-            MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(playlists, mListener);
+            MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(playlists);
             recyclerView.setAdapter(myPlaylistRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     ActionBar actionBar = getActivity().getActionBar();
                     if (actionBar != null)
@@ -72,34 +65,5 @@ public class FragmentPlaylist extends Fragment {
         }
 
         return view;
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(int item, String type);
     }
 }

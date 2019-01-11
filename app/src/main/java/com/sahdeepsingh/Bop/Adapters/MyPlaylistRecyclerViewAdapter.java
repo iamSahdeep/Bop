@@ -3,6 +3,7 @@ package com.sahdeepsingh.Bop.Adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.InputType;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -15,13 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
-import com.sahdeepsingh.Bop.fragments.FragmentPlaylist.OnListFragmentInteractionListener;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -30,14 +32,12 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
 
     private final List<String> playlists;
-    private OnListFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
     private int anyExpanded = -1;
     private ViewHolder expandedViewholder;
 
-    public MyPlaylistRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
+    public MyPlaylistRecyclerViewAdapter(List<String> items) {
         playlists = items;
-        mListener = listener;
     }
 
     @NonNull
@@ -58,6 +58,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
             if (path != null) {
                 Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).into(holder.albumart);
                 Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).into(holder.albumartD);
+                break;
             }
         }
         holder.total.setText(String.valueOf(songsList.size()) + " songs");
@@ -65,15 +66,13 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
             @Override
             public void onClick(View v) {
                 Context context = holder.mView.getContext();
-                if (context instanceof OnListFragmentInteractionListener) {
-                    mListener = (OnListFragmentInteractionListener) context;
-                } else {
-                    throw new RuntimeException(context.toString()
-                            + " must implement OnListFragmentInteractionListener");
-                }
-                // Notify the active callbacks interface (the activity, if the
-                // fragment is attached to one) that an item has been selected.
-                mListener.onListFragmentInteraction(holder.getAdapterPosition(), "playlist");
+                Main.musicList.clear();
+                Main.musicList = (ArrayList<Song>) songsList;
+                Main.nowPlayingList = Main.musicList;
+                Main.musicService.setList(Main.nowPlayingList);
+                Intent intent = new Intent(context, PlayingNowList.class);
+                intent.putExtra("playlistname", selectedPlaylist);
+                context.startActivity(intent);
             }
         });
 

@@ -1,19 +1,21 @@
 package com.sahdeepsingh.Bop.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
-import com.sahdeepsingh.Bop.fragments.FragmentAlbum.OnListFragmentInteractionListener;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -22,11 +24,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecyclerViewAdapter.ViewHolder> {
 
     private final List<String> mValues;
-    private OnListFragmentInteractionListener mListener;
 
-    public MyAlbumRecyclerViewAdapter(List<String> items, OnListFragmentInteractionListener listener) {
+    public MyAlbumRecyclerViewAdapter(List<String> items) {
         mValues = items;
-        mListener = listener;
     }
 
     @NonNull
@@ -53,15 +53,13 @@ public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecy
             @Override
             public void onClick(View v) {
                 Context context = holder.mView.getContext();
-                if (context instanceof OnListFragmentInteractionListener) {
-                    mListener = (OnListFragmentInteractionListener) context;
-                } else {
-                    throw new RuntimeException(context.toString()
-                            + " must implement OnListFragmentInteractionListener");
-                }
-                // Notify the active callbacks interface (the activity, if the
-                // fragment is attached to one) that an item has been selected.
-                mListener.onListFragmentInteraction(holder.getAdapterPosition(), "AlbumList");
+                Main.musicList.clear();
+                Main.musicList = (ArrayList<Song>) songsList;
+                Main.nowPlayingList = Main.musicList;
+                Main.musicService.setList(Main.nowPlayingList);
+                Intent intent = new Intent(context, PlayingNowList.class);
+                intent.putExtra("playlistname", selectedAlbum);
+                context.startActivity(intent);
             }
         });
     }

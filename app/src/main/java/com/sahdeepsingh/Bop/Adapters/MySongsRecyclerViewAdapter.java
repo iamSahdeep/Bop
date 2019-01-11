@@ -1,6 +1,7 @@
 package com.sahdeepsingh.Bop.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -9,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
-import com.sahdeepsingh.Bop.fragments.FragmentSongs.OnListFragmentInteractionListener;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;
@@ -29,7 +30,6 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
     private final List<Song> songs;
     private List<Song> selected = new ArrayList<>();
     private OnClickAction receiver;
-    private OnListFragmentInteractionListener mListener;
 
     @NonNull
     @Override
@@ -41,9 +41,8 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         void onClickAction();
     }
 
-    public MySongsRecyclerViewAdapter(List<Song> items, OnListFragmentInteractionListener listener) {
+    public MySongsRecyclerViewAdapter(List<Song> items) {
         songs = items;
-        mListener = listener;
     }
 
     @NonNull
@@ -92,15 +91,13 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
             public void onClick(View v) {
                 if (selected.isEmpty()){
                     Context context = holder.mView.getContext();
-                    if (context instanceof OnListFragmentInteractionListener) {
-                        mListener = (OnListFragmentInteractionListener) context;
-                    } else {
-                        throw new RuntimeException(context.toString()
-                                + " must implement OnListFragmentInteractionListener");
-                    }
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.getAdapterPosition(), "singleSong");
+                    Main.musicList.clear();
+                    Main.musicList.add(localItem);
+                    Main.nowPlayingList = Main.musicList;
+                    Main.musicService.setList(Main.nowPlayingList);
+                    Intent intent = new Intent(context, PlayingNowList.class);
+                    intent.putExtra("playlistname", "Single Song");
+                    context.startActivity(intent);
                 }else {
                     if (selected.contains(localItem)) {
                         selected.remove(localItem);

@@ -49,7 +49,6 @@ import com.sahdeepsingh.Bop.utils.utils;
 import com.sahdeepsingh.Bop.views.ProgressView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import androidx.appcompat.widget.Toolbar;
@@ -59,7 +58,7 @@ import androidx.legacy.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 
-public class MainScreen extends BaseActivity implements MediaController.MediaPlayerControl, FragmentSongs.OnListFragmentInteractionListener, FragmentPlaylist.OnListFragmentInteractionListener, FragmentGenre.OnListFragmentInteractionListener, FragmentAlbum.OnListFragmentInteractionListener {
+public class MainScreen extends BaseActivity implements MediaController.MediaPlayerControl {
 
 
     public static final String BROADCAST_ACTION = "lol";
@@ -251,50 +250,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
     public void openPlayer(View view) {
         startActivity(new Intent(this, PlayingNowList.class));
-    }
-
-    /* Fragment Interactions*/
-    @Override
-    public void onListFragmentInteraction(int position, String type) {
-
-        Intent intent = new Intent(this, PlayingNowList.class);
-
-        switch (type) {
-            case "singleSong":
-                Main.musicList.clear();
-                Main.musicList = new ArrayList<>(Main.songs.songs);
-                Main.nowPlayingList = Main.musicList;
-                intent.putExtra("songPosition", position);
-                startActivity(intent);
-                break;
-
-            case "playlist":
-                Main.musicList.clear();
-                String selectedPlaylist = Main.songs.playlists.get(position).getName();
-                Main.musicList = Main.songs.getSongsByPlaylist(selectedPlaylist);
-                Main.nowPlayingList = Main.musicList;
-                intent.putExtra("playlistName", selectedPlaylist);
-                startActivity(intent);
-                break;
-
-            case "GenreList":
-                Main.musicList.clear();
-                String selectedGenre = Main.songs.getGenres().get(position);
-                Main.musicList = Main.songs.getSongsByGenre(selectedGenre);
-                Main.nowPlayingList = Main.musicList;
-                intent.putExtra("genreName", selectedGenre);
-                startActivity(intent);
-                break;
-
-            case "AlbumList":
-                Main.musicList.clear();
-                String selectedAlbum = Main.songs.getAlbums().get(position);
-                Main.musicList = Main.songs.getSongsByAlbum(selectedAlbum);
-                Main.nowPlayingList = Main.musicList;
-                intent.putExtra("albumName", selectedAlbum);
-                startActivity(intent);
-                break;
-        }
     }
 
     @Override

@@ -18,17 +18,7 @@ import java.util.Collections;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-// Fragment for Albums
-
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class FragmentAlbum extends Fragment {
-
-    private OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,7 +44,7 @@ public class FragmentAlbum extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, 2)); //can change to create grid layout
             ArrayList<String> albums = Main.songs.getAlbums();
             Collections.sort(albums);
-            MyAlbumRecyclerViewAdapter myAlbumRecyclerViewAdapter = new MyAlbumRecyclerViewAdapter(albums, mListener);
+            MyAlbumRecyclerViewAdapter myAlbumRecyclerViewAdapter = new MyAlbumRecyclerViewAdapter(albums);
             recyclerView.setAdapter(myAlbumRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -73,35 +63,5 @@ public class FragmentAlbum extends Fragment {
             });
         }
         return view;
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        //sending position of the album and type ( look the switch statement)
-        void onListFragmentInteraction(int position, String type);
     }
 }

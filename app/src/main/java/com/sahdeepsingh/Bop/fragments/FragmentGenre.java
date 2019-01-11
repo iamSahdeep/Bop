@@ -20,8 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FragmentGenre extends Fragment {
 
-    private OnListFragmentInteractionListener mListener;
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -46,7 +44,7 @@ public class FragmentGenre extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
             ArrayList<String> genres = Main.songs.getGenres();
             Collections.sort(genres);
-            MyGenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new MyGenreRecyclerViewAdapter(genres, mListener);
+            MyGenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new MyGenreRecyclerViewAdapter(genres);
             recyclerView.setAdapter(myGenreRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -68,34 +66,5 @@ public class FragmentGenre extends Fragment {
 
         }
         return view;
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(int position, String type);
     }
 }

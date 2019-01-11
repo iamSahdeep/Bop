@@ -33,7 +33,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FragmentSongs extends android.app.Fragment implements MySongsRecyclerViewAdapter.OnClickAction {
 
-    private OnListFragmentInteractionListener mListener;
     MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter;
     ActionMode actionMode;EditText name;
 
@@ -103,38 +102,6 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
         }
     };
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(int item, String type);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -144,7 +111,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
             Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.list);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs, mListener);
+        mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs);
             mySongsRecyclerViewAdapter.setActionModeReceiver(this);
             mySongsRecyclerViewAdapter.setHasStableIds(true);
         //recyclerView properties for fast scrolling but doesn't work much
