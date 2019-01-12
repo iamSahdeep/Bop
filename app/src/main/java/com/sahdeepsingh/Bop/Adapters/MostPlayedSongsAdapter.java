@@ -1,6 +1,7 @@
 package com.sahdeepsingh.Bop.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -50,6 +52,23 @@ public class MostPlayedSongsAdapter extends RecyclerView.Adapter<MostPlayedSongs
             }
             holder.TimesPlayed.setText(String.valueOf(Main.songs.getcountSongsPlayed(context, songs.get(position))));
         }
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = holder.mView.getContext();
+                Main.musicList.clear();
+                Main.musicList.add(songs.get(position));
+                Main.nowPlayingList = Main.musicList;
+                Main.musicService.setList(Main.nowPlayingList);
+                Intent intent = new Intent(context, PlayingNowList.class);
+                intent.putExtra("playlistname", "Single Song");
+                context.startActivity(intent);
+
+            }
+        });
+
+
     }
 
 
@@ -62,6 +81,7 @@ public class MostPlayedSongsAdapter extends RecyclerView.Adapter<MostPlayedSongs
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        public final View mView;
         public final TextView songName;
         public final TextView TimesPlayed;
         public final TextView songBy;
@@ -69,6 +89,7 @@ public class MostPlayedSongsAdapter extends RecyclerView.Adapter<MostPlayedSongs
 
         ViewHolder(View view) {
             super(view);
+            mView = view;
             songName = view.findViewById(R.id.mostPlayedSongName);
             songBy = view.findViewById(R.id.mostPlayedArtistName);
             imageView = view.findViewById(R.id.mostplayedAlbumArt);
