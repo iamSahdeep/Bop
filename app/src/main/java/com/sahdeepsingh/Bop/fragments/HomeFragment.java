@@ -28,7 +28,7 @@ public class HomeFragment extends Fragment {
 
     RecentSongsAdapter recentSongsAdapter;
     MostPlayedSongsAdapter mostPlayedSongsAdapter;
-    LinearLayout recents, mostPlayed, openAllSongs, openAlbums, openPlaylists, openGenres;
+    LinearLayout recents, mostPlayed, openAllSongs, openAlbums, openPlaylists, openGenres, openArtists;
     TextView recentAll, MPAll;
 
 
@@ -54,6 +54,7 @@ public class HomeFragment extends Fragment {
         openAlbums = view.findViewById(R.id.openAlbums);
         openPlaylists = view.findViewById(R.id.openPlaylists);
         openGenres = view.findViewById(R.id.openGenres);
+        openArtists = view.findViewById(R.id.openArtists);
         recentAll = view.findViewById(R.id.playAllRecents);
         MPAll = view.findViewById(R.id.playAllMP);
 
@@ -66,6 +67,8 @@ public class HomeFragment extends Fragment {
         openPlaylists.setOnClickListener(view12 -> mViewPager.setCurrentItem(2, true));
 
         openAlbums.setOnClickListener(view1 -> mViewPager.setCurrentItem(3, true));
+
+        openArtists.setOnClickListener(view15 -> mViewPager.setCurrentItem(5, true));
 
         List<Long> recentSongs = Main.songs.getRecentSongs(getActivity());
         List<Song> mostPlayedSongs = Main.songs.getMostPlayedSongs(getActivity());

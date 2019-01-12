@@ -357,33 +357,35 @@
 
                     </LinearLayout>
 
-                    <!-- <LinearLayout
-                         android:layout_width="0dp"
-                         android:layout_height="wrap_content"
-                         android:layout_margin="5dp"
-                         android:layout_weight="1"
-                         android:background="@drawable/searchback"
-                         android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/openArtists"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/searchback"
+                        android:orientation="vertical">
 
-                         <ImageView
-                             android:layout_width="50dp"
-                             android:layout_height="50dp"
-                             android:layout_gravity="center"
-                             android:src="@mipmap/ic_launcher" />
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/back" />
 
 
-                         <TextView
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="center"
-                             android:layout_marginTop="3dp"
-                             android:gravity="center"
-                             android:text="Analytics"
-                             android:textSize="12sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="3dp"
+                            android:gravity="center"
+                            android:text="@string/artist"
+                            android:textSize="12sp" />
 
-                     </LinearLayout>
+                    </LinearLayout>
 
-                     <LinearLayout
+                    <!--<LinearLayout
                          android:layout_width="0dp"
                          android:layout_height="wrap_content"
                          android:layout_margin="5dp"
