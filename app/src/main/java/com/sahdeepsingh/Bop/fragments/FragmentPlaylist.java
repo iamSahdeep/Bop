@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sahdeepsingh.Bop.Adapters.MyPlaylistRecyclerViewAdapter;
+import com.sahdeepsingh.Bop.Adapters.PlaylistRecyclerViewAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
@@ -43,8 +43,8 @@ public class FragmentPlaylist extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
             ArrayList<String> playlists = Main.songs.getPlaylistNames();
-            MyPlaylistRecyclerViewAdapter myPlaylistRecyclerViewAdapter = new MyPlaylistRecyclerViewAdapter(playlists);
-            recyclerView.setAdapter(myPlaylistRecyclerViewAdapter);
+            PlaylistRecyclerViewAdapter playlistRecyclerViewAdapter = new PlaylistRecyclerViewAdapter(playlists);
+            recyclerView.setAdapter(playlistRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {

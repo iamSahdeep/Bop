@@ -29,14 +29,14 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
+public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRecyclerViewAdapter.ViewHolder> {
 
     private final List<String> playlists;
     private RecyclerView mRecyclerView;
     private int anyExpanded = -1;
     private ViewHolder expandedViewholder;
 
-    public MyPlaylistRecyclerViewAdapter(List<String> items) {
+    public PlaylistRecyclerViewAdapter(List<String> items) {
         playlists = items;
     }
 

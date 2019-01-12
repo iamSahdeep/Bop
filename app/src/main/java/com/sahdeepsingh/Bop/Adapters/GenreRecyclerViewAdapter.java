@@ -22,11 +22,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class MyGenreRecyclerViewAdapter extends RecyclerView.Adapter<MyGenreRecyclerViewAdapter.ViewHolder> {
+public class GenreRecyclerViewAdapter extends RecyclerView.Adapter<GenreRecyclerViewAdapter.ViewHolder> {
 
     private final List<String> mValues;
 
-    public MyGenreRecyclerViewAdapter(List<String> items) {
+    public GenreRecyclerViewAdapter(List<String> items) {
         mValues = items;
     }
 

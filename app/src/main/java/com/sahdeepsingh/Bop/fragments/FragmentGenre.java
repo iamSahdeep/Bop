@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sahdeepsingh.Bop.Adapters.MyGenreRecyclerViewAdapter;
+import com.sahdeepsingh.Bop.Adapters.GenreRecyclerViewAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
@@ -44,7 +44,7 @@ public class FragmentGenre extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
             ArrayList<String> genres = Main.songs.getGenres();
             Collections.sort(genres);
-            MyGenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new MyGenreRecyclerViewAdapter(genres);
+            GenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new GenreRecyclerViewAdapter(genres);
             recyclerView.setAdapter(myGenreRecyclerViewAdapter);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override

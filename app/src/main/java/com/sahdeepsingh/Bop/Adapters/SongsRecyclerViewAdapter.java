@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecyclerViewAdapter.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
+public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecyclerViewAdapter.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
 
     private final List<Song> songs;
     private List<Song> selected = new ArrayList<>();
@@ -41,7 +41,7 @@ public class MySongsRecyclerViewAdapter extends RecyclerView.Adapter<MySongsRecy
         void onClickAction();
     }
 
-    public MySongsRecyclerViewAdapter(List<Song> items) {
+    public SongsRecyclerViewAdapter(List<Song> items) {
         songs = items;
     }
 

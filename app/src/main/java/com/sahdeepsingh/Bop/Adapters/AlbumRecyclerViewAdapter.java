@@ -21,11 +21,11 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyAlbumRecyclerViewAdapter extends RecyclerView.Adapter<MyAlbumRecyclerViewAdapter.ViewHolder> {
+public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecyclerViewAdapter.ViewHolder> {
 
     private final List<String> mValues;
 
-    public MyAlbumRecyclerViewAdapter(List<String> items) {
+    public AlbumRecyclerViewAdapter(List<String> items) {
         mValues = items;
     }
 

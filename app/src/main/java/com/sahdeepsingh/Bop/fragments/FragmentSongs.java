@@ -21,7 +21,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.sahdeepsingh.Bop.Adapters.MySongsRecyclerViewAdapter;
+import com.sahdeepsingh.Bop.Adapters.SongsRecyclerViewAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FragmentSongs extends android.app.Fragment implements MySongsRecyclerViewAdapter.OnClickAction {
+public class FragmentSongs extends android.app.Fragment implements SongsRecyclerViewAdapter.OnClickAction {
 
-    MySongsRecyclerViewAdapter mySongsRecyclerViewAdapter;
+    SongsRecyclerViewAdapter songsRecyclerViewAdapter;
     ActionMode actionMode;EditText name;
 
 
@@ -76,11 +76,11 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
             switch (item.getItemId()) {
                 case R.id.selectAll:
                     selectAll();
-                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), songsRecyclerViewAdapter.getSelected().size() + " selected", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.deselectAll:
                     deselectAll();
-                    Toast.makeText(getActivity(), mySongsRecyclerViewAdapter.getSelected().size() + " selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), songsRecyclerViewAdapter.getSelected().size() + " selected", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.addtoPlaylist:
                     showPlaylistDialog();
@@ -111,15 +111,15 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
             Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.list);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mySongsRecyclerViewAdapter = new MySongsRecyclerViewAdapter(Main.songs.songs);
-            mySongsRecyclerViewAdapter.setActionModeReceiver(this);
-            mySongsRecyclerViewAdapter.setHasStableIds(true);
+        songsRecyclerViewAdapter = new SongsRecyclerViewAdapter(Main.songs.songs);
+        songsRecyclerViewAdapter.setActionModeReceiver(this);
+        songsRecyclerViewAdapter.setHasStableIds(true);
         //recyclerView properties for fast scrolling but doesn't work much
             recyclerView.setHasFixedSize(true);
             recyclerView.setItemViewCacheSize(100);
             recyclerView.setDrawingCacheEnabled(true);
             recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-            recyclerView.setAdapter(mySongsRecyclerViewAdapter);
+        recyclerView.setAdapter(songsRecyclerViewAdapter);
         return view;
     }
 
@@ -152,7 +152,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
                     return;
                 }
                 Main.showProgressDialog(getActivity());
-                Main.songs.newPlaylist(getActivity().getApplication(), "external", name.getText().toString(), (ArrayList<Song>) mySongsRecyclerViewAdapter.getSelected());
+                Main.songs.newPlaylist(getActivity().getApplication(), "external", name.getText().toString(), (ArrayList<Song>) songsRecyclerViewAdapter.getSelected());
                 getActivity().recreate();
                 Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
@@ -173,15 +173,15 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
     }
 
     public void selectAll() {
-        mySongsRecyclerViewAdapter.selectAll();
+        songsRecyclerViewAdapter.selectAll();
         if (actionMode == null) {
             actionMode = getActivity().startActionMode(actionModeCallback);
-            actionMode.setTitle("Selected: " + mySongsRecyclerViewAdapter.getSelected().size());
+            actionMode.setTitle("Selected: " + songsRecyclerViewAdapter.getSelected().size());
         }
     }
 
     public void deselectAll() {
-        mySongsRecyclerViewAdapter.clearSelected();
+        songsRecyclerViewAdapter.clearSelected();
         if (actionMode != null) {
             actionMode.finish();
             actionMode = null;
@@ -189,7 +189,7 @@ public class FragmentSongs extends android.app.Fragment implements MySongsRecycl
     }
 
     public void onClickAction() {
-        int selected = mySongsRecyclerViewAdapter.getSelected().size();
+        int selected = songsRecyclerViewAdapter.getSelected().size();
         if (actionMode == null) {
             actionMode = getActivity().startActionMode(actionModeCallback);
             assert actionMode != null;

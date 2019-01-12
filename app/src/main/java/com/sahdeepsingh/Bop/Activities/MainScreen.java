@@ -39,6 +39,7 @@ import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.mikepenz.materialize.util.UIUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
+import com.sahdeepsingh.Bop.fragments.FragmentArtist;
 import com.sahdeepsingh.Bop.fragments.FragmentGenre;
 import com.sahdeepsingh.Bop.fragments.FragmentPlaylist;
 import com.sahdeepsingh.Bop.fragments.FragmentSongs;
@@ -165,6 +166,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                         new PrimaryDrawerItem().withName("Playlist").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_playlist))).withIdentifier(3).withSelectable(true),
                         new PrimaryDrawerItem().withName("Genres").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_genre))).withIdentifier(4).withSelectable(true),
                         new PrimaryDrawerItem().withName("Albums").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_album))).withIdentifier(5).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Artists").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_artist))).withIdentifier(7).withSelectable(true),
                         new SectionDrawerItem().withName("More").withDivider(true),
                         new SecondaryDrawerItem().withName("Support").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_support))).withIdentifier(20).withSelectable(false),
                         new SecondaryDrawerItem().withName("Feedback").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_feedback))).withIdentifier(21).withSelectable(false))
@@ -194,6 +196,9 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 6) {
                             mViewPager.setCurrentItem(0, true);
+                            drawer.closeDrawer();
+                        } else if (drawerItem.getIdentifier() == 7) {
+                            mViewPager.setCurrentItem(5, true);
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 20) {
                             utils.openCustomTabs(MainScreen.this, "https://github.com/iamSahdeep/Bop/issues");
@@ -537,6 +542,8 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                     return new FragmentGenre();
                 case 4:
                     return new FragmentAlbum();
+                case 5:
+                    return new FragmentArtist();
                 default:
                     return new HomeFragment();
 
@@ -547,7 +554,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         @Override
         public int getCount() {
             // Show 5 total pages.
-            return 5;
+            return 6;
         }
 
         @Override
@@ -563,6 +570,8 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                     return "Genres";
                 case 4 :
                     return "Albums";
+                case 5:
+                    return "Artists";
             }
             return null;
         }
