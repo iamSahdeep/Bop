@@ -10,6 +10,7 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.Visualizers.barVisuals;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.utils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -74,6 +75,7 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
                 Main.musicService.playSong();
             }
         });
+        holder.songOptions.setImageDrawable(utils.getThemedIcon(holder.mView.getContext(), holder.mView.getContext().getDrawable(R.drawable.ic_3dots)));
         holder.songOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

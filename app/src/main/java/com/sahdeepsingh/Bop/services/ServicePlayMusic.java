@@ -1,17 +1,17 @@
 package com.sahdeepsingh.Bop.services;
 
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
+import android.media.MediaMetadata;
 import android.media.MediaPlayer;
-import android.media.RemoteControlClient;
+import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
@@ -23,15 +23,11 @@ import android.widget.Toast;
 import com.sahdeepsingh.Bop.Activities.MainScreen;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
-import com.sahdeepsingh.Bop.controls.RemoteControlClientCompat;
-import com.sahdeepsingh.Bop.controls.RemoteControlHelper;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Random;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -186,18 +182,6 @@ public class ServicePlayMusic extends Service
      * Current state of the Service.
      */
     ServiceState serviceState = ServiceState.Preparing;
-    /**
-     * Controller that communicates with the lock screen,
-     * providing that fancy widget.
-     */
-    RemoteControlClientCompat lockscreenController = null;
-    /**
-     * We use this to get the media buttons' Broadcasts and
-     * to control the lock screen widget.
-     * <p>
-     * Component name of the MusicIntentReceiver.
-     */
-    ComponentName mediaButtonEventReceiver;
     /**
      * Use this to get audio focus:
      * <p>
@@ -502,23 +486,8 @@ public class ServicePlayMusic extends Service
     }
     // }}
 
-    /**
-     * Updates the lock-screen widget (creating if non-existing).
-     *
-     * @param song  Where it will take metadata to display.
-     * @param state Which state is it into.
-     *              Can be one of the following:
-     *              {@link RemoteControlClient#PLAYSTATE_PLAYING }
-     *              {@link RemoteControlClient#PLAYSTATE_PAUSED }
-     *              {@link RemoteControlClient#PLAYSTATE_BUFFERING }
-     *              {@link RemoteControlClient#PLAYSTATE_ERROR }
-     *              {@link RemoteControlClient#PLAYSTATE_FAST_FORWARDING }
-     *              {@link RemoteControlClient#PLAYSTATE_REWINDING }
-     *              {@link RemoteControlClient#PLAYSTATE_SKIPPING_BACKWARDS }
-     *              {@link RemoteControlClient#PLAYSTATE_SKIPPING_FORWARDS }
-     *              {@link RemoteControlClient#PLAYSTATE_STOPPED }
-     */
-    public void updateLockScreenWidget(Song song, int state) {
+
+    public void updateLockScreenWidget(Song song) {
 
         // Only showing if the Setting is... well... set
         if (!Main.settings.get("show_lock_widget", true))
@@ -534,67 +503,25 @@ public class ServicePlayMusic extends Service
             return;
         }
 
+        //not working
+        MediaSession mediaSession = new MediaSession(this, "Bop");
+
+        Bitmap cover = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                R.mipmap.ic_launcher);
+
+        mediaSession.setMetadata(new MediaMetadata.Builder()
+                .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, cover)
+                .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getArtist())
+                .putString(MediaMetadata.METADATA_KEY_ALBUM, song.getAlbum())
+                .putString(MediaMetadata.METADATA_KEY_TITLE, song.getTitle())
+                .build());
+
         Log.w("service", "audio_focus_granted");
 
-        // The Lock-Screen widget was not created up until now.
-        // (both of the null-checks below)
-        if (mediaButtonEventReceiver == null)
-            mediaButtonEventReceiver = new ComponentName(this, ExternalBroadcastReceiver.class);
-
-        if (lockscreenController == null) {
-            Intent audioButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-            audioButtonIntent.setComponent(mediaButtonEventReceiver);
-
-            PendingIntent pending = PendingIntent.getBroadcast(this, 0, audioButtonIntent, 0);
-
-            lockscreenController = new RemoteControlClientCompat(pending);
-
-            RemoteControlHelper.registerRemoteControlClient(audioManager, lockscreenController);
-            audioManager.registerMediaButtonEventReceiver(mediaButtonEventReceiver);
-
-            Log.w("service", "created control compat");
-        }
-
-        // Current state of the Lock-Screen Widget
-        lockscreenController.setPlaybackState(state);
-
-        // All buttons the Lock-Screen Widget supports
-        // (will be broadcasts)
-        lockscreenController.setTransportControlFlags(
-                RemoteControlClient.FLAG_KEY_MEDIA_PLAY |
-                        RemoteControlClient.FLAG_KEY_MEDIA_PAUSE |
-                        RemoteControlClient.FLAG_KEY_MEDIA_PREVIOUS |
-                        RemoteControlClient.FLAG_KEY_MEDIA_NEXT);
-
-        // Update the current song metadata
-        // on the Lock-Screen Widget
-        lockscreenController
-                // Starts editing (before #apply())
-                .editMetadata(true)
-
-                // Sending all metadata of the current song
-                .putString(android.media.MediaMetadataRetriever.METADATA_KEY_ARTIST, song.getArtist())
-                .putString(android.media.MediaMetadataRetriever.METADATA_KEY_ALBUM, song.getAlbum())
-                .putString(android.media.MediaMetadataRetriever.METADATA_KEY_TITLE, song.getTitle())
-                .putLong(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION, song.getDuration())
-                .putBitmap(RemoteControlClientCompat.MetadataEditorCompat.METADATA_KEY_ARTWORK, BitmapFactory.decodeFile(Main.songs.getAlbumArt(song)))
-
-                // Saves (after #editMetadata())
-                .apply();
-
-        Log.w("service", "remote control client applied");
     }
 
     public void destroyLockScreenWidget() {
-        if ((audioManager != null) && (lockscreenController != null)) {
-            //RemoteControlHelper.unregisterRemoteControlClient(audioManager, lockscreenController);
-            lockscreenController = null;
-        }
 
-        if ((audioManager != null) && (mediaButtonEventReceiver != null)) {
-            audioManager.unregisterMediaButtonEventReceiver(mediaButtonEventReceiver);
-            mediaButtonEventReceiver = null;
-        }
     }
 
     /**
@@ -728,9 +655,6 @@ public class ServicePlayMusic extends Service
         if (userSkippedSong)
             broadcastState(ServicePlayMusic.BROADCAST_EXTRA_SKIP_PREVIOUS);
 
-        // Updates Lock-Screen Widget
-        if (lockscreenController != null)
-            lockscreenController.setPlaybackState(RemoteControlClient.PLAYSTATE_SKIPPING_BACKWARDS);
 
         currentSongPosition--;
         if (currentSongPosition < 0)
@@ -754,9 +678,6 @@ public class ServicePlayMusic extends Service
         if (userSkippedSong)
             broadcastState(ServicePlayMusic.BROADCAST_EXTRA_SKIP_NEXT);
 
-        // Updates Lock-Screen Widget
-        if (lockscreenController != null)
-            lockscreenController.setPlaybackState(RemoteControlClient.PLAYSTATE_SKIPPING_FORWARDS);
 
         if (shuffleMode) {
             int newSongPosition = currentSongPosition;
@@ -832,7 +753,7 @@ public class ServicePlayMusic extends Service
 
         broadcastState(ServicePlayMusic.BROADCAST_EXTRA_PLAYING);
 
-        updateLockScreenWidget(currentSong, RemoteControlClient.PLAYSTATE_PLAYING);
+        updateLockScreenWidget(currentSong);
         Log.w(TAG, "play song");
     }
 
@@ -845,9 +766,6 @@ public class ServicePlayMusic extends Service
 
         notification.notifyPaused(true);
 
-        // Updates Lock-Screen Widget
-        if (lockscreenController != null)
-            lockscreenController.setPlaybackState(RemoteControlClient.PLAYSTATE_PAUSED);
 
         broadcastState(ServicePlayMusic.BROADCAST_EXTRA_PAUSED);
     }
@@ -861,9 +779,6 @@ public class ServicePlayMusic extends Service
 
         notification.notifyPaused(false);
 
-        // Updates Lock-Screen Widget
-        if (lockscreenController != null)
-            lockscreenController.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING);
 
         broadcastState(ServicePlayMusic.BROADCAST_EXTRA_UNPAUSED);
     }
@@ -943,100 +858,11 @@ public class ServicePlayMusic extends Service
     }
 
     /**
-     * Sorts the internal Now Playing List according to
-     * a `rule`.
-     * <p>
-     * Supported ways to sort are:
-     * - "title":  Sorts alphabetically by song title
-     * - "artist": Sorts alphabetically by artist name
-     * - "album":  Sorts alphabetically by album name
-     * - "track":  Sorts by track number
-     * - "random": Sorts randomly (shuffles song's orders)
-     */
-    public void sortBy(String rule) {
-
-        // We track the currently playing song to
-        // a position on the song list.
-        //
-        // When we sort, it'll be on a different
-        // position.
-        //
-        // So we keep a reference to the currently
-        // playing song's ID and then look it up
-        // after sorting.
-        long nowPlayingSongID = ((currentSong == null) ?
-                0 :
-                currentSong.getId());
-
-        switch (rule) {
-            case "title":
-                Collections.sort(songs, new Comparator<Song>() {
-                    public int compare(Song a, Song b) {
-                        return a.getTitle().compareTo(b.getTitle());
-                    }
-                });
-                break;
-            case "artist":
-                Collections.sort(songs, new Comparator<Song>() {
-                    public int compare(Song a, Song b) {
-                        return a.getArtist().compareTo(b.getArtist());
-                    }
-                });
-                break;
-            case "album":
-                Collections.sort(songs, new Comparator<Song>() {
-                    public int compare(Song a, Song b) {
-                        return a.getAlbum().compareTo(b.getAlbum());
-                    }
-                });
-                break;
-            case "track":
-                Collections.sort(songs, new Comparator<Song>() {
-                    public int compare(Song a, Song b) {
-                        int left = a.getTrackNumber();
-                        int right = b.getTrackNumber();
-
-                        if (left == right)
-                            return 0;
-
-                        return ((left < right) ?
-                                -1 :
-                                1);
-                    }
-                });
-                break;
-            case "random":
-                Collections.shuffle(songs, randomNumberGenerator);
-                break;
-        }
-
-
-        // Now that we sorted, get again the current song
-        // position.
-        int position = 0;
-        for (Song song : songs) {
-            if (song.getId() == nowPlayingSongID) {
-                currentSongPosition = position;
-                break;
-            }
-            position++;
-        }
-    }
-
-    /**
-     * Returns the song on the Now Playing List at `position`.
-     */
-    public Song getSong(int position) {
-        return songs.get(position);
-    }
-
-    /**
      * Displays a notification on the status bar with the
      * current song and some nice buttons.
      */
     public void notifyCurrentSong() {
-        if (!Main.settings.get("show_notification", true))
-            return;
+
         if (currentSong == null)
             return;
 

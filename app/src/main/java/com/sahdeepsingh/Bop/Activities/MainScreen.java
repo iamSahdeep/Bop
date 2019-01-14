@@ -12,13 +12,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -30,6 +28,7 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
+import com.mikepenz.materialdrawer.holder.ImageHolder;
 import com.mikepenz.materialdrawer.interfaces.ICrossfader;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
@@ -47,7 +46,6 @@ import com.sahdeepsingh.Bop.fragments.HomeFragment;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
-import com.sahdeepsingh.Bop.views.ProgressView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Objects;
@@ -57,6 +55,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.legacy.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import me.tankery.lib.circularseekbar.CircularSeekBar;
 
 
 public class MainScreen extends BaseActivity implements MediaController.MediaPlayerControl {
@@ -74,12 +73,10 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
      */
     private final Runnable backPressedTimeoutAction = () -> backPressedOnce = false;
     /*AlbumArt in Sliding Panel*/
-    ImageView albumArtSP;
+    ImageView albumArtSP, next, previous, forward, rewind;
     /*Song name, time left and Total time in Sliding Panel*/
-    TextView songNameSP, mTimeViewSP, mDurationViewSP;
+    TextView songNameSP;
     Drawer drawer;
-    /*Song Playback Toggle in Sliding Panel*/
-    ImageButton playPauseButtonSP;
     AccountHeader accountHeader;
     /* Next two are for Navigation Drawer*/
     CrossfadeDrawerLayout crossfadeDrawerLayout;
@@ -89,7 +86,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     SlidingUpPanelLayout slidingUpPanelLayout;
     private boolean playbackPaused = false;
     private boolean backPressedOnce = false;
-    private ProgressView mProgressView;
+    private CircularSeekBar mProgressView;
     private Handler backPressedHandler = new Handler();
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -112,8 +109,11 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         songNameSP = findViewById(R.id.bottomtextView);
-        playPauseButtonSP = findViewById(R.id.bottomImagebutton);
         albumArtSP = findViewById(R.id.bottomImageview);
+        next = findViewById(R.id.next);
+        previous = findViewById(R.id.previous);
+        rewind = findViewById(R.id.rewind);
+        forward = findViewById(R.id.forward);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -145,7 +145,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     private void createDrawer() {
 
         accountHeader = new AccountHeaderBuilder().withActivity(this)
-                .withHeaderBackground(R.drawable.back)
                 .withSelectionListEnabled(false)
                 .addProfiles(
                         new ProfileDrawerItem().withName("Bop - Music Player").withIcon(R.mipmap.ic_launcher_round)
@@ -161,7 +160,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                 .withCloseOnClick(true)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("Now Playing").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_play))).withIdentifier(1).withSelectable(false),
-                        new PrimaryDrawerItem().withName("Home").withIcon(utils.getThemedIcon(this,getDrawable(R.drawable.ic_shuffle_on))).withIdentifier(6).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Home").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_shuffle_on))).withIdentifier(6).withSelectable(true),
                         new PrimaryDrawerItem().withName("All Songs").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_music))).withIdentifier(2).withSelectable(true),
                         new PrimaryDrawerItem().withName("Playlist").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_playlist))).withIdentifier(3).withSelectable(true),
                         new PrimaryDrawerItem().withName("Genres").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_genre))).withIdentifier(4).withSelectable(true),
@@ -251,6 +250,44 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                switch (position) {
+                    case 0:
+                        setTitle(R.string.app_name);
+                        break;
+                    case 1:
+                        setTitle("Songs");
+                        break;
+                    case 2:
+                        setTitle("Playlists");
+                        break;
+                    case 3:
+                        setTitle("Genres");
+                        break;
+                    case 4:
+                        setTitle("Albums");
+                        break;
+                    case 5:
+                        setTitle("Artists");
+                        break;
+                    default:
+                        setTitle(R.string.app_name);
+
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     public void openPlayer(View view) {
@@ -411,15 +448,31 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
     private void setControlListeners() {
 
-        playPauseButtonSP.setOnClickListener(new View.OnClickListener() {
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Main.musicService.togglePlayback();
-                if (!Main.musicService.isPaused()) {
-                    playPauseButtonSP.setImageResource(R.drawable.ic_pause);
-                } else {
-                    playPauseButtonSP.setImageResource(R.drawable.ic_play);
-                }
+                playNext();
+            }
+        });
+
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playPrevious();
+            }
+        });
+
+        forward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seekTo(getCurrentPosition() + 10000);
+            }
+        });
+
+        rewind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seekTo(getCurrentPosition() - 10000);
             }
         });
 
@@ -432,11 +485,9 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     }
 
     private void prepareSeekBar() {
-        mTimeViewSP = findViewById(R.id.mtimeview);
-        mDurationViewSP = findViewById(R.id.mdurationview);
-        mProgressView = findViewById(R.id.mprogressview);
+        mProgressView = findViewById(R.id.footerseek);
         mProgressView.setMax((int) Main.musicService.currentSong.getDurationSeconds());
-        mDurationViewSP.setText(DateUtils.formatElapsedTime(Main.musicService.currentSong.getDurationSeconds()));
+        mProgressView.setLockEnabled(true);
 
         Handler handler = new Handler();
         MainScreen.this.runOnUiThread(new Runnable() {
@@ -448,7 +499,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                 }
                 if (isPlaying()) {
                     mProgressView.setProgress(getCurrentPosition() / 1000);
-                    mTimeViewSP.setText(DateUtils.formatElapsedTime(getCurrentPosition() / 1000));
                 }
                 handler.postDelayed(this, 1000);
             }
@@ -495,6 +545,42 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     public boolean isPlaying() {
         return Main.musicService != null && Main.musicService.musicBound && Main.musicService.isPlaying();
 
+    }
+
+    /**
+     * Jumps to the next song and starts playing it right now.
+     */
+    public void playNext() {
+        Main.musicService.next(true);
+        Main.musicService.playSong();
+
+        // To prevent the MusicPlayer from behaving
+        // unexpectedly when we pause the song playback.
+        if (playbackPaused) {
+            playbackPaused = false;
+        }
+
+/*
+        musicController.show();
+*/
+    }
+
+    /**
+     * Jumps to the previous song and starts playing it right now.
+     */
+    public void playPrevious() {
+        Main.musicService.previous(true);
+        Main.musicService.playSong();
+
+        // To prevent the MusicPlayer from behaving
+        // unexpectedly when we pause the song playback.
+        if (playbackPaused) {
+            playbackPaused = false;
+        }
+
+/*
+        musicController.show();
+*/
     }
 
     @Override
@@ -572,7 +658,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                     return "Playlist";
                 case 3:
                     return "Genres";
-                case 4 :
+                case 4:
                     return "Albums";
                 case 5:
                     return "Artists";
@@ -587,19 +673,17 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         public void onReceive(Context context, Intent intent) {
 
             songNameSP.setText(Main.musicService.currentSong.getTitle());
-            songNameSP.setSelected(true);
-            if (Main.musicService.isPaused()) {
-                playPauseButtonSP.setImageResource(R.drawable.ic_play);
-            } else {
-                playPauseButtonSP.setImageResource(R.drawable.ic_pause);
-            }
             Bitmap newImage;
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inSampleSize = 4;
             newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
-            if (newImage != null)
+            if (newImage != null) {
                 albumArtSP.setImageBitmap(newImage);
-            else albumArtSP.setImageResource(R.mipmap.ic_launcher_foreground);
+                accountHeader.setHeaderBackground(new ImageHolder(newImage));
+            } else {
+                albumArtSP.setImageResource(R.mipmap.ic_launcher_foreground);
+                accountHeader.setHeaderBackground(new ImageHolder(R.mipmap.ic_launcher));
+            }
         }
 
     }
