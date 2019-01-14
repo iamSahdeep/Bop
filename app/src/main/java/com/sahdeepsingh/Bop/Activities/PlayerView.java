@@ -19,10 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andremion.music.MusicCoverView;
-import com.bullhead.equalizer.EqualizerFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.Visualizers.CircleBarVisualizer;
+import com.sahdeepsingh.Bop.equalizer.EqualizerFragment;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
 import com.sahdeepsingh.Bop.views.TransitionAdapter;
@@ -379,7 +379,6 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
                 .build();
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, equalizerFragment)
-                .addToBackStack(null)
                 .commit();
     }
 
