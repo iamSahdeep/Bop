@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.sahdeepsingh.Bop.Adapters.AlbumRecyclerViewAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.RVUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +28,8 @@ public class FragmentAlbum extends Fragment {
     AlbumRecyclerViewAdapter mfilteredAdapter;
     EditText search;
     List<String> filtered = new ArrayList<>();
+    LinearLayout noData;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -44,14 +48,17 @@ public class FragmentAlbum extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_album, container, false);
+        noData = view.findViewById(R.id.noData);
 
 
-            Context context = view.getContext();
+        Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.list);
             recyclerView.setLayoutManager(new GridLayoutManager(context, 2)); //can change to create grid layout
             ArrayList<String> albums = Main.songs.getAlbums();
             AlbumRecyclerViewAdapter albumRecyclerViewAdapter = new AlbumRecyclerViewAdapter(albums);
             recyclerView.setAdapter(albumRecyclerViewAdapter);
+        RVUtils.makenoDataVisible(recyclerView, noData);
+
 
         search = view.findViewById(R.id.searchAlbum);
 
@@ -79,6 +86,7 @@ public class FragmentAlbum extends Fragment {
                 mfilteredAdapter = new AlbumRecyclerViewAdapter(filtered);
                 recyclerView.setAdapter(mfilteredAdapter);
                 mfilteredAdapter.notifyDataSetChanged();
+                RVUtils.makenoDataVisible(recyclerView, noData);
 
             }
 
@@ -90,4 +98,5 @@ public class FragmentAlbum extends Fragment {
 
         return view;
     }
+
 }

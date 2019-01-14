@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.sahdeepsingh.Bop.Adapters.GenreRecyclerViewAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.RVUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +28,8 @@ public class FragmentGenre extends Fragment {
     GenreRecyclerViewAdapter mfilteredAdapter;
     EditText search;
     List<String> filtered = new ArrayList<>();
+    LinearLayout noData;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -43,16 +47,17 @@ public class FragmentGenre extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_genre, container, false);
-
+        noData = view.findViewById(R.id.noData);
         // Set the adapter
 
-            Context context = view.getContext();
+        Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.list);
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            ArrayList<String> genres = Main.songs.getGenres();
-            Collections.sort(genres);
-            GenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new GenreRecyclerViewAdapter(genres);
-            recyclerView.setAdapter(myGenreRecyclerViewAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+        ArrayList<String> genres = Main.songs.getGenres();
+        Collections.sort(genres);
+        GenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new GenreRecyclerViewAdapter(genres);
+        recyclerView.setAdapter(myGenreRecyclerViewAdapter);
+        RVUtils.makenoDataVisible(recyclerView, noData);
 
         search = view.findViewById(R.id.searchGenre);
 
@@ -80,6 +85,8 @@ public class FragmentGenre extends Fragment {
                 mfilteredAdapter = new GenreRecyclerViewAdapter(filtered);
                 recyclerView.setAdapter(mfilteredAdapter);
                 mfilteredAdapter.notifyDataSetChanged();
+                RVUtils.makenoDataVisible(recyclerView, noData);
+
 
             }
 
@@ -91,4 +98,5 @@ public class FragmentGenre extends Fragment {
 
         return view;
     }
+
 }

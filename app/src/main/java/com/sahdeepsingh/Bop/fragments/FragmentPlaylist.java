@@ -1,6 +1,5 @@
 package com.sahdeepsingh.Bop.fragments;
 
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,15 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.sahdeepsingh.Bop.Adapters.PlaylistRecyclerViewAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.RVUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class FragmentPlaylist extends Fragment {
 
     PlaylistRecyclerViewAdapter mfilteredAdapter;
+    LinearLayout noData;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -43,6 +44,7 @@ public class FragmentPlaylist extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
+        noData = view.findViewById(R.id.noData);
         // Set the adapter
             Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.list);
@@ -50,22 +52,7 @@ public class FragmentPlaylist extends Fragment {
             ArrayList<String> playlists = Main.songs.getPlaylistNames();
             PlaylistRecyclerViewAdapter playlistRecyclerViewAdapter = new PlaylistRecyclerViewAdapter(playlists);
             recyclerView.setAdapter(playlistRecyclerViewAdapter);
-            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    ActionBar actionBar = getActivity().getActionBar();
-                    if (actionBar != null)
-                        if (dy > 0) {
-                            // Scrolling up
-
-                            actionBar.hide();
-                        } else {
-                            // Scrolling down
-                            actionBar.show();
-                        }
-                }
-            });
+        RVUtils.makenoDataVisible(recyclerView, noData);
         ArrayList<String> filtered = new ArrayList<>(playlists);
         EditText search = view.findViewById(R.id.searchPlaylist);
 
@@ -93,6 +80,7 @@ public class FragmentPlaylist extends Fragment {
                 mfilteredAdapter = new PlaylistRecyclerViewAdapter(filtered);
                 recyclerView.setAdapter(mfilteredAdapter);
                 mfilteredAdapter.notifyDataSetChanged();
+                RVUtils.makenoDataVisible(recyclerView, noData);
 
             }
 
@@ -105,4 +93,5 @@ public class FragmentPlaylist extends Fragment {
 
         return view;
     }
+
 }

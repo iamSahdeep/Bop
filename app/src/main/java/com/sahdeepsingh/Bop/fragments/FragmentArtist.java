@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.sahdeepsingh.Bop.Adapters.ArtistRecyclerViewAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.RVUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +32,8 @@ public class FragmentArtist extends Fragment {
     ArtistRecyclerViewAdapter mfilteredAdapter;
     EditText search;
     List<String> filtered = new ArrayList<>();
+    LinearLayout noData;
+
 
 
     public FragmentArtist() {
@@ -41,6 +45,8 @@ public class FragmentArtist extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_artist, container, false);
+        noData = view.findViewById(R.id.noData);
+
 
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.list);
@@ -49,6 +55,7 @@ public class FragmentArtist extends Fragment {
         Collections.sort(artists);
         ArtistRecyclerViewAdapter artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(artists);
         recyclerView.setAdapter(artistRecyclerViewAdapter);
+        RVUtils.makenoDataVisible(recyclerView, noData);
 
         search = view.findViewById(R.id.searchArtist);
 
@@ -76,6 +83,7 @@ public class FragmentArtist extends Fragment {
                 mfilteredAdapter = new ArtistRecyclerViewAdapter(filtered);
                 recyclerView.setAdapter(mfilteredAdapter);
                 mfilteredAdapter.notifyDataSetChanged();
+                RVUtils.makenoDataVisible(recyclerView, noData);
 
             }
 

@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.sahdeepsingh.Bop.Adapters.SongsRecyclerViewAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.RVUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +43,8 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
     ActionMode actionMode;
     EditText name, search;
     List<Song> filtered = new ArrayList<>(Main.songs.songs);
+    LinearLayout noData;
+
 
 
     /**
@@ -113,6 +117,8 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_songs, container, false);
         search = view.findViewById(R.id.searchSongs);
+        noData = view.findViewById(R.id.noData);
+
 
         // Set the adapter
             Context context = view.getContext();
@@ -127,6 +133,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
             recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         recyclerView.setAdapter(songsRecyclerViewAdapter);
+        RVUtils.makenoDataVisible(recyclerView, noData);
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -153,6 +160,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                 mfilteredAdapter = new SongsRecyclerViewAdapter(filtered);
                 recyclerView.setAdapter(mfilteredAdapter);
                 mfilteredAdapter.notifyDataSetChanged();
+                RVUtils.makenoDataVisible(recyclerView, noData);
 
             }
 
@@ -245,4 +253,5 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
             }
         }
     }
+
 }
