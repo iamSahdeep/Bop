@@ -442,6 +442,10 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         MainScreen.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (!Main.mainMenuHasNowPlayingItem) {
+                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                    slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
+                }
                 if (isPlaying()) {
                     mProgressView.setProgress(getCurrentPosition() / 1000);
                     mTimeViewSP.setText(DateUtils.formatElapsedTime(getCurrentPosition() / 1000));

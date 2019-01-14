@@ -345,12 +345,14 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
         PlayerView.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (!Main.mainMenuHasNowPlayingItem)
+                    finish();
                 if (isPlaying()) {
                     int position = getCurrentPosition() / 1000;
                     int duration = (int) Main.musicService.currentSong.getDurationSeconds();
                     onUpdateProgress(position, duration);
                 }
-                handler.postDelayed(this, 1);
+                handler.postDelayed(this, 100);
             }
         });
 

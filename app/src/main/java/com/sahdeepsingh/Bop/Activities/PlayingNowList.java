@@ -156,12 +156,14 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
         PlayingNowList.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (!Main.mainMenuHasNowPlayingItem)
+                    finish();
                 if (isPlaying()) {
                     int position = getCurrentPosition() / 1000;
                     int duration = (int) Main.musicService.currentSong.getDurationSeconds();
                     onUpdateProgress(position, duration);
                 }
-                handler.postDelayed(this, 1);
+                handler.postDelayed(this, 1000);
             }
         });
 
@@ -304,43 +306,6 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
         return Main.musicService.getAudioSession();
     }
 
-    // Back to the normal methods
-
-    /**
-     * Jumps to the next song and starts playing it right now.
-     */
-    public void playNext() {
-        Main.musicService.next(true);
-        Main.musicService.playSong();
-
-        // To prevent the MusicPlayer from behaving
-        // unexpectedly when we pause the song playback.
-        if (playbackPaused) {
-            playbackPaused = false;
-        }
-
-/*
-        musicController.show();
-*/
-    }
-
-    /**
-     * Jumps to the previous song and starts playing it right now.
-     */
-    public void playPrevious() {
-        Main.musicService.previous(true);
-        Main.musicService.playSong();
-
-        // To prevent the MusicPlayer from behaving
-        // unexpectedly when we pause the song playback.
-        if (playbackPaused) {
-            playbackPaused = false;
-        }
-
-/*
-        musicController.show();
-*/
-    }
 
     private void showPlaylistDialog() {
         final ListView listView;
