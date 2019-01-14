@@ -7,13 +7,25 @@
     android:animateLayoutChanges="true"
     android:background="@color/transparent"
     android:orientation="horizontal"
-    android:visibility="gone">
+    android:visibility="visible">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginTop="23dp"
+        android:background="?android:colorBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/footerseek"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/footerseek"
+        app:layout_constraintVertical_bias="0.936" />
 
     <LinearLayout
         android:id="@+id/controls"
         android:layout_width="wrap_content"
         android:layout_height="43dp"
         android:layout_marginBottom="1dp"
+        android:background="?android:colorBackground"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:weightSum="5.5"
@@ -69,7 +81,7 @@
         android:id="@+id/bottomImageview"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="3dp"
         android:layout_marginBottom="8dp"
         android:onClick="openPlayer"
         android:scaleType="centerCrop"
@@ -83,7 +95,7 @@
         android:id="@+id/footerseek"
         android:layout_width="79dp"
         android:layout_height="79dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="3dp"
         android:layout_marginBottom="8dp"
         app:cs_circle_color="?attr/primaryLightColor"
         app:cs_circle_progress_color="?attr/primaryColor"
@@ -105,12 +117,16 @@
         android:id="@+id/bottomtextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
         android:maxLines="1"
         android:text="@string/song_name"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/controls" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

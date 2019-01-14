@@ -447,7 +447,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
 
     private void setControlListeners() {
-
+        next.setImageDrawable(utils.getThemedIcon(this, getDrawable(R.drawable.ic_skip)));
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -455,6 +455,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             }
         });
 
+        previous.setImageDrawable(utils.getThemedIcon(this, getDrawable(R.drawable.ic_previous)));
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -462,6 +463,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             }
         });
 
+        forward.setImageDrawable(utils.getThemedIcon(this, getDrawable(R.drawable.ic_forward)));
         forward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -469,6 +471,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             }
         });
 
+        rewind.setImageDrawable(utils.getThemedIcon(this, getDrawable(R.drawable.ic_rewind)));
         rewind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
