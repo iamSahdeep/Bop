@@ -45,7 +45,7 @@ public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.
             try {
                 holder.circleImageView.setImageURI(Uri.parse(Main.songs.getAlbumArt(Main.songs.getSongById(songs.get(position)))));
             } catch (NullPointerException e) {
-                Picasso.get().load(Main.songs.getAlbumArt(Main.songs.getSongById(songs.get(position)))).into(holder.circleImageView);
+                Picasso.get().load(Main.songs.getAlbumArt(Main.songs.getSongById(songs.get(position)))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.circleImageView);
             }
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override

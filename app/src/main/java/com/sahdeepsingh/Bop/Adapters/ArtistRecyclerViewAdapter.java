@@ -38,8 +38,8 @@ public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.artistname.setText(mValues.get(position));
-        String selectedArtist = Main.songs.getArtists().get(position);
+        String selectedArtist = mValues.get(position);
+        holder.artistname.setText(selectedArtist);
         List<Song> songsList = Main.songs.getSongsByArtist(selectedArtist);
         for (int i = 0; i < songsList.size(); i++) {
             String path = Main.songs.getAlbumArt(songsList.get(i));

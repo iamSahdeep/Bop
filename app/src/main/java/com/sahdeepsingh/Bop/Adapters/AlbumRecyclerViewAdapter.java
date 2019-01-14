@@ -33,14 +33,14 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_album, parent, false);
+                .inflate(R.layout.fragment_album_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        String selectedAlbum = mValues.get(position);
         holder.albumname.setText(mValues.get(position));
-        String selectedAlbum = Main.songs.getAlbums().get(position);
         List<Song> songsList = Main.songs.getSongsByAlbum(selectedAlbum);
         for (int i = 0; i < songsList.size(); i++) {
             String path = Main.songs.getAlbumArt(songsList.get(i));

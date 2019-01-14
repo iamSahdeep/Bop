@@ -49,7 +49,7 @@ public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecycler
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_songs, parent, false);
+                .inflate(R.layout.fragment_songs_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -136,8 +136,8 @@ public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecycler
 
     @Override
     public int getItemCount() {
-        if ((Main.songs.songs != null) && (!Main.songs.songs.isEmpty()))
-            return Main.songs.songs.size();
+        if ((songs != null) && (!songs.isEmpty()))
+            return songs.size();
 
         return 0;
     }

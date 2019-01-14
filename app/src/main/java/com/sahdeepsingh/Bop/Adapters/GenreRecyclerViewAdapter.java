@@ -34,14 +34,14 @@ public class GenreRecyclerViewAdapter extends RecyclerView.Adapter<GenreRecycler
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_genre, parent, false);
+                .inflate(R.layout.fragment_genre_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.genre.setText(mValues.get(position));
-        String selectedGenre = Main.songs.getGenres().get(position);
+        String selectedGenre = mValues.get(position);
+        holder.genre.setText(selectedGenre);
         List<Song> songsList = Main.songs.getSongsByGenre(selectedGenre);
         for (int i = 0; i < songsList.size(); i++) {
             String path = Main.songs.getAlbumArt(songsList.get(i));

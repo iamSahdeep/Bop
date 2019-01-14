@@ -44,14 +44,14 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_playlist, parent, false);
+                .inflate(R.layout.fragment_playlist_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.playlistname.setText(playlists.get(position));
-        final String selectedPlaylist = Main.songs.getPlaylistNames().get(position);
+        final String selectedPlaylist = playlists.get(position);
         List<Song> songsList = Main.songs.getSongsByPlaylist(selectedPlaylist);
         for (int i = 0; i < songsList.size(); i++) {
             String path = Main.songs.getAlbumArt(songsList.get(i));

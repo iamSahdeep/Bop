@@ -6,6 +6,8 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,14 +29,18 @@ import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class FragmentSongs extends android.app.Fragment implements SongsRecyclerViewAdapter.OnClickAction {
 
-    SongsRecyclerViewAdapter songsRecyclerViewAdapter;
-    ActionMode actionMode;EditText name;
+    SongsRecyclerViewAdapter songsRecyclerViewAdapter, mfilteredAdapter;
+    ActionMode actionMode;
+    EditText name, search;
+    List<Song> filtered = new ArrayList<>(Main.songs.songs);
 
 
     /**
@@ -105,7 +111,8 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_songs_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_songs, container, false);
+        search = view.findViewById(R.id.searchSongs);
 
         // Set the adapter
             Context context = view.getContext();
@@ -118,8 +125,44 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
             recyclerView.setHasFixedSize(true);
             recyclerView.setItemViewCacheSize(100);
             recyclerView.setDrawingCacheEnabled(true);
-            recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         recyclerView.setAdapter(songsRecyclerViewAdapter);
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                filtered.clear();
+                charSequence = charSequence.toString().toLowerCase();
+                if (charSequence.length() == 0) {
+                    filtered.addAll(Main.songs.songs);
+                } else
+                    for (int j = 0; j < Main.songs.songs.size(); j++) {
+                        final Song song = Main.songs.songs.get(j);
+                        String name = song.getTitle();
+                        if (name.toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            filtered.add(Main.songs.songs.get(j));
+                        }
+                    }
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                Collections.sort(filtered, (u1, t1) -> u1.getTitle().compareToIgnoreCase(t1.getTitle()));
+                mfilteredAdapter = new SongsRecyclerViewAdapter(filtered);
+                recyclerView.setAdapter(mfilteredAdapter);
+                mfilteredAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
         return view;
     }
 
