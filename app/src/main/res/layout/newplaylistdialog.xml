@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/searchback"
     android:layout_margin="20dp">
 
     <LinearLayout
@@ -20,6 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:background="@drawable/searchback"
                 android:text="@string/select_or_create_new"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -27,6 +29,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
+                android:background="@drawable/searchback"
                 android:orientation="vertical">
 
                 <ListView
@@ -43,6 +46,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/searchback"
             android:layout_margin="20dp"
             android:orientation="vertical">
 
@@ -50,6 +54,7 @@
                 android:id="@+id/newPlaylistName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/searchback"
                 android:hint="@string/playlist_name"
                 android:inputType="textPersonName"
                 tools:ignore="Autofill" />
@@ -67,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/transparent"
+                    android:background="@drawable/searchback"
                     android:text="@string/cancel" />
 
                 <Button
@@ -76,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/transparent"
+                    android:background="@drawable/searchback"
                     android:text="@string/create" />
             </LinearLayout>
 

@@ -116,6 +116,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:onClick="playlistOptions"
+            android:tint="@color/md_grey_600"
             android:contentDescription="@string/options"
             android:focusable="true"
             android:scaleType="fitCenter"

@@ -25,14 +25,14 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="General">
+    <!--<PreferenceCategory android:title="General">
         <SwitchPreference
             android:defaultValue="true"
             android:key="show_lock_widget"
             android:summary="Display Lock screen Widget with Album Art as Wall Paper"
             android:title="Show LockScreen Widget" />
 
-        <!--<CheckBoxPreference
+        &lt;!&ndash;<CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/key_upload_over_wifi"
             android:summary="@string/summary_upload_over_wifi"
@@ -45,9 +45,9 @@
             android:entryValues="@array/pref_upload_quality_values"
             android:key="@string/key_upload_quality"
             android:summary="@string/summary_upload_video_quality"
-            android:title="@string/title_upload_quality" />-->
+            android:title="@string/title_upload_quality" />&ndash;&gt;
 
-    </PreferenceCategory>
+    </PreferenceCategory>-->
 
     <!--    <PreferenceCategory android:title="@string/pref_title_notifications">
 

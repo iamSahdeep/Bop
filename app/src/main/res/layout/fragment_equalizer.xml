@@ -23,7 +23,7 @@
             android:clickable="true"
             android:focusable="true"
             android:padding="12dp"
-            android:src="@drawable/back2" />
+            android:src="@drawable/ic_backarrow" />
 
         <TextView
             android:id="@+id/equalizer_fragment_title"
@@ -93,7 +93,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/dropdown_icon"
+                android:src="@drawable/ic_more_open"
                 android:tint="#FFFFFF" />
         </RelativeLayout>
 

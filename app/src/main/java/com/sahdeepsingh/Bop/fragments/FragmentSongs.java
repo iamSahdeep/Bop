@@ -39,7 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FragmentSongs extends android.app.Fragment implements SongsRecyclerViewAdapter.OnClickAction {
 
-    SongsRecyclerViewAdapter songsRecyclerViewAdapter, mfilteredAdapter;
+    SongsRecyclerViewAdapter songsRecyclerViewAdapter;
     ActionMode actionMode;
     EditText name, search;
     List<Song> filtered = new ArrayList<>(Main.songs.songs);
@@ -157,9 +157,9 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                     }
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 Collections.sort(filtered, (u1, t1) -> u1.getTitle().compareToIgnoreCase(t1.getTitle()));
-                mfilteredAdapter = new SongsRecyclerViewAdapter(filtered);
-                recyclerView.setAdapter(mfilteredAdapter);
-                mfilteredAdapter.notifyDataSetChanged();
+                songsRecyclerViewAdapter = new SongsRecyclerViewAdapter(filtered);
+                recyclerView.setAdapter(songsRecyclerViewAdapter);
+                songsRecyclerViewAdapter.notifyDataSetChanged();
                 RVUtils.makenoDataVisible(recyclerView, noData);
 
             }
@@ -178,6 +178,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
     private void showPlaylistDialog() {
         final ListView listView;
         Button create, cancel;
+        ArrayList<Song> songArrayList = (ArrayList<Song>) songsRecyclerViewAdapter.getSelected();
         ArrayList<String> allPlaylists = Main.songs.getPlaylistNames();
         final Dialog dialog = new Dialog(getActivity());
         dialog.setCancelable(true);
@@ -203,12 +204,12 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                     return;
                 }
                 Main.showProgressDialog(getActivity());
-                Main.songs.newPlaylist(getActivity().getApplication(), "external", name.getText().toString(), (ArrayList<Song>) songsRecyclerViewAdapter.getSelected());
-                getActivity().recreate();
+                Main.songs.newPlaylist(getActivity().getApplication(), "external", name.getText().toString(), songArrayList);
+                //  getActivity().recreate();
                 Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 Main.hideProgressDialog();
-                deselectAll();
+                // deselectAll();
             }
         });
         cancel = view.findViewById(R.id.cancelPlaylist);

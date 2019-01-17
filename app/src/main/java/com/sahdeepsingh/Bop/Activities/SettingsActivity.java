@@ -128,14 +128,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Toast.makeText(this, "Changes Done", Toast.LENGTH_SHORT).show();
         }
 
-        if (s.equals("show_lock_widget")) {
+        /*if (s.equals("show_lock_widget")) {
 
             // User just cancelled widget, let's kill it
             if (!sharedPreferences.getBoolean("show_lock_widget", false)) {
                 if (Main.musicService != null)
                     Main.musicService.destroyLockScreenWidget();
             }
-        }
+        }*/
 
     }
 

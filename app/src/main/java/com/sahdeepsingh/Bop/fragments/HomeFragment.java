@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.Adapters.MostPlayedSongsAdapter;
@@ -100,6 +101,10 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 Main.musicList.clear();
                 List<Long> temmp = Main.songs.getRecentSongs(getActivity());
+                if (temmp == null || temmp.size() <= 0) {
+                    Toast.makeText(getActivity(), "No Songs to play", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 for (int i = 0; i < temmp.size(); i++) {
                     Main.musicList.add(Main.songs.getSongById(temmp.get(i)));
                 }
@@ -115,6 +120,10 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 Main.musicList.clear();
                 Main.musicList = (ArrayList<Song>) Main.songs.getMostPlayedSongs(getActivity());
+                if (Main.musicList == null || Main.musicList.size() <= 0) {
+                    Toast.makeText(getActivity(), "No Songs to play", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Main.nowPlayingList = Main.musicList;
                 Main.musicService.setList(Main.nowPlayingList);
                 Intent intent = new Intent(getActivity(), PlayingNowList.class);
