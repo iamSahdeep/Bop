@@ -178,7 +178,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
     private void showPlaylistDialog() {
         final ListView listView;
         Button create, cancel;
-        ArrayList<Song> songArrayList = (ArrayList<Song>) songsRecyclerViewAdapter.getSelected();
+        ArrayList<Song> songArrayList = new ArrayList<>(songsRecyclerViewAdapter.getSelected());
         ArrayList<String> allPlaylists = Main.songs.getPlaylistNames();
         final Dialog dialog = new Dialog(getActivity());
         dialog.setCancelable(true);

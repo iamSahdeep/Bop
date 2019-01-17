@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -645,7 +646,7 @@ public class Data {
         if (songIDs != null)
             for (Long songID : songIDs)
                 currentSongs.add(getSongById(songID));
-
+        Collections.sort(currentSongs, (song, t1) -> song.getTitle().compareTo(t1.getTitle()));
         return currentSongs;
     }
 
@@ -689,6 +690,12 @@ public class Data {
 
         // Actually inserting the new playlist.
         Uri newPlaylistUri = resolver.insert(playlistUri, values);
+
+        //Okay its strange that sometimes newPlaylistUri is null, It means playlist is already there, So i am deleting the playlist and creating new
+        if (newPlaylistUri == null) {
+            deletePlaylist(c, name);
+            newPlaylistUri = resolver.insert(playlistUri, values);
+        }
 
         // Getting the new Playlist ID
         String PLAYLIST_ID = MediaStore.Audio.Playlists._ID;
@@ -738,11 +745,12 @@ public class Data {
 
     /* Deleting a Playlist*/
     public void deletePlaylist(Context context, String selectedplaylist) {
-        String playlistid = getPlayListId(selectedplaylist);
+        String playlistid = getPlayListId(context, selectedplaylist);
         ContentResolver resolver = context.getContentResolver();
         String where = MediaStore.Audio.Playlists._ID + "=?";
         String[] whereVal = {playlistid};
         resolver.delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, where, whereVal);
+        Toast.makeText(context, "Deleted, Changes might take some time", Toast.LENGTH_SHORT).show();
     }
 
     // Getting Playlist unique ID
@@ -757,6 +765,43 @@ public class Data {
         return id;
     }
 
+    public String getPlayListId(Context c, String playlist) {
+
+        //  read this record and get playlistid
+
+        Uri newuri = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
+
+        final String playlistid = MediaStore.Audio.Playlists._ID;
+
+        final String playlistname = MediaStore.Audio.Playlists.NAME;
+
+        String where = MediaStore.Audio.Playlists.NAME + "=?";
+
+        String[] whereVal = {playlist};
+
+        String[] projection = {playlistid, playlistname};
+
+        ContentResolver resolver = c.getContentResolver();
+
+        Cursor record = resolver.query(newuri, projection, where, whereVal, null);
+
+        int recordcount = record.getCount();
+
+        String foundplaylistid = "";
+
+        if (recordcount > 0) {
+            record.moveToFirst();
+
+            int idColumn = record.getColumnIndex(playlistid);
+
+            foundplaylistid = record.getString(idColumn);
+
+            record.close();
+        }
+
+        return foundplaylistid;
+    }
+
     /* Renaming  Playlist */
     public void renamePlaylist(Context context, String newplaylist, long playlist_id) {
         ContentResolver resolver = context.getContentResolver();
@@ -765,6 +810,7 @@ public class Data {
         String[] whereVal = {Long.toString(playlist_id)};
         values.put(MediaStore.Audio.Playlists.NAME, newplaylist);
         resolver.update(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values, where, whereVal);
+        Toast.makeText(context, "Renamed, Changes might take some time", Toast.LENGTH_SHORT).show();
     }
 
     /* Delete single song from Playlist*/
@@ -800,6 +846,7 @@ public class Data {
                 ) {
             addToPlaylist(c.getContentResolver(), playlistID, s.getId());
         }
+        Toast.makeText(c, "Added, Changes might take some time", Toast.LENGTH_SHORT).show();
     }
 
     public void addsong_toRecent(Context context, Song song) {
