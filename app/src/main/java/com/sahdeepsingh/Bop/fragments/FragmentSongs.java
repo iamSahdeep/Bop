@@ -205,7 +205,6 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                 }
                 Main.showProgressDialog(getActivity());
                 Main.songs.newPlaylist(getActivity().getApplication(), "external", name.getText().toString(), songArrayList);
-                //  getActivity().recreate();
                 Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 Main.hideProgressDialog();

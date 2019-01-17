@@ -77,7 +77,12 @@ public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecycler
                     selected.add(localItem);
                     highlightView(holder);
                 }
-                receiver.onClickAction();
+                try {
+                    receiver.onClickAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 return true;
             }
         });
@@ -106,7 +111,11 @@ public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecycler
                         selected.add(localItem);
                         highlightView(holder);
                     }
-                    receiver.onClickAction();
+                    try {
+                        receiver.onClickAction();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 }
         });
