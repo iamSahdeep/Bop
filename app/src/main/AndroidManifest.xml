@@ -65,14 +65,11 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data
-                    android:mimeType="audio/mpeg"
-                    android:pathPattern=".*mp3"
-                    android:scheme="file"
-                    tools:ignore="AppLinkUrlError" />
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:mimeType="audio/*" />
             </intent-filter>
         </activity>
         <activity android:name=".Activities.PlayerView" />

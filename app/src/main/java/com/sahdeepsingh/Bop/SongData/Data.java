@@ -653,8 +653,11 @@ public class Data {
     public Song getSongbyFile(File file) {
         Song song = null;
         for (Song s : songs) {
-            if (s.getFilePath().equals(file.getAbsolutePath()))
+            if (s.getTitle().equals(file.getName().substring(0, file.getName().lastIndexOf(".")))) {
                 song = s;
+                break;
+            }
+
         }
         return song;
     }
