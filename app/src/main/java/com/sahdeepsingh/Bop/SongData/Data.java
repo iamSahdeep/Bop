@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
 
 import java.io.File;
@@ -889,7 +888,6 @@ public class Data {
 
     public int getcountSongsPlayed(Context context, Song song) {
         SharedPreferences preferences = context.getSharedPreferences("com.sahdeepsingh.bop.SongsPlayedCount", Context.MODE_PRIVATE);
-        Main.logger(String.valueOf(preferences.getInt(String.valueOf(song.getId()), 0)));
         return preferences.getInt(String.valueOf(song.getId()), 0);
     }
 

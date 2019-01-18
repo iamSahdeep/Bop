@@ -724,6 +724,8 @@ public class ServicePlayMusic extends Service
      */
     public void playSong() {
 
+        if (player == null)
+            initMusicPlayer();
         player.reset();
         // Get the song ID from the list, extract the ID and
         // get an URL based on it
