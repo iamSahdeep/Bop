@@ -128,6 +128,8 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             }
         });
 
+        slidingUpPanelLayout.setTouchEnabled(false);
+
         mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
 

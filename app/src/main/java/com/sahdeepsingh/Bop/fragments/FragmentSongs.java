@@ -3,6 +3,7 @@ package com.sahdeepsingh.Bop.fragments;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.Adapters.SongsRecyclerViewAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
@@ -40,6 +43,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class FragmentSongs extends android.app.Fragment implements SongsRecyclerViewAdapter.OnClickAction {
 
     SongsRecyclerViewAdapter songsRecyclerViewAdapter;
+    FloatingActionButton floatingActionButton;
     ActionMode actionMode;
     EditText name, search;
     List<Song> filtered = new ArrayList<>(Main.songs.songs);
@@ -118,6 +122,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
         View view = inflater.inflate(R.layout.fragment_songs, container, false);
         search = view.findViewById(R.id.searchSongs);
         noData = view.findViewById(R.id.noData);
+        floatingActionButton = view.findViewById(R.id.fabplayAll);
 
 
         // Set the adapter
@@ -170,6 +175,19 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
             }
         });
 
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.musicList.clear();
+                Main.musicList = Main.songs.songs;
+                Main.nowPlayingList = Main.musicList;
+                Main.musicService.setList(Main.nowPlayingList);
+                Main.musicService.toggleShuffle();
+                Intent intent = new Intent(context, PlayingNowList.class);
+                intent.putExtra("playlistname", "All Songs");
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
