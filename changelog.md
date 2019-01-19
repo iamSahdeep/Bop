@@ -1,7 +1,7 @@
 # CHANGELOG.md
 
 ## 1.0
-### versionCode = 7
+### versionCode = 8
 
 Features:
 

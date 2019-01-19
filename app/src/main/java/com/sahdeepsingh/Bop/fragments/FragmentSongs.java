@@ -178,7 +178,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Main.songs.songs == null) {
+                if (Main.songs.songs == null || Main.songs.songs.size() <= 0) {
                     Toast.makeText(getActivity(), "No songs to play", Toast.LENGTH_SHORT).show();
                     return;
                 }
