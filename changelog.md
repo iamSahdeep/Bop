@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-## 0.6 (unreleased)
+## 0.6 
 ### versionCode = 6
 
 Features:
