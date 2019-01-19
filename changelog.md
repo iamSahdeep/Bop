@@ -1,5 +1,27 @@
 # CHANGELOG.md
 
+## 0.6 (unreleased)
+### versionCode = 6
+
+Features:
+
+  - Again UI changed -> [eb6ac461e020eac742241e2636919b7875f49f32](https://github.com/iamSahdeep/Bop/commit/eb6ac461e020eac742241e2636919b7875f49f32)
+  - new bottom Controls -> [f5c3df30e2f9012bdd86a804be9629ad280624e8](https://github.com/iamSahdeep/Bop/commit/f5c3df30e2f9012bdd86a804be9629ad280624e8)
+  - Recent Songs List  -> [8545689935c848c563839f29845bacb20dc85405](https://github.com/iamSahdeep/Bop/commit/8545689935c848c563839f29845bacb20dc85405)
+  - Most Played Songs List  -> [70dd398a6b8a801f27d043fac34462c6d26ebbbc](https://github.com/iamSahdeep/Bop/commit/70dd398a6b8a801f27d043fac34462c6d26ebbbc)
+  - Added Artist column  -> [7af43fe4a1832a1fccc5dbde7d65d39e586d3299](https://github.com/iamSahdeep/Bop/commit/7af43fe4a1832a1fccc5dbde7d65d39e586d3299)
+  - Search from Songs, albums, artists and more  -> [580c6578497f6a8d53b2095b9960cd203665ed85](https://github.com/iamSahdeep/Bop/commit/580c6578497f6a8d53b2095b9960cd203665ed85)
+
+Bug Fixes:
+
+  - Fix : Memory leaks in Main Activity -> [ba31e9e699f12c8eff9ccc6fe1e39c1e7c160e2f](https://github.com/iamSahdeep/Bop/tree/ba31e9e699f12c8eff9ccc6fe1e39c1e7c160e2f)
+  - Fix : intent filter was not working -> [45fef2d92c6fcba10aaa00824581ef27c5dbf6ad](https://github.com/iamSahdeep/Bop/tree/45fef2d92c6fcba10aaa00824581ef27c5dbf6ad)
+
+Known Issues:
+
+  - Issue : Memory leaks in Splash Screen
+  - Issue : Action mode crashes sometimes
+
 ## 0.5 (unreleased)
 ### versionCode = 5
 

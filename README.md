@@ -23,7 +23,6 @@ A basic Music playing application for media files in your mobile, currently in d
 <img src="https://github.com/iamSahdeep/Bop/blob/master/assets/13.png" width="360" height="640"><img src="https://github.com/iamSahdeep/Bop/blob/master/assets/9.png" width="360" height="640">
 <img src="https://github.com/iamSahdeep/Bop/blob/master/assets/7.png" width="360" height="640"><img src="https://github.com/iamSahdeep/Bop/blob/master/assets/8.png" width="360" height="640">
 <img src="https://github.com/iamSahdeep/Bop/blob/master/assets/2.png" width="330" height="640"><img src="https://github.com/iamSahdeep/Bop/blob/master/assets/4.png" width="360" height="640">
-<img src="https://github.com/iamSahdeep/Bop/blob/master/assets/5.png" width="330" height="640"><img src="https://github.com/iamSahdeep/Bop/blob/master/assets/10.png" width="360" height="640">
 
 <a href="https://github.com/iamSahdeep/Bop/blob/master/assets"> more </a>
 
