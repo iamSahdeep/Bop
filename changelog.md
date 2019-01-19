@@ -1,7 +1,7 @@
 # CHANGELOG.md
 
-## 0.6 
-### versionCode = 6
+## 1.0
+### versionCode = 7
 
 Features:
 
