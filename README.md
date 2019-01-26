@@ -34,6 +34,7 @@ A basic Music playing application for media files in your mobile, currently in d
    - [@pkjvit](https://github.com/pkjvit) for lots of [Themes](https://github.com/pkjvit/Android-Multi-Theme-UI).
    - [FlatIcon](https://www.flaticon.com/), [icons8](https://icons8.com/icons/pack/media-controls) and [freepik](https://www.freepik.com/) for icons and images used in application.
    - and many more for those awesome libraries. Check the list of [Libraries](https://github.com/iamSahdeep/Bop/blob/master/app/build.gradle) used.
+   
 
 # License
 
@@ -50,3 +51,13 @@ A basic Music playing application for media files in your mobile, currently in d
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+    
+## Author & support
+This project is created by [Sahdeep Singh](https://github.com/iamSahdeep) but with lots of support and help. See the [Credits](https://github.com/iamSahdeep/Bop/blob/master/README.md#credits).
+
+> If you appreciate my work, consider buying me a cup of :coffee: to keep me recharged :metal:
+>  + [PayPal](https://www.paypal.me/sahdeep)
+>
+> I love using my work and I'm available for freelance work. Contact me on my email: sahdeepsingh98@gmail.com
+
+<img src="http://forthebadge.com/images/badges/built-for-android.svg" />
