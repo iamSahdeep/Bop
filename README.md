@@ -16,7 +16,7 @@ A basic Music playing application for media files in your mobile, currently in d
 
 <a href='https://play.google.com/store/apps/details?id=com.sahdeepsingh.Bop&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="200" height="100"/></a>
 <a href='https://github.com/iamSahdeep/Bop/releases'><img alt='Get it from Github Releases' src='https://i0.wp.com/dimitrology.com/wp-content/uploads/2017/02/download-apk.png?resize=172%2C100&ssl=1' width="200" height="100"/></a>
-<a href='https://f-droid.org/en/packages/com.sahdeepsingh.Bop'><img  alt='Get it from Fdroid'  src="https://f-droid.org/badge/get-it-on.png" height="100" width="200"/></a> 
+<a href='https://f-droid.org/en/packages/com.sahdeepsingh.Bop'><img  alt='Get it from Fdroid'  src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="100" width="200"/></a> 
 
 
 ## Screenshots 
