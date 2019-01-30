@@ -1,4 +1,4 @@
-# Bop - Music Player [![GitHub (pre-)release](https://img.shields.io/github/release-pre/iamSahdeep/Bop.svg?style=popout-square)](https://github.com/iamSahdeep/Bop/releases/tag/v0.5)
+# Bop - Music Player [![GitHub release](https://img.shields.io/github/release-pre/iamSahdeep/Bop.svg?style=popout-square)](https://github.com/iamSahdeep/Bop/releases/tag/v1.0) ![Fdroid release](https://img.shields.io/f-droid/v/com.sahdeepsingh.Bop.svg?style=flat-square)
 
 
 [![Build Status](https://travis-ci.org/iamSahdeep/Bop.svg?branch=master)](https://travis-ci.org/iamSahdeep/Bop) [![GitHub All Releases](https://img.shields.io/github/downloads/iamSahdeep/bop/total.svg)](https://github.com/iamSahdeep/Bop/releases) 
@@ -14,8 +14,9 @@ A basic Music playing application for media files in your mobile, currently in d
 
 ## Download
 
-<a href='https://play.google.com/store/apps/details?id=com.sahdeepsingh.Bop&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="200" height="100"/></a>   
-<a href='https://github.com/iamSahdeep/Bop/releases'><img alt='Get it from Github Releases' src='https://img.shields.io/badge/Download-Apk-brightgreen.svg' width="180" height="60"/></a>  
+<a href='https://play.google.com/store/apps/details?id=com.sahdeepsingh.Bop&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="200" height="100"/></a>
+<a href='https://github.com/iamSahdeep/Bop/releases'><img alt='Get it from Github Releases' src='https://i0.wp.com/dimitrology.com/wp-content/uploads/2017/02/download-apk.png?resize=172%2C100&ssl=1' width="200" height="100"/></a>
+<a href='https://f-droid.org/en/packages/com.sahdeepsingh.Bop'><img  alt='Get it from Fdroid'  src="https://f-droid.org/badge/get-it-on.png" height="100" width="200"/></a> 
 
 
 ## Screenshots 
