@@ -44,13 +44,14 @@ public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecycl
         for (int i = 0; i < songsList.size(); i++) {
             String path = Main.songs.getAlbumArt(songsList.get(i));
             if (path != null) {
-                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).into(holder.albumart);
+                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
                 break;
             }
         }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<Song> songsList = Main.songs.getSongsByArtist(selectedArtist);
                 Context context = holder.mView.getContext();
                 Main.musicList.clear();
                 Main.musicList = (ArrayList<Song>) songsList;

@@ -63,7 +63,7 @@ public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecycler
         String path = Main.songs.getAlbumArt(localItem);
         Bitmap bitmap = null;
         if (path != null) {
-            Picasso.get().load(new File(path)).centerCrop().fit().error(R.drawable.ic_pause).into(holder.circleImageView);
+            Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.circleImageView);
             bitmap = BitmapFactory.decodeFile(path);
         }
         final Bitmap finalBitmap = bitmap;

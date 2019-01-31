@@ -134,9 +134,9 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
         songsRecyclerViewAdapter.setHasStableIds(true);
         //recyclerView properties for fast scrolling but doesn't work much
             recyclerView.setHasFixedSize(true);
-            recyclerView.setItemViewCacheSize(100);
+        recyclerView.setItemViewCacheSize(20);
             recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recyclerView.setAdapter(songsRecyclerViewAdapter);
         RVUtils.makenoDataVisible(recyclerView, noData);
 

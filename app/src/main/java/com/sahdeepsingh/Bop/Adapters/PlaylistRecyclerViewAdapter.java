@@ -56,8 +56,8 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
         for (int i = 0; i < songsList.size(); i++) {
             String path = Main.songs.getAlbumArt(songsList.get(i));
             if (path != null) {
-                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).into(holder.albumart);
-                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).into(holder.albumartD);
+                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
+                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumartD);
                 break;
             }
         }
@@ -65,6 +65,7 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<Song> songsList = Main.songs.getSongsByPlaylist(selectedPlaylist);
                 Context context = holder.mView.getContext();
                 Main.musicList.clear();
                 Main.musicList = (ArrayList<Song>) songsList;

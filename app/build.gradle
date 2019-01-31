@@ -32,7 +32,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
@@ -42,7 +42,7 @@ dependencies {
     implementation 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation "com.mikepenz:crossfadedrawerlayout:1.1.0"
-    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'com.google.android.material:material:1.1.0-alpha03'
     implementation 'com.simplecityapps:recyclerview-fastscroll:1.0.18'
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'com.squareup.picasso:picasso:2.71828'

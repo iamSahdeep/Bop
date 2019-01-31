@@ -85,6 +85,9 @@ public class HomeFragment extends Fragment {
         RecyclerView recentRecycler = view.findViewById(R.id.recyclerRecent);
         recentRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recentRecycler.setHasFixedSize(true);
+        recentRecycler.setItemViewCacheSize(20);
+        recentRecycler.setDrawingCacheEnabled(true);
+        recentRecycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recentRecycler.setNestedScrollingEnabled(false);
         recentSongsAdapter = new RecentSongsAdapter(recentSongs);
         recentRecycler.setAdapter(recentSongsAdapter);
@@ -92,6 +95,9 @@ public class HomeFragment extends Fragment {
         RecyclerView mostPlayedRecycler = view.findViewById(R.id.recyclerMostPlayed);
         mostPlayedRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         mostPlayedRecycler.setHasFixedSize(true);
+        mostPlayedRecycler.setItemViewCacheSize(20);
+        mostPlayedRecycler.setDrawingCacheEnabled(true);
+        mostPlayedRecycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         mostPlayedRecycler.setNestedScrollingEnabled(false);
         mostPlayedSongsAdapter = new MostPlayedSongsAdapter(getActivity(), mostPlayedSongs);
         mostPlayedRecycler.setAdapter(mostPlayedSongsAdapter);

@@ -252,6 +252,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager.setOffscreenPageLimit(5);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

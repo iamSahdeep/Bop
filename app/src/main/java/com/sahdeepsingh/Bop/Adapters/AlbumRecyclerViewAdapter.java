@@ -45,16 +45,17 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
         for (int i = 0; i < songsList.size(); i++) {
             String path = Main.songs.getAlbumArt(songsList.get(i));
             if (path != null) {
-                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).into(holder.albumart);
+                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
                 break;
             }
         }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<Song> songsList = Main.songs.getSongsByAlbum(selectedAlbum);
                 Context context = holder.mView.getContext();
                 Main.musicList.clear();
-                Main.musicList = (ArrayList<Song>) songsList;
+                Main.musicList = songsList;
                 Main.nowPlayingList = Main.musicList;
                 Main.musicService.setList(Main.nowPlayingList);
                 Intent intent = new Intent(context, PlayingNowList.class);
