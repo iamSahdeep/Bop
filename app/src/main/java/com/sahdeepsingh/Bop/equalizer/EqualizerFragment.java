@@ -2,10 +2,12 @@ package com.sahdeepsingh.Bop.equalizer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.media.audiofx.AudioEffect;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.PresetReverb;
@@ -97,6 +99,16 @@ public class EqualizerFragment extends Fragment {
         presetReverb.setEnabled(true);
         Settings.equalizerModel = new EqualizerModel();
         mEqualizer.setEnabled(true);
+        
+        unbindSystemEqualizer(audioSesionId);
+    }
+
+    private  void unbindSystemEqualizer(int audioSessionId) {
+        Context c = getContext();
+        Intent intent = new Intent(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION);
+        intent.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, audioSessionId);
+        intent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, c.getPackageName());
+        c.sendBroadcast(intent);
     }
 
     @Override
