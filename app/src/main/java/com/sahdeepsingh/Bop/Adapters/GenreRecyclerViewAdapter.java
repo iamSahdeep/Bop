@@ -1,7 +1,9 @@
 package com.sahdeepsingh.Bop.Adapters;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,14 +45,12 @@ public class GenreRecyclerViewAdapter extends RecyclerView.Adapter<GenreRecycler
         String selectedGenre = mValues.get(position);
         holder.genre.setText(selectedGenre);
         List<Song> songsList = Main.songs.getSongsByGenre(selectedGenre);
-        for (int i = 0; i < songsList.size(); i++) {
-            String path = Main.songs.getAlbumArt(songsList.get(i));
-            if (path != null) {
-                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.genreArt);
-                break;
-            } /*else if (i == songsList.size()-1)
-                Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(holder.genreArt);*/
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        Uri uri = Uri.EMPTY;
+        if (!songsList.isEmpty()) {
+            uri = ContentUris.withAppendedId(sArtworkUri, Long.parseLong(songsList.get(0).getAlbumid()));
         }
+        Picasso.get().load(uri).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.genreArt);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

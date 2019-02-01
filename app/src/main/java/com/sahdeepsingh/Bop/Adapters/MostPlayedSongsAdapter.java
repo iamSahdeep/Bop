@@ -1,5 +1,6 @@
 package com.sahdeepsingh.Bop.Adapters;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -45,10 +46,12 @@ public class MostPlayedSongsAdapter extends RecyclerView.Adapter<MostPlayedSongs
         if (getItemCount() != 0) {
             holder.songName.setText(songs.get(position).getTitle());
             holder.songBy.setText(songs.get(position).getArtist());
+            Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+            Uri uri = ContentUris.withAppendedId(sArtworkUri,Long.parseLong(songs.get(position).getAlbumid()));
             try {
-                holder.imageView.setImageURI(Uri.parse(Main.songs.getAlbumArt(songs.get(position))));
+                holder.imageView.setImageURI(uri);
             } catch (NullPointerException e) {
-                Picasso.get().load(Main.songs.getAlbumArt(songs.get(position))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.imageView);
+                Picasso.get().load(uri).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.imageView);
             }
             holder.TimesPlayed.setText(String.valueOf(Main.songs.getcountSongsPlayed(context, songs.get(position))));
         }
