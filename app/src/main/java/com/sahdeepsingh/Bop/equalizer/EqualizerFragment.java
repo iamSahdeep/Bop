@@ -89,7 +89,6 @@ public class EqualizerFragment extends Fragment {
         mEqualizer = new Equalizer(0, audioSesionId);
         bassBoost = new BassBoost(0, audioSesionId);
         bassBoost.setEnabled(true);
-        unbindSystemEqualizer(audioSesionId);
         BassBoost.Settings bassBoostSettingTemp = bassBoost.getProperties();
         BassBoost.Settings bassBoostSetting = new BassBoost.Settings(bassBoostSettingTemp.toString());
         bassBoostSetting.strength = (1000 / 19);
@@ -100,6 +99,8 @@ public class EqualizerFragment extends Fragment {
         presetReverb.setEnabled(true);
         Settings.equalizerModel = new EqualizerModel();
         mEqualizer.setEnabled(true);
+        
+        unbindSystemEqualizer(audioSesionId);
     }
 
     private  void unbindSystemEqualizer(int audioSessionId) {
