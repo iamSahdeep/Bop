@@ -52,10 +52,8 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
         holder.songName.setText(localItem.getTitle());
         holder.songBy.setText(localItem.getArtist());
         holder.songName.setSelected(true);
-        String path = Main.songs.getAlbumArt(localItem);
-        if (path != null) {
-            Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_launcher).into(holder.circleImageView);
-        }
+        Picasso.get().load(utils.getUrifromAlbumID(localItem)).centerCrop().fit().error(R.mipmap.ic_launcher).into(holder.circleImageView);
+
         if (Main.mainMenuHasNowPlayingItem) {
             if (Main.musicService.currentSong.getTitle().equals(localItem.getTitle())) {
                 holder.barVisuals.setVisibility(View.VISIBLE);

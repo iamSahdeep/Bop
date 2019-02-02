@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -42,11 +43,8 @@ public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.
         if (getItemCount() > 0) {
             holder.songName.setText(Main.songs.getSongById(songs.get(position)).getTitle());
             holder.songBy.setText(Main.songs.getSongById(songs.get(position)).getArtist());
-            try {
-                holder.circleImageView.setImageURI(Uri.parse(Main.songs.getAlbumArt(Main.songs.getSongById(songs.get(position)))));
-            } catch (NullPointerException e) {
-                Picasso.get().load(Main.songs.getAlbumArt(Main.songs.getSongById(songs.get(position)))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.circleImageView);
-            }
+            Picasso.get().load(utils.getUrifromAlbumID(Main.songs.getSongById(songs.get(position)))).placeholder(R.mipmap.ic_launcher_foreground).placeholder(R.mipmap.ic_launcher).into(holder.circleImageView);
+
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

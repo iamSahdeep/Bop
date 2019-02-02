@@ -17,6 +17,7 @@ import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.utils;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;
 
@@ -64,22 +65,15 @@ public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecycler
         holder.songName.setText(localItem.getTitle());
         holder.songBy.setText(localItem.getArtist());
         holder.songName.setSelected(true);
-        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-        Uri uri = ContentUris.withAppendedId(sArtworkUri,Long.parseLong(localItem.getAlbumid()));
-        Picasso.get().load(uri).centerCrop().fit().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.circleImageView);
-        Bitmap bitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-        /*try {
-            bitmap = MediaStore.Images.Media.getBitmap(holder.mView.getContext().getContentResolver(), uri);
-        } catch (IOException e) {
-            bitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-        }*/
-        final Bitmap finalBitmap = bitmap;
+        Picasso.get().load(utils.getUrifromAlbumID(localItem)).centerCrop().fit().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.circleImageView);
+        Bitmap bitmap = utils.getBitmapfromAlbumId(holder.mView.getContext(),localItem);
+
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 if (selected.contains(localItem)) {
                     selected.remove(localItem);
-                    unhighlightView(holder, finalBitmap);
+                    unhighlightView(holder, bitmap);
                 }else {
                     selected.add(localItem);
                     highlightView(holder);
@@ -113,7 +107,7 @@ public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecycler
                 }else {
                     if (selected.contains(localItem)) {
                         selected.remove(localItem);
-                        unhighlightView(holder, finalBitmap);
+                        unhighlightView(holder, bitmap);
                     }else {
                         selected.add(localItem);
                         highlightView(holder);

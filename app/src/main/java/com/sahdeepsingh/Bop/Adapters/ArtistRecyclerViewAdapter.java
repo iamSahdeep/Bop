@@ -14,6 +14,7 @@ import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.utils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -43,12 +44,7 @@ public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecycl
         String selectedArtist = mValues.get(position);
         holder.artistname.setText(selectedArtist);
         List<Song> songsList = Main.songs.getSongsByArtist(selectedArtist);
-        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-        Uri uri = Uri.EMPTY;
-        if (!songsList.isEmpty()) {
-            uri = ContentUris.withAppendedId(sArtworkUri, Long.parseLong(songsList.get(0).getAlbumid()));
-        }
-        Picasso.get().load(uri).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
+        Picasso.get().load(utils.getUrifromAlbumID(songsList.get(0))).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

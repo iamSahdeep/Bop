@@ -1,17 +1,24 @@
 package com.sahdeepsingh.Bop.utils;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -98,6 +105,29 @@ public class utils {
             temp.put(aa.getKey(), aa.getValue());
         }
         return temp;
+    }
+
+    public static Bitmap getBitmapfromAlbumId(Context context,Song localItem){
+        Bitmap bitmap = null;
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        Uri uri = ContentUris.withAppendedId(sArtworkUri,Long.parseLong(localItem.getAlbumid()));
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+        } catch (FileNotFoundException e) {
+            bitmap = BitmapFactory.decodeResource(Resources.getSystem(),R.mipmap.ic_launcher);
+            e.printStackTrace();
+        } catch (IOException e) {
+            bitmap = BitmapFactory.decodeResource(Resources.getSystem(),R.mipmap.ic_launcher);
+            e.printStackTrace();
+        } catch (Exception e){
+            bitmap = BitmapFactory.decodeResource(Resources.getSystem(),R.mipmap.ic_launcher);
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+    public static Uri getUrifromAlbumID(Song song){
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        return ContentUris.withAppendedId(sArtworkUri,Long.parseLong(song.getAlbumid()));
     }
 
 }

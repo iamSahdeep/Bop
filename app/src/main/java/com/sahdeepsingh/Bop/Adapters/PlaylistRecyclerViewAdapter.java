@@ -20,6 +20,7 @@ import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.utils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -53,14 +54,11 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
         holder.playlistname.setText(playlists.get(position));
         final String selectedPlaylist = playlists.get(position);
         List<Song> songsList = Main.songs.getSongsByPlaylist(selectedPlaylist);
-        for (int i = 0; i < songsList.size(); i++) {
-            String path = Main.songs.getAlbumArt(songsList.get(i));
-            if (path != null) {
-                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
-                Picasso.get().load(new File(path)).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumartD);
-                break;
-            }
-        }
+
+        Picasso.get().load(utils.getUrifromAlbumID(songsList.get(0))).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
+        Picasso.get().load(utils.getUrifromAlbumID(songsList.get(0))).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumartD);
+
+
         holder.total.setText(String.valueOf(songsList.size()) + " songs");
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
