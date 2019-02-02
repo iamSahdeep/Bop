@@ -37,6 +37,7 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.mikepenz.materialize.util.UIUtils;
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.fragments.FileFragment;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
 import com.sahdeepsingh.Bop.fragments.FragmentArtist;
 import com.sahdeepsingh.Bop.fragments.FragmentGenre;
@@ -640,6 +641,8 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                     return new FragmentAlbum();
                 case 5:
                     return new FragmentArtist();
+                case 6:
+                    return new FileFragment();
                 default:
                     return new HomeFragment();
 
@@ -650,7 +653,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         @Override
         public int getCount() {
             // Show 5 total pages.
-            return 6;
+            return 7;
         }
 
         @Override
