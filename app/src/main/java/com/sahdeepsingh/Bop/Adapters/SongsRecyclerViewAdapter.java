@@ -1,10 +1,13 @@
 package com.sahdeepsingh.Bop.Adapters;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,12 +64,15 @@ public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecycler
         holder.songName.setText(localItem.getTitle());
         holder.songBy.setText(localItem.getArtist());
         holder.songName.setSelected(true);
-        String path = Main.songs.getAlbumArt(localItem);
-        Bitmap bitmap = null;
-        if (path != null) {
-            Picasso.get().load(new File(path)).centerCrop().fit().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.circleImageView);
-            bitmap = BitmapFactory.decodeFile(path);
-        }
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        Uri uri = ContentUris.withAppendedId(sArtworkUri,Long.parseLong(localItem.getAlbumid()));
+        Picasso.get().load(uri).centerCrop().fit().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.circleImageView);
+        Bitmap bitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
+        /*try {
+            bitmap = MediaStore.Images.Media.getBitmap(holder.mView.getContext().getContentResolver(), uri);
+        } catch (IOException e) {
+            bitmap = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
+        }*/
         final Bitmap finalBitmap = bitmap;
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
