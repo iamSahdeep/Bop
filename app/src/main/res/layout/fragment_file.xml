@@ -1,85 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="3dp" >
-
-    <!--
-    android:layout_weight="1"
-    android:layout_weight="1"
-    android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
-    android:layout_width="fill_parent"
-    android:layout_gravity="top"
-    android:background = "#f00"
-    android:background = "#0f0"
-
-    -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="0dp"
-        android:gravity="top"
-        android:orientation="horizontal"
-        android:padding="0dp"
-        android:baselineAligned="false">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
-            android:gravity="top"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
-            android:padding="0dp" >
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <Button
-                android:id="@+id/upDirectoryButton"
-                android:layout_width="0dp"
+                android:id="@+id/buttonInternal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:padding="0dp"
-                android:drawableStart="@drawable/ic_addtoplaylist"
-                android:text="Up" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
-            android:gravity="top"
-            android:orientation="horizontal"
-            android:padding="0dp" >
+                android:background="@drawable/searchback"
+                android:text="Internal"
+                android:textSize="13sp" />
 
             <Button
-                android:id="@+id/selectCurrentDirectoryButton"
-                android:layout_width="0dp"
+                android:id="@+id/buttonExternal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:gravity = "center|center_vertical"
-                android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:padding="0dp"
-                android:text="Select" />
+                android:background="@drawable/searchback"
+                android:text="External"
+                android:textSize="13sp" />
+
         </LinearLayout>
+        <TextView
+            android:id="@+id/currentDir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="13sp"
+            android:text="lol"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:id="@+id/noDataFile"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Data"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/filesRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            tools:listitem="@layout/fragment_file_item">
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/currentDirectoryTextView"
-        android:layout_width="fill_parent"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Current folder: \n/THis/is/a/long/path/to/test/if/this/will/span/multiple/lines" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center|bottom"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
-    <ListView
-        android:id="@+id/fileListView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="5dp"
-        android:layout_weight="1" />
+        <Button
+            android:id="@+id/upDirectory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/searchback"
+            android:text="Parent Directory"
+            android:textSize="13sp"
+            tools:ignore="NestedWeights" />
 
-</LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

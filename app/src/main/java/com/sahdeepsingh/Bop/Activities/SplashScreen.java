@@ -190,6 +190,10 @@ public class SplashScreen extends AppCompatActivity {
                 Intent intent = new Intent(activity, PlayingNowList.class);
                 intent.putExtra("file", file);
                 Main.musicList.clear();
+                if (Main.songs.getSongbyFile(file) == null){
+                    Toast.makeText(activity, "Selected Song is not in mediaStore yet, Cant play for now", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Main.musicList.add(Main.songs.getSongbyFile(file));
                 Main.nowPlayingList = Main.musicList;
                 if (Main.nowPlayingList == null) {

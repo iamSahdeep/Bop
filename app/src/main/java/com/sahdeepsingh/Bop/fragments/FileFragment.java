@@ -3,6 +3,7 @@ package com.sahdeepsingh.Bop.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,17 +14,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.SongData.Song;
+import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,6 +41,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.widget.ListAdapter;
 import android.widget.Toast;
@@ -54,18 +65,18 @@ public class FileFragment extends Fragment {
     private String chosenFile;
     // private static final int DIALOG_LOAD_FILE = 1000;
 
-    ArrayAdapter<Item> adapter;
-
     private boolean showHiddenFilesAndDirs = true;
-
-    private boolean directoryShownIsEmpty = false;
-
-    private String filterFileExtension = null;
 
     // Action constants
     private static int currentAction = -1;
     private static final int SELECT_DIRECTORY = 1;
     private static final int SELECT_FILE = 2;
+
+    private RecyclerView mRecyclerView;
+    private MyAdapter mAdapter;
+    ImageButton options;
+    Button internal, external, up;
+    TextView noData, curDir;
 
 
     public FileFragment() {
@@ -78,36 +89,16 @@ public class FileFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_file, container, false);
-        setInitialDirectory();
 
-        parseDirectoryPath();
-        loadFileList(view);
-        this.createFileListAdapter();
-        this.initializeButtons(view);
-        this.initializeFileListView(view);
-        updateCurrentDirectoryTextView(view);
-        Log.d(LOGTAG, path.getAbsolutePath());
+        mRecyclerView = view.findViewById(R.id.filesRV);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new MyAdapter(fileList);
+        mRecyclerView.setAdapter(mAdapter);
+        initializeButtons(view);
+        loadInternalDirectory();
 
         return view;
     }
-
-    private void setInitialDirectory() {
-        String requestedStartDir = Environment.getExternalStorageDirectory().getPath();
-
-        File tempFile = new File(requestedStartDir);
-        if (tempFile.isDirectory())
-            this.path = tempFile;
-
-        if (this.path == null) {// No or invalid directory supplied in intent
-            // parameter
-            if (Environment.getExternalStorageDirectory().isDirectory()
-                    && Environment.getExternalStorageDirectory().canRead())
-                path = Environment.getExternalStorageDirectory();
-            else
-                path = new File("/");
-        }// if(this.path==null) {//No or invalid directory supplied in intent
-        // parameter
-    }// private void setInitialDirectory() {
 
     private void parseDirectoryPath() {
         pathDirsList.clear();
@@ -121,133 +112,101 @@ public class FileFragment extends Fragment {
     }
 
     private void initializeButtons(View view) {
-        Button upDirButton = view.findViewById(R.id.upDirectoryButton);
-        upDirButton.setOnClickListener(new View.OnClickListener() {
+        noData = view.findViewById(R.id.noDataFile);
+        curDir = view.findViewById(R.id.currentDir);
+        up = view.findViewById(R.id.upDirectory);
+        up.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d(LOGTAG, "onclick for upDirButton");
                 loadDirectoryUp();
-                loadFileList(view);
-                adapter.notifyDataSetChanged();
-                updateCurrentDirectoryTextView(view);
             }
         });
 
-      /*  Button selectFolderButton = (Button) view
-                .findViewById(R.id.selectCurrentDirectoryButton);
-        if (currentAction == SELECT_DIRECTORY) {
-            selectFolderButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Log.d(LOGTAG, "onclick for selectFolderButton");
-                    returnDirectoryFinishActivity();
-                }
-            });
-        } else {// if(currentAction == this.SELECT_DIRECTORY) {
-            selectFolderButton.setVisibility(View.GONE);
-        }*/
+        internal = view.findViewById(R.id.buttonInternal);
+        internal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadInternalDirectory();
+            }
+        });
+        external = view.findViewById(R.id.buttonExternal);
+        external.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadExternalDirectory();
+            }
+        });
+    }
+
+    private void loadExternalDirectory() {
+        if (new File("/storage/").exists()) {
+            path = new File("/storage/");
+        }else if (new File("/data/").exists()) {
+            path = new File("/data/");
+        } else if (new File("/mnt/").exists()) {
+            path = new File("/mnt/");
+        } else if (new File("/removable/").exists()) {
+            path = new File("/removable/");
+        } else {
+            path = new File("/");
+            noData.setVisibility(View.VISIBLE);
+        }
+        loadDirectory();
+    }
+
+    private void loadInternalDirectory() {
+        File tempFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+        if (tempFile.isDirectory())
+            this.path = tempFile;
+
+        if (this.path == null) {
+            if (Environment.getExternalStorageDirectory().isDirectory()
+                    && Environment.getExternalStorageDirectory().canRead())
+                path = Environment.getExternalStorageDirectory();
+            else {
+                path = new File("/");
+                noData.setVisibility(View.VISIBLE);
+            }
+        }
+        loadDirectory();
+    }
+
+    private void loadDirectory() {
+        loadFileList();
+        parseDirectoryPath();
+        updateCurrentDirectoryTextView();
     }
 
     private void loadDirectoryUp() {
-        // present directory removed from list
+        if (pathDirsList.size() <= 1)
+            return;
         String s = pathDirsList.remove(pathDirsList.size() - 1);
-        // path modified to exclude present directory
         path = new File(path.toString().substring(0,
                 path.toString().lastIndexOf(s)));
-        fileList.clear();
+
+        loadDirectory();
     }
 
-    private void updateCurrentDirectoryTextView(View view) {
+    private void updateCurrentDirectoryTextView() {
         int i = 0;
-        String curDirString = "";
+        StringBuilder curDirString = new StringBuilder();
         while (i < pathDirsList.size()) {
-            curDirString += pathDirsList.get(i) + "/";
+            curDirString.append(pathDirsList.get(i)).append("/");
             i++;
         }
-        if (pathDirsList.size() == 0) {
-            ((Button) view.findViewById(R.id.upDirectoryButton))
-                    .setEnabled(false);
-            curDirString = "/";
-        } else
-            ((Button) view.findViewById(R.id.upDirectoryButton))
-                    .setEnabled(true);
-        long freeSpace = getFreeSpace(curDirString);
-        String formattedSpaceString = formatBytes(freeSpace);
-        if (freeSpace == 0) {
-            Log.d(LOGTAG, "NO FREE SPACE");
-            File currentDir = new File(curDirString);
-            if(!currentDir.canWrite())
-                formattedSpaceString = "NON Writable";
-        }
+        curDir.setText(String.format("Current directory: %s", path));
 
-        ((Button) view.findViewById(R.id.selectCurrentDirectoryButton))
-                .setText("Select\n[" + formattedSpaceString
-                        + "]");
-
-        ((TextView) view.findViewById(R.id.currentDirectoryTextView))
-                .setText("Current directory: " + curDirString);
-    }// END private void updateCurrentDirectoryTextView() {
+    }
 
     private void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 
-    private void initializeFileListView(View view1) {
-        ListView lView = (ListView) view1.findViewById(R.id.fileListView);
-        lView.setBackgroundColor(Color.LTGRAY);
-        LinearLayout.LayoutParams lParam = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
-        lParam.setMargins(15, 5, 15, 5);
-        lView.setAdapter(this.adapter);
-        lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                chosenFile = fileList.get(position).file;
-                File sel = new File(path + "/" + chosenFile);
-                Log.d(LOGTAG, "Clicked:" + chosenFile);
-                if (sel.isDirectory()) {
-                    if (sel.canRead()) {
-                        // Adds chosen directory to list
-                        pathDirsList.add(chosenFile);
-                        path = new File(sel + "");
-                        Log.d(LOGTAG, "Just reloading the list");
-                        loadFileList(view1);
-                        adapter.notifyDataSetChanged();
-                        updateCurrentDirectoryTextView(view1);
-                        Log.d(LOGTAG, path.getAbsolutePath());
-                    } else {// if(sel.canRead()) {
-                        showToast("Path does not exist or cannot be read");
-                    }// } else {//if(sel.canRead()) {
-                }// if (sel.isDirectory()) {
-                // File picked or an empty directory message clicked
-                else {// if (sel.isDirectory()) {
-                    Log.d(LOGTAG, "item clicked");
-                    if (!directoryShownIsEmpty) {
-                        Log.d(LOGTAG, "File selected:" + chosenFile);
-                        returnFileFinishActivity(sel.getAbsolutePath());
-                    }
-                }// else {//if (sel.isDirectory()) {
-            }// public void onClick(DialogInterface dialog, int which) {
-        });// lView.setOnClickListener(
-    }// private void initializeFileListView() {
-
-    private void returnDirectoryFinishActivity() {
-        /*Intent retIntent = new Intent();
-        retIntent.putExtra(returnDirectoryParameter, path.getAbsolutePath());
-        this.setResult(RESULT_OK, retIntent);
-        this.finish();*/
-    }// END private void returnDirectoryFinishActivity() {
-
-    private void returnFileFinishActivity(String filePath) {
-        /*Intent retIntent = new Intent();
-        retIntent.putExtra(returnFileParameter, filePath);
-        this.setResult(RESULT_OK, retIntent);
-        this.finish();*/
-    }// END private void returnDirectoryFinishActivity() {
-
-    private void loadFileList(View view) {
+    private void loadFileList() {
         try {
             path.mkdirs();
         } catch (SecurityException e) {
             Log.e(LOGTAG, "unable to write on the sd card ");
+            showToast(e.getMessage());
         }
         fileList.clear();
 
@@ -255,99 +214,57 @@ public class FileFragment extends Fragment {
             FilenameFilter filter = new FilenameFilter() {
                 public boolean accept(File dir, String filename) {
                     File sel = new File(dir, filename);
-                    boolean showReadableFile = showHiddenFilesAndDirs
+                    return showHiddenFilesAndDirs
                             || sel.canRead();
-                    // Filters based on whether the file is hidden or not
-                    if (currentAction == SELECT_DIRECTORY) {
-                        return (sel.isDirectory() && showReadableFile);
-                    }
-                    if (currentAction == SELECT_FILE) {
-
-                        // If it is a file check the extension if provided
-                        if (sel.isFile() && filterFileExtension != null) {
-                            return (showReadableFile && sel.getName().endsWith(
-                                    filterFileExtension));
-                        }
-                        return (showReadableFile);
-                    }
-                    return true;
-                }// public boolean accept(File dir, String filename) {
-            };// FilenameFilter filter = new FilenameFilter() {
+                }
+            };
 
             String[] fList = path.list(filter);
-            this.directoryShownIsEmpty = false;
+
             for (int i = 0; i < fList.length; i++) {
                 // Convert into file path
                 File sel = new File(path, fList[i]);
                 Log.d(LOGTAG,
                         "File:" + fList[i] + " readable:"
                                 + (Boolean.valueOf(sel.canRead())).toString());
-                int drawableID = R.drawable.ic_shuffle_on;
+                int drawableID = R.drawable.ic_folder;
                 boolean canRead = sel.canRead();
                 // Set drawables
                 if (sel.isDirectory()) {
                     if (canRead) {
-                        drawableID = R.drawable.ic_skip;
+                        drawableID = R.drawable.ic_folder;
                     } else {
-                        drawableID = R.drawable.ic_skip;
+                        drawableID = R.drawable.ic_cancel;
                     }
                 }
+                else if (sel.isFile()){
+                    if (URLConnection.guessContentTypeFromName(sel.getAbsolutePath()) != null && URLConnection.guessContentTypeFromName(sel.getAbsolutePath()).startsWith("audio"))
+                        drawableID = R.drawable.ic_music;
+                    else
+                        drawableID = R.drawable.ic_file;
+                }
                 fileList.add(i, new Item(fList[i], drawableID, canRead));
-            }// for (int i = 0; i < fList.length; i++) {
+            }
             if (fileList.size() == 0) {
-                // Log.d(LOGTAG, "This directory is empty");
-                this.directoryShownIsEmpty = true;
+                noData.setVisibility(View.VISIBLE);
                 fileList.add(0, new Item("Directory is empty", -1, true));
-            } else {// sort non empty list
+            } else {
+                noData.setVisibility(View.GONE);
                 Collections.sort(fileList, new ItemFileNameComparator());
             }
         } else {
-            Log.e(LOGTAG, "path does not exist or cannot be read");
+            showToast("path does not exist or cannot be read");
         }
-        // Log.d(TAG, "loadFileList finished");
-    }// private void loadFileList() {
-
-    private void createFileListAdapter() {
-        adapter = new ArrayAdapter<Item>(getActivity(),
-                android.R.layout.select_dialog_item, android.R.id.text1,
-                fileList) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                // creates view
-                View view = super.getView(position, convertView, parent);
-                TextView textView = (TextView) view
-                        .findViewById(android.R.id.text1);
-                // put the image on the text view
-                int drawableID = 0;
-                if (fileList.get(position).icon != -1) {
-                    // If icon == -1, then directory is empty
-                    drawableID = fileList.get(position).icon;
-                }
-                textView.setCompoundDrawablesWithIntrinsicBounds(drawableID, 0,
-                        0, 0);
-
-                textView.setEllipsize(null);
-
-                // add margin between image and text (support various screen
-                // densities)
-                // int dp5 = (int) (5 *
-                // getResources().getDisplayMetrics().density + 0.5f);
-                int dp3 = (int) (3 * getResources().getDisplayMetrics().density + 0.5f);
-                // TODO: change next line for empty directory, so text will be
-                // centered
-                textView.setCompoundDrawablePadding(dp3);
-                textView.setBackgroundColor(Color.LTGRAY);
-                return view;
-            }// public View getView(int position, View convertView, ViewGroup
-        };// adapter = new ArrayAdapter<Item>(this,
-    }// private createFileListAdapter(){
+        mAdapter.mDataset = fileList;
+        mAdapter.notifyDataSetChanged();
+    }
 
     private class Item {
         public String file;
         public int icon;
         public boolean canRead;
 
-        public Item(String file, Integer icon, boolean canRead) {
+        Item(String file, Integer icon, boolean canRead) {
             this.file = file;
             this.icon = icon;
         }
@@ -356,7 +273,7 @@ public class FileFragment extends Fragment {
         public String toString() {
             return file;
         }
-    }// END private class Item {
+    }
 
     private class ItemFileNameComparator implements Comparator<Item> {
         public int compare(Item lhs, Item rhs) {
@@ -364,48 +281,86 @@ public class FileFragment extends Fragment {
         }
     }
 
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Log.d(LOGTAG, "ORIENTATION_LANDSCAPE");
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Log.d(LOGTAG, "ORIENTATION_PORTRAIT");
-        }
-        // Layout apparently changes itself, only have to provide good onMeasure
-        // in custom components
-        // TODO: check with keyboard
-        // if(newConfig.keyboard == Configuration.KEYBOARDHIDDEN_YES)
-    }// END public void onConfigurationChanged(Configuration newConfig) {
 
-    public static long getFreeSpace(String path) {
-        StatFs stat = new StatFs(path);
-        long availSize = (long) stat.getAvailableBlocks()
-                * (long) stat.getBlockSize();
-        return availSize;
-    }// END public static long getFreeSpace(String path) {
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+        private List<Item> mDataset;
 
-    public static String formatBytes(long bytes) {
-        // TODO: add flag to which part is needed (e.g. GB, MB, KB or bytes)
-        String retStr = "";
-        // One binary gigabyte equals 1,073,741,824 bytes.
-        if (bytes > 1073741824) {// Add GB
-            long gbs = bytes / 1073741824;
-            retStr += (new Long(gbs)).toString() + "GB ";
-            bytes = bytes - (gbs * 1073741824);
+        class MyViewHolder extends RecyclerView.ViewHolder {
+            View mView;
+            TextView file;
+            ImageView pic;
+            MyViewHolder(View v) {
+                super(v);
+                mView = v;
+                file = v.findViewById(R.id.DirectoryName);
+                pic = v.findViewById(R.id.fileItemPic);
+            }
         }
-        // One MB - 1048576 bytes
-        if (bytes > 1048576) {// Add GB
-            long mbs = bytes / 1048576;
-            retStr += (new Long(mbs)).toString() + "MB ";
-            bytes = bytes - (mbs * 1048576);
-        }
-        if (bytes > 1024) {
-            long kbs = bytes / 1024;
-            retStr += (new Long(kbs)).toString() + "KB";
-            bytes = bytes - (kbs * 1024);
-        } else
-            retStr += (new Long(bytes)).toString() + " bytes";
-        return retStr;
-    }// public static String formatBytes(long bytes){
 
+        // Provide a suitable constructor (depends on the kind of dataset)
+        MyAdapter(List<Item> myDataset) {
+            mDataset = myDataset;
+        }
+
+        @NonNull
+        @Override
+        public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                         int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.fragment_file_item, parent, false);
+            return new MyViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+            holder.file.setText(mDataset.get(position).file);
+            holder.pic.setImageResource(mDataset.get(position).icon);
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    chosenFile = fileList.get(position).file;
+                    File sel = new File(path + "/" + chosenFile);
+                    if (sel.isDirectory()) {
+                        if (sel.canRead()) {
+                            pathDirsList.add(chosenFile);
+                            path = new File(sel + "");
+                            loadDirectory();
+
+                        } else {
+                            showToast("Path does not exist or cannot be read");
+                        }
+                    }else if (sel.isFile()){
+                        if (URLConnection.guessContentTypeFromName(sel.getAbsolutePath()) != null && URLConnection.guessContentTypeFromName(sel.getAbsolutePath()).startsWith("audio")){
+                            playSong(sel.getAbsolutePath());
+                        }else
+                            showToast("Selected file is not Audio/Music");
+                    }
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mDataset.size();
+        }
+    }
+
+    private void playSong(String absolutePath) {
+        Intent intent = new Intent(getActivity(), PlayingNowList.class);
+        intent.putExtra("file", absolutePath);
+        Main.musicList.clear();
+        if (Main.songs.getSongbyFile(new File(absolutePath)) == null){
+            Toast.makeText(getActivity(), "Selected Song is not in mediaStore yet, Cant play for now", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Main.musicList.add(Main.songs.getSongbyFile(new File(absolutePath)));
+        Main.nowPlayingList = Main.musicList;
+        if (Main.nowPlayingList == null) {
+            Toast.makeText(getActivity(), "Selected Song is not in mediaStore yet, Please wait", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Main.musicService.setList(Main.nowPlayingList);
+        getActivity().startActivity(intent);
+    }
 }
