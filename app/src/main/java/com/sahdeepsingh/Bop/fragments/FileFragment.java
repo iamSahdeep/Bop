@@ -1,51 +1,38 @@
 package com.sahdeepsingh.Bop.fragments;
 
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Environment;
-import android.os.StatFs;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.utils;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.widget.ListAdapter;
-import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -227,27 +214,27 @@ public class FileFragment extends Fragment {
                 Log.d(LOGTAG,
                         "File:" + fList[i] + " readable:"
                                 + (Boolean.valueOf(sel.canRead())).toString());
-                int drawableID = R.drawable.ic_folder;
+                Drawable drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_folder));
                 boolean canRead = sel.canRead();
                 // Set drawables
                 if (sel.isDirectory()) {
                     if (canRead) {
-                        drawableID = R.drawable.ic_folder;
+                        drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_folder));
                     } else {
-                        drawableID = R.drawable.ic_cancel;
+                        drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_cancel));
                     }
                 }
                 else if (sel.isFile()){
                     if (URLConnection.guessContentTypeFromName(sel.getAbsolutePath()) != null && URLConnection.guessContentTypeFromName(sel.getAbsolutePath()).startsWith("audio"))
-                        drawableID = R.drawable.ic_music;
+                        drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_music));
                     else
-                        drawableID = R.drawable.ic_file;
+                        drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_file));
                 }
-                fileList.add(i, new Item(fList[i], drawableID, canRead));
+                fileList.add(i, new Item(fList[i], drawable, canRead));
             }
             if (fileList.size() == 0) {
                 noData.setVisibility(View.VISIBLE);
-                fileList.add(0, new Item("Directory is empty", -1, true));
+                // fileList.add(0, new Item("Directory is empty", -1, true));
             } else {
                 noData.setVisibility(View.GONE);
                 Collections.sort(fileList, new ItemFileNameComparator());
@@ -261,10 +248,10 @@ public class FileFragment extends Fragment {
 
     private class Item {
         public String file;
-        public int icon;
+        public Drawable icon;
         public boolean canRead;
 
-        Item(String file, Integer icon, boolean canRead) {
+        Item(String file, Drawable icon, boolean canRead) {
             this.file = file;
             this.icon = icon;
         }
@@ -314,7 +301,7 @@ public class FileFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             holder.file.setText(mDataset.get(position).file);
-            holder.pic.setImageResource(mDataset.get(position).icon);
+            holder.pic.setImageDrawable(mDataset.get(position).icon);
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

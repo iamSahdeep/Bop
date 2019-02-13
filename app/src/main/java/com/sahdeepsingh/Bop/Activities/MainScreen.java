@@ -68,11 +68,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
      * How long to wait to disable double-pressing to quit
      */
     private static final int BACK_PRESSED_DELAY = 2000;
-
-    /**
-     * Action that actually disables double-pressing to quit
-     */
-    private final Runnable backPressedTimeoutAction = () -> backPressedOnce = false;
     /*AlbumArt in Sliding Panel*/
     ImageView albumArtSP, next, previous, forward, rewind;
     /*Song name, time left and Total time in Sliding Panel*/
@@ -87,6 +82,10 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     SlidingUpPanelLayout slidingUpPanelLayout;
     private boolean playbackPaused = false;
     private boolean backPressedOnce = false;
+    /**
+     * Action that actually disables double-pressing to quit
+     */
+    private final Runnable backPressedTimeoutAction = () -> backPressedOnce = false;
     private CircularSeekBar mProgressView;
     private Handler backPressedHandler = new Handler();
     /**
@@ -169,6 +168,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                         new PrimaryDrawerItem().withName("Genres").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_genre))).withIdentifier(4).withSelectable(true),
                         new PrimaryDrawerItem().withName("Albums").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_album))).withIdentifier(5).withSelectable(true),
                         new PrimaryDrawerItem().withName("Artists").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_artist))).withIdentifier(7).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Files").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_folder))).withIdentifier(8).withSelectable(true),
                         new SectionDrawerItem().withName("More").withDivider(true),
                         new SecondaryDrawerItem().withName("Support").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_support))).withIdentifier(20).withSelectable(false),
                         new SecondaryDrawerItem().withName("Feedback").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_feedback))).withIdentifier(21).withSelectable(false))
@@ -201,6 +201,9 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 7) {
                             mViewPager.setCurrentItem(5, true);
+                            drawer.closeDrawer();
+                        } else if (drawerItem.getIdentifier() == 8) {
+                            mViewPager.setCurrentItem(6, true);
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 20) {
                             utils.openCustomTabs(MainScreen.this, "https://github.com/iamSahdeep/Bop/issues");
@@ -275,6 +278,9 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                         break;
                     case 5:
                         setTitle("Artists");
+                        break;
+                    case 6:
+                        setTitle("Files");
                         break;
                     default:
                         setTitle(R.string.app_name);
@@ -355,6 +361,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             Main.musicService.notifyCurrentSong();
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
+
         } else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
@@ -671,6 +678,8 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                     return "Albums";
                 case 5:
                     return "Artists";
+                case 6:
+                    return "Files";
             }
             return null;
         }

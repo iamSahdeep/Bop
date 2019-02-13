@@ -1,5 +1,17 @@
 # CHANGELOG.md
 
+## 1.1 (unreleased)
+### versionCode = 9
+
+Features:
+
+  - File / Folders View -> [e13789a145292986dbce803bc8bbfcc1dbafe3e7](https://github.com/iamSahdeep/Bop/commit/e13789a145292986dbce803bc8bbfcc1dbafe3e7)
+
+Bug Fixes:
+
+  - Fix : Slow Movement through viewPager-> [7ab5c0c5a7e3e51cebe2e73c08a051b09f3817c5](https://github.com/iamSahdeep/Bop/tree/7ab5c0c5a7e3e51cebe2e73c08a051b09f3817c5)
+  - Fix : song Restarts On rotation -> [8e040c7519e2652af7fc2c22320e977c5c3263f9](https://github.com/iamSahdeep/Bop/tree/8e040c7519e2652af7fc2c22320e977c5c3263f9)
+
 ## 1.0
 ### versionCode = 8
 

@@ -36,6 +36,16 @@
                 android:textSize="13sp" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/upDirectory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/searchback"
+            android:text="Parent Directory"
+            android:textSize="13sp" />
         <TextView
             android:id="@+id/currentDir"
             android:layout_width="match_parent"
@@ -62,33 +72,8 @@
             android:id="@+id/filesRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
             tools:listitem="@layout/fragment_file_item">
         </androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="15dp"
-        android:gravity="center|bottom"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
-
-        <Button
-            android:id="@+id/upDirectory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/searchback"
-            android:text="Parent Directory"
-            android:textSize="13sp"
-            tools:ignore="NestedWeights" />
-
-
     </LinearLayout>
 
 </RelativeLayout>
