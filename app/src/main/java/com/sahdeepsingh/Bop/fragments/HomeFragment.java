@@ -63,11 +63,11 @@ public class HomeFragment extends Fragment {
 
         openAllSongs.setOnClickListener(view14 -> mViewPager.setCurrentItem(1, true));
 
-        openGenres.setOnClickListener(view13 -> mViewPager.setCurrentItem(4, true));
+        openGenres.setOnClickListener(view13 -> mViewPager.setCurrentItem(3, true));
 
         openPlaylists.setOnClickListener(view12 -> mViewPager.setCurrentItem(2, true));
 
-        openAlbums.setOnClickListener(view1 -> mViewPager.setCurrentItem(3, true));
+        openAlbums.setOnClickListener(view1 -> mViewPager.setCurrentItem(4, true));
 
         openArtists.setOnClickListener(view15 -> mViewPager.setCurrentItem(5, true));
 
