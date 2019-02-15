@@ -1,4 +1,4 @@
-# Bop - Music Player [![GitHub release](https://img.shields.io/github/release-pre/iamSahdeep/Bop.svg?style=popout-square)](https://github.com/iamSahdeep/Bop/releases/tag/v1.0) [![Fdroid release](https://img.shields.io/f-droid/v/com.sahdeepsingh.Bop.svg?style=flat-square)](https://f-droid.org/en/packages/com.sahdeepsingh.Bop)
+# Bop - Music Player [![GitHub release](https://img.shields.io/github/release-pre/iamSahdeep/Bop.svg?style=popout-square)](https://github.com/iamSahdeep/Bop/releases/tag/v1.1) [![Fdroid release](https://img.shields.io/f-droid/v/com.sahdeepsingh.Bop.svg?style=flat-square)](https://f-droid.org/en/packages/com.sahdeepsingh.Bop)
 
 
 [![Build Status](https://travis-ci.org/iamSahdeep/Bop.svg?branch=master)](https://travis-ci.org/iamSahdeep/Bop) [![GitHub All Releases](https://img.shields.io/github/downloads/iamSahdeep/bop/total.svg)](https://github.com/iamSahdeep/Bop/releases) 
