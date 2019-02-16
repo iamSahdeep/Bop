@@ -470,8 +470,12 @@ public class Data {
 
         ArrayList<String> genres = new ArrayList<String>();
 
-        for (String genre : genreIdToGenreNameMap.values())
-            genres.add(genre);
+        for (Song song : songs) {
+            String genre = song.getGenre();
+
+            if ((genre != null) && (!genres.contains(genre)))
+                genres.add(genre);
+        }
 
         Collections.sort(genres);
 
