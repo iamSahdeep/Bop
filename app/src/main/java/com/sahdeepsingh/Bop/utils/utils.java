@@ -35,8 +35,6 @@ import androidx.renderscript.ScriptIntrinsicBlur;
 
 public class utils {
 
-    private static final int[] TEMP_ARRAY = new int[1];
-
     /* For blurring the image*/
     public static Bitmap blurMyImage(Bitmap image, Context context) {
         if (null == image) return null;
@@ -60,6 +58,8 @@ public class utils {
         String theme = Main.settings.get("modes", "Day");
         if (theme.equals("Day"))
             drawable.mutate().setColorFilter(ContextCompat.getColor(c, R.color.md_grey_800), PorterDuff.Mode.MULTIPLY);
+        else
+            drawable.mutate().setColorFilter(ContextCompat.getColor(c, R.color.white), PorterDuff.Mode.MULTIPLY);
         return drawable;
     }
 
@@ -80,7 +80,7 @@ public class utils {
 
     public static void sendFeedback(Context context) {
         String body = "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
-                String.valueOf(Main.versionCode) + "\n App Version: " + Main.versionName + "\n Device Brand: " + Build.BRAND +
+                String.valueOf(android.os.Build.VERSION.SDK_INT) + "\n App Version: " + Main.versionName + "\n Device Brand: " + Build.BRAND +
                 "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
 
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
