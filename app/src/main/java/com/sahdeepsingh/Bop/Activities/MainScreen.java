@@ -47,11 +47,11 @@ import com.sahdeepsingh.Bop.fragments.HomeFragment;
 import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Objects;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.legacy.app.FragmentPagerAdapter;
@@ -79,7 +79,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     /* BroadCast receiver for every toggle and stuff*/
     ChangeSongBR changeSongBR;
     /*Our non Sliding Panel*/
-    SlidingUpPanelLayout slidingUpPanelLayout;
+    ConstraintLayout bottomControls;
     private boolean playbackPaused = false;
     private boolean backPressedOnce = false;
     /**
@@ -107,7 +107,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-        slidingUpPanelLayout = findViewById(R.id.sliding_layout);
+        bottomControls = findViewById(R.id.bottomViewControls);
         songNameSP = findViewById(R.id.bottomtextView);
         albumArtSP = findViewById(R.id.bottomImageview);
         next = findViewById(R.id.next);
@@ -127,8 +127,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                 } else drawer.openDrawer();
             }
         });
-
-        slidingUpPanelLayout.setTouchEnabled(false);
 
         mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
@@ -359,12 +357,10 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
         if (Main.mainMenuHasNowPlayingItem) {
             Main.musicService.notifyCurrentSong();
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
+            bottomControls.setVisibility(View.VISIBLE);
 
         } else {
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-            slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
+            bottomControls.setVisibility(View.GONE);
         }
 
         if (isPlaying()) {
@@ -508,8 +504,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             @Override
             public void run() {
                 if (!Main.mainMenuHasNowPlayingItem) {
-                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-                    slidingUpPanelLayout.setCoveredFadeColor(getResources().getColor(R.color.transparent));
+                    bottomControls.setVisibility(View.GONE);
                 }
                 if (isPlaying()) {
                     mProgressView.setProgress(getCurrentPosition() / 1000);
