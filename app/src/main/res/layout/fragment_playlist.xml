@@ -49,6 +49,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
         tools:context=".fragments.FragmentPlaylist"
         tools:listitem="@layout/fragment_playlist_item" />
 

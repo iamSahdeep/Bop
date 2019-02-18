@@ -50,6 +50,8 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
         tools:context=".fragments.FragmentAlbum"
         tools:listitem="@layout/fragment_album_item" />
 

@@ -55,6 +55,8 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="16dp"
             android:nestedScrollingEnabled="false"
+            android:clipToPadding="false"
+            android:paddingBottom="100dp"
             app:fastScrollAutoHide="true"
             app:fastScrollAutoHideDelay="1500"
             app:fastScrollPopupBgColor="?attr/primaryColor"

@@ -48,6 +48,8 @@
         android:name="com.sahdeepsingh.Bop.fragments.FragmentArtist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         tools:context=".fragments.FragmentArtist"

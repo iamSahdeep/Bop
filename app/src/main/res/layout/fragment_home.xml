@@ -12,6 +12,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
         android:scrollbars="none"
         tools:ignore="UselessParent">
 
@@ -122,6 +124,24 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/everything"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+
             <ScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -171,24 +191,6 @@
                 </LinearLayout>
 
             </ScrollView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/everything"
-                    android:textSize="17sp" />
-
-            </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"

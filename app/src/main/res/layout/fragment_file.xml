@@ -71,6 +71,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filesRV"
             android:layout_width="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="100dp"
             android:layout_height="wrap_content"
             tools:listitem="@layout/fragment_file_item">
         </androidx.recyclerview.widget.RecyclerView>
