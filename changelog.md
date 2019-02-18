@@ -1,5 +1,14 @@
 # CHANGELOG.md
 
+## 1.1.1 (unreleased)
+### versionCode = 10
+
+Bug Fixes:
+
+  - Fix : Empty Genres makes it crash-> [a13c9f7d0cdda7eb986f2ffbd214f9f0eac5a2dd](https://github.com/iamSahdeep/Bop/tree/a13c9f7d0cdda7eb986f2ffbd214f9f0eac5a2dd)
+  - Fix : making backup might save shared preferences after uninstalling, ultimating crashes -> [de1d1e63c2faedce1f2e1af2e55f64056f0a6a33](https://github.com/iamSahdeep/Bop/tree/de1d1e63c2faedce1f2e1af2e55f64056f0a6a33)
+  - Fix : In Abort native crash (might be solved lets see on console, cant reproduce any way)-> [219829da3d6ec12fe6cbe3b0805c135dc9e1e15c](https://github.com/iamSahdeep/Bop/tree/219829da3d6ec12fe6cbe3b0805c135dc9e1e15c)
+
 ## 1.1 (unreleased)
 ### versionCode = 9
 
