@@ -86,6 +86,7 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mEqualizer = new Equalizer(0, audioSesionId);
         bassBoost = new BassBoost(0, audioSesionId);
         bassBoost.setEnabled(true);
