@@ -73,6 +73,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     /*Song name, time left and Total time in Sliding Panel*/
     TextView songNameSP;
     Drawer drawer;
+    MiniDrawer miniDrawer;
     AccountHeader accountHeader;
     /* Next two are for Navigation Drawer*/
     CrossfadeDrawerLayout crossfadeDrawerLayout;
@@ -224,7 +225,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         //noinspection deprecation
         crossfadeDrawerLayout = (CrossfadeDrawerLayout) drawer.getDrawerLayout();
         crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
-        MiniDrawer miniDrawer = drawer.getMiniDrawer();
+        miniDrawer = drawer.getMiniDrawer();
         View view = miniDrawer.build(this);
         if (currentMode.equals("Night")) {
             view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialize.R.color.background_material_dark));
@@ -261,6 +262,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                 switch (position) {
                     case 0:
                         setTitle(R.string.app_name);
+                        drawer.setSelection(-1);
                         break;
                     case 1:
                         setTitle("Songs");
