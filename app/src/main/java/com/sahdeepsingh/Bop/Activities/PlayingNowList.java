@@ -92,7 +92,7 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
         songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
 
 
-        if (getIntent().getExtras() != null && !Main.mainMenuHasNowPlayingItem) {
+        if (getIntent().getExtras() != null || !Main.mainMenuHasNowPlayingItem) {
             mPlaylistName.setText(Objects.requireNonNull(getIntent().getExtras()).getString("playlistname", "Current Playlist"));
             Main.musicService.playSong();
         }
