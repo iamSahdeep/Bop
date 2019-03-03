@@ -37,15 +37,33 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/upDirectory"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/searchback"
-            android:text="Parent Directory"
-            android:textSize="13sp" />
+            android:layout_marginRight="20dp">
+
+            <Button
+                android:id="@+id/upDirectory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/searchback"
+                android:text="Parent Directory"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/playSongsFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/searchback"
+                android:text="Play All"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/currentDir"
             android:layout_width="match_parent"

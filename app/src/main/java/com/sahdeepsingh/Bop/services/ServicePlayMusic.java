@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.cleveroad.audiowidget.AudioWidget;
 import com.sahdeepsingh.Bop.Activities.MainScreen;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
@@ -195,6 +196,8 @@ public class ServicePlayMusic extends Service
      * Will keep an eye on global broadcasts related to
      * the Headset.
      */
+
+    AudioWidget audioWidget;
     BroadcastReceiver headsetBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -315,6 +318,9 @@ public class ServicePlayMusic extends Service
 
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
+        if (Main.settings.get("showFloatingWidget", true))
+            createAudioWidget();
+
         initMusicPlayer();
 
         Context context = getApplicationContext();
@@ -332,6 +338,11 @@ public class ServicePlayMusic extends Service
 
         Log.w(TAG, "onCreate");
 
+    }
+
+    private void createAudioWidget() {
+
+        audioWidget = new AudioWidget.Builder(getApplicationContext()).build();
     }
 
     /**
@@ -607,7 +618,6 @@ public class ServicePlayMusic extends Service
 
     @Override
     public void onDestroy() {
-        Context context = getApplicationContext();
 
         cancelNotification();
 

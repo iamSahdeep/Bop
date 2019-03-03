@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
 
@@ -48,6 +49,7 @@ public class FileFragment extends Fragment {
     private static final String LOGTAG = "F_PATH";
 
     private List<Item> fileList = new ArrayList<Item>();
+    Button internal, external, up, playall;
     private File path = null;
     private String chosenFile;
     // private static final int DIALOG_LOAD_FILE = 1000;
@@ -62,7 +64,7 @@ public class FileFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private MyAdapter mAdapter;
     ImageButton options;
-    Button internal, external, up;
+    private List<File> songs = new ArrayList<>();
     TextView noData, curDir;
 
 
@@ -102,6 +104,7 @@ public class FileFragment extends Fragment {
         noData = view.findViewById(R.id.noDataFile);
         curDir = view.findViewById(R.id.currentDir);
         up = view.findViewById(R.id.upDirectory);
+        playall = view.findViewById(R.id.playSongsFile);
         up.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 loadDirectoryUp();
@@ -122,12 +125,40 @@ public class FileFragment extends Fragment {
                 loadExternalDirectory();
             }
         });
+        playall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playAllSongsinDirectory();
+            }
+        });
+    }
+
+    private void playAllSongsinDirectory() {
+        Intent intent = new Intent(getActivity(), PlayingNowList.class);
+        intent.putExtra("playlistname", "Files");
+        List<Song> songsList = new ArrayList<>();
+        Main.musicList.clear();
+        for (File f :
+                songs) {
+            if (Main.songs.getSongbyFile(f) != null)
+                songsList.add(Main.songs.getSongbyFile(f));
+        }
+
+        if (songsList.isEmpty()) {
+            showToast("Lol, i know it sucks");
+            return;
+        }
+        Main.musicList = (ArrayList<Song>) songsList;
+        Main.nowPlayingList = Main.musicList;
+
+        Main.musicService.setList(Main.nowPlayingList);
+        getActivity().startActivity(intent);
     }
 
     private void loadExternalDirectory() {
         if (new File("/storage/").exists()) {
             path = new File("/storage/");
-        }else if (new File("/data/").exists()) {
+        } else if (new File("/data/").exists()) {
             path = new File("/data/");
         } else if (new File("/mnt/").exists()) {
             path = new File("/mnt/");
@@ -196,6 +227,7 @@ public class FileFragment extends Fragment {
             showToast(e.getMessage());
         }
         fileList.clear();
+        songs.clear();
 
         if (path.exists() && path.canRead()) {
             FilenameFilter filter = new FilenameFilter() {
@@ -223,14 +255,19 @@ public class FileFragment extends Fragment {
                     } else {
                         drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_cancel));
                     }
-                }
-                else if (sel.isFile()){
-                    if (URLConnection.guessContentTypeFromName(sel.getAbsolutePath()) != null && URLConnection.guessContentTypeFromName(sel.getAbsolutePath()).startsWith("audio"))
+                } else if (sel.isFile()) {
+                    if (URLConnection.guessContentTypeFromName(sel.getAbsolutePath()) != null && URLConnection.guessContentTypeFromName(sel.getAbsolutePath()).startsWith("audio")) {
                         drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_music));
-                    else
+                        songs.add(sel);
+                    } else
                         drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_file));
                 }
                 fileList.add(i, new Item(fList[i], drawable, canRead));
+            }
+            if (!songs.isEmpty()) {
+                playall.setVisibility(View.VISIBLE);
+            } else {
+                playall.setVisibility(View.GONE);
             }
             if (fileList.size() == 0) {
                 noData.setVisibility(View.VISIBLE);
@@ -268,35 +305,27 @@ public class FileFragment extends Fragment {
         }
     }
 
+    private void playSong(String absolutePath) {
+        Intent intent = new Intent(getActivity(), PlayingNowList.class);
+        intent.putExtra("file", absolutePath);
+        Main.musicList.clear();
+        if (Main.songs.getSongbyFile(new File(absolutePath)) == null) {
+            Toast.makeText(getActivity(), "Selected Song is not in mediaStore yet, Cant play for now", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Main.musicList.add(Main.songs.getSongbyFile(new File(absolutePath)));
+        Main.nowPlayingList = Main.musicList;
+        if (Main.nowPlayingList == null) {
+            Toast.makeText(getActivity(), "Selected Song is not in mediaStore yet, Please wait", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Main.musicService.setList(Main.nowPlayingList);
+        getActivity().startActivity(intent);
+    }
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         private List<Item> mDataset;
-
-        class MyViewHolder extends RecyclerView.ViewHolder {
-            View mView;
-            TextView file;
-            ImageView pic;
-            MyViewHolder(View v) {
-                super(v);
-                mView = v;
-                file = v.findViewById(R.id.DirectoryName);
-                pic = v.findViewById(R.id.fileItemPic);
-            }
-        }
-
-        // Provide a suitable constructor (depends on the kind of dataset)
-        MyAdapter(List<Item> myDataset) {
-            mDataset = myDataset;
-        }
-
-        @NonNull
-        @Override
-        public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
-                                                         int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.fragment_file_item, parent, false);
-            return new MyViewHolder(view);
-        }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
@@ -316,38 +345,46 @@ public class FileFragment extends Fragment {
                         } else {
                             showToast("Path does not exist or cannot be read");
                         }
-                    }else if (sel.isFile()){
-                        if (URLConnection.guessContentTypeFromName(sel.getAbsolutePath()) != null && URLConnection.guessContentTypeFromName(sel.getAbsolutePath()).startsWith("audio")){
+                    } else if (sel.isFile()) {
+                        if (URLConnection.guessContentTypeFromName(sel.getAbsolutePath()) != null && URLConnection.guessContentTypeFromName(sel.getAbsolutePath()).startsWith("audio")) {
                             playSong(sel.getAbsolutePath());
-                        }else
+                        } else
                             showToast("Selected file is not Audio/Music");
                     }
                 }
             });
         }
 
+        // Provide a suitable constructor (depends on the kind of dataset)
+        MyAdapter(List<Item> myDataset) {
+            mDataset = myDataset;
+        }
+
+        @NonNull
+        @Override
+        public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                         int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.fragment_file_item, parent, false);
+            return new MyViewHolder(view);
+        }
+
+        class MyViewHolder extends RecyclerView.ViewHolder {
+            View mView;
+            TextView file;
+            ImageView pic;
+
+            MyViewHolder(View v) {
+                super(v);
+                mView = v;
+                file = v.findViewById(R.id.DirectoryName);
+                pic = v.findViewById(R.id.fileItemPic);
+            }
+        }
+
         @Override
         public int getItemCount() {
             return mDataset.size();
         }
-    }
-
-    private void playSong(String absolutePath) {
-        Intent intent = new Intent(getActivity(), PlayingNowList.class);
-        intent.putExtra("file", absolutePath);
-        Main.musicList.clear();
-        if (Main.songs.getSongbyFile(new File(absolutePath)) == null){
-            Toast.makeText(getActivity(), "Selected Song is not in mediaStore yet, Cant play for now", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Main.musicList.add(Main.songs.getSongbyFile(new File(absolutePath)));
-        Main.nowPlayingList = Main.musicList;
-        if (Main.nowPlayingList == null) {
-            Toast.makeText(getActivity(), "Selected Song is not in mediaStore yet, Please wait", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Main.musicService.setList(Main.nowPlayingList);
-        getActivity().startActivity(intent);
     }
 }
