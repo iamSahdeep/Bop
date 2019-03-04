@@ -29,6 +29,7 @@ import com.sahdeepsingh.Bop.views.TransitionAdapter;
 
 import java.io.File;
 
+import androidx.core.content.ContextCompat;
 import me.tankery.lib.circularseekbar.CircularSeekBar;
 
 import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;
@@ -92,22 +93,27 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     private void setclickListeners() {
 
         next = findViewById(R.id.next);
+        next.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_skip)));
         previous = findViewById(R.id.previous);
+        previous.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_previous)));
         forward = findViewById(R.id.forward);
+        forward.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_forward)));
         rewind = findViewById(R.id.rewind);
+        rewind.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_rewind)));
         shuffle = findViewById(R.id.shuffle);
         repeat = findViewById(R.id.repeat);
 
         if (!Main.musicService.isShuffle()) {
-            shuffle.setImageResource(R.drawable.ic_shuffle_off);
+            shuffle.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_shuffle_off))));
         } else {
-            shuffle.setImageResource(R.drawable.ic_shuffle_on);
+            shuffle.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_shuffle_on))));
         }
         if (Main.musicService.isRepeat() == 0) {
-            repeat.setImageResource(R.drawable.ic_repeat_one);
+            repeat.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_repeat_one))));
         } else if (Main.musicService.isRepeat() == 1) {
-            repeat.setImageResource(R.drawable.ic_repeat_on);
-        } else repeat.setImageResource(R.drawable.ic_repeat_off);
+            repeat.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_repeat_on))));
+        } else
+            repeat.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_repeat_off))));
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,9 +148,9 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
             public void onClick(View view) {
                 Main.musicService.toggleShuffle();
                 if (!Main.musicService.isShuffle()) {
-                    shuffle.setImageResource(R.drawable.ic_shuffle_off);
+                    shuffle.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shuffle_off))));
                 } else {
-                    shuffle.setImageResource(R.drawable.ic_shuffle_on);
+                    shuffle.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shuffle_on))));
                 }
             }
         });
@@ -154,10 +160,11 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
             public void onClick(View view) {
                 Main.musicService.toggleRepeat();
                 if (Main.musicService.isRepeat() == 0) {
-                    repeat.setImageResource(R.drawable.ic_repeat_one);
+                    repeat.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_one))));
                 } else if (Main.musicService.isRepeat() == 1) {
-                    repeat.setImageResource(R.drawable.ic_repeat_on);
-                } else repeat.setImageResource(R.drawable.ic_repeat_off);
+                    repeat.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_on))));
+                } else
+                    repeat.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_off))));
             }
         });
     }
@@ -166,9 +173,9 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     public void onFabClick(View view) {
         Main.musicService.togglePlayback();
         if (!Main.musicService.isPaused()) {
-            mFabView.setImageResource(R.drawable.ic_pause);
+            mFabView.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_pause))));
         } else {
-            mFabView.setImageResource(R.drawable.ic_play);
+            mFabView.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_play))));
         }
     }
 
@@ -213,7 +220,7 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     @Override
     public void start() {
         Main.musicService.unpausePlayer();
-        mFabView.setImageResource(R.drawable.ic_pause);
+        mFabView.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_pause))));
     }
 
     /**
@@ -222,7 +229,7 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     @Override
     public void pause() {
         Main.musicService.pausePlayer();
-        mFabView.setImageResource(R.drawable.ic_play);
+        mFabView.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_play))));
     }
 
     @Override
@@ -397,9 +404,9 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
             mTitleView.setSelected(true);
             workOnImages();
             if (!Main.musicService.isPaused()) {
-                mFabView.setImageResource(R.drawable.ic_pause);
+                mFabView.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_pause))));
             } else {
-                mFabView.setImageResource(R.drawable.ic_play);
+                mFabView.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_play))));
             }
         }
     }

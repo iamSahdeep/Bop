@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:text="@string/song_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/white" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
 </LinearLayout>

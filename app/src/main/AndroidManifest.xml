@@ -18,7 +18,7 @@
     <application
         android:allowBackup="false"
         android:fullBackupContent="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:theme="@style/AppTheme.RED">
         <activity
@@ -54,9 +54,7 @@
             android:name=".Activities.MainScreen"
             android:windowSoftInputMode="stateHidden"
             android:label="@string/app_name" />
-        <activity
-            android:name=".Activities.PlayingNowList"
-            android:theme="@style/darkTheme" />
+        <activity android:name=".Activities.PlayingNowList" />
         <activity
             android:name=".Activities.SplashScreen"
             android:theme="@style/SplashTheme">
