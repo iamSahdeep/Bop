@@ -39,6 +39,7 @@
         <receiver android:name=".notifications.NotificationMusic$NotificationPlayButtonHandler" />
         <receiver android:name=".notifications.NotificationMusic$NotificationSkipButtonHandler" />
         <receiver android:name=".notifications.NotificationMusic$NotificationStopButtonHandler" />
+        <receiver android:name=".notifications.NotificationMusic$NotificationPreviousButtonHandler" />
         <receiver android:name=".services.ServicePlayMusic$ExternalBroadcastReceiver">
             <intent-filter>
 

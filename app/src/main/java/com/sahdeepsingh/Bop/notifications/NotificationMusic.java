@@ -120,8 +120,10 @@ public class NotificationMusic extends NotificationSimple {
         notificationView.setImageViewResource(R.id.pauseNoti, R.drawable.ic_pause);
         notificationView.setImageViewResource(R.id.skipNoti, R.drawable.ic_skip);
         notificationView.setImageViewResource(R.id.stopNoti, R.drawable.ic_cancel);
+        notificationView.setImageViewResource(R.id.previousNoti, R.drawable.ic_previous);
         notificationView.setTextViewText(R.id.songNameNoti, song.getTitle());
         notificationView.setTextViewText(R.id.ArtistNameNoti, song.getArtist());
+        notificationView.setTextViewText(R.id.AlbumNoti, song.getAlbum());
         Bitmap newImage;
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = 5;
@@ -147,6 +149,12 @@ public class NotificationMusic extends NotificationSimple {
 
         PendingIntent buttonSkipPendingIntent = PendingIntent.getBroadcast(context, 0, buttonSkipIntent, 0);
         notificationView.setOnClickPendingIntent(R.id.skipNoti, buttonSkipPendingIntent);
+
+        Intent buttonPreviousIntent = new Intent(context, NotificationPreviousButtonHandler.class);
+        buttonPreviousIntent.putExtra("action", "previous");
+
+        PendingIntent buttonPreviousPendingIntent = PendingIntent.getBroadcast(context, 0, buttonPreviousIntent, 0);
+        notificationView.setOnClickPendingIntent(R.id.previousNoti, buttonPreviousPendingIntent);
 
         // And now, building and attaching the cancel button.
         Intent buttonStopIntent = new Intent(context, NotificationStopButtonHandler.class);
@@ -252,4 +260,13 @@ public class NotificationMusic extends NotificationSimple {
             Main.musicService.removedFromNotification();
         }
     }
+
+    public static class NotificationPreviousButtonHandler extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Main.musicService.previous(true);
+            Main.musicService.playSong();
+        }
+    }
+
 }
