@@ -3,10 +3,12 @@ package com.sahdeepsingh.Bop.Activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -36,6 +38,19 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences recent = getSharedPreferences("com.sahdeepsingh.bop.RecentSongs", 0);
+        SharedPreferences count = getSharedPreferences("com.sahdeepsingh.bop.SongsPlayedCount", 0);
+        SharedPreferences defaults = PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean firstRun = defaults.getBoolean("firstRun", true);
+
+        if (firstRun) {
+            defaults.edit().clear().apply();
+            defaults.edit().putBoolean("firstRun", false).apply();
+            recent.edit().clear().apply();
+            count.edit().clear().apply();
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!checkPerm()) {
@@ -89,7 +104,7 @@ public class SplashScreen extends AppCompatActivity {
                             Intent intent = new Intent(SplashScreen.this, MainScreen.class);
                             startActivity(intent);
                         } else {
-                            Main.initialize(this);
+                            Main.initialize(getApplicationContext());
                             scanSongs(false);
                         }
                     } else {
@@ -213,6 +228,6 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Main.startMusicService(this);
+        Main.startMusicService(getApplicationContext());
     }
 }

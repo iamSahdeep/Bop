@@ -37,7 +37,7 @@ import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;
 public class PlayerView extends BaseActivity implements MediaController.MediaPlayerControl {
 
     ChangeSongBR changeSongBR;
-    ImageView next, previous, rewind, forward, shuffle, repeat;
+    ImageView next, previous, rewind, forward, shuffle, repeat, eq;
     private MusicCoverView mCoverView;
     private FloatingActionButton mFabView;
     private TextView mTimeView;
@@ -63,6 +63,7 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
         mDurationView = findViewById(R.id.duration);
         mProgressView = findViewById(R.id.progress);
         mFabView = findViewById(R.id.fab);
+        eq = findViewById(R.id.equaButton);
         circleBarVisualizer = findViewById(R.id.visualizer);
         circleBarVisualizer.setColor(utils.getThemeAttrColor(this, R.styleable.Theme_primaryColor));
 
@@ -92,6 +93,7 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
 
     private void setclickListeners() {
 
+        eq.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_equalizer)));
         next = findViewById(R.id.next);
         next.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_skip)));
         previous = findViewById(R.id.previous);

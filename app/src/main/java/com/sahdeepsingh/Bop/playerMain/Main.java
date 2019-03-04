@@ -175,6 +175,7 @@ public class Main {
 
         Log.w("service", "stoppedService");
         c.stopService(musicServiceIntent);
+        c.unbindService(musicConnection);
         musicServiceIntent = null;
         Main.musicService = null;
     }
@@ -195,11 +196,6 @@ public class Main {
 
     }
 
-    //just for debugging
-    public static void logger(String msg) {
-        Log.e("Logger", msg);
-    }
-
     public static void showProgressDialog(Context c) {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(c, R.style.progressTheme);
@@ -215,5 +211,4 @@ public class Main {
             mProgressDialog.dismiss();
         }
     }
-
 }
