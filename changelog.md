@@ -1,5 +1,22 @@
 # CHANGELOG.md
 
+## 1.1.2 (unreleased)
+### versionCode = 11
+
+Bug Fixes:
+
+  - Fix : Recent Songs Adaptor causing NPE-> [8e940f81ac9b4d5bffe63e7c497e962e0661e73c](https://github.com/iamSahdeep/Bop/tree/8e940f81ac9b4d5bffe63e7c497e962e0661e73c)
+  - Fix : reaccessing the page from navigation drawer -> [4241773018689eea6b2b06753a897175a27b9181](https://github.com/iamSahdeep/Bop/tree/4241773018689eea6b2b06753a897175a27b9181)
+  - Fix : Crashes on screen rotation in equalizer-> [3b13413ab03748480b41a1ec8ff69d08acddb5c2](https://github.com/iamSahdeep/Bop/tree/3b13413ab03748480b41a1ec8ff69d08acddb5c2)
+
+New :
+
+  - Recent Songs Adaptor causing NPE-> [8e940f81ac9b4d5bffe63e7c497e962e0661e73c](https://github.com/iamSahdeep/Bop/tree/8e940f81ac9b4d5bffe63e7c497e962e0661e73c)
+  - New Logo-> [094a60a2bb7c1b616757c26a281e585e5355c48d](https://github.com/iamSahdeep/Bop/tree/094a60a2bb7c1b616757c26a281e585e5355c48d)
+  - PlayerView Themed-> [094a60a2bb7c1b616757c26a281e585e5355c48d](https://github.com/iamSahdeep/Bop/tree/094a60a2bb7c1b616757c26a281e585e5355c48d)
+  - PlayAll option in files and folder-> [328b19106c2b6eb46c97316b7058845e5647643a](https://github.com/iamSahdeep/Bop/tree/328b19106c2b6eb46c97316b7058845e5647643a)
+  - PlayerView Themed-> [094a60a2bb7c1b616757c26a281e585e5355c48d](https://github.com/iamSahdeep/Bop/tree/094a60a2bb7c1b616757c26a281e585e5355c48d)
+
 ## 1.1.1 (unreleased)
 ### versionCode = 10
 

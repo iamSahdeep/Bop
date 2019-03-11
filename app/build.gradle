@@ -6,8 +6,8 @@ android {
         applicationId "com.sahdeepsingh.Bop"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 10
-        versionName "1.1.1"
+        versionCode 11
+        versionName "1.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         renderscriptTargetApi 18
