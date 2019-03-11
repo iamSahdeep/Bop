@@ -37,7 +37,7 @@ A basic Music playing application for media files in your mobile, currently in d
    - and many more for those awesome libraries. Check the list of [Libraries](https://github.com/iamSahdeep/Bop/blob/master/app/build.gradle) used.
    
 ### Logo
-Special Thanks to [@riyandacountri88](https://github.com/riyandacountri88) fo the logo 
+Special Thanks to [@riyandacountri88](https://github.com/riyandacountri88) for the logo 
 
 Check the complete report https://github.com/iamSahdeep/Bop/issues/28
 
