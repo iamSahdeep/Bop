@@ -394,6 +394,11 @@
                 android:textSize="20sp" />
 
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/pembatas" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
