@@ -11,11 +11,10 @@ Bug Fixes:
 
 New :
 
-  - Recent Songs Adaptor causing NPE-> [8e940f81ac9b4d5bffe63e7c497e962e0661e73c](https://github.com/iamSahdeep/Bop/tree/8e940f81ac9b4d5bffe63e7c497e962e0661e73c)
   - New Logo-> [094a60a2bb7c1b616757c26a281e585e5355c48d](https://github.com/iamSahdeep/Bop/tree/094a60a2bb7c1b616757c26a281e585e5355c48d)
   - PlayerView Themed-> [094a60a2bb7c1b616757c26a281e585e5355c48d](https://github.com/iamSahdeep/Bop/tree/094a60a2bb7c1b616757c26a281e585e5355c48d)
   - PlayAll option in files and folder-> [328b19106c2b6eb46c97316b7058845e5647643a](https://github.com/iamSahdeep/Bop/tree/328b19106c2b6eb46c97316b7058845e5647643a)
-  - PlayerView Themed-> [094a60a2bb7c1b616757c26a281e585e5355c48d](https://github.com/iamSahdeep/Bop/tree/094a60a2bb7c1b616757c26a281e585e5355c48d)
+ 
 
 ## 1.1.1 (unreleased)
 ### versionCode = 10
