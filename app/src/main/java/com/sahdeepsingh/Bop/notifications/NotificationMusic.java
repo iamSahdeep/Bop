@@ -6,17 +6,16 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.widget.RemoteViews;
 
 import com.sahdeepsingh.Bop.Activities.MainScreen;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.services.ServicePlayMusic;
+import com.sahdeepsingh.Bop.utils.utils;
 
 import androidx.core.app.NotificationCompat;
 
@@ -54,11 +53,6 @@ public class NotificationMusic extends NotificationSimple {
     private NotificationCompat.Builder notificationBuilder;
 
     /**
-     * Custom appearance of the notification, also updated.
-     */
-    private RemoteViews notificationView = null;
-
-    /**
      * Used to actually broadcast the notification.
      * Depends on the Activity that originally called
      * the notification.
@@ -68,6 +62,7 @@ public class NotificationMusic extends NotificationSimple {
     /**
      * Cancels all sent notifications.
      */
+
     public static void cancelAll(Context c) {
         NotificationManager manager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
         assert manager != null;
@@ -112,57 +107,6 @@ public class NotificationMusic extends NotificationSimple {
                         PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-        // Setting our custom appearance for the notification
-        notificationView = new RemoteViews(Main.packageName, R.layout.notification);
-
-        // Manually settings the buttons and text
-        // (ignoring the defaults on the XML)
-        notificationView.setImageViewResource(R.id.pauseNoti, R.drawable.ic_pause);
-        notificationView.setImageViewResource(R.id.skipNoti, R.drawable.ic_skip);
-        notificationView.setImageViewResource(R.id.stopNoti, R.drawable.ic_cancel);
-        notificationView.setImageViewResource(R.id.previousNoti, R.drawable.ic_previous);
-        notificationView.setTextViewText(R.id.songNameNoti, song.getTitle());
-        notificationView.setTextViewText(R.id.ArtistNameNoti, song.getArtist());
-        notificationView.setTextViewText(R.id.AlbumNoti, song.getAlbum());
-        Bitmap newImage;
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inSampleSize = 5;
-        newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
-        if (newImage != null)
-            notificationView.setImageViewBitmap(R.id.albumArtNoti, newImage);
-        else notificationView.setImageViewResource(R.id.albumArtNoti, R.mipmap.ic_launcher);
-
-        // On the notification we have three buttons - Play, close and Skip
-        // Here we make sure the class `NotificationButtonHandler`
-        // gets called when user selects one of those.
-        //
-        // First, building the play button and attaching it.
-        Intent buttonPlayIntent = new Intent(context, NotificationPlayButtonHandler.class);
-        buttonPlayIntent.putExtra("action", "togglePause");
-
-        PendingIntent buttonPlayPendingIntent = PendingIntent.getBroadcast(context, 0, buttonPlayIntent, 0);
-        notificationView.setOnClickPendingIntent(R.id.pauseNoti, buttonPlayPendingIntent);
-
-        // And now, building and attaching the Skip button.
-        Intent buttonSkipIntent = new Intent(context, NotificationSkipButtonHandler.class);
-        buttonSkipIntent.putExtra("action", "skip");
-
-        PendingIntent buttonSkipPendingIntent = PendingIntent.getBroadcast(context, 0, buttonSkipIntent, 0);
-        notificationView.setOnClickPendingIntent(R.id.skipNoti, buttonSkipPendingIntent);
-
-        Intent buttonPreviousIntent = new Intent(context, NotificationPreviousButtonHandler.class);
-        buttonPreviousIntent.putExtra("action", "previous");
-
-        PendingIntent buttonPreviousPendingIntent = PendingIntent.getBroadcast(context, 0, buttonPreviousIntent, 0);
-        notificationView.setOnClickPendingIntent(R.id.previousNoti, buttonPreviousPendingIntent);
-
-        // And now, building and attaching the cancel button.
-        Intent buttonStopIntent = new Intent(context, NotificationStopButtonHandler.class);
-        buttonStopIntent.putExtra("action", "stop");
-
-        PendingIntent buttonStopPendingIntent = PendingIntent.getBroadcast(context, 0, buttonStopIntent, 0);
-        notificationView.setOnClickPendingIntent(R.id.stopNoti, buttonStopPendingIntent);
-
         // The id of the channel.
         String id = "Bop-MusicPlayer";
         // Finally... Actually creating the Notification
@@ -189,11 +133,22 @@ public class NotificationMusic extends NotificationSimple {
 
         notificationBuilder.setContentIntent(pendingIntent)
                 .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                .setShowWhen(false)
                 .setOngoing(true)
-                .setStyle(new NotificationCompat.BigPictureStyle())
-                .setCustomContentView(notificationView)
+                .setColor(0x0000000)
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setMediaSession(Main.musicService.mMediaSessionCompat.getSessionToken())
+                        .setShowActionsInCompactView(0, 1, 2)
+                        .setShowCancelButton(true)
+                        .setCancelButtonIntent(retreivePlaybackAction(4)))
                 .setChannelId(id)
-                .setCustomBigContentView(notificationView);
+                .setLargeIcon(utils.getBitmapfromAlbumId(context, song))
+                .setContentText(song.getArtist())
+                .setContentInfo(song.getAlbum())
+                .setContentTitle(song.getTitle())
+                .addAction(R.drawable.ic_previous, "prev", retreivePlaybackAction(3))
+                .addAction(R.drawable.ic_pause, "pause", retreivePlaybackAction(1))
+                .addAction(R.drawable.ic_skip, "next", retreivePlaybackAction(2));
 
         // Sets the notification to run on the foreground.
         Notification notification = notificationBuilder.build();
@@ -201,20 +156,43 @@ public class NotificationMusic extends NotificationSimple {
         service.startForeground(NOTIFICATION_ID, notification);
     }
 
+    private PendingIntent retreivePlaybackAction(int which) {
+        Intent action;
+        PendingIntent pendingIntent;
+        final ComponentName serviceName = new ComponentName(context, ServicePlayMusic.class);
+        switch (which) {
+            case 1:
+                // Play and pause
+                action = new Intent("togglePause");
+                action.setComponent(serviceName);
+                pendingIntent = PendingIntent.getService(context, 1, action, 0);
+                return pendingIntent;
+            case 2:
+                // Skip tracks
+                action = new Intent("skip");
+                action.setComponent(serviceName);
+                pendingIntent = PendingIntent.getService(context, 2, action, 0);
+                return pendingIntent;
+            case 3:
+                // Previous tracks
+                action = new Intent("previous");
+                action.setComponent(serviceName);
+                pendingIntent = PendingIntent.getService(context, 3, action, 0);
+                return pendingIntent;
+            case 4:
+                action = new Intent("stop");
+                action.setComponent(serviceName);
+                pendingIntent = PendingIntent.getService(context, 4, action, 0);
+                return pendingIntent;
+            default:
+                break;
+        }
+        return null;
+    }
     /**
      * Updates the Notification icon if the music is paused.
      */
     public void notifyPaused(boolean isPaused) {
-        if ((notificationView == null) || (notificationBuilder == null))
-            return;
-
-        int iconID = ((Main.musicService.isPaused()) ?
-                R.drawable.ic_play :
-                R.drawable.ic_pause);
-
-        notificationView.setImageViewResource(R.id.pauseNoti, iconID);
-
-        notificationBuilder.setContent(notificationView);
 
         // Sets the notification to run on the foreground.
         service.startForeground(NOTIFICATION_ID, notificationBuilder.build());
@@ -227,46 +205,6 @@ public class NotificationMusic extends NotificationSimple {
         service.stopForeground(true);
 
         notificationManager.cancel(NOTIFICATION_ID);
-    }
-
-    /**
-     * Called when user clicks the "play/pause" button on the on-going system Notification.
-     */
-    public static class NotificationPlayButtonHandler extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Main.musicService.notifyCurrentSong();
-            Main.musicService.togglePlayback();
-        }
-    }
-
-    /**
-     * Called when user clicks the "skip" button on the on-going system Notification.
-     */
-    public static class NotificationSkipButtonHandler extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Main.musicService.next(true);
-            Main.musicService.playSong();
-        }
-    }
-
-    /**
-     * When user clicks the "cancel" button
-     */
-    public static class NotificationStopButtonHandler extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Main.musicService.removedFromNotification();
-        }
-    }
-
-    public static class NotificationPreviousButtonHandler extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Main.musicService.previous(true);
-            Main.musicService.playSong();
-        }
     }
 
 }

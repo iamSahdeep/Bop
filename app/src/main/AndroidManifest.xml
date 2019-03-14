@@ -34,7 +34,20 @@
         <service
             android:name=".services.ServicePlayMusic"
             android:enabled="true"
-            android:stopWithTask="false" />
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="androidx.media.session.MediaButtonReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+        </receiver>
 
         <receiver android:name=".notifications.NotificationMusic$NotificationPlayButtonHandler" />
         <receiver android:name=".notifications.NotificationMusic$NotificationSkipButtonHandler" />

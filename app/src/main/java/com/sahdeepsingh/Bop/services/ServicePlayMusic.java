@@ -1,164 +1,70 @@
 package com.sahdeepsingh.Bop.services;
 
-import android.app.Service;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
-import android.media.MediaMetadata;
 import android.media.MediaPlayer;
-import android.media.session.MediaSession;
+import android.media.session.MediaController;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.RemoteException;
+import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.cleveroad.audiowidget.AudioWidget;
-import com.sahdeepsingh.Bop.Activities.MainScreen;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
-import com.sahdeepsingh.Bop.notifications.NotificationMusic;
+import com.sahdeepsingh.Bop.notifications.MediaNotificationManager;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.utils.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.media.MediaBrowserServiceCompat;
+import androidx.media.MediaSessionManager;
+import androidx.media.session.MediaButtonReceiver;
 
-// KMP! KMP! KMP!
-// No unnecessary changes required
-
-/**
- * Service that makes the music play and notifies every action.
- * <p>
- * Tasks:
- * <p>
- * - Abstracts controlling the native Android MediaPlayer;
- * - Keep showing a system Notification with info on
- * currently playing song;
- * - Starts the other service, `MusicScrobblerService`
- * (if set on Settings) that scrobbles songs to Last.fm;
- * - LocalBroadcasts every action it takes;
- * - Keep watching for headphone/headset events with
- * a Broadcast - and react accordingly.
- * <p>
- * Broadcasts:
- * <p>
- * This service makes sure to broadcast every action it
- * takes.
- * <p>
- * It sends a LocalBroadcast of name `BROADCAST_EVENT_NAME`,
- * of which you can get it's action with the following
- * extras:
- * <p>
- * - String BROADCAST_EXTRA_ACTION: Current action it's taking.
- * <p>
- * - Long   BROADCAST_EXTRA_SONG_ID: ID of the Song it's taking
- * action into.
- * <p>
- * For example, see the following scenarios:
- * <p>
- * - Starts playing Song with ID 1.
- * + Send a LocalBroadcast with `BROADCAST_EXTRA_ACTION`
- * of `BROADCAST_EXTRA_PLAYING` and
- * `BROADCAST_EXTRA_SONG_ID` of 1.
- * <p>
- * - User skips to a Song with ID 2:
- * + Send a LocalBroadcast with `BROADCAST_EXTRA_ACTION`
- * of `BROADCAST_EXTRA_SKIP_NEXT` and
- * `BROADCAST_EXTRA_SONG_ID` of 1.
- * + Send a LocalBriadcast with `BROADCAST_EXTRA_ACTION`
- * of `BROADCAST_EXTRA_PLAYING` and
- * `BROADCAST_EXTRA_SONG_ID` of 2.
- *
- * @note It keeps the music playing even when the
- * device is locked.
- * For that, we must add a special permission
- * on the AndroidManifest.
- * <p>
- * Thanks:
- * - Google's MediaPlayer guide - has info on AudioFocus,
- * Services and lots of stuff
- * http://developer.android.com/guide/topics/media/mediaplayer.html
- */
-public class ServicePlayMusic extends Service
+public class ServicePlayMusic extends MediaBrowserServiceCompat
         implements MediaPlayer.OnPreparedListener,
         MediaPlayer.OnErrorListener,
         MediaPlayer.OnCompletionListener,
         AudioManager.OnAudioFocusChangeListener {
 
-    /**
-     * String that identifies all broadcasts this Service makes.
-     * <p>
-     * Since this Service will send LocalBroadcasts to explain
-     * what it does (like "playing song" or "paused song"),
-     * other classes that might be interested on it must
-     * register a BroadcastReceiver to this String.
-     */
-    public static final String BROADCAST_ACTION = "com.sahdeepsingh.Bop.MUSIC_SERVICE";
 
-    /**
-     * String used to get the current state Extra on the Broadcast Intent
-     */
-    public static final String BROADCAST_EXTRA_STATE = "current_state";
+    public static final String ACTION_CMD = "com.example.android.uamp.ACTION_CMD";
 
-    /**
-     * String used to get the song ID Extra on the Broadcast Intent
-     */
-    public static final String BROADCAST_EXTRA_SONG_ID = "song_id";
+    public static final String CMD_NAME = "CMD_NAME";
 
-    // All possible messages this Service will broadcast
-    // Ignore the actual values
+    public static final String CMD_PAUSE = "CMD_PAUSE";
 
-    /**
-     * Broadcast for when some music started playing
-     */
-    public static final String BROADCAST_EXTRA_PLAYING = "playing";
+    // Delay stopSelf by using a handler.
 
-    /**
-     * Broadcast for when some music just got paused
-     */
-    public static final String BROADCAST_EXTRA_PAUSED = "plaused";
+    private static final int STOP_DELAY = 30000;
 
-    /**
-     * Broadcast for when a paused music got unpaused
-     */
-    public static final String BROADCAST_EXTRA_UNPAUSED = "unpaused";
-
-    /**
-     * Broadcast for when current music got played until the end
-     */
-    public static final String BROADCAST_EXTRA_COMPLETED = "completed";
-
-    /**
-     * Broadcast for when the user skipped to the next song
-     */
-    public static final String BROADCAST_EXTRA_SKIP_NEXT = "next";
-
-    /**
-     * Broadcast for when the user skipped to the previous song
-     */
-    public static final String BROADCAST_EXTRA_SKIP_PREVIOUS = "previous";
-    // These are the Intent actions that we are prepared to handle. Notice that the fact these
-    // constants exist in our class is a mere convenience: what really defines the actions our
-    // service can handle are the <action> tags in the <intent-filters> tag for our service in
-    // AndroidManifest.xml.
-    public static final String BROADCAST_ORDER = "com.sahdeepsingh.Bop.MUSIC_SERVICE";
-    public static final String BROADCAST_EXTRA_GET_ORDER = "com.sahdeepsingh.Bop.dasdas.MUSIC_SERVICE";
     public static final String BROADCAST_ORDER_PLAY = "com.sahdeepsingh.Bop.action.PLAY";
     public static final String BROADCAST_ORDER_PAUSE = "com.sahdeepsingh.Bop.action.PAUSE";
-    public static final String BROADCAST_ORDER_TOGGLE_PLAYBACK = "dlsadasd";
     public static final String BROADCAST_ORDER_STOP = "com.sahdeepsingh.Bop.action.STOP";
     public static final String BROADCAST_ORDER_SKIP = "com.sahdeepsingh.Bop.action.SKIP";
     public static final String BROADCAST_ORDER_REWIND = "com.sahdeepsingh.Bop.action.REWIND";
+
     // The tag we put on debug messages
     final static String TAG = "MusicService";
     /**
@@ -192,10 +98,15 @@ public class ServicePlayMusic extends Service
      * be controlled by us;
      */
     AudioManager audioManager;
+
     /**
      * Will keep an eye on global broadcasts related to
      * the Headset.
      */
+
+    public MediaSessionCompat mMediaSessionCompat;
+    public MediaSessionManager mediaSessionManager;
+    public MediaController mediaController;
 
     AudioWidget audioWidget;
     BroadcastReceiver headsetBroadcastReceiver = new BroadcastReceiver() {
@@ -217,12 +128,7 @@ public class ServicePlayMusic extends Service
 
                     // Will only do it if it's Setting is enabled, of course
                     if (Main.settings.get("play_headphone_on", true)) {
-                        LocalBroadcastManager local = LocalBroadcastManager.getInstance(context);
 
-                        Intent broadcastIntent = new Intent(ServicePlayMusic.BROADCAST_ORDER);
-                        broadcastIntent.putExtra(ServicePlayMusic.BROADCAST_EXTRA_GET_ORDER, ServicePlayMusic.BROADCAST_ORDER_PLAY);
-
-                        local.sendBroadcast(broadcastIntent);
                     }
                 }
 
@@ -259,49 +165,57 @@ public class ServicePlayMusic extends Service
      * Spawns an on-going notification with our current
      * playing song.
      */
-    private NotificationMusic notification = null;
-    /**
-     * The thing that will keep an eye on LocalBroadcasts
-     * for the MusicService.
-     */
-    BroadcastReceiver localBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
+    // private NotificationMusic notification = null;
+    MediaNotificationManager notificationManager;
 
-            // Getting the information sent by the MusicService
-            // (and ignoring it if invalid)
-            String order = intent.getStringExtra(ServicePlayMusic.BROADCAST_EXTRA_GET_ORDER);
 
-            // What?
-            if (order == null)
-                return;
-
-            switch (order) {
-                case ServicePlayMusic.BROADCAST_ORDER_PAUSE:
-                    pausePlayer();
-                    break;
-                case ServicePlayMusic.BROADCAST_ORDER_PLAY:
-                    unpausePlayer();
-                    break;
-                case ServicePlayMusic.BROADCAST_ORDER_TOGGLE_PLAYBACK:
-                    togglePlayback();
-                    break;
-                case ServicePlayMusic.BROADCAST_ORDER_SKIP:
-                    next(true);
-                    playSong();
-                    break;
-                case ServicePlayMusic.BROADCAST_ORDER_REWIND:
-                    previous(true);
-                    playSong();
-                    break;
-            }
-
-            Log.w(TAG, "local broadcast received");
-        }
-    };
     // Internal flags for the function above {{
     private boolean pausedTemporarilyDueToAudioFocus = false;
     private boolean loweredVolumeDueToAudioFocus = false;
+    private BroadcastReceiver mNoisyReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (player != null && player.isPlaying()) {
+                player.pause();
+            }
+        }
+    };
+    private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback() {
+        @Override
+        public void onPlay() {
+            super.onPlay();
+            playSong();
+        }
+
+        @Override
+        public void onPlayFromMediaId(String mediaId, Bundle extras) {
+            super.onPlayFromMediaId(mediaId, extras);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            pausePlayer();
+        }
+
+        @Override
+        public void onSkipToNext() {
+            super.onSkipToNext();
+            next(true);
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            super.onSkipToPrevious();
+            previous(true);
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+            stopSelf();
+        }
+    };
 
     /**
      * Whenever we're created, reset the MusicPlayer and
@@ -323,21 +237,44 @@ public class ServicePlayMusic extends Service
 
         initMusicPlayer();
 
-        Context context = getApplicationContext();
+        initMediaSession();
 
-        // Registering our BroadcastReceiver to listen to orders
-        // from inside our own application.
-        LocalBroadcastManager
-                .getInstance(getApplicationContext())
-                .registerReceiver(localBroadcastReceiver, new IntentFilter(ServicePlayMusic.BROADCAST_ORDER));
+        initNoisyReceiver();
 
-        // Registering the headset broadcaster for info related
+
+        try {
+            notificationManager = new MediaNotificationManager(this);
+        } catch (RemoteException e) {
+            throw new IllegalStateException("Could not create a MediaNotificationManager", e);
+        }
+
         // to user plugging the headset.
         IntentFilter headsetFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(headsetBroadcastReceiver, headsetFilter);
 
         Log.w(TAG, "onCreate");
 
+    }
+
+    private void initNoisyReceiver() {
+        //Handles headphones coming unplugged. cannot be done through a manifest receiver
+        IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        registerReceiver(mNoisyReceiver, filter);
+    }
+
+    private void initMediaSession() {
+        ComponentName mediaButtonReceiver = new ComponentName(getApplicationContext(), MediaButtonReceiver.class);
+        mMediaSessionCompat = new MediaSessionCompat(getApplicationContext(), "Tag", mediaButtonReceiver, null);
+
+        mMediaSessionCompat.setCallback(mMediaSessionCallback);
+        mMediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+
+        Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+        mediaButtonIntent.setClass(this, MediaButtonReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, 0);
+        mMediaSessionCompat.setMediaButtonReceiver(pendingIntent);
+
+        setSessionToken(mMediaSessionCompat.getSessionToken());
     }
 
     private void createAudioWidget() {
@@ -495,45 +432,7 @@ public class ServicePlayMusic extends Service
                 break;
         }
     }
-    // }}
 
-
-    public void updateLockScreenWidget(Song song) {
-
-        // Only showing if the Setting is... well... set
-        if (!Main.settings.get("show_lock_widget", true))
-            return;
-
-        if (song == null)
-            return;
-
-        if (!requestAudioFocus()) {
-            //Stop the service.
-            stopSelf();
-            Toast.makeText(getApplicationContext(), "FUCK", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        //not working
-        MediaSession mediaSession = new MediaSession(this, "Bop");
-
-        Bitmap cover = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                R.mipmap.ic_launcher);
-
-        mediaSession.setMetadata(new MediaMetadata.Builder()
-                .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, cover)
-                .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getArtist())
-                .putString(MediaMetadata.METADATA_KEY_ALBUM, song.getAlbum())
-                .putString(MediaMetadata.METADATA_KEY_TITLE, song.getTitle())
-                .build());
-
-        Log.w("service", "audio_focus_granted");
-
-    }
-
-    public void destroyLockScreenWidget() {
-
-    }
 
     /**
      * Called when the music is ready for playback.
@@ -546,9 +445,20 @@ public class ServicePlayMusic extends Service
         // Start playback
         player.start();
 
+        setMediaSessionMetaData();
+
         // If the user clicks on the notification, let's spawn the
         // Now Playing screen.
         notifyCurrentSong();
+    }
+
+    private void setMediaSessionMetaData() {
+        mMediaSessionCompat.setMetadata(new MediaMetadataCompat.Builder()
+                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, utils.getBitmapfromAlbumId(getApplicationContext(), currentSong))
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtist())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbum())
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitle())
+                .build());
     }
 
     /**
@@ -574,12 +484,6 @@ public class ServicePlayMusic extends Service
 
         // Keep this state!
         serviceState = ServiceState.Playing;
-
-        // TODO: Why do I need this?
-/*		if (player.getCurrentPosition() <= 0)
-			return;
-*/
-        broadcastState(ServicePlayMusic.BROADCAST_EXTRA_COMPLETED);
 
         // Repeating current song if desired
         if (repeatMode == 0) {
@@ -628,13 +532,13 @@ public class ServicePlayMusic extends Service
 
         stopMusicPlayer();
 
-        destroyLockScreenWidget();
         if (player != null)
             //player.release();
 
             Log.w(TAG, "onDestroy");
 
         unregisterReceiver(headsetBroadcastReceiver);
+        unregisterReceiver(mNoisyReceiver);
         super.onDestroy();
     }
 
@@ -662,10 +566,6 @@ public class ServicePlayMusic extends Service
         if (serviceState != ServiceState.Paused && serviceState != ServiceState.Playing)
             return;
 
-        if (userSkippedSong)
-            broadcastState(ServicePlayMusic.BROADCAST_EXTRA_SKIP_PREVIOUS);
-
-
         currentSongPosition--;
         if (currentSongPosition < 0)
             currentSongPosition = songs.size() - 1;
@@ -680,13 +580,6 @@ public class ServicePlayMusic extends Service
     public void next(boolean userSkippedSong) {
         if (serviceState != ServiceState.Paused && serviceState != ServiceState.Playing)
             return;
-
-        // TODO implement a queue of songs to prevent last songs
-        //      to be played
-        // TODO or maybe a playlist, whatever
-
-        if (userSkippedSong)
-            broadcastState(ServicePlayMusic.BROADCAST_EXTRA_SKIP_NEXT);
 
 
         if (shuffleMode) {
@@ -761,12 +654,25 @@ public class ServicePlayMusic extends Service
         // Prepare the MusicPlayer asynchronously.
         // When finished, will call `onPrepare`
         player.prepareAsync();
+
+        mMediaSessionCompat.setActive(true);
+        setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
+
         serviceState = ServiceState.Preparing;
 
-        broadcastState(ServicePlayMusic.BROADCAST_EXTRA_PLAYING);
-
-        updateLockScreenWidget(currentSong);
         Log.w(TAG, "play song");
+    }
+
+
+    private void setMediaPlaybackState(int state) {
+        PlaybackStateCompat.Builder playbackstateBuilder = new PlaybackStateCompat.Builder();
+        if (state == PlaybackStateCompat.STATE_PLAYING) {
+            playbackstateBuilder.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE | PlaybackStateCompat.ACTION_PAUSE);
+        } else {
+            playbackstateBuilder.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE | PlaybackStateCompat.ACTION_PLAY);
+        }
+        playbackstateBuilder.setState(state, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 0);
+        mMediaSessionCompat.setPlaybackState(playbackstateBuilder.build());
     }
 
     public void pausePlayer() {
@@ -776,10 +682,9 @@ public class ServicePlayMusic extends Service
         player.pause();
         serviceState = ServiceState.Paused;
 
-        notification.notifyPaused(true);
+        //notification.notifyPaused(true);
+        setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED);
 
-
-        broadcastState(ServicePlayMusic.BROADCAST_EXTRA_PAUSED);
     }
 
     public void unpausePlayer() {
@@ -789,10 +694,9 @@ public class ServicePlayMusic extends Service
         player.start();
         serviceState = ServiceState.Playing;
 
-        notification.notifyPaused(false);
+        //  notification.notifyPaused(false);
+        setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
 
-
-        broadcastState(ServicePlayMusic.BROADCAST_EXTRA_UNPAUSED);
     }
 
     /**
@@ -859,6 +763,22 @@ public class ServicePlayMusic extends Service
         return musicBind;
     }
 
+    @Nullable
+    @Override
+    public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, @Nullable Bundle rootHints) {
+        if (TextUtils.equals(clientPackageName, getPackageName())) {
+            return new BrowserRoot(getString(R.string.app_name), null);
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onLoadChildren(@NonNull String parentId, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
+        result.sendResult(null);
+    }
+
+
     /**
      * Called when the Service is unbound - user quitting
      * the app or something.
@@ -878,14 +798,12 @@ public class ServicePlayMusic extends Service
         if (currentSong == null)
             return;
 
-        if (notification == null)
+        /*if (notification == null)
             notification = new NotificationMusic();
 
-        notification.notifySong(this, this, currentSong);
+        notification.notifySong(this, this, currentSong);*/
 
-        Intent broadCastIntent = new Intent();
-        broadCastIntent.setAction(MainScreen.BROADCAST_ACTION);
-        sendBroadcast(broadCastIntent);
+        notificationManager.startNotification();
 
 
     }
@@ -897,40 +815,29 @@ public class ServicePlayMusic extends Service
      * @see #notifyCurrentSong()
      */
     public void cancelNotification() {
-        if (notification == null)
+       /* if (notification == null)
             return;
 
         notification.cancel();
-        notification = null;
-    }
-
-    /**
-     * Shouts the state of the Music Service.
-     *
-     * @param state Current state of the Music Service.
-     * @note This broadcast is visible only inside this application.
-     * @note Will get received by listeners of `ServicePlayMusic.BROADCAST_ACTION`
-     */
-    private void broadcastState(String state) {
-        if (currentSong == null)
-            return;
-
-        Intent broadcastIntent = new Intent(ServicePlayMusic.BROADCAST_ACTION);
-
-        broadcastIntent.putExtra(ServicePlayMusic.BROADCAST_EXTRA_STATE, state);
-        broadcastIntent.putExtra(ServicePlayMusic.BROADCAST_EXTRA_SONG_ID, currentSong.getId());
-
-        LocalBroadcastManager
-                .getInstance(getApplicationContext())
-                .sendBroadcast(broadcastIntent);
-
-        Log.w(TAG, "sentBroadcast");
+        notification = null;*/
+        notificationManager.stopNotification();
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        if (intent != null) {
+            String action = intent.getAction();
+            String command = intent.getStringExtra(CMD_NAME);
+            if (ACTION_CMD.equals(action)) {
+                if (CMD_PAUSE.equals(command)) {
+                    pausePlayer();
+                }
+            } else {
+                MediaButtonReceiver.handleIntent(mMediaSessionCompat, intent);
+            }
+        }
         // Do your other onStartCommand stuff..
         return START_STICKY;
     }
@@ -961,111 +868,6 @@ public class ServicePlayMusic extends Service
         Paused
     }
 
-    /**
-     * Receives external Broadcasts and gives our MusicService
-     * orders based on them.
-     * <p>
-     * It is the bridge between our application and the external
-     * world. It receives Broadcasts and launches Internal Broadcasts.
-     * <p>
-     * It acts on music events (such as disconnecting headphone)
-     * and music controls (the lockscreen widget).
-     *
-     * @note This class works because we are declaring it in a
-     * `receiver` tag in `AndroidManifest.xml`.
-     * @note It is static so we can look out for external broadcasts
-     * even when the service is offline.
-     */
-    public static class ExternalBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            Log.w(TAG, "external broadcast");
-
-            // Broadcasting orders to our MusicService
-            // locally (inside the application)
-            LocalBroadcastManager local = LocalBroadcastManager.getInstance(context);
-
-            String action = intent.getAction();
-
-            // Headphones disconnected
-            if (action.equals(android.media.AudioManager.ACTION_AUDIO_BECOMING_NOISY)) {
-
-                // Will only pause the music if the Setting
-                // for it is enabled.
-                if (!Main.settings.get("pause_headphone_off", true))
-                    return;
-
-                // ADD SETTINGS HERE
-                String text = "Headphones Disconnected";
-                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-
-                // send an intent to our MusicService to telling it to pause the audio
-                Intent broadcastIntent = new Intent(ServicePlayMusic.BROADCAST_ORDER);
-                broadcastIntent.putExtra(ServicePlayMusic.BROADCAST_EXTRA_GET_ORDER, ServicePlayMusic.BROADCAST_ORDER_PAUSE);
-
-                local.sendBroadcast(broadcastIntent);
-                Log.w(TAG, "becoming noisy");
-                return;
-            }
-
-            if (action.equals(Intent.ACTION_MEDIA_BUTTON)) {
-
-                // Which media key was pressed
-                KeyEvent keyEvent = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
-
-                // Not interested on anything other than pressed keys.
-                if (keyEvent.getAction() != KeyEvent.ACTION_DOWN)
-                    return;
-
-                String intentValue = null;
-
-                switch (keyEvent.getKeyCode()) {
-
-                    case KeyEvent.KEYCODE_HEADSETHOOK:
-                    case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                        intentValue = ServicePlayMusic.BROADCAST_ORDER_TOGGLE_PLAYBACK;
-                        Log.w(TAG, "media play pause");
-                        break;
-
-                    case KeyEvent.KEYCODE_MEDIA_PLAY:
-                        intentValue = ServicePlayMusic.BROADCAST_ORDER_PLAY;
-                        Log.w(TAG, "media play");
-                        break;
-
-                    case KeyEvent.KEYCODE_MEDIA_PAUSE:
-                        intentValue = ServicePlayMusic.BROADCAST_ORDER_PAUSE;
-                        Log.w(TAG, "media pause");
-                        break;
-
-                    case KeyEvent.KEYCODE_MEDIA_NEXT:
-                        intentValue = ServicePlayMusic.BROADCAST_ORDER_SKIP;
-                        Log.w(TAG, "media next");
-                        break;
-
-                    case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                        // TODO: ensure that doing this in rapid succession actually plays the
-                        // previous song
-                        intentValue = ServicePlayMusic.BROADCAST_ORDER_REWIND;
-                        Log.w(TAG, "media previous");
-                        break;
-                }
-
-                // Actually sending the Intent
-                if (intentValue != null) {
-                    Intent broadcastIntent = new Intent(ServicePlayMusic.BROADCAST_ORDER);
-                    broadcastIntent.putExtra(ServicePlayMusic.BROADCAST_EXTRA_GET_ORDER, intentValue);
-
-                    local.sendBroadcast(broadcastIntent);
-                }
-            }
-        }
-    }
-
-    /**
-     * Defines the interaction between an Activity and this Service.
-     */
     public class MusicBinder extends Binder {
         public ServicePlayMusic getService() {
             return ServicePlayMusic.this;

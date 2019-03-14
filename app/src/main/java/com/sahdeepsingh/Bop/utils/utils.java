@@ -3,6 +3,8 @@ package com.sahdeepsingh.Bop.utils;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -128,6 +130,24 @@ public class utils {
     public static Uri getUrifromAlbumID(Song song){
         Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
         return ContentUris.withAppendedId(sArtworkUri,Long.parseLong(song.getAlbumid()));
+    }
+
+    public static int getThemeColor(Context context, int colorPrimary, int dkgray) {
+        int themeColor = 0;
+        String packageName = context.getPackageName();
+        try {
+            Context packageContext = context.createPackageContext(packageName, 0);
+            ApplicationInfo applicationInfo =
+                    context.getPackageManager().getApplicationInfo(packageName, 0);
+            packageContext.setTheme(applicationInfo.theme);
+            Resources.Theme theme = packageContext.getTheme();
+            TypedArray ta = theme.obtainStyledAttributes(new int[]{colorPrimary});
+            themeColor = ta.getColor(0, dkgray);
+            ta.recycle();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return themeColor;
     }
 
 }
