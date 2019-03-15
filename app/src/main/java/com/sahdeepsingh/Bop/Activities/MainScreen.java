@@ -3,15 +3,18 @@ package com.sahdeepsingh.Bop.Activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.MediaDescriptionCompat;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,12 +47,12 @@ import com.sahdeepsingh.Bop.fragments.FragmentGenre;
 import com.sahdeepsingh.Bop.fragments.FragmentPlaylist;
 import com.sahdeepsingh.Bop.fragments.FragmentSongs;
 import com.sahdeepsingh.Bop.fragments.HomeFragment;
-import com.sahdeepsingh.Bop.notifications.NotificationMusic;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -77,10 +80,10 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     AccountHeader accountHeader;
     /* Next two are for Navigation Drawer*/
     CrossfadeDrawerLayout crossfadeDrawerLayout;
-    /* BroadCast receiver for every toggle and stuff*/
-    ChangeSongBR changeSongBR;
+
     /*Our non Sliding Panel*/
     ConstraintLayout bottomControls;
+
     private boolean playbackPaused = false;
     private boolean backPressedOnce = false;
     /**
@@ -94,17 +97,47 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
      */
     private ViewPager mViewPager;
 
+    private final MediaControllerCompat.Callback mCallback = new MediaControllerCompat.Callback() {
+        @Override
+        public void onPlaybackStateChanged(@NonNull PlaybackStateCompat state) {
+            updatePlaybackState(state);
+        }
+
+        @Override
+        public void onMetadataChanged(MediaMetadataCompat metadata) {
+            if (metadata != null) {
+                updateMediaDescription(metadata.getDescription());
+                updateDuration(metadata);
+            }
+        }
+    };
+
     public static void addNowPlayingItem() {
         if (Main.mainMenuHasNowPlayingItem)
             return;
         Main.mainMenuHasNowPlayingItem = true;
     }
 
+    private final MediaBrowserCompat.ConnectionCallback mConnectionCallback =
+            new MediaBrowserCompat.ConnectionCallback() {
+                @Override
+                public void onConnected() {
+                    try {
+                        Log.e("lol", "lol");
+                        connectToSession(Main.musicService.getSessionToken());
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+    private MediaBrowserCompat mMediaBrowser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         Main.settings.load(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
@@ -129,15 +162,13 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             }
         });
 
+
         mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-        changeSongBR = new ChangeSongBR();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BROADCAST_ACTION);
-        registerReceiver(changeSongBR, intentFilter);
 
         createDrawer();
+
         if (Main.settings.get("modes", "Day").equals("Day"))
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.md_white_1000));
         else getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.md_grey_900));
@@ -308,6 +339,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     protected void onStart() {
         super.onStart();
         Main.startMusicService(this);
+
     }
 
     @Override
@@ -337,18 +369,24 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
      */
     @Override
     protected void onDestroy() {
-        unregisterReceiver(changeSongBR);
         super.onDestroy();
 
         if (backPressedHandler != null)
             backPressedHandler.removeCallbacks(backPressedTimeoutAction);
 
-        NotificationMusic.cancelAll(this);
+        if (mMediaBrowser != null)
+            mMediaBrowser.disconnect();
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+
+        MediaControllerCompat controllerCompat = MediaControllerCompat.getMediaController(MainScreen.this);
+        if (controllerCompat != null) {
+            controllerCompat.unregisterCallback(mCallback);
+        }
     }
 
     @Override
@@ -364,13 +402,13 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         } else {
             bottomControls.setVisibility(View.GONE);
         }
-
-        if (isPlaying()) {
+        if (Main.musicService.isPlaying()) {
             if (playbackPaused) {
                 playbackPaused = false;
             }
             workonSlidingPanel();
         }
+
     }
 
 
@@ -427,31 +465,8 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     protected void onPause() {
         super.onPause();
 
-        /*Why I have used refreshMode here?
-         * It took me a lot of time to understand why my app was crashing and throwing error : changeSongBR not Registered
-         * So, As we are using refreshMode() in BaseActivity in onResume i.e, in "super" of this activity
-         * Like, when onResume of this activity is called its super.onResume is called first
-         * Which  means we have not yet registered the BroadCast Receiver : changeSongBR, look at onResume of this activity
-         * Now if the Mode has been changed then Activity will be recreated
-         * And in Activity lifecycle we know, when destroying activity it will call onPause
-         * And in onPause we are unregistering the BroadcastReceiver which was not actually registered
-         * which gives throws the exception "changeSongBR" not Registered
-         * So, we are using this Or we can use try and catch block but
-         * That's a bummer :(
-         * */
-
-
-
-
-       /* if (refreshMode())
-            unregisterReceiver(changeSongBR);*/
-
-        /** *
-         * TADA!!!
-         * a simple trick here to prevent memory leak is
-         * to transfer broadcast in onCreate and onDestroy methods
-         * also call @unregisterBR before super.onDestroy in that method
-         * **/
+        if (mMediaBrowser != null)
+            mMediaBrowser.disconnect();
     }
 
 
@@ -494,11 +509,15 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
         setControlListeners();
         prepareSeekBar();
+        try {
+            connectToSession(Main.musicService.getSessionToken());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private void prepareSeekBar() {
         mProgressView = findViewById(R.id.footerseek);
-        mProgressView.setMax((int) Main.musicService.currentSong.getDurationSeconds());
         mProgressView.setLockEnabled(true);
 
         Handler handler = new Handler();
@@ -682,25 +701,65 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         }
     }
 
-    class ChangeSongBR extends BroadcastReceiver {
+    private void updateMediaDescription(MediaDescriptionCompat description) {
+        if (description == null) {
+            return;
+        }
+        //mLine1.setText(description.getTitle());
+        songNameSP.setText(description.getSubtitle());
+        albumArtSP.setImageBitmap(description.getIconBitmap());
+        accountHeader.setHeaderBackground(new ImageHolder(description.getIconBitmap()));
+    }
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
+    private void updateDuration(MediaMetadataCompat metadata) {
+        if (metadata == null) {
+            return;
+        }
+        int duration = (int) metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION);
+        mProgressView.setMax(duration);
+    }
 
-            songNameSP.setText(Main.musicService.currentSong.getTitle());
-            Bitmap newImage;
-            BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inSampleSize = 4;
-            newImage = BitmapFactory.decodeFile(Main.songs.getAlbumArt(Main.musicService.currentSong));
-            if (newImage != null) {
-                albumArtSP.setImageBitmap(newImage);
-                accountHeader.setHeaderBackground(new ImageHolder(newImage));
-            } else {
-                albumArtSP.setImageResource(R.mipmap.ic_launcher_foreground);
-                accountHeader.setHeaderBackground(new ImageHolder(R.mipmap.ic_launcher));
-            }
+    private void updatePlaybackState(PlaybackStateCompat state) {
+        if (state == null) {
+            return;
         }
 
+        switch (state.getState()) {
+            case PlaybackStateCompat.STATE_PLAYING:
+                bottomControls.setVisibility(View.VISIBLE);
+                break;
+            case PlaybackStateCompat.STATE_PAUSED:
+                bottomControls.setVisibility(View.VISIBLE);
+                break;
+            case PlaybackStateCompat.STATE_NONE:
+                break;
+            case PlaybackStateCompat.STATE_STOPPED:
+                bottomControls.setVisibility(View.INVISIBLE);
+                break;
+            default:
+        }
+
+    }
+
+    private void connectToSession(MediaSessionCompat.Token token) throws RemoteException {
+        MediaControllerCompat mediaController = MediaControllerCompat.getMediaController(this);
+        if (mediaController == null) {
+            mediaController = new MediaControllerCompat(MainScreen.this, token);
+        }
+        if (mediaController.getMetadata() == null) {
+            finish();
+            return;
+        }
+
+        MediaControllerCompat.setMediaController(MainScreen.this, mediaController);
+        mediaController.registerCallback(mCallback);
+        PlaybackStateCompat state = mediaController.getPlaybackState();
+        updatePlaybackState(state);
+        MediaMetadataCompat metadata = mediaController.getMetadata();
+        if (metadata != null) {
+            updateMediaDescription(metadata.getDescription());
+            updateDuration(metadata);
+        }
     }
 
 }

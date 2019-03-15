@@ -35,7 +35,7 @@ import android.widget.Toast;
 import com.cleveroad.audiowidget.AudioWidget;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
-import com.sahdeepsingh.Bop.notifications.MediaNotificationManager;
+import com.sahdeepsingh.Bop.notifications.NotificationHandler;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
 
@@ -61,20 +61,20 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
     public static final String CMD_NAME = "BopPlayer";
 
-    public static final String CMD_PAUSE = "CMD_PAUSE";
-
-    // Delay stopSelf by using a handler.
-
+    public static final String ACTION_PAUSE = "ACTION_PAUSE";
+    //to handle the click delay if the the headshook is double clicked within 5ms
+    static final long CLICK_DELAY = 500;
+    //handling the pause event and stop service after 5 min if paused
     private static final int STOP_DELAY = 300000;
-
+    //A static class to handle delay callbacks
     private final DelayedStopHandler mDelayedStopHandler = new DelayedStopHandler(this);
 
-    static final long CLICK_DELAY = 500;
     static long lastClick = 0;
 
 
     // The tag we put on debug messages
     final static String TAG = "MusicService";
+
     /**
      * Token for the interaction between an Activity and this Service.
      */
@@ -102,18 +102,12 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
      * <p>
      * 1. Making sure other music apps don't play
      * at the same time;
-     * 2. Guaranteeing the lock screen widget will
-     * be controlled by us;
      */
     AudioManager audioManager;
-
-    /**
-     * Will keep an eye on global broadcasts related to
-     * the Headset.
-     */
-
+    //Just migrated to it to support everything where we are lacking
     public MediaSessionCompat mMediaSessionCompat;
 
+    // Haven't Implemented it yet
     AudioWidget audioWidget;
 
     /**
@@ -139,21 +133,23 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
      * playing song.
      */
     // private NotificationMusic notification = null;
-    MediaNotificationManager notificationManager;
+    NotificationHandler notificationManager;
 
 
-    // Internal flags for the function above {{
     private boolean pausedTemporarilyDueToAudioFocus = false;
     private boolean loweredVolumeDueToAudioFocus = false;
 
+    //pausing player if getting noise
     private BroadcastReceiver mNoisyReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (player != null && player.isPlaying()) {
-                player.pause();
+                pausePlayer();
             }
         }
     };
+
+    //Handling call backs whenever the controlls are broadcasted, also handling headphones event here
     private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback() {
 
         @Override
@@ -211,6 +207,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
             }
             return super.onMediaButtonEvent(mediaButtonEvent);
         }
+
         @Override
         public void onPlay() {
             super.onPlay();
@@ -221,6 +218,12 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
             super.onPlayFromMediaId(mediaId, extras);
             playSong();
+        }
+
+        @Override
+        public void onSeekTo(long pos) {
+            super.onSeekTo(pos);
+            seekTo((int) pos);
         }
 
         @Override
@@ -250,11 +253,8 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         }
     };
 
-    /**
-     * Whenever we're created, reset the MusicPlayer and
-     * start the MusicScrobblerService.
-     */
 
+    //Now the Actual game Begins
 
     public void onCreate() {
         super.onCreate();
@@ -265,6 +265,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
+        //Haven't added it yet just added to remember
         if (Main.settings.get("showFloatingWidget", true))
             createAudioWidget();
 
@@ -276,13 +277,10 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
 
         try {
-            notificationManager = new MediaNotificationManager(this);
+            notificationManager = new NotificationHandler(this);
         } catch (RemoteException e) {
-            throw new IllegalStateException("Could not create a MediaNotificationManager", e);
+            throw new IllegalStateException("Could not create a NotificationHandler", e);
         }
-
-
-        Log.w(TAG, "onCreate");
 
     }
 
@@ -308,15 +306,11 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
     }
 
     private void createAudioWidget() {
-
         audioWidget = new AudioWidget.Builder(getApplicationContext()).build();
     }
 
     /**
      * Initializes the Android's internal MediaPlayer.
-     *
-     * @note We might call this function several times without
-     * necessarily calling {@link #stopMusicPlayer()}.
      */
     public void initMusicPlayer() {
         if (player == null)
@@ -333,9 +327,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         player.setOnPreparedListener(this); // player initialized
         player.setOnCompletionListener(this); // song completed
         player.setOnErrorListener(this);
-
-        Log.w(TAG, "initMusicPlayer");
-
 
     }
 
@@ -357,16 +348,11 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         player = null;
         notificationManager.stopNotification();
         mDelayedStopHandler.removeCallbacksAndMessages(null);
-        mDelayedStopHandler.sendEmptyMessageDelayed(0, STOP_DELAY);
 
-        Log.w(TAG, "stopMusicPlayer");
     }
 
     /**
      * Sets the "Now Playing List"
-     *
-     * @param theSongs Songs list that will play from now on.
-     * @note Make sure to call {@link #playSong()} after this.
      */
     public void setList(ArrayList<Song> theSongs) {
         songs = theSongs;
@@ -384,10 +370,9 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
     /**
      * Asks the AudioManager for our application to
      * have the audio focus.
-     *
-     * @return If we have it.
      */
     private boolean requestAudioFocus() {
+
         //Request audio focus for playback
         int result = audioManager.requestAudioFocus(
                 this,
@@ -418,7 +403,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
             // Yay, gained audio focus! Either from losing it for
             // a long or short periods of time.
             case AudioManager.AUDIOFOCUS_GAIN:
-                Log.w(TAG, "audiofocus gain");
 
                 if (player == null)
                     initMusicPlayer();
@@ -436,19 +420,11 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
             // Damn, lost the audio focus for a (presumable) long time
             case AudioManager.AUDIOFOCUS_LOSS:
-                Log.w(TAG, "audiofocus loss");
-
-                // Giving up everything
-                //audioManager.unregisterMediaButtonEventReceiver(mediaButtonEventReceiver);
-                //audioManager.abandonAudioFocus(this);
-
-                //pausePlayer();
                 stopMusicPlayer();
                 break;
 
             // Just lost audio focus but will get it back shortly
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                Log.w(TAG, "audiofocus loss transient");
 
                 if (!isPaused()) {
                     pausePlayer();
@@ -479,10 +455,10 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         // Start playback
         player.start();
 
+        //setting meta data for notification and whole session
         setMediaSessionMetaData();
 
-        // If the user clicks on the notification, let's spawn the
-        // Now Playing screen.
+        // just crating new notification of current song
         notifyCurrentSong();
     }
 
@@ -533,9 +509,8 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         // Reached the end, should we restart playing
         // from the first song or simply stop?
         if (currentSongPosition == 0) {
-            if (Main.settings.get("repeat_list", false))
+            if (Main.settings.get("repeat_list", true))
                 playSong();
-
             else
                 destroySelf();
             return;
@@ -715,7 +690,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
         mDelayedStopHandler.removeCallbacksAndMessages(null);
         mDelayedStopHandler.sendEmptyMessageDelayed(0, STOP_DELAY);
-        //notification.notifyPaused(true);
         setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED);
 
     }
@@ -727,7 +701,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         player.start();
         serviceState = ServiceState.Playing;
 
-        //  notification.notifyPaused(false);
         setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
 
     }
@@ -837,28 +810,14 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
             Toast.makeText(getApplicationContext(), "FUCK", Toast.LENGTH_LONG).show();
             return;
         }
-        /*if (notification == null)
-            notification = new NotificationMusic();
-
-        notification.notifySong(this, this, currentSong);*/
 
         notificationManager.startNotification();
 
 
     }
 
-    /**
-     * Disables the hability to notify things on the
-     * status bar.
-     *
-     * @see #notifyCurrentSong()
-     */
-    public void cancelNotification() {
-       /* if (notification == null)
-            return;
 
-        notification.cancel();
-        notification = null;*/
+    public void cancelNotification() {
         notificationManager.stopNotification();
     }
 
@@ -870,7 +829,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
             String action = intent.getAction();
             String command = intent.getStringExtra(CMD_NAME);
             if (ACTION_CMD.equals(action)) {
-                if (CMD_PAUSE.equals(command)) {
+                if (ACTION_PAUSE.equals(command)) {
                     pausePlayer();
                 }
             } else {
@@ -879,7 +838,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         }
         mDelayedStopHandler.removeCallbacksAndMessages(null);
         mDelayedStopHandler.sendEmptyMessageDelayed(0, STOP_DELAY);
-        // Do your other onStartCommand stuff..
+
         return START_STICKY;
     }
 
@@ -893,10 +852,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
      * Possible states this Service can be on.
      */
     enum ServiceState {
-        // MediaPlayer is stopped and not prepared to play
-        Stopped,
 
-        // MediaPlayer is preparing...
         Preparing,
 
         // Playback active - media player ready!
@@ -915,14 +871,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         }
     }
 
-    public void removedFromNotification() {
-        cancelNotification();
-        player.stop();
-        // Main.musicService.stopMusicPlayer();
-        Main.mainMenuHasNowPlayingItem = false;
-        Main.musicService.currentSong = null;
-
-    }
 
     /**
      * A simple handler that stops the service if playback is not active (playing)
