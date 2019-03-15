@@ -1,4 +1,4 @@
-# Bop - Music Player [![GitHub release](https://img.shields.io/github/release-pre/iamSahdeep/Bop.svg?style=popout-square)](https://github.com/iamSahdeep/Bop/releases/tag/v1.1.1) [![Fdroid release](https://img.shields.io/f-droid/v/com.sahdeepsingh.Bop.svg?style=flat-square)](https://f-droid.org/en/packages/com.sahdeepsingh.Bop)
+# Bop - Music Player [![GitHub release](https://img.shields.io/github/release-pre/iamSahdeep/Bop.svg?style=popout-square)](https://github.com/iamSahdeep/Bop/releases/tag/v1.1.2) [![Fdroid release](https://img.shields.io/f-droid/v/com.sahdeepsingh.Bop.svg?style=flat-square)](https://f-droid.org/en/packages/com.sahdeepsingh.Bop)
 
 
 [![Build Status](https://travis-ci.org/iamSahdeep/Bop.svg?branch=master)](https://travis-ci.org/iamSahdeep/Bop) [![GitHub All Releases](https://img.shields.io/github/downloads/iamSahdeep/bop/total.svg)](https://github.com/iamSahdeep/Bop/releases) 
@@ -36,6 +36,10 @@ A basic Music playing application for media files in your mobile, currently in d
    - [FlatIcon](https://www.flaticon.com/), [icons8](https://icons8.com/icons/pack/media-controls) and [freepik](https://www.freepik.com/) for icons and images used in application.
    - and many more for those awesome libraries. Check the list of [Libraries](https://github.com/iamSahdeep/Bop/blob/master/app/build.gradle) used.
    
+### Logo
+Special Thanks to [@riyandacountri88](https://github.com/riyandacountri88) for the logo 
+
+Check the complete report https://github.com/iamSahdeep/Bop/issues/28
 
 # License
 
