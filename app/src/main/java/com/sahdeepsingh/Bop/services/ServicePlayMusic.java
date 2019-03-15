@@ -1,5 +1,11 @@
 package com.sahdeepsingh.Bop.services;
 
+/*
+ * This to be done in Service
+ * 1. add transport controls
+ * 2. lol for now
+ * */
+
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -21,6 +27,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.cleveroad.audiowidget.AudioWidget;
@@ -56,6 +63,9 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
     // Delay stopSelf by using a handler.
 
     private static final int STOP_DELAY = 30000;
+
+    static final long CLICK_DELAY = 500;
+    static long lastClick = 0;
 
 
     // The tag we put on debug messages
@@ -130,6 +140,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
     // Internal flags for the function above {{
     private boolean pausedTemporarilyDueToAudioFocus = false;
     private boolean loweredVolumeDueToAudioFocus = false;
+
     private BroadcastReceiver mNoisyReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -139,21 +150,77 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         }
     };
     private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback() {
+
+        @Override
+        public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
+            final String intentAction = mediaButtonEvent.getAction();
+            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intentAction)) {
+                if (Main.settings.get("pause_headphone_unplugged", true)) {
+                    pausePlayer();
+                }
+            } else if (Intent.ACTION_MEDIA_BUTTON.equals(intentAction)) {
+                final KeyEvent event = mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+                if (event == null) return super.onMediaButtonEvent(mediaButtonEvent);
+                final int keycode = event.getKeyCode();
+                final int action = event.getAction();
+                final long eventTime = event.getEventTime();
+                if (event.getRepeatCount() == 0 && action == KeyEvent.ACTION_DOWN) {
+                    switch (keycode) {
+                        case KeyEvent.KEYCODE_HEADSETHOOK:
+                            if (eventTime - lastClick < CLICK_DELAY) {
+                                next(true);
+                                playSong();
+                                lastClick = 0;
+                            } else {
+                                if (isPlaying())
+                                    pausePlayer();
+                                else unpausePlayer();
+                                lastClick = eventTime;
+                            }
+                            break;
+                        case KeyEvent.KEYCODE_MEDIA_STOP:
+                            stopMusicPlayer();
+                            break;
+                        case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                            if (Main.mainMenuHasNowPlayingItem) {
+                                if (isPlaying()) pausePlayer();
+                                else unpausePlayer();
+                            }
+                            break;
+                        case KeyEvent.KEYCODE_MEDIA_NEXT:
+                            next(true);
+                            playSong();
+                            break;
+                        case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                            previous(true);
+                            playSong();
+                            break;
+                        case KeyEvent.KEYCODE_MEDIA_PAUSE:
+                            pausePlayer();
+                            break;
+                        case KeyEvent.KEYCODE_MEDIA_PLAY:
+                            unpausePlayer();
+                            break;
+                    }
+                }
+            }
+            return super.onMediaButtonEvent(mediaButtonEvent);
+        }
         @Override
         public void onPlay() {
             super.onPlay();
-            playSong();
+            unpausePlayer();
         }
 
         @Override
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
             super.onPlayFromMediaId(mediaId, extras);
+            playSong();
         }
 
         @Override
         public void onPause() {
             super.onPause();
-            Log.e("lol", "pause");
             pausePlayer();
         }
 
@@ -162,7 +229,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
             super.onSkipToNext();
             next(true);
             playSong();
-            Log.e("lol", "next");
         }
 
         @Override
@@ -176,7 +242,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         public void onStop() {
             super.onStop();
             stopMusicPlayer();
-            Log.e("lol", "stop");
         }
     };
 
