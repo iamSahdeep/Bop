@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.session.MediaController;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
@@ -39,7 +38,6 @@ import java.util.Random;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.media.MediaBrowserServiceCompat;
-import androidx.media.MediaSessionManager;
 import androidx.media.session.MediaButtonReceiver;
 
 public class ServicePlayMusic extends MediaBrowserServiceCompat
@@ -49,9 +47,9 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         AudioManager.OnAudioFocusChangeListener {
 
 
-    public static final String ACTION_CMD = "com.example.android.uamp.ACTION_CMD";
+    public static final String ACTION_CMD = "com.sahdeepsingh.Bop.ACTION_CMD";
 
-    public static final String CMD_NAME = "CMD_NAME";
+    public static final String CMD_NAME = "BopPlayer";
 
     public static final String CMD_PAUSE = "CMD_PAUSE";
 
@@ -59,11 +57,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
     private static final int STOP_DELAY = 30000;
 
-    public static final String BROADCAST_ORDER_PLAY = "com.sahdeepsingh.Bop.action.PLAY";
-    public static final String BROADCAST_ORDER_PAUSE = "com.sahdeepsingh.Bop.action.PAUSE";
-    public static final String BROADCAST_ORDER_STOP = "com.sahdeepsingh.Bop.action.STOP";
-    public static final String BROADCAST_ORDER_SKIP = "com.sahdeepsingh.Bop.action.SKIP";
-    public static final String BROADCAST_ORDER_REWIND = "com.sahdeepsingh.Bop.action.REWIND";
 
     // The tag we put on debug messages
     final static String TAG = "MusicService";
@@ -105,44 +98,9 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
      */
 
     public MediaSessionCompat mMediaSessionCompat;
-    public MediaSessionManager mediaSessionManager;
-    public MediaController mediaController;
 
     AudioWidget audioWidget;
-    BroadcastReceiver headsetBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
 
-            String action = intent.getAction();
-
-            // Headphones just connected (or not)
-            if (action != null && action.equals(Intent.ACTION_HEADSET_PLUG)) {
-
-                Log.w(TAG, "headset plug");
-                boolean connectedHeadphones = (intent.getIntExtra("state", 0) == 1);
-                boolean connectedMicrophone = (intent.getIntExtra("microphone", 0) == 1) && connectedHeadphones;
-
-                // User just connected headphone and the player was paused,
-                // so we should restart the music.
-                if (connectedMicrophone && (serviceState == ServiceState.Paused)) {
-
-                    // Will only do it if it's Setting is enabled, of course
-                    if (Main.settings.get("play_headphone_on", true)) {
-
-                    }
-                }
-
-                // I wonder what's this for
-                String headsetName = intent.getStringExtra("name");
-
-                if (connectedHeadphones) {
-                    String text = context.getString(R.string.headphone_connected) + headsetName;
-
-                    Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    };
     /**
      * Android Media Player - we control it in here.
      */
@@ -195,6 +153,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         @Override
         public void onPause() {
             super.onPause();
+            Log.e("lol", "pause");
             pausePlayer();
         }
 
@@ -202,18 +161,22 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         public void onSkipToNext() {
             super.onSkipToNext();
             next(true);
+            playSong();
+            Log.e("lol", "next");
         }
 
         @Override
         public void onSkipToPrevious() {
             super.onSkipToPrevious();
             previous(true);
+            playSong();
         }
 
         @Override
         public void onStop() {
             super.onStop();
-            stopSelf();
+            stopMusicPlayer();
+            Log.e("lol", "stop");
         }
     };
 
@@ -248,9 +211,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
             throw new IllegalStateException("Could not create a MediaNotificationManager", e);
         }
 
-        // to user plugging the headset.
-        IntentFilter headsetFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-        registerReceiver(headsetBroadcastReceiver, headsetFilter);
 
         Log.w(TAG, "onCreate");
 
@@ -321,9 +281,11 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         if (player == null)
             return;
 
+        Main.mainMenuHasNowPlayingItem = false;
         player.stop();
         player.release();
         player = null;
+        notificationManager.stopNotification();
 
         Log.w(TAG, "stopMusicPlayer");
     }
@@ -531,13 +493,8 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
             audioManager.abandonAudioFocus(this);
 
         stopMusicPlayer();
+        Log.w(TAG, "onDestroy");
 
-        if (player != null)
-            //player.release();
-
-            Log.w(TAG, "onDestroy");
-
-        unregisterReceiver(headsetBroadcastReceiver);
         unregisterReceiver(mNoisyReceiver);
         super.onDestroy();
     }
@@ -798,6 +755,12 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         if (currentSong == null)
             return;
 
+        if (!requestAudioFocus()) {
+            //Stop the service.
+            stopSelf();
+            Toast.makeText(getApplicationContext(), "FUCK", Toast.LENGTH_LONG).show();
+            return;
+        }
         /*if (notification == null)
             notification = new NotificationMusic();
 

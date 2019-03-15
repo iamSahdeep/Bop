@@ -19,8 +19,6 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -110,19 +108,12 @@ public class utils {
     }
 
     public static Bitmap getBitmapfromAlbumId(Context context,Song localItem){
-        Bitmap bitmap = null;
+        Bitmap bitmap = BitmapFactory.decodeResource(Resources.getSystem(), R.mipmap.ic_launcher_foreground);
         Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
         Uri uri = ContentUris.withAppendedId(sArtworkUri,Long.parseLong(localItem.getAlbumid()));
         try {
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-        } catch (FileNotFoundException e) {
-            bitmap = BitmapFactory.decodeResource(Resources.getSystem(),R.mipmap.ic_launcher);
-            e.printStackTrace();
-        } catch (IOException e) {
-            bitmap = BitmapFactory.decodeResource(Resources.getSystem(),R.mipmap.ic_launcher);
-            e.printStackTrace();
-        } catch (Exception e){
-            bitmap = BitmapFactory.decodeResource(Resources.getSystem(),R.mipmap.ic_launcher);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return bitmap;
