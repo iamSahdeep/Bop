@@ -18,7 +18,9 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
@@ -38,6 +40,7 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -62,7 +65,9 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
     // Delay stopSelf by using a handler.
 
-    private static final int STOP_DELAY = 30000;
+    private static final int STOP_DELAY = 300000;
+
+    private final DelayedStopHandler mDelayedStopHandler = new DelayedStopHandler(this);
 
     static final long CLICK_DELAY = 500;
     static long lastClick = 0;
@@ -351,6 +356,8 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         player.release();
         player = null;
         notificationManager.stopNotification();
+        mDelayedStopHandler.removeCallbacksAndMessages(null);
+        mDelayedStopHandler.sendEmptyMessageDelayed(0, STOP_DELAY);
 
         Log.w(TAG, "stopMusicPlayer");
     }
@@ -560,6 +567,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         stopMusicPlayer();
         Log.w(TAG, "onDestroy");
 
+        mDelayedStopHandler.removeCallbacksAndMessages(null);
         unregisterReceiver(mNoisyReceiver);
         super.onDestroy();
     }
@@ -678,6 +686,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         player.prepareAsync();
 
         mMediaSessionCompat.setActive(true);
+        mDelayedStopHandler.removeCallbacksAndMessages(null);
         setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
 
         serviceState = ServiceState.Preparing;
@@ -704,6 +713,8 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         player.pause();
         serviceState = ServiceState.Paused;
 
+        mDelayedStopHandler.removeCallbacksAndMessages(null);
+        mDelayedStopHandler.sendEmptyMessageDelayed(0, STOP_DELAY);
         //notification.notifyPaused(true);
         setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED);
 
@@ -866,6 +877,8 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
                 MediaButtonReceiver.handleIntent(mMediaSessionCompat, intent);
             }
         }
+        mDelayedStopHandler.removeCallbacksAndMessages(null);
+        mDelayedStopHandler.sendEmptyMessageDelayed(0, STOP_DELAY);
         // Do your other onStartCommand stuff..
         return START_STICKY;
     }
@@ -909,6 +922,28 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         Main.mainMenuHasNowPlayingItem = false;
         Main.musicService.currentSong = null;
 
+    }
+
+    /**
+     * A simple handler that stops the service if playback is not active (playing)
+     */
+    private static class DelayedStopHandler extends Handler {//延迟停止服务handler
+        private final WeakReference<ServicePlayMusic> mWeakReference;
+
+        private DelayedStopHandler(ServicePlayMusic service) {
+            mWeakReference = new WeakReference<>(service);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            ServicePlayMusic service = mWeakReference.get();
+            if (service != null && Main.mainMenuHasNowPlayingItem) {
+                if (service.isPlaying()) {
+                    return;
+                }
+                service.stopMusicPlayer();
+            }
+        }
     }
 
 }
