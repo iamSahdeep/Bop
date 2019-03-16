@@ -8,6 +8,8 @@ import android.media.audiofx.Visualizer;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.sahdeepsingh.Bop.Handlers.PermissionHandler;
+
 import androidx.annotation.Nullable;
 
 public abstract class visualizer extends View {
@@ -59,6 +61,9 @@ public abstract class visualizer extends View {
     }
 
     public void setPlayer(int audioSessionId) {
+        if (!PermissionHandler.isRecordingPergiven(getContext())) {
+            return;
+        }
         visualizer = new Visualizer(audioSessionId);
         visualizer.setEnabled(false);
         visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
