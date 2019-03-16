@@ -3,7 +3,6 @@ package com.sahdeepsingh.Bop.Visualizers;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.MediaPlayer;
 import android.media.audiofx.Visualizer;
 import android.util.AttributeSet;
 import android.view.View;
@@ -49,15 +48,6 @@ public abstract class visualizer extends View {
     public void setColor(int color) {
         this.color = color;
         this.paint.setColor(this.color);
-    }
-
-    /**
-     * @param mediaPlayer MediaPlayer
-     * @deprecated will be removed in next version use {@link visualizer#setPlayer(int)} instead
-     */
-    @Deprecated
-    public void setPlayer(MediaPlayer mediaPlayer) {
-        setPlayer(mediaPlayer.getAudioSessionId());
     }
 
     public void setPlayer(int audioSessionId) {
