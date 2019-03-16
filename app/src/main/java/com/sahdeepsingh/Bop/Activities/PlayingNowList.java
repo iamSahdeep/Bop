@@ -2,15 +2,17 @@ package com.sahdeepsingh.Bop.Activities;
 
 import android.app.ActivityOptions;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.RemoteException;
+import android.support.v4.media.MediaDescriptionCompat;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -30,15 +32,13 @@ import com.sahdeepsingh.Bop.Adapters.AdapterSong;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;
 
 public class PlayingNowList extends BaseActivity implements MediaController.MediaPlayerControl {
 
@@ -50,11 +50,21 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
     private SeekBar seekArc;
     private RecyclerView songListView;
 
-    ChangeSongBR changeSongBR;
-
-    private boolean paused = false;
-    private boolean playbackPaused = false;
     private ImageView mCoverView;
+
+    private final MediaControllerCompat.Callback mCallback = new MediaControllerCompat.Callback() {
+        @Override
+        public void onPlaybackStateChanged(@NonNull PlaybackStateCompat state) {
+        }
+
+        @Override
+        public void onMetadataChanged(MediaMetadataCompat metadata) {
+            if (metadata != null) {
+                updateMediaDescription(metadata.getDescription());
+                updateDuration(metadata);
+            }
+        }
+    };
 
     private void onUpdateProgress(int position, int duration) {
         if (mTimeView != null) {
@@ -64,7 +74,16 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
             mDurationView.setText(DateUtils.formatElapsedTime(duration));
         }
         if (seekArc != null) {
-            seekArc.setProgress(getCurrentPosition());
+            seekArc.setProgress(getCurrentPosition() / 1000);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MediaControllerCompat controllerCompat = MediaControllerCompat.getMediaController(PlayingNowList.this);
+        if (controllerCompat != null) {
+            controllerCompat.unregisterCallback(mCallback);
         }
     }
 
@@ -92,18 +111,13 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
         songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
 
 
-        if (getIntent().getExtras() != null || !Main.mainMenuHasNowPlayingItem) {
+        if ((getIntent().getExtras() != null && getIntent().getExtras().containsKey("playlistname")) || !Main.mainMenuHasNowPlayingItem) {
             mPlaylistName.setText(Objects.requireNonNull(getIntent().getExtras()).getString("playlistname", "Current Playlist"));
             Main.musicService.playSong();
         }
 
-
-
-        // While we're playing music, add an item to the
-        // Main Menu that returns here.
         MainScreen.addNowPlayingItem();
-        prepareSeekBar();
-        changeSongBR = new ChangeSongBR();
+
     }
 
 
@@ -119,24 +133,13 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
         startActivity(new Intent(this, PlayerView.class), options.toBundle());
     }
 
-    private void workOnImages() {
-        File path = null;
-        if (Main.songs.getAlbumArt(Main.musicService.currentSong) != null)
-            path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
-        Bitmap bitmap;
-        if (path != null && path.exists()) {
-            bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.back);
-        mCoverView.setImageBitmap(bitmap);
-    }
-
     private void prepareSeekBar() {
 
         seekArc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (b) {
-                    seekTo(i);
+                    seekTo(i * 1000);
                 }
             }
 
@@ -151,7 +154,6 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
             }
         });
 
-        seekArc.setMax((int) Main.musicService.currentSong.getDuration());
         final Handler handler = new Handler();
         PlayingNowList.this.runOnUiThread(new Runnable() {
             @Override
@@ -166,8 +168,6 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
                 handler.postDelayed(this, 1000);
             }
         });
-
-        workOnImages();
     }
 
     public void playlistOptions(View view) {
@@ -177,44 +177,11 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
             switch (item.getItemId()) {
                 case R.id.one:
                     showPlaylistDialog();
-                    return true;
-                /*case R.id.two:
-                    //handle menu2 click
-                    return true;
-                case R.id.three:
-                    //handle menu3 click
-                    return true;*/
                 default:
                     return false;
             }
         });
         popup.show();
-    }
-
-    class ChangeSongBR extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            seekArc.setMax((int) Main.musicService.currentSong.getDuration());
-            songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
-            songListView.scrollToPosition(Main.musicService.currentSongPosition);
-            mTitleView.setText(Main.musicService.currentSong.getTitle());
-            mTitleView.setSelected(true);
-            mCounterView.setText(String.format("%s Songs", String.valueOf(Main.nowPlayingList.size())));
-            workOnImages();
-        }
-    }
-
-    /**
-     * Another Activity is taking focus. (either from user going to another
-     * Activity or home)
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(changeSongBR);
-        paused = true;
-        playbackPaused = true;
     }
 
     /**
@@ -224,12 +191,56 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
     @Override
     protected void onResume() {
         super.onResume();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BROADCAST_ACTION);
-        registerReceiver(changeSongBR, intentFilter);
-        Main.musicService.notifyCurrentSong();
-        if (paused) {
-            paused = false;
+
+        prepareSeekBar();
+
+        if (Main.mainMenuHasNowPlayingItem) {
+            try {
+                connectToSession(Main.musicService.getSessionToken());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void updateMediaDescription(MediaDescriptionCompat description) {
+        if (description == null) {
+            return;
+        }
+        //mLine1.setText(description.getTitle());
+        songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
+        songListView.scrollToPosition(Main.musicService.currentSongPosition);
+        mTitleView.setText(description.getTitle());
+        mTitleView.setSelected(true);
+        mCounterView.setText(String.format("%s Songs", String.valueOf(Main.nowPlayingList.size())));
+        mCoverView.setImageBitmap(description.getIconBitmap());
+    }
+
+    private void updateDuration(MediaMetadataCompat metadata) {
+        if (metadata == null) {
+            return;
+        }
+        int duration = (int) metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION);
+        Log.e("lol", String.valueOf(duration));
+        seekArc.setMax(duration);
+    }
+
+    private void connectToSession(MediaSessionCompat.Token token) throws RemoteException {
+        MediaControllerCompat mediaController = MediaControllerCompat.getMediaController(this);
+        if (mediaController == null) {
+            mediaController = new MediaControllerCompat(PlayingNowList.this, token);
+        }
+        if (mediaController.getMetadata() == null) {
+            finish();
+            return;
+        }
+
+        MediaControllerCompat.setMediaController(PlayingNowList.this, mediaController);
+        mediaController.registerCallback(mCallback);
+        MediaMetadataCompat metadata = mediaController.getMetadata();
+        if (metadata != null) {
+            updateMediaDescription(metadata.getDescription());
+            updateDuration(metadata);
         }
     }
 

@@ -76,7 +76,6 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                 drawable1.setColorFilter(getResources().getColor(R.color.md_grey_900), PorterDuff.Mode.SRC_IN);
                 drawable2.setColorFilter(getResources().getColor(R.color.md_grey_900), PorterDuff.Mode.SRC_IN);
             }
-
             return true;
         }
 

@@ -8,13 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -118,19 +116,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         Main.mainMenuHasNowPlayingItem = true;
     }
 
-    private final MediaBrowserCompat.ConnectionCallback mConnectionCallback =
-            new MediaBrowserCompat.ConnectionCallback() {
-                @Override
-                public void onConnected() {
-                    try {
-                        Log.e("lol", "lol");
-                        connectToSession(Main.musicService.getSessionToken());
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-    private MediaBrowserCompat mMediaBrowser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -374,9 +359,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         if (backPressedHandler != null)
             backPressedHandler.removeCallbacks(backPressedTimeoutAction);
 
-        if (mMediaBrowser != null)
-            mMediaBrowser.disconnect();
-
     }
 
     @Override
@@ -464,9 +446,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     @Override
     protected void onPause() {
         super.onPause();
-
-        if (mMediaBrowser != null)
-            mMediaBrowser.disconnect();
     }
 
 
@@ -706,7 +685,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             return;
         }
         //mLine1.setText(description.getTitle());
-        songNameSP.setText(description.getSubtitle());
+        songNameSP.setText(description.getTitle());
         albumArtSP.setImageBitmap(description.getIconBitmap());
         accountHeader.setHeaderBackground(new ImageHolder(description.getIconBitmap()));
     }

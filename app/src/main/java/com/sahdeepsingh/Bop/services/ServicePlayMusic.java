@@ -452,11 +452,16 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
         serviceState = ServiceState.Playing;
 
+        //setting meta data for notification and whole session
+        setMediaSessionMetaData();
+
         // Start playback
         player.start();
 
-        //setting meta data for notification and whole session
-        setMediaSessionMetaData();
+        mMediaSessionCompat.setActive(true);
+        mDelayedStopHandler.removeCallbacksAndMessages(null);
+        setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
+
 
         // just crating new notification of current song
         notifyCurrentSong();
@@ -468,6 +473,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtist())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbum())
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitle())
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDurationSeconds())
                 .build());
     }
 
@@ -659,10 +665,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         // Prepare the MusicPlayer asynchronously.
         // When finished, will call `onPrepare`
         player.prepareAsync();
-
-        mMediaSessionCompat.setActive(true);
-        mDelayedStopHandler.removeCallbacksAndMessages(null);
-        setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
 
         serviceState = ServiceState.Preparing;
 

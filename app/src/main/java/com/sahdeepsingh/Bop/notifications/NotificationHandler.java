@@ -198,12 +198,11 @@ public class NotificationHandler extends BroadcastReceiver {
         }
     }
 
-    private PendingIntent createContentIntent(MediaDescriptionCompat description) {
+    private PendingIntent createContentIntent() {
         Intent openUI = new Intent(mService, MainScreen.class);
-        openUI.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         return PendingIntent.getActivity(mService, REQUEST_CODE, openUI,
-                PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private Notification createNotification() {
@@ -234,7 +233,7 @@ public class NotificationHandler extends BroadcastReceiver {
                 .setSmallIcon(R.mipmap.ic_launcher_foreground)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setOnlyAlertOnce(true)
-                .setContentIntent(createContentIntent(description))
+                .setContentIntent(createContentIntent())
                 .setContentTitle(description.getTitle())
                 .setContentText(description.getSubtitle())
                 .setLargeIcon(description.getIconBitmap());
