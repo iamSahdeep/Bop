@@ -98,7 +98,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     private final MediaControllerCompat.Callback mCallback = new MediaControllerCompat.Callback() {
         @Override
         public void onPlaybackStateChanged(@NonNull PlaybackStateCompat state) {
-            updatePlaybackState(state);
+
         }
 
         @Override
@@ -698,27 +698,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         mProgressView.setMax(duration);
     }
 
-    private void updatePlaybackState(PlaybackStateCompat state) {
-        if (state == null) {
-            return;
-        }
-
-        switch (state.getState()) {
-            case PlaybackStateCompat.STATE_PLAYING:
-                bottomControls.setVisibility(View.VISIBLE);
-                break;
-            case PlaybackStateCompat.STATE_PAUSED:
-                bottomControls.setVisibility(View.VISIBLE);
-                break;
-            case PlaybackStateCompat.STATE_NONE:
-                break;
-            case PlaybackStateCompat.STATE_STOPPED:
-                bottomControls.setVisibility(View.INVISIBLE);
-                break;
-            default:
-        }
-
-    }
 
     private void connectToSession(MediaSessionCompat.Token token) throws RemoteException {
         MediaControllerCompat mediaController = MediaControllerCompat.getMediaController(this);
@@ -732,8 +711,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
         MediaControllerCompat.setMediaController(MainScreen.this, mediaController);
         mediaController.registerCallback(mCallback);
-        PlaybackStateCompat state = mediaController.getPlaybackState();
-        updatePlaybackState(state);
         MediaMetadataCompat metadata = mediaController.getMetadata();
         if (metadata != null) {
             updateMediaDescription(metadata.getDescription());
