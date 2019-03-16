@@ -1,14 +1,16 @@
 package com.sahdeepsingh.Bop.Activities;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.v4.media.MediaDescriptionCompat;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.format.DateUtils;
 import android.transition.Transition;
 import android.view.View;
@@ -29,14 +31,12 @@ import com.sahdeepsingh.Bop.views.TransitionAdapter;
 
 import java.io.File;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import me.tankery.lib.circularseekbar.CircularSeekBar;
 
-import static com.sahdeepsingh.Bop.Activities.MainScreen.BROADCAST_ACTION;
-
 public class PlayerView extends BaseActivity implements MediaController.MediaPlayerControl {
 
-    ChangeSongBR changeSongBR;
     ImageView next, previous, rewind, forward, shuffle, repeat, eq;
     private MusicCoverView mCoverView;
     private FloatingActionButton mFabView;
@@ -45,8 +45,22 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     private CircularSeekBar mProgressView;
     private CircleBarVisualizer circleBarVisualizer;
     private TextView mTitleView;
-    private boolean paused = false;
-    private boolean playbackPaused = false;
+
+
+    private final MediaControllerCompat.Callback mCallback = new MediaControllerCompat.Callback() {
+        @Override
+        public void onPlaybackStateChanged(@NonNull PlaybackStateCompat state) {
+            updatePlaybackState(state);
+        }
+
+        @Override
+        public void onMetadataChanged(MediaMetadataCompat metadata) {
+            if (metadata != null) {
+                updateMediaDescription(metadata.getDescription());
+                updateDuration(metadata);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +101,6 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
         });
         setclickListeners();
         prepareSeekBar();
-        changeSongBR = new ChangeSongBR();
-
     }
 
     private void setclickListeners() {
@@ -195,9 +207,6 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(changeSongBR);
-        paused = true;
-        playbackPaused = true;
     }
 
     /**
@@ -206,12 +215,10 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     @Override
     protected void onResume() {
         super.onResume();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BROADCAST_ACTION);
-        registerReceiver(changeSongBR, intentFilter);
-        Main.musicService.notifyCurrentSong();
-        if (paused) {
-            paused = false;
+        try {
+            connectToSession(Main.musicService.getSessionToken());
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
@@ -300,15 +307,6 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
         Main.musicService.next(true);
         Main.musicService.playSong();
 
-        // To prevent the MusicPlayer from behaving
-        // unexpectedly when we pause the song playback.
-        if (playbackPaused) {
-            playbackPaused = false;
-        }
-
-/*
-        musicController.show();
-*/
     }
 
     /**
@@ -317,16 +315,16 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     public void playPrevious() {
         Main.musicService.previous(true);
         Main.musicService.playSong();
+    }
 
-        // To prevent the MusicPlayer from behaving
-        // unexpectedly when we pause the song playback.
-        if (playbackPaused) {
-            playbackPaused = false;
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        MediaControllerCompat controllerCompat = MediaControllerCompat.getMediaController(PlayerView.this);
+        if (controllerCompat != null) {
+            controllerCompat.unregisterCallback(mCallback);
         }
-
-/*
-        musicController.show();
-*/
     }
 
     private void prepareSeekBar() {
@@ -335,7 +333,7 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, float progress, boolean fromUser) {
                 if (fromUser) {
-                    seekTo((int) progress);
+                    seekTo((int) progress * 1000);
                 }
             }
 
@@ -376,9 +374,73 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
             mDurationView.setText(DateUtils.formatElapsedTime(duration));
         }
         if (mProgressView != null) {
-            mProgressView.setProgress(position * 1000);
+            mProgressView.setProgress(position);
         }
     }
+
+    private void updateMediaDescription(MediaDescriptionCompat description) {
+        if (description == null) {
+            return;
+        }
+
+        mTitleView.setText(description.getTitle());
+        circleBarVisualizer.setPlayer(getAudioSessionId());
+        mTitleView.setSelected(true);
+        mCoverView.setImageBitmap(description.getIconBitmap());
+
+    }
+
+    private void updateDuration(MediaMetadataCompat metadata) {
+        if (metadata == null) {
+            return;
+        }
+        int duration = (int) metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION);
+        mProgressView.setMax(duration);
+    }
+
+    private void updatePlaybackState(PlaybackStateCompat state) {
+        if (state == null) {
+            return;
+        }
+
+        switch (state.getState()) {
+            case PlaybackStateCompat.STATE_PLAYING:
+                mFabView.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_pause))));
+                break;
+            case PlaybackStateCompat.STATE_PAUSED:
+                mFabView.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_play))));
+                break;
+            case PlaybackStateCompat.STATE_NONE:
+                break;
+            case PlaybackStateCompat.STATE_STOPPED:
+                finish();
+                break;
+            default:
+        }
+
+    }
+
+    private void connectToSession(MediaSessionCompat.Token token) throws RemoteException {
+        MediaControllerCompat mediaController = MediaControllerCompat.getMediaController(this);
+        if (mediaController == null) {
+            mediaController = new MediaControllerCompat(PlayerView.this, token);
+        }
+        if (mediaController.getMetadata() == null) {
+            finish();
+            return;
+        }
+
+        MediaControllerCompat.setMediaController(PlayerView.this, mediaController);
+        mediaController.registerCallback(mCallback);
+        PlaybackStateCompat state = mediaController.getPlaybackState();
+        updatePlaybackState(state);
+        MediaMetadataCompat metadata = mediaController.getMetadata();
+        if (metadata != null) {
+            updateMediaDescription(metadata.getDescription());
+            updateDuration(metadata);
+        }
+    }
+
 
     public void equalizer(View view) {
         Main.musicService.player.setLooping(true);
@@ -396,20 +458,4 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
         mCoverView.stop();
     }
 
-    class ChangeSongBR extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            mProgressView.setMax((int) Main.musicService.currentSong.getDuration());
-            circleBarVisualizer.setPlayer(getAudioSessionId());
-            mTitleView.setText(Main.musicService.currentSong.getTitle());
-            mTitleView.setSelected(true);
-            workOnImages();
-            if (!Main.musicService.isPaused()) {
-                mFabView.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_pause))));
-            } else {
-                mFabView.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_play))));
-            }
-        }
-    }
 }
