@@ -108,13 +108,14 @@ public class utils {
     }
 
     public static Bitmap getBitmapfromAlbumId(Context context,Song localItem){
-        Bitmap bitmap = BitmapFactory.decodeResource(Resources.getSystem(), R.mipmap.ic_launcher_foreground);
+        Bitmap bitmap;
         Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
         Uri uri = ContentUris.withAppendedId(sArtworkUri,Long.parseLong(localItem.getAlbumid()));
         try {
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
         } catch (Exception e) {
             e.printStackTrace();
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher_foreground);
         }
         return bitmap;
     }
