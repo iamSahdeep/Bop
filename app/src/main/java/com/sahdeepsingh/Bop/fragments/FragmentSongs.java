@@ -182,7 +182,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                     return;
                 }
                 Main.musicList.clear();
-                Main.musicList = Main.songs.songs;
+                Main.musicList.addAll(Main.songs.songs);
                 Main.nowPlayingList = Main.musicList;
                 Main.musicService.setList(Main.nowPlayingList);
                 Main.musicService.toggleShuffle();

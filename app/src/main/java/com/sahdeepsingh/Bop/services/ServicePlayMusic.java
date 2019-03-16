@@ -452,9 +452,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
         serviceState = ServiceState.Playing;
 
-        //setting meta data for notification and whole session
-        setMediaSessionMetaData();
-
         // Start playback
         player.start();
 
@@ -661,6 +658,9 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
             Log.e(TAG, "Error when changing the song", e);
             destroySelf();
         }
+
+        //setting meta data for notification and whole session
+        setMediaSessionMetaData();
 
         // Prepare the MusicPlayer asynchronously.
         // When finished, will call `onPrepare`

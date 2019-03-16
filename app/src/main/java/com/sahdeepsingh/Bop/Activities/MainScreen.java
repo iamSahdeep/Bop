@@ -63,8 +63,6 @@ import me.tankery.lib.circularseekbar.CircularSeekBar;
 public class MainScreen extends BaseActivity implements MediaController.MediaPlayerControl {
 
 
-    public static final String BROADCAST_ACTION = "lol";
-
     /**
      * How long to wait to disable double-pressing to quit
      */
@@ -98,7 +96,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     private final MediaControllerCompat.Callback mCallback = new MediaControllerCompat.Callback() {
         @Override
         public void onPlaybackStateChanged(@NonNull PlaybackStateCompat state) {
-
         }
 
         @Override
@@ -380,6 +377,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         if (Main.mainMenuHasNowPlayingItem) {
             Main.musicService.notifyCurrentSong();
             bottomControls.setVisibility(View.VISIBLE);
+            workonSlidingPanel();
 
         } else {
             bottomControls.setVisibility(View.GONE);
@@ -388,7 +386,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             if (playbackPaused) {
                 playbackPaused = false;
             }
-            workonSlidingPanel();
         }
 
     }
@@ -684,7 +681,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         if (description == null) {
             return;
         }
-        //mLine1.setText(description.getTitle());
         songNameSP.setText(description.getTitle());
         albumArtSP.setImageBitmap(description.getIconBitmap());
         accountHeader.setHeaderBackground(new ImageHolder(description.getIconBitmap()));
