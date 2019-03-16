@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.notifications;
+package com.sahdeepsingh.Bop.Handlers;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

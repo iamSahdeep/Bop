@@ -49,21 +49,6 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".notifications.NotificationMusic$NotificationPlayButtonHandler" />
-        <receiver android:name=".notifications.NotificationMusic$NotificationSkipButtonHandler" />
-        <receiver android:name=".notifications.NotificationMusic$NotificationStopButtonHandler" />
-        <receiver android:name=".notifications.NotificationMusic$NotificationPreviousButtonHandler" />
-        <receiver android:name=".services.ServicePlayMusic$ExternalBroadcastReceiver">
-            <intent-filter>
-
-                <!-- Disconnected Headphones -->
-                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".Activities.MainScreen"
             android:windowSoftInputMode="stateHidden"
