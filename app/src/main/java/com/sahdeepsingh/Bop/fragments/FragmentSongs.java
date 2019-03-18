@@ -39,6 +39,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class FragmentSongs extends android.app.Fragment implements SongsRecyclerViewAdapter.OnClickAction {
 
@@ -48,6 +49,8 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
     EditText name, search;
     List<Song> filtered = new ArrayList<>(Main.songs.songs);
     LinearLayout noData;
+    RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -122,23 +125,40 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
         search = view.findViewById(R.id.searchSongs);
         noData = view.findViewById(R.id.noData);
         floatingActionButton = view.findViewById(R.id.fabplayAll);
+        swipeRefreshLayout = view.findViewById(R.id.refreshSongs);
 
 
         // Set the adapter
             Context context = view.getContext();
-        RecyclerView recyclerView = view.findViewById(R.id.list);
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView = view.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         songsRecyclerViewAdapter = new SongsRecyclerViewAdapter(Main.songs.songs);
         songsRecyclerViewAdapter.setActionModeReceiver(this);
         songsRecyclerViewAdapter.setHasStableIds(true);
         //recyclerView properties for fast scrolling but doesn't work much
-            recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
-            recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recyclerView.setAdapter(songsRecyclerViewAdapter);
         RVUtils.makenoDataVisible(recyclerView, noData);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (actionMode != null)
+                    actionMode.finish();
+
+                Main.songs.songs.clear();
+                songsRecyclerViewAdapter = new SongsRecyclerViewAdapter(Main.songs.songs);
+                Main.songs.updateSongs(getActivity(), "external");
+                songsRecyclerViewAdapter.setActionModeReceiver(FragmentSongs.this);
+                recyclerView.setAdapter(songsRecyclerViewAdapter);
+                RVUtils.makenoDataVisible(recyclerView, noData);
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

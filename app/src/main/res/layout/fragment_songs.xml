@@ -47,25 +47,30 @@
         </LinearLayout>
 
 
-        <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
-            android:id="@+id/list"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshSongs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="16dp"
-            android:nestedScrollingEnabled="false"
-            android:clipToPadding="false"
-            android:paddingBottom="100dp"
-            app:fastScrollAutoHide="true"
-            app:fastScrollAutoHideDelay="1500"
-            app:fastScrollPopupBgColor="?attr/primaryColor"
-            app:fastScrollPopupTextColor="@color/primaryTextColor"
-            app:fastScrollThumbColor="?attr/primaryDarkColor"
-            app:layoutManager="LinearLayoutManager"
-            tools:itemCount="4"
-            tools:listitem="@layout/recycler_view_item" />
+            android:layout_height="wrap_content">
 
+            <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="16dp"
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false"
+                android:paddingBottom="100dp"
+                app:fastScrollAutoHide="true"
+                app:fastScrollAutoHideDelay="1500"
+                app:fastScrollPopupBgColor="?attr/primaryColor"
+                app:fastScrollPopupTextColor="@color/primaryTextColor"
+                app:fastScrollThumbColor="?attr/primaryDarkColor"
+                app:layoutManager="LinearLayoutManager"
+                tools:itemCount="4"
+                tools:listitem="@layout/recycler_view_item" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         <LinearLayout
             android:id="@+id/noData"
             android:layout_width="200dp"

@@ -104,6 +104,7 @@ public class FragmentPlaylist extends Fragment {
     private void refreshPlaylists() {
         Main.songs.updatePlaylists(getActivity(), "external");
         recyclerView.setAdapter(new PlaylistRecyclerViewAdapter(getPlaylists()));
+        RVUtils.makenoDataVisible(recyclerView, noData);
         refreshLayout.setRefreshing(false);
     }
 
