@@ -1,5 +1,22 @@
 # CHANGELOG.md
 
+## 1.2
+### versionCode = 12
+
+Bug Fixes:
+
+  - Fix : Bluetooth Events not working-> [d14d7799a1f4c399467808253579aa2b64874405](https://github.com/iamSahdeep/Bop/tree/d14d7799a1f4c399467808253579aa2b64874405)
+  - Fix : Showing Playlist after creation -> [4241773018689eea6b2b06753a897175a27b9181](https://github.com/iamSahdeep/Bop/tree/4241773018689eea6b2b06753a897175a27b9181)
+
+New :
+
+  - Migrated to MediaSession-> [0fd2e7ec4870449e208018d17cad486f95e7ac6b](https://github.com/iamSahdeep/Bop/tree/0fd2e7ec4870449e208018d17cad486f95e7ac6b)
+  - MediaStyled Notification-> [1952dd32806e6e986bbdb8b2767223e314b682f0](https://github.com/iamSahdeep/Bop/tree/1952dd32806e6e986bbdb8b2767223e314b682f0)
+  - Control through GoogleAssistant-> [1952dd32806e6e986bbdb8b2767223e314b682f0](https://github.com/iamSahdeep/Bop/tree/1952dd32806e6e986bbdb8b2767223e314b682f0)
+  - Added a timer to stop music if paused for 5 mins-> [e398d7db9c48d38fd7372bba554ecfafcf19a5fd](https://github.com/iamSahdeep/Bop/tree/e398d7db9c48d38fd7372bba554ecfafcf19a5fd)
+  - Making Microphone usage optional-> [97b27b7963cdd6de12f8049ede25dfdb70d824e5](https://github.com/iamSahdeep/Bop/tree/97b27b7963cdd6de12f8049ede25dfdb70d824e5)
+
+
 ## 1.1.2 (unreleased)
 ### versionCode = 11
 
