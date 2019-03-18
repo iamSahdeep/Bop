@@ -22,11 +22,14 @@ import java.util.Collections;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class FragmentPlaylist extends Fragment {
 
     PlaylistRecyclerViewAdapter mfilteredAdapter;
     LinearLayout noData;
+    SwipeRefreshLayout refreshLayout;
+    RecyclerView recyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -45,15 +48,13 @@ public class FragmentPlaylist extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
         noData = view.findViewById(R.id.noData);
-        // Set the adapter
-            Context context = view.getContext();
-        RecyclerView recyclerView = view.findViewById(R.id.list);
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
-            ArrayList<String> playlists = Main.songs.getPlaylistNames();
-            PlaylistRecyclerViewAdapter playlistRecyclerViewAdapter = new PlaylistRecyclerViewAdapter(playlists);
-            recyclerView.setAdapter(playlistRecyclerViewAdapter);
+        refreshLayout = view.findViewById(R.id.refreshPlaylists);
+        Context context = view.getContext();
+        recyclerView = view.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
+        recyclerView.setAdapter(new PlaylistRecyclerViewAdapter(getPlaylists()));
         RVUtils.makenoDataVisible(recyclerView, noData);
-        ArrayList<String> filtered = new ArrayList<>(playlists);
+        ArrayList<String> filtered = new ArrayList<>(getPlaylists());
         EditText search = view.findViewById(R.id.searchPlaylist);
 
         search.addTextChangedListener(new TextWatcher() {
@@ -67,12 +68,12 @@ public class FragmentPlaylist extends Fragment {
                 filtered.clear();
                 charSequence = charSequence.toString().toLowerCase();
                 if (charSequence.length() == 0) {
-                    filtered.addAll(playlists);
+                    filtered.addAll(getPlaylists());
                 } else
-                    for (int j = 0; j < playlists.size(); j++) {
-                        String playlist = playlists.get(j);
+                    for (int j = 0; j < getPlaylists().size(); j++) {
+                        String playlist = getPlaylists().get(j);
                         if (playlist.toLowerCase().contains(charSequence.toString().toLowerCase())) {
-                            filtered.add(playlists.get(j));
+                            filtered.add(getPlaylists().get(j));
                         }
                     }
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -90,8 +91,24 @@ public class FragmentPlaylist extends Fragment {
             }
         });
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshPlaylists();
+            }
+        });
 
         return view;
+    }
+
+    private void refreshPlaylists() {
+        Main.songs.updatePlaylists(getActivity(), "external");
+        recyclerView.setAdapter(new PlaylistRecyclerViewAdapter(getPlaylists()));
+        refreshLayout.setRefreshing(false);
+    }
+
+    private ArrayList<String> getPlaylists() {
+        return Main.songs.getPlaylistNames();
     }
 
 }

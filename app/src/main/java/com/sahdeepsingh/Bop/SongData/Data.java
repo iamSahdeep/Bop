@@ -126,66 +126,29 @@ public class Data {
      */
     public void scanSongs(Context c, String fromWhere) {
 
-        // This is a rather complex function that interacts with
-        // the underlying Android database.
-        // Grab some coffee and stick to the comments.
 
-        // Not implemented yet.
-        if (fromWhere.equals("both"))
-            throw new RuntimeException("Can't scan from both locations - not implemented");
-
-        // Checking for flags so we don't get called twice
-        // Fucking Java that doesn't allow local static variables.
         if (scanningSongs)
             return;
         scanningSongs = true;
-        // The URIs that tells where we should scan for files.
-        // There are separate URIs for music, genres and playlists. Go figure...
-        //
-        // Remember - internal is the phone memory, external is for the SD card.
+
+        updateGenres(c, fromWhere);
+        updateSongs(c, fromWhere);
+        updatePlaylists(c, fromWhere);
+
+        scannedSongs = true;
+        scanningSongs = false;
+
+    }
+
+    public void updateSongs(Context context, String fromWhere) {
+
+        //songs.clear();
+        resolver = context.getContentResolver();
+        Cursor cursor;
         Uri musicUri = ((fromWhere.equals("internal")) ?
                 android.provider.MediaStore.Audio.Media.INTERNAL_CONTENT_URI :
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-        Uri genreUri = ((fromWhere.equals("internal")) ?
-                android.provider.MediaStore.Audio.Genres.INTERNAL_CONTENT_URI :
-                android.provider.MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI);
-        Uri playlistUri = ((fromWhere.equals("internal")) ?
-                android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI :
-                android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI);
 
-        // Gives us access to query for files on the system.
-        resolver = c.getContentResolver();
-
-        // We use this thing to iterate through the results
-        // of a SQLite database query.
-        Cursor cursor;
-
-        // OK, this is where we start.
-        //
-        // First, before even touching the songs, we'll save all the
-        // music genres (like "Rock", "Jazz" and such).
-        // That's because Android doesn't allow getting a song genre
-        // from the song file itself.
-        //
-        // To get the genres, we make queries to the system's SQLite
-        // database. It involves genre IDs, music IDs and such.
-        //
-        // We're creating two maps:
-        //
-        // 1. Genre ID -> Genre Names
-        // 2. Song ID -> Genre ID
-        //
-        // This way, we have a connection from a Song ID to a Genre Name.
-        //
-        // Then we finally get the songs!
-        // We make queries to the database, getting all possible song
-        // metadata - like artist, album and such.
-
-
-        // These are the columns from the system databases.
-        // They're the information I want to get from songs.
-        String GENRE_ID = MediaStore.Audio.Genres._ID;
-        String GENRE_NAME = MediaStore.Audio.Genres.NAME;
         String SONG_ID = android.provider.MediaStore.Audio.Media._ID;
         String SONG_TITLE = android.provider.MediaStore.Audio.Media.TITLE;
         String SONG_ARTIST = android.provider.MediaStore.Audio.Media.ARTIST;
@@ -196,56 +159,6 @@ public class Data {
         String SONG_DURATION = android.provider.MediaStore.Audio.Media.DURATION;
         String SONG_ALBUM_ID = MediaStore.Audio.Media.ALBUM_ID;
 
-        // Creating the map  "Genre IDs" -> "Genre Names"
-        genreIdToGenreNameMap = new HashMap<>();
-
-        // This is what we'll ask of the genres
-        String[] genreColumns = {
-                GENRE_ID,
-                GENRE_NAME
-        };
-
-        // Actually querying the genres database
-        cursor = resolver.query(genreUri, genreColumns, null, null, null);
-
-        // Iterating through the results and filling the map.
-        assert cursor != null;
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
-            genreIdToGenreNameMap.put(cursor.getString(0), cursor.getString(1));
-
-        cursor.close();
-
-        // Map from Songs IDs to Genre IDs
-        songIdToGenreIdMap = new HashMap<>();
-
-        // UPDATE URI HERE
-        if (fromWhere.equals("both"))
-            throw new RuntimeException("Can't scan from both locations - not implemented");
-
-        // For each genre, we'll query the databases to get
-        // all songs's IDs that have it as a genre.
-        for (String genreID : genreIdToGenreNameMap.keySet()) {
-
-            Uri uri = MediaStore.Audio.Genres.Members.getContentUri(fromWhere,
-                    Long.parseLong(genreID));
-
-            cursor = resolver.query(uri, new String[]{SONG_ID}, null, null, null);
-
-            // Iterating through the results, populating the map
-            assert cursor != null;
-            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-
-                long currentSongID = cursor.getLong(cursor.getColumnIndex(SONG_ID));
-
-                songIdToGenreIdMap.put(Long.toString(currentSongID), genreID);
-            }
-            cursor.close();
-        }
-
-        // Finished getting the Genres.
-        // Let's go get dem songzz.
-
-        // Columns I'll retrieve from the song table
         String[] columns = {
                 SONG_ID,
                 SONG_TITLE,
@@ -314,11 +227,17 @@ public class Data {
                 return a.getTitle().compareTo(b.getTitle());
             }
         });
+    }
+
+    public void updatePlaylists(Context context, String fromWhere) {
+
         // Alright, now I'll get all the Playlists.
         // First I grab all playlist IDs and Names and then for each
         // one of those, getting all songs inside them.
 
         // As you know, the columns for the database.
+        playlists.clear();
+
         String PLAYLIST_ID = MediaStore.Audio.Playlists._ID;
         String PLAYLIST_NAME = MediaStore.Audio.Playlists.NAME;
         String PLAYLIST_SONG_ID = MediaStore.Audio.Playlists.Members.AUDIO_ID;
@@ -328,6 +247,12 @@ public class Data {
                 PLAYLIST_ID,
                 PLAYLIST_NAME
         };
+        Uri playlistUri = ((fromWhere.equals("internal")) ?
+                android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI :
+                android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI);
+        resolver = context.getContentResolver();
+        Cursor cursor;
+        final String musicsOnly = MediaStore.Audio.Media.IS_MUSIC + "=1";
 
         // The actual query - takes a while.
         cursor = resolver.query(playlistUri, playlistColumns, null, null, null);
@@ -359,10 +284,68 @@ public class Data {
             cursor2.close();
         }
 
-        scannedSongs = true;
-        scanningSongs = false;
     }
 
+    public void updateGenres(Context context, String fromWhere) {
+
+        //genreIdToGenreNameMap.clear();
+        Cursor cursor;
+
+        resolver = context.getContentResolver();
+        Uri genreUri = ((fromWhere.equals("internal")) ?
+                android.provider.MediaStore.Audio.Genres.INTERNAL_CONTENT_URI :
+                android.provider.MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI);
+
+        String GENRE_ID = MediaStore.Audio.Genres._ID;
+        String GENRE_NAME = MediaStore.Audio.Genres.NAME;
+        String SONG_ID = android.provider.MediaStore.Audio.Media._ID;
+        // Creating the map  "Genre IDs" -> "Genre Names"
+        genreIdToGenreNameMap = new HashMap<>();
+
+        // This is what we'll ask of the genres
+        String[] genreColumns = {
+                GENRE_ID,
+                GENRE_NAME
+        };
+
+        // Actually querying the genres database
+        cursor = resolver.query(genreUri, genreColumns, null, null, null);
+
+        // Iterating through the results and filling the map.
+        assert cursor != null;
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
+            genreIdToGenreNameMap.put(cursor.getString(0), cursor.getString(1));
+
+        cursor.close();
+
+        // Map from Songs IDs to Genre IDs
+        songIdToGenreIdMap = new HashMap<>();
+
+        // UPDATE URI HERE
+        if (fromWhere.equals("both"))
+            throw new RuntimeException("Can't scan from both locations - not implemented");
+
+        // For each genre, we'll query the databases to get
+        // all songs's IDs that have it as a genre.
+        for (String genreID : genreIdToGenreNameMap.keySet()) {
+
+            Uri uri = MediaStore.Audio.Genres.Members.getContentUri(fromWhere,
+                    Long.parseLong(genreID));
+
+            cursor = resolver.query(uri, new String[]{SONG_ID}, null, null, null);
+
+            // Iterating through the results, populating the map
+            assert cursor != null;
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+
+                long currentSongID = cursor.getLong(cursor.getColumnIndex(SONG_ID));
+
+                songIdToGenreIdMap.put(Long.toString(currentSongID), genreID);
+            }
+            cursor.close();
+        }
+
+    }
     public void destroy() {
         songs.clear();
     }
@@ -755,7 +738,7 @@ public class Data {
         String where = MediaStore.Audio.Playlists._ID + "=?";
         String[] whereVal = {playlistid};
         resolver.delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, where, whereVal);
-        Toast.makeText(context, "Deleted, Changes might take some time", Toast.LENGTH_SHORT).show();
+        updatePlaylists(context, "external");
     }
 
     // Getting Playlist unique ID

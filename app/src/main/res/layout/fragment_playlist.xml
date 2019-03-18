@@ -41,18 +41,24 @@
 
     </LinearLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/list"
-        android:name="com.sahdeepsingh.Bop.fragments.FragmentPlaylist"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshPlaylists"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:clipToPadding="false"
-        android:paddingBottom="100dp"
-        tools:context=".fragments.FragmentPlaylist"
-        tools:listitem="@layout/fragment_playlist_item" />
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/list"
+            android:name="com.sahdeepsingh.Bop.fragments.FragmentPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:clipToPadding="false"
+            android:paddingBottom="100dp"
+            tools:context=".fragments.FragmentPlaylist"
+            tools:listitem="@layout/fragment_playlist_item" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/noData"
