@@ -23,7 +23,6 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRecyclerViewAdapter.ViewHolder> {
 
-    private final List<String> playlists;
+    private List<String> playlists;
     private RecyclerView mRecyclerView;
     private int anyExpanded = -1;
     private ViewHolder expandedViewholder;
@@ -157,6 +156,10 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
             }
         });
 
+    }
+
+    public void UpdateData(List<String> items) {
+        this.playlists = items;
     }
 
     @Override

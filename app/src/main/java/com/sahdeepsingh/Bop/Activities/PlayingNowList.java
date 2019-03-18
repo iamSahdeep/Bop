@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sahdeepsingh.Bop.Adapters.AdapterSong;
+import com.sahdeepsingh.Bop.Adapters.CurrentPlayListSongsAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
@@ -108,7 +108,7 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
         mPlaylistName = findViewById(R.id.name);
 
         songListView.setLayoutManager(new LinearLayoutManager(this));
-        songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
+        songListView.setAdapter(new CurrentPlayListSongsAdapter(Main.nowPlayingList));
 
 
         if ((getIntent().getExtras() != null && getIntent().getExtras().containsKey("playlistname")) || !Main.mainMenuHasNowPlayingItem) {
@@ -208,7 +208,7 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
             return;
         }
         //mLine1.setText(description.getTitle());
-        songListView.setAdapter(new AdapterSong(Main.nowPlayingList));
+        songListView.setAdapter(new CurrentPlayListSongsAdapter(Main.nowPlayingList));
         songListView.scrollToPosition(Main.musicService.currentSongPosition);
         mTitleView.setText(description.getTitle());
         mTitleView.setSelected(true);

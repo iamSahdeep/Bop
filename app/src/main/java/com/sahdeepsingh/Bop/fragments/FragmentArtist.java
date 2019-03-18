@@ -30,8 +30,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
  */
 public class FragmentArtist extends Fragment {
 
-    ArtistRecyclerViewAdapter mfilteredAdapter;
+    ArtistRecyclerViewAdapter artistRecyclerViewAdapter;
     EditText search;
+    ArrayList<String> artists = Main.songs.getArtists();
     List<String> filtered = new ArrayList<>();
     LinearLayout noData;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -53,16 +54,16 @@ public class FragmentArtist extends Fragment {
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 2)); //can change to create grid layout
-        ArrayList<String> artists = Main.songs.getArtists();
         Collections.sort(artists);
-        ArtistRecyclerViewAdapter artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(artists);
+        artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(artists);
         recyclerView.setAdapter(artistRecyclerViewAdapter);
         RVUtils.makenoDataVisible(recyclerView, noData);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                recyclerView.setAdapter(new ArtistRecyclerViewAdapter(artists));
+                artistRecyclerViewAdapter.updateData(artists);
+                artistRecyclerViewAdapter.notifyDataSetChanged();
                 RVUtils.makenoDataVisible(recyclerView, noData);
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -90,11 +91,9 @@ public class FragmentArtist extends Fragment {
                     }
                 recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
                 Collections.sort(filtered, String::compareToIgnoreCase);
-                mfilteredAdapter = new ArtistRecyclerViewAdapter(filtered);
-                recyclerView.setAdapter(mfilteredAdapter);
-                mfilteredAdapter.notifyDataSetChanged();
+                artistRecyclerViewAdapter.updateData(filtered);
+                artistRecyclerViewAdapter.notifyDataSetChanged();
                 RVUtils.makenoDataVisible(recyclerView, noData);
-
             }
 
             @Override

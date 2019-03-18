@@ -1,13 +1,9 @@
 package com.sahdeepsingh.Bop.Adapters;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +17,6 @@ import com.sahdeepsingh.Bop.utils.utils;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecyclerViewAdapter.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
 
-    private final List<Song> songs;
+    private List<Song> songs;
     private List<Song> selected = new ArrayList<>();
     private OnClickAction receiver;
 
@@ -195,6 +189,9 @@ public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecycler
         this.receiver = receiver;
     }
 
+    public void updateData(List<Song> list) {
+        this.songs = list;
+    }
     public List<Song> getSelected() {
         return selected;
     }

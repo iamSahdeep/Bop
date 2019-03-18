@@ -284,6 +284,12 @@ public class Data {
             cursor2.close();
         }
 
+        Collections.sort(playlists, new Comparator<Playlist>() {
+            public int compare(Playlist a, Playlist b) {
+                return a.getName().compareTo(b.getName());
+            }
+        });
+
     }
 
     public void updateGenres(Context context, String fromWhere) {

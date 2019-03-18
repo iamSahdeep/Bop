@@ -126,16 +126,12 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
         noData = view.findViewById(R.id.noData);
         floatingActionButton = view.findViewById(R.id.fabplayAll);
         swipeRefreshLayout = view.findViewById(R.id.refreshSongs);
-
-
-        // Set the adapter
-            Context context = view.getContext();
+        Context context = view.getContext();
         recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         songsRecyclerViewAdapter = new SongsRecyclerViewAdapter(Main.songs.songs);
         songsRecyclerViewAdapter.setActionModeReceiver(this);
         songsRecyclerViewAdapter.setHasStableIds(true);
-        //recyclerView properties for fast scrolling but doesn't work much
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);
@@ -150,10 +146,9 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                     actionMode.finish();
 
                 Main.songs.songs.clear();
-                songsRecyclerViewAdapter = new SongsRecyclerViewAdapter(Main.songs.songs);
                 Main.songs.updateSongs(getActivity(), "external");
-                songsRecyclerViewAdapter.setActionModeReceiver(FragmentSongs.this);
-                recyclerView.setAdapter(songsRecyclerViewAdapter);
+                songsRecyclerViewAdapter.updateData(Main.songs.songs);
+                songsRecyclerViewAdapter.notifyDataSetChanged();
                 RVUtils.makenoDataVisible(recyclerView, noData);
                 swipeRefreshLayout.setRefreshing(false);
 
@@ -181,11 +176,9 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                     }
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 Collections.sort(filtered, (u1, t1) -> u1.getTitle().compareToIgnoreCase(t1.getTitle()));
-                songsRecyclerViewAdapter = new SongsRecyclerViewAdapter(filtered);
-                recyclerView.setAdapter(songsRecyclerViewAdapter);
+                songsRecyclerViewAdapter.updateData(filtered);
                 songsRecyclerViewAdapter.notifyDataSetChanged();
                 RVUtils.makenoDataVisible(recyclerView, noData);
-
             }
 
             @Override

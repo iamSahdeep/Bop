@@ -26,7 +26,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class FragmentPlaylist extends Fragment {
 
-    PlaylistRecyclerViewAdapter mfilteredAdapter;
+    PlaylistRecyclerViewAdapter playlistRecyclerViewAdapter;
     LinearLayout noData;
     SwipeRefreshLayout refreshLayout;
     RecyclerView recyclerView;
@@ -52,7 +52,8 @@ public class FragmentPlaylist extends Fragment {
         Context context = view.getContext();
         recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
-        recyclerView.setAdapter(new PlaylistRecyclerViewAdapter(getPlaylists()));
+        playlistRecyclerViewAdapter = new PlaylistRecyclerViewAdapter(getPlaylists());
+        recyclerView.setAdapter(playlistRecyclerViewAdapter);
         RVUtils.makenoDataVisible(recyclerView, noData);
         ArrayList<String> filtered = new ArrayList<>(getPlaylists());
         EditText search = view.findViewById(R.id.searchPlaylist);
@@ -78,9 +79,11 @@ public class FragmentPlaylist extends Fragment {
                     }
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 Collections.sort(filtered, String::compareToIgnoreCase);
-                mfilteredAdapter = new PlaylistRecyclerViewAdapter(filtered);
+                playlistRecyclerViewAdapter.UpdateData(filtered);
+                playlistRecyclerViewAdapter.notifyDataSetChanged();
+                /*mfilteredAdapter = new PlaylistRecyclerViewAdapter(filtered);
                 recyclerView.setAdapter(mfilteredAdapter);
-                mfilteredAdapter.notifyDataSetChanged();
+                mfilteredAdapter.notifyDataSetChanged();*/
                 RVUtils.makenoDataVisible(recyclerView, noData);
 
             }
@@ -103,7 +106,8 @@ public class FragmentPlaylist extends Fragment {
 
     private void refreshPlaylists() {
         Main.songs.updatePlaylists(getActivity(), "external");
-        recyclerView.setAdapter(new PlaylistRecyclerViewAdapter(getPlaylists()));
+        playlistRecyclerViewAdapter.UpdateData(getPlaylists());
+        playlistRecyclerViewAdapter.notifyDataSetChanged();
         RVUtils.makenoDataVisible(recyclerView, noData);
         refreshLayout.setRefreshing(false);
     }

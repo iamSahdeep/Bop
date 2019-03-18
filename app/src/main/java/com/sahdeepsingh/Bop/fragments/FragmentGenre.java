@@ -26,7 +26,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class FragmentGenre extends Fragment {
 
-    GenreRecyclerViewAdapter mfilteredAdapter;
+    GenreRecyclerViewAdapter genreRecyclerViewAdapter;
     EditText search;
     List<String> filtered = new ArrayList<>();
     LinearLayout noData;
@@ -59,17 +59,17 @@ public class FragmentGenre extends Fragment {
         recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
         Collections.sort(genres);
-        GenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new GenreRecyclerViewAdapter(genres);
-        recyclerView.setAdapter(myGenreRecyclerViewAdapter);
+        genreRecyclerViewAdapter = new GenreRecyclerViewAdapter(genres);
+        recyclerView.setAdapter(genreRecyclerViewAdapter);
         RVUtils.makenoDataVisible(recyclerView, noData);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                recyclerView.setAdapter(new GenreRecyclerViewAdapter(genres));
+                genreRecyclerViewAdapter.updateData(genres);
+                genreRecyclerViewAdapter.notifyDataSetChanged();
                 RVUtils.makenoDataVisible(recyclerView, noData);
                 swipeRefreshLayout.setRefreshing(false);
-
             }
         });
         search = view.findViewById(R.id.searchGenre);
@@ -95,12 +95,9 @@ public class FragmentGenre extends Fragment {
                     }
                 recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
                 Collections.sort(filtered, String::compareToIgnoreCase);
-                mfilteredAdapter = new GenreRecyclerViewAdapter(filtered);
-                recyclerView.setAdapter(mfilteredAdapter);
-                mfilteredAdapter.notifyDataSetChanged();
+                genreRecyclerViewAdapter.updateData(filtered);
+                genreRecyclerViewAdapter.notifyDataSetChanged();
                 RVUtils.makenoDataVisible(recyclerView, noData);
-
-
             }
 
             @Override

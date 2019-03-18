@@ -13,7 +13,6 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -30,11 +29,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * We'll map the ArrayList from our MainActivity into
  * multiple Artist/Title fields inside our activity_main Layout.
  */
-public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
+public class CurrentPlayListSongsAdapter extends RecyclerView.Adapter<CurrentPlayListSongsAdapter.ViewHolder> {
 
     private final List<Song> mValues;
 
-    public AdapterSong(List<Song> items) {
+    public CurrentPlayListSongsAdapter(List<Song> items) {
         mValues = items;
     }
 
@@ -112,12 +111,12 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        final View mView;
         public final TextView songName;
         public final TextView songBy;
+        final View mView;
+        final CircleImageView circleImageView;
         barVisuals barVisuals;
         ImageView songOptions;
-        final CircleImageView circleImageView;
 
         ViewHolder(View view) {
             super(view);

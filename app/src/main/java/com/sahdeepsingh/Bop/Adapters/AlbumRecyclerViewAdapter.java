@@ -1,9 +1,7 @@
 package com.sahdeepsingh.Bop.Adapters;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecyclerViewAdapter.ViewHolder> {
 
-    private final List<String> mValues;
+    private List<String> mValues;
 
     public AlbumRecyclerViewAdapter(List<String> items) {
         mValues = items;
@@ -62,6 +59,9 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
         });
     }
 
+    public void updateData(List<String> items) {
+        this.mValues = items;
+    }
     @Override
     public int getItemCount() {
         return mValues.size();
