@@ -23,6 +23,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +34,7 @@ public class FragmentArtist extends Fragment {
     EditText search;
     List<String> filtered = new ArrayList<>();
     LinearLayout noData;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -46,7 +48,7 @@ public class FragmentArtist extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_artist, container, false);
         noData = view.findViewById(R.id.noData);
-
+        swipeRefreshLayout = view.findViewById(R.id.refreshArtists);
 
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.list);
@@ -57,6 +59,14 @@ public class FragmentArtist extends Fragment {
         recyclerView.setAdapter(artistRecyclerViewAdapter);
         RVUtils.makenoDataVisible(recyclerView, noData);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recyclerView.setAdapter(new ArtistRecyclerViewAdapter(artists));
+                RVUtils.makenoDataVisible(recyclerView, noData);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         search = view.findViewById(R.id.searchArtist);
 
         search.addTextChangedListener(new TextWatcher() {

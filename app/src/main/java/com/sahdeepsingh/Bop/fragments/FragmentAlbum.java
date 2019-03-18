@@ -22,6 +22,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class FragmentAlbum extends Fragment {
 
@@ -29,6 +30,7 @@ public class FragmentAlbum extends Fragment {
     EditText search;
     List<String> filtered = new ArrayList<>();
     LinearLayout noData;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
     /**
@@ -49,7 +51,7 @@ public class FragmentAlbum extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_album, container, false);
         noData = view.findViewById(R.id.noData);
-
+        swipeRefreshLayout = view.findViewById(R.id.refreshAlbums);
 
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.list);
@@ -59,6 +61,14 @@ public class FragmentAlbum extends Fragment {
             recyclerView.setAdapter(albumRecyclerViewAdapter);
         RVUtils.makenoDataVisible(recyclerView, noData);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recyclerView.setAdapter(new AlbumRecyclerViewAdapter(albums));
+                RVUtils.makenoDataVisible(recyclerView, noData);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         search = view.findViewById(R.id.searchAlbum);
 

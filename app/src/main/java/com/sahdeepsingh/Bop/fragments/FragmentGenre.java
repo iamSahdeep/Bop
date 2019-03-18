@@ -22,6 +22,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class FragmentGenre extends Fragment {
 
@@ -29,6 +30,9 @@ public class FragmentGenre extends Fragment {
     EditText search;
     List<String> filtered = new ArrayList<>();
     LinearLayout noData;
+    ArrayList<String> genres = Main.songs.getGenres();
+    SwipeRefreshLayout swipeRefreshLayout;
+    RecyclerView recyclerView;
 
 
     /**
@@ -48,17 +52,26 @@ public class FragmentGenre extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_genre, container, false);
         noData = view.findViewById(R.id.noData);
+        swipeRefreshLayout = view.findViewById(R.id.refreshGeneres);
         // Set the adapter
 
         Context context = view.getContext();
-        RecyclerView recyclerView = view.findViewById(R.id.list);
+        recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-        ArrayList<String> genres = Main.songs.getGenres();
         Collections.sort(genres);
         GenreRecyclerViewAdapter myGenreRecyclerViewAdapter = new GenreRecyclerViewAdapter(genres);
         recyclerView.setAdapter(myGenreRecyclerViewAdapter);
         RVUtils.makenoDataVisible(recyclerView, noData);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recyclerView.setAdapter(new GenreRecyclerViewAdapter(genres));
+                RVUtils.makenoDataVisible(recyclerView, noData);
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
         search = view.findViewById(R.id.searchGenre);
 
         search.addTextChangedListener(new TextWatcher() {
