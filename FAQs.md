@@ -98,7 +98,7 @@ Yes, you can customize/tune the equalizer to suit it to your preferred sound.
 
 12. **Which file types are supported?**
 
-Bop music player uses the native media player that comes with your Android phone, so as long as a file type is supported by your phone, it's supported by Retro Music.
+Bop music player uses the native media player that comes with your Android phone, so as long as a file type is supported by your phone, it's supported by Bop music player.
 
 ---
 
