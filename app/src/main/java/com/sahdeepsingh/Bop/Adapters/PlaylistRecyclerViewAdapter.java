@@ -23,7 +23,6 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.utils.utils;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -65,7 +64,7 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
                 List<Song> songsList = Main.songs.getSongsByPlaylist(selectedPlaylist);
                 Context context = holder.mView.getContext();
                 Main.musicList.clear();
-                Main.musicList = (ArrayList<Song>) songsList;
+                Main.musicList.addAll(songsList);
                 Main.nowPlayingList = Main.musicList;
                 Main.musicService.setList(Main.nowPlayingList);
                 Intent intent = new Intent(context, PlayingNowList.class);

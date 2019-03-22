@@ -49,7 +49,7 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
                 ArrayList<Song> songsList = Main.songs.getSongsByAlbum(selectedAlbum);
                 Context context = holder.mView.getContext();
                 Main.musicList.clear();
-                Main.musicList = songsList;
+                Main.musicList.addAll(songsList);
                 Main.nowPlayingList = Main.musicList;
                 Main.musicService.setList(Main.nowPlayingList);
                 Intent intent = new Intent(context, PlayingNowList.class);

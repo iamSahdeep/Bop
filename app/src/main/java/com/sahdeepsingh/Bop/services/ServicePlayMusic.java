@@ -358,6 +358,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
      */
     public void setList(ArrayList<Song> theSongs) {
         songs = theSongs;
+        currentSongPosition = 0;
     }
 
     /**
