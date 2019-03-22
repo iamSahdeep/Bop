@@ -348,7 +348,7 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
             }
         });
 
-        final Handler handler = new Handler();
+        Handler handler = new Handler();
         PlayerView.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -363,7 +363,6 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
             }
         });
 
-        workOnImages();
     }
 
     private void onUpdateProgress(int position, int duration) {
@@ -387,7 +386,6 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
         circleBarVisualizer.setPlayer(getAudioSessionId());
         mTitleView.setSelected(true);
         mCoverView.setImageBitmap(description.getIconBitmap());
-
     }
 
     private void updateDuration(MediaMetadataCompat metadata) {

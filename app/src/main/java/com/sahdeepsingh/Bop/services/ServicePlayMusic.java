@@ -42,6 +42,8 @@ import com.sahdeepsingh.Bop.utils.utils;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -589,17 +591,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         if (serviceState != ServiceState.Paused && serviceState != ServiceState.Playing)
             return;
 
-
-        if (shuffleMode) {
-            int newSongPosition = currentSongPosition;
-
-            while (newSongPosition == currentSongPosition)
-                newSongPosition = randomNumberGenerator.nextInt(songs.size());
-
-            currentSongPosition = newSongPosition;
-            return;
-        }
-
         currentSongPosition++;
 
         if (currentSongPosition >= songs.size())
@@ -727,6 +718,14 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
      */
     public void toggleShuffle() {
         shuffleMode = !shuffleMode;
+        if (isShuffle()) {
+            Collections.shuffle(songs);
+        } else Collections.sort(songs, new Comparator<Song>() {
+            @Override
+            public int compare(Song o1, Song o2) {
+                return o1.getTitle().compareTo(o2.getTitle());
+            }
+        });
     }
 
     /**
