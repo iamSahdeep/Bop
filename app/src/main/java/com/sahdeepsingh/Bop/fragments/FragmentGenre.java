@@ -52,7 +52,7 @@ public class FragmentGenre extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_genre, container, false);
         noData = view.findViewById(R.id.noData);
-        swipeRefreshLayout = view.findViewById(R.id.refreshGeneres);
+        swipeRefreshLayout = view.findViewById(R.id.refreshGenres);
         // Set the adapter
 
         Context context = view.getContext();

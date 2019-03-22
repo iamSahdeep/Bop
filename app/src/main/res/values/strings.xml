@@ -130,7 +130,7 @@
     <string name="playlist"> Playlist</string>
     <string name="lastplaylist"> Last Playlist</string>
     <string name="albums"> Albums</string>
-    <string name="generes"> Generes</string>
+    <string name="genres"> Genres</string>
     <string name="all_songs"> All Songs</string>
     <string name="save_playlist">Save Playlist</string>
     <string name="search">Search</string>
