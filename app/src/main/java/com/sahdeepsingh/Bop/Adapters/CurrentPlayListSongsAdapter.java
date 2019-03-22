@@ -82,6 +82,10 @@ public class CurrentPlayListSongsAdapter extends RecyclerView.Adapter<CurrentPla
                     switch (item.getItemId()) {
                         case R.id.one:
                             if (Main.musicService.currentSongPosition == holder.getAdapterPosition()) {
+                                if (Main.nowPlayingList.size() == 1) {
+                                    Main.musicService.stopMusicPlayer();
+                                    return true;
+                                }
                                 Main.musicService.next(true);
                                 Main.musicService.playSong();
                             }
