@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Bop-MusicPlayer</string>
+    <string name="app_name_short">Bop</string>
+    <string name="cancel">Cancelar</string>
+    <string name="now_playing">Ahora toca</string>
+    <string name="settings">Opciones</string>
+    <string name="shuffle">Aleatorio</string>
+    <string name="repeat">Repetir</string>
+    <string name="songs">Canciones</string>
+    <string name="end">Salir</string>
+
+    <string name="menu_main_scanning_ok">Se terminó de escanear las canciones</string>
+    <string name="menu_main_scanning_not_ok">Error al escanear canciones</string>
+    <string name="menu_main_back_to_exit">Presiona atrás otra vez para salir</string>
+
+    <string name="menu_music_artists">Artistas</string>
+
+
+    <!-- Values for the Settings Activity
+	 -->
+
+
+
+
+
+    <string name="add_to_playlist">Agregar a lista de Reproducción</string>
+
+
+    <string name="pref_header_about">Acerca de</string>
+    <string name="summary_about">Somos un equipo de personas que piensan similar,especializándonos en el Desarrollo de Aplicaciones para Android creando nuevas tendencias en el espacio de las aplicaciones.</string>
+    <string name="summary_support">Tienes algunos queries? Podemos ayudarte!</string>
+    <string name="title_send_feedback">Enviar comentarios</string>
+    <string name="title_faq">Más</string>
+    <string name="summary_faq">Ver más detalles</string>
+    <string name="privacy_policy">Política de Privacidad</string>
+    <string name="title_terms">Términos y Condiciones</string>
+    <string name="title_version">Versión</string>
+    <string name="key_send_feedback">key_send_feedback</string>
+    <string name="album_art">Carátula</string>
+    <string name="play_pause">Reproducir Pausar</string>
+    <string name="song_name">Titulo:</string>
+    <string name="more">más</string>
+    <string name="total">total</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Borrar</string>
+    <string name="select_or_create_new">Seleccionar o crear nuevo:</string>
+    <string name="playlist_name">Nombre de la Lista de Reproducción</string>
+    <string name="create">Crear</string>
+    <string name="view">Ver</string>
+    <string name="next">Siguente</string>
+    <string name="equalizer">Ecualizador</string>
+    <string name="previous">Previa</string>
+    <string name="rewind">Rebobinar</string>
+    <string name="forward">Adelante</string>
+    <string name="current_playlist">Lista de Reproducción actual</string>
+    <string name="options">Opciones</string>
+    <string name="avatar">Avatar</string>
+    <string name="append">Anexar</string>
+    <string name="select_all">Seleccionar todos</string>
+    <string name="deselect_all">Deseleccionar</string>
+    <string name="headphone_connected">Audífonos conectados:</string>
+    <string name="privacy_url">https://github.com/iamSahdeep/Bop/blob/master/privacy_policy.md</string>
+    <string name="readme_url">https://github.com/iamSahdeep/Bop/blob/master/README.md</string>
+    <string name="information">Información</string>
+    <string name="remove">Remover</string>
+
+    <string name="background">fondo</string>
+    <string name="recent">Reciente</string>
+    <string name="recent_playlist">Playlist Reciente</string>
+    <string name="playlist">Lista de Reproducción</string>
+    <string name="lastplaylist">Última lista de reproducción</string>
+    <string name="albums">Albums</string>
+    <string name="genres">Géneros</string>
+    <string name="all_songs">Todas las canciones</string>
+    <string name="save_playlist">Guardar lista de reproducción</string>
+    <string name="search">Buscar</string>
+    <string name="no">No</string>
+    <string name="recent_songs">Canciones Recientes</string>
+    <string name="most_played">Más tocadas</string>
+    <string name="times_played">Veces Reproducida</string>
+    <string name="artist">Artista</string>
+    <string name="play_all">Reproducir todas</string>
+    <string name="everything">Todo</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Fragmento hola en blanco</string>
+
+</resources>
