@@ -192,7 +192,9 @@ public class SplashScreen extends AppCompatActivity {
             Main.nowPlayingList = Main.musicList;
             if (Main.nowPlayingList == null) {
                 Toast.makeText(this, "Selected Item is not a song OR is not in mediaStore", Toast.LENGTH_SHORT).show();
-                return;
+                intent = new Intent(activity, MainScreen.class);
+                activity.startActivity(intent);
+                finish();
             }
             Main.musicService.setList(Main.nowPlayingList);
             activity.startActivity(intent);
@@ -247,13 +249,17 @@ public class SplashScreen extends AppCompatActivity {
                 Main.musicList.clear();
                 if (Main.songs.getSongbyFile(file) == null){
                     Toast.makeText(activity, "Selected Song is not in mediaStore yet, Cant play for now", Toast.LENGTH_SHORT).show();
-                    return;
+                    intent = new Intent(activity, MainScreen.class);
+                    activity.startActivity(intent);
+                    activity.finish();
                 }
                 Main.musicList.add(Main.songs.getSongbyFile(file));
                 Main.nowPlayingList = Main.musicList;
                 if (Main.nowPlayingList == null) {
                     Toast.makeText(activity, "Selected Item is not a song OR is not in mediaStore", Toast.LENGTH_SHORT).show();
-                    return;
+                    intent = new Intent(activity, MainScreen.class);
+                    activity.startActivity(intent);
+                    activity.finish();
                 }
                 Main.musicService.setList(Main.nowPlayingList);
                 activity.startActivity(intent);

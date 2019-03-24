@@ -329,6 +329,8 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         if (drawer.isDrawerOpen()) {
             drawer.closeDrawer();
             return;
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
         } else if (mViewPager.getCurrentItem() != 0) {
             mViewPager.setCurrentItem(0, true);
             return;
@@ -613,6 +615,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     public int getAudioSessionId() {
         return Main.musicService.getAudioSession();
     }
+
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 

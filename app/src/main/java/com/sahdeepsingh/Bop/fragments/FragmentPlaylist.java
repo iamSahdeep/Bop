@@ -81,9 +81,6 @@ public class FragmentPlaylist extends Fragment {
                 Collections.sort(filtered, String::compareToIgnoreCase);
                 playlistRecyclerViewAdapter.UpdateData(filtered);
                 playlistRecyclerViewAdapter.notifyDataSetChanged();
-                /*mfilteredAdapter = new PlaylistRecyclerViewAdapter(filtered);
-                recyclerView.setAdapter(mfilteredAdapter);
-                mfilteredAdapter.notifyDataSetChanged();*/
                 RVUtils.makenoDataVisible(recyclerView, noData);
 
             }

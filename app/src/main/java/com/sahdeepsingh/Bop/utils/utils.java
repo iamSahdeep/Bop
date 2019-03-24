@@ -142,4 +142,11 @@ public class utils {
         return themeColor;
     }
 
+    public static void shareSong(Context context, Song song) {
+        //NEed to look at file provider, Later
+    }
+
+    public static void showSongDetails(Context context, Song song) {
+
+    }
 }

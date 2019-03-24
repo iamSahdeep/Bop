@@ -3,14 +3,14 @@
 
     <item
         android:id="@+id/one"
-        android:title="@string/delete" />
+        android:title="@string/remove" />
 
     <item
         android:id="@+id/two"
-        android:title="@string/rename" />
+        android:title="@string/share" />
 
-     <item
-         android:id="@+id/three"
-         android:title="@string/show_files" />
+    <item
+        android:id="@+id/three"
+        android:title="@string/information" />
 
 </menu>

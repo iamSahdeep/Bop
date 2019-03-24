@@ -308,6 +308,9 @@ public class FileFragment extends Fragment {
     private void playSong(String absolutePath) {
         Intent intent = new Intent(getActivity(), PlayingNowList.class);
         intent.putExtra("file", absolutePath);
+        if (Main.musicService.isPlaying()) {
+            Main.musicService.stopMusicPlayer();
+        }
         Main.musicList.clear();
         if (Main.songs.getSongbyFile(new File(absolutePath)) == null) {
             Toast.makeText(getActivity(), "Selected Song is not in mediaStore yet, Cant play for now", Toast.LENGTH_SHORT).show();

@@ -172,7 +172,7 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
 
     public void playlistOptions(View view) {
         PopupMenu popup = new PopupMenu(view.getContext(), view);
-        popup.inflate(R.menu.playlist_options);
+        popup.inflate(R.menu.current_playlist_options);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.one:

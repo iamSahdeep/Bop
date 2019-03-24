@@ -645,7 +645,7 @@ public class Data {
     public Song getSongbyFile(File file) {
         Song song = null;
         for (Song s : songs) {
-            if (s.getTitle().equals(file.getName().substring(0, file.getName().lastIndexOf(".")))) {
+            if (s.getFilePath().equals(file.getPath())) {
                 song = s;
                 break;
             }
@@ -811,8 +811,11 @@ public class Data {
     public void deletePlaylistTrack(Context context, long playlistId, long audioId) {
         ContentResolver resolver = context.getContentResolver();
         Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
-        String filter = MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + audioId;
-        resolver.delete(uri, filter, null);
+        String filter = MediaStore.Audio.Playlists.Members._ID + " = ?";
+        String[] whereVal = {String.valueOf(audioId)};
+        int lol = resolver.delete(uri, filter, whereVal);
+        if ((lol == 1)) {
+        }
     }
 
     /* Add single song to Playlist */
