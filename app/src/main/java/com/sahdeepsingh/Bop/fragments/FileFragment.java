@@ -17,10 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
+import com.sahdeepsingh.Bop.BopUtils.utils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.utils.utils;
 
 import java.io.File;
 import java.io.FilenameFilter;

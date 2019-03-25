@@ -13,9 +13,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.sahdeepsingh.Bop.Adapters.ArtistRecyclerViewAdapter;
+import com.sahdeepsingh.Bop.BopUtils.RVUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.utils.RVUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -17,9 +17,9 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
 import com.sahdeepsingh.Bop.Activities.MainScreen;
+import com.sahdeepsingh.Bop.BopUtils.utils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.services.ServicePlayMusic;
-import com.sahdeepsingh.Bop.utils.utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;

@@ -22,12 +22,12 @@ import android.widget.TextView;
 
 import com.andremion.music.MusicCoverView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sahdeepsingh.Bop.BopUtils.utils;
 import com.sahdeepsingh.Bop.CustomViews.TransitionAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.Visualizers.CircleBarVisualizer;
 import com.sahdeepsingh.Bop.equalizer.EqualizerFragment;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.utils.utils;
 
 import java.io.File;
 

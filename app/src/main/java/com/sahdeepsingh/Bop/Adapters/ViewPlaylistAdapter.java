@@ -6,11 +6,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sahdeepsingh.Bop.BopUtils.utils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.Visualizers.barVisuals;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.utils.utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -76,9 +76,8 @@ public class ViewPlaylistAdapter extends RecyclerView.Adapter<ViewPlaylistAdapte
                 popup.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.one:
-                            Main.songs.deletePlaylistTrack(view.getContext(), Long.parseLong(Main.songs.getPlayListId(name)), Main.songs.getSongsByPlaylist(name).get(holder.getAdapterPosition()).getId());
+                            Main.songs.deletePlaylistTrack(view.getContext(), name, Main.songs.getSongsByPlaylist(name).get(holder.getAdapterPosition()).getId());
                             notifyItemRemoved(holder.getAdapterPosition());
-                            notifyItemRangeChanged(holder.getAdapterPosition(), mValues.size());
                             return true;
                         case R.id.two:
                             utils.shareSong(view.getContext(), Main.songs.getSongsByPlaylist(name).get(holder.getAdapterPosition()));

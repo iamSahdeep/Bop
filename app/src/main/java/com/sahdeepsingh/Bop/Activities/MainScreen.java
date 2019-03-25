@@ -37,6 +37,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.mikepenz.materialize.util.UIUtils;
+import com.sahdeepsingh.Bop.BopUtils.utils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.fragments.FileFragment;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
@@ -46,7 +47,6 @@ import com.sahdeepsingh.Bop.fragments.FragmentPlaylist;
 import com.sahdeepsingh.Bop.fragments.FragmentSongs;
 import com.sahdeepsingh.Bop.fragments.HomeFragment;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.utils.utils;
 
 import java.util.Objects;
 

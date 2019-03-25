@@ -38,4 +38,8 @@ public class Playlist {
     public ArrayList<Long> getSongIds() {
         return new ArrayList<>(songs);
     }
+
+    public void removeSong(long id) {
+        songs.remove(id);
+    }
 }

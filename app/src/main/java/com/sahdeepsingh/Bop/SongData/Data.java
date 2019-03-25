@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sahdeepsingh.Bop.utils.utils;
+import com.sahdeepsingh.Bop.BopUtils.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -808,13 +808,17 @@ public class Data {
     }
 
     /* Delete single song from Playlist*/
-    public void deletePlaylistTrack(Context context, long playlistId, long audioId) {
-        ContentResolver resolver = context.getContentResolver();
-        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
-        String filter = MediaStore.Audio.Playlists.Members._ID + " = ?";
-        String[] whereVal = {String.valueOf(audioId)};
-        int lol = resolver.delete(uri, filter, whereVal);
-        if ((lol == 1)) {
+    public void deletePlaylistTrack(Context context, String name, long audioId) {
+        final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", Long.parseLong(getPlayListId(name)));
+        final ContentResolver resolver = context.getContentResolver();
+        resolver.delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID + " = ? ", new String[]{
+                Long.toString(audioId)
+        });
+        for (Playlist p :
+                playlists) {
+            if (p.getName().equals(name)) {
+                p.removeSong(audioId);
+            }
         }
     }
 

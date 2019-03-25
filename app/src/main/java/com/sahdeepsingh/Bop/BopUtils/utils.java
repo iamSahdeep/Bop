@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.utils;
+package com.sahdeepsingh.Bop.BopUtils;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -147,6 +147,7 @@ public class utils {
         share.setType("audio/*");
         share.putExtra(Intent.EXTRA_STREAM, Uri.parse("content:///" + song.getFilePath()));
         context.startActivity(Intent.createChooser(share, "Share Sound File"));
+        context.getContentResolver().notifyChange(Uri.parse("content://media"), null);
     }
 
     public static void showSongDetails(Context context, Song song) {

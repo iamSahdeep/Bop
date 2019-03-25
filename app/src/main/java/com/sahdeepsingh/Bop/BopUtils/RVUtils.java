@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.utils;
+package com.sahdeepsingh.Bop.BopUtils;
 
 import android.view.View;
 import android.widget.LinearLayout;

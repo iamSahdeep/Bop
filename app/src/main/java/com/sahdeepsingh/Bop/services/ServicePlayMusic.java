@@ -33,11 +33,11 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.cleveroad.audiowidget.AudioWidget;
+import com.sahdeepsingh.Bop.BopUtils.utils;
 import com.sahdeepsingh.Bop.Handlers.NotificationHandler;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
-import com.sahdeepsingh.Bop.utils.utils;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
