@@ -91,7 +91,7 @@ public class ViewPlaylistAdapter extends RecyclerView.Adapter<ViewPlaylistAdapte
                             ExtraUtils.shareSong(view.getContext(), PlaylistUtils.getSongsByPlaylist(name).get(holder.getAdapterPosition()));
                             return true;
                         case R.id.three:
-                            ExtraUtils.showSongDetails(view.getContext(), PlaylistUtils.getSongsByPlaylist(name).get(holder.getAdapterPosition()));
+                            ExtraUtils.showSongDetails(view.getContext(), PlaylistUtils.getSongsByPlaylist(name).get(holder.getAdapterPosition()).getId());
                             return true;
                         default:
                             return false;

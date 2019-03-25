@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.provider.MediaStore;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
+import com.sahdeepsingh.Bop.fragments.SongDetailsFragment;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.Collections;
@@ -26,8 +28,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
+import androidx.palette.graphics.Palette;
 import androidx.renderscript.Allocation;
 import androidx.renderscript.Element;
 import androidx.renderscript.RenderScript;
@@ -150,7 +154,19 @@ public class ExtraUtils {
         context.getContentResolver().notifyChange(Uri.parse("content://media"), null);
     }
 
-    public static void showSongDetails(Context context, Song song) {
+    public static void showSongDetails(Context context, Long id) {
+        AppCompatActivity activity = (AppCompatActivity) context;
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(android.R.id.content, SongDetailsFragment.newInstance(id)).addToBackStack(null).commit();
+    }
 
+    public static int getSwatchColor(Bitmap bitmap) {
+
+        Palette p = Palette.from(bitmap).generate();
+        Palette.Swatch vibrantSwatch = p.getVibrantSwatch();
+        if (vibrantSwatch != null) {
+            return vibrantSwatch.getBodyTextColor();
+        }
+        return Color.WHITE;
     }
 }

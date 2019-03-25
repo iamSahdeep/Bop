@@ -1,5 +1,8 @@
 package com.sahdeepsingh.Bop.SongData;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Represents a single audio file on the Android system.
  * <p>
@@ -10,7 +13,7 @@ package com.sahdeepsingh.Bop.SongData;
  * anywhere on the system)
  * - filePath (full path for the file on the filesystem).
  */
-public class Song implements Cloneable {
+public class Song implements Cloneable, Parcelable {
 
     private long id;
     private String filePath;
@@ -140,5 +143,14 @@ public class Song implements Cloneable {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }
 

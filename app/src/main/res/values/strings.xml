@@ -148,5 +148,6 @@
     <string name="edit_files">Edit Files</string>
     <string name="rename">Rename</string>
     <string name="share">Share</string>
+    <string name="make_ringtone">Make Ringtone</string>
 
 </resources>

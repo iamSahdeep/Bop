@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="100dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="100dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:text="@string/share"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/delete"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/market"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/add_to_playlist"
+            android:textSize="18sp"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/make_ringtone"
+            android:textSize="18sp" />
+
+        <com.google.android.material.internal.ScrimInsetsFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="16dp"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="24dp"
+            app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+            <include
+                android:id="@+id/fragment"
+                layout="@layout/fragment_view_song_details"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.google.android.material.internal.ScrimInsetsFrameLayout>
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
