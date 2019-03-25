@@ -3,6 +3,7 @@ package com.sahdeepsingh.Bop.Activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -55,6 +56,10 @@ public class BaseActivity extends AppCompatActivity {
         // Checking if changes were made, look these methods for better understanding
         refreshTheme();
         refreshMode();
+
+        //just using it for limited time, will use File provider soon
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
     }
 
     /**

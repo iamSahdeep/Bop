@@ -143,7 +143,10 @@ public class utils {
     }
 
     public static void shareSong(Context context, Song song) {
-        //NEed to look at file provider, Later
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("audio/*");
+        share.putExtra(Intent.EXTRA_STREAM, Uri.parse("content:///" + song.getFilePath()));
+        context.startActivity(Intent.createChooser(share, "Share Sound File"));
     }
 
     public static void showSongDetails(Context context, Song song) {
