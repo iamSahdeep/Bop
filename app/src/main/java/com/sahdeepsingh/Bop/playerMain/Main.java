@@ -23,9 +23,9 @@ import java.util.ArrayList;
 public class Main {
 
     /**
-     * All the songs on the device.
+     * All the data on the device.
      */
-    public static Data songs = new Data();
+    public static Data data = new Data();
 
     /**
      * Progress dialog for loading screen
@@ -44,13 +44,13 @@ public class Main {
     public static ServicePlayMusic musicService = null;
 
     /**
-     * Contains the songs that are going to be shown to
+     * Contains the data that are going to be shown to
      * the user on a particular menu.
      */
     public static ArrayList<Song> musicList = new ArrayList<>();
 
     /**
-     * List of the songs being currently played by the user.
+     * List of the data being currently played by the user.
      */
     public static ArrayList<Song> nowPlayingList = null;
 
@@ -86,7 +86,7 @@ public class Main {
 
             // Here's where we finally create the MusicService
             musicService = binder.getService();
-            musicService.setList(Main.songs.songs);
+            musicService.setList(Main.data.songs);
             musicService.musicBound = true;
             Log.w("service", "onServiceConnected");
         }
@@ -138,7 +138,7 @@ public class Main {
      * being destroyed.
      */
     public static void destroy() {
-        songs.destroy();
+        data.destroy();
     }
 
     /**

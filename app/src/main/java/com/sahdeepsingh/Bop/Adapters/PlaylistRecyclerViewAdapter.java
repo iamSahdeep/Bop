@@ -16,10 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
+import com.sahdeepsingh.Bop.BopUtils.PlaylistUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
-import com.sahdeepsingh.Bop.ViewPlaylist;
+import com.sahdeepsingh.Bop.fragments.ViewPlaylist;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.squareup.picasso.Picasso;
 
@@ -53,14 +54,14 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.playlistname.setText(playlists.get(position));
         final String selectedPlaylist = playlists.get(position);
-        List<Song> songsList = Main.songs.getSongsByPlaylist(selectedPlaylist);
+        List<Song> songsList = PlaylistUtils.getSongsByPlaylist(selectedPlaylist);
 
-        Picasso.get().load(utils.getUrifromAlbumID(songsList.get(0))).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
+        Picasso.get().load(ExtraUtils.getUrifromAlbumID(songsList.get(0))).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Song> songsList = Main.songs.getSongsByPlaylist(selectedPlaylist);
+                List<Song> songsList = PlaylistUtils.getSongsByPlaylist(selectedPlaylist);
                 Context context = holder.mView.getContext();
                 Main.musicList.clear();
                 Main.musicList.addAll(songsList);
@@ -123,7 +124,7 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
             public void onClick(DialogInterface dialog, int which) {
                 String m_Text = input.getText().toString();
                 if (!m_Text.equals("") && !playlists.contains(m_Text)) {
-                    Main.songs.renamePlaylist(view.getContext(), m_Text, Long.parseLong(Main.songs.getPlayListId(selectedPlaylist)));
+                    PlaylistUtils.renamePlaylist(view.getContext(), m_Text, Long.parseLong(PlaylistUtils.getPlayListId(selectedPlaylist)));
                     Toast.makeText(view.getContext(), "Done! Changes might take time.", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 } else {
@@ -146,7 +147,7 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Main.songs.deletePlaylist(view.getContext(), selectedPlaylist);
+                PlaylistUtils.deletePlaylist(view.getContext(), selectedPlaylist);
                 int newPosition = holder.getAdapterPosition();
                 playlists.remove(newPosition);
                 notifyItemRemoved(newPosition);

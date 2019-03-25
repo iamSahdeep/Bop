@@ -1,7 +1,5 @@
 package com.sahdeepsingh.Bop.Activities;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -22,14 +20,12 @@ import android.widget.TextView;
 
 import com.andremion.music.MusicCoverView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.CustomViews.TransitionAdapter;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.Visualizers.CircleBarVisualizer;
 import com.sahdeepsingh.Bop.equalizer.EqualizerFragment;
 import com.sahdeepsingh.Bop.playerMain.Main;
-
-import java.io.File;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -79,7 +75,7 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
         mFabView = findViewById(R.id.fab);
         eq = findViewById(R.id.equaButton);
         circleBarVisualizer = findViewById(R.id.visualizer);
-        circleBarVisualizer.setColor(utils.getThemeAttrColor(this, R.styleable.Theme_primaryColor));
+        circleBarVisualizer.setColor(ExtraUtils.getThemeAttrColor(this, R.styleable.Theme_primaryColor));
 
         mCoverView.setCallbacks(new MusicCoverView.Callbacks() {
             @Override
@@ -105,29 +101,29 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
 
     private void setclickListeners() {
 
-        eq.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_equalizer)));
+        eq.setImageDrawable(ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_equalizer)));
         next = findViewById(R.id.next);
-        next.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_skip)));
+        next.setImageDrawable(ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_skip)));
         previous = findViewById(R.id.previous);
-        previous.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_previous)));
+        previous.setImageDrawable(ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_previous)));
         forward = findViewById(R.id.forward);
-        forward.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_forward)));
+        forward.setImageDrawable(ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_forward)));
         rewind = findViewById(R.id.rewind);
-        rewind.setImageDrawable(utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_rewind)));
+        rewind.setImageDrawable(ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_rewind)));
         shuffle = findViewById(R.id.shuffle);
         repeat = findViewById(R.id.repeat);
 
         if (!Main.musicService.isShuffle()) {
-            shuffle.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_shuffle_off))));
+            shuffle.setImageDrawable((ExtraUtils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_shuffle_off))));
         } else {
-            shuffle.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_shuffle_on))));
+            shuffle.setImageDrawable((ExtraUtils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_shuffle_on))));
         }
         if (Main.musicService.isRepeat() == 0) {
-            repeat.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_repeat_one))));
+            repeat.setImageDrawable((ExtraUtils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_repeat_one))));
         } else if (Main.musicService.isRepeat() == 1) {
-            repeat.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_repeat_on))));
+            repeat.setImageDrawable((ExtraUtils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_repeat_on))));
         } else
-            repeat.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_repeat_off))));
+            repeat.setImageDrawable((ExtraUtils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_repeat_off))));
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,9 +158,9 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
             public void onClick(View view) {
                 Main.musicService.toggleShuffle();
                 if (!Main.musicService.isShuffle()) {
-                    shuffle.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shuffle_off))));
+                    shuffle.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shuffle_off))));
                 } else {
-                    shuffle.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shuffle_on))));
+                    shuffle.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shuffle_on))));
                 }
             }
         });
@@ -174,11 +170,11 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
             public void onClick(View view) {
                 Main.musicService.toggleRepeat();
                 if (Main.musicService.isRepeat() == 0) {
-                    repeat.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_one))));
+                    repeat.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_one))));
                 } else if (Main.musicService.isRepeat() == 1) {
-                    repeat.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_on))));
+                    repeat.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_on))));
                 } else
-                    repeat.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_off))));
+                    repeat.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_off))));
             }
         });
     }
@@ -187,22 +183,12 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     public void onFabClick(View view) {
         Main.musicService.togglePlayback();
         if (!Main.musicService.isPaused()) {
-            mFabView.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_pause))));
+            mFabView.setImageDrawable((ExtraUtils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_pause))));
         } else {
-            mFabView.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_play))));
+            mFabView.setImageDrawable((ExtraUtils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_play))));
         }
     }
 
-    private void workOnImages() {
-        File path = null;
-        if (Main.songs.getAlbumArt(Main.musicService.currentSong) != null)
-            path = new File(Main.songs.getAlbumArt(Main.musicService.currentSong));
-        Bitmap bitmap;
-        if (path != null && path.exists()) {
-            bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-        } else bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.back);
-        mCoverView.setImageBitmap(bitmap);
-    }
 
     @Override
     protected void onPause() {
@@ -229,7 +215,7 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     @Override
     public void start() {
         Main.musicService.unpausePlayer();
-        mFabView.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_pause))));
+        mFabView.setImageDrawable((ExtraUtils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_pause))));
     }
 
     /**
@@ -238,7 +224,7 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     @Override
     public void pause() {
         Main.musicService.pausePlayer();
-        mFabView.setImageDrawable((utils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_play))));
+        mFabView.setImageDrawable((ExtraUtils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_play))));
     }
 
     @Override
@@ -403,10 +389,10 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
 
         switch (state.getState()) {
             case PlaybackStateCompat.STATE_PLAYING:
-                mFabView.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_pause))));
+                mFabView.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_pause))));
                 break;
             case PlaybackStateCompat.STATE_PAUSED:
-                mFabView.setImageDrawable((utils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_play))));
+                mFabView.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_play))));
                 break;
             case PlaybackStateCompat.STATE_NONE:
                 break;
@@ -443,7 +429,7 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
     public void equalizer(View view) {
         Main.musicService.player.setLooping(true);
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
-                .setAccentColor(utils.getThemeAttrColor(PlayerView.this, R.styleable.Theme_primaryDarkColor))
+                .setAccentColor(ExtraUtils.getThemeAttrColor(PlayerView.this, R.styleable.Theme_primaryDarkColor))
                 .setAudioSessionId(getAudioSessionId())
                 .build();
         getSupportFragmentManager().beginTransaction()

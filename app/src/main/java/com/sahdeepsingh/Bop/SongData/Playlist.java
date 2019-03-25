@@ -9,7 +9,7 @@ public class Playlist {
 
     private ArrayList<Long> songs = new ArrayList<>();
 
-    Playlist(long id, String name) {
+    public Playlist(long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -33,7 +33,7 @@ public class Playlist {
     }
 
     /**
-     * Returns a list with all the songs inside this Playlist.
+     * Returns a list with all the data inside this Playlist.
      */
     public ArrayList<Long> getSongIds() {
         return new ArrayList<>(songs);

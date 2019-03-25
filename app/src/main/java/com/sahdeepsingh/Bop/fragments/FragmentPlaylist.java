@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.sahdeepsingh.Bop.Adapters.PlaylistRecyclerViewAdapter;
+import com.sahdeepsingh.Bop.BopUtils.PlaylistUtils;
 import com.sahdeepsingh.Bop.BopUtils.RVUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -102,7 +103,7 @@ public class FragmentPlaylist extends Fragment {
     }
 
     private void refreshPlaylists() {
-        Main.songs.updatePlaylists(getActivity(), "external");
+        Main.data.updatePlaylists(getActivity(), "external");
         playlistRecyclerViewAdapter.UpdateData(getPlaylists());
         playlistRecyclerViewAdapter.notifyDataSetChanged();
         RVUtils.makenoDataVisible(recyclerView, noData);
@@ -110,7 +111,7 @@ public class FragmentPlaylist extends Fragment {
     }
 
     private ArrayList<String> getPlaylists() {
-        return Main.songs.getPlaylistNames();
+        return PlaylistUtils.getPlaylistNames();
     }
 
 }

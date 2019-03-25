@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop;
+package com.sahdeepsingh.Bop.fragments;
 
 
 import android.content.Context;
@@ -16,7 +16,9 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.Adapters.ViewPlaylistAdapter;
+import com.sahdeepsingh.Bop.BopUtils.PlaylistUtils;
 import com.sahdeepsingh.Bop.BopUtils.RVUtils;
+import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
@@ -59,7 +61,7 @@ public class ViewPlaylist extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             playListName = getArguments().getString("name");
-            all = Main.songs.getSongsByPlaylist(playListName);
+            all = PlaylistUtils.getSongsByPlaylist(playListName);
         }
     }
 
@@ -116,7 +118,7 @@ public class ViewPlaylist extends Fragment {
             @Override
             public void onClick(View view) {
                 if (all == null || all.size() <= 0) {
-                    Toast.makeText(getActivity(), "No songs to play", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "No data to play", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Main.musicList.clear();

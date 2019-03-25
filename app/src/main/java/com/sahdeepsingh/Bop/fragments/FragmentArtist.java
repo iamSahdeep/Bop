@@ -13,9 +13,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.sahdeepsingh.Bop.Adapters.ArtistRecyclerViewAdapter;
+import com.sahdeepsingh.Bop.BopUtils.DataUtils;
 import com.sahdeepsingh.Bop.BopUtils.RVUtils;
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +32,7 @@ public class FragmentArtist extends Fragment {
 
     ArtistRecyclerViewAdapter artistRecyclerViewAdapter;
     EditText search;
-    ArrayList<String> artists = Main.songs.getArtists();
+    ArrayList<String> artists = DataUtils.getArtists();
     List<String> filtered = new ArrayList<>();
     LinearLayout noData;
     SwipeRefreshLayout swipeRefreshLayout;

@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
+import com.sahdeepsingh.Bop.BopUtils.SongUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.squareup.picasso.Picasso;
@@ -40,16 +41,16 @@ public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         if (getItemCount() > 0) {
-            holder.songName.setText(Main.songs.getSongById(songs.get(position)).getTitle());
-            holder.songBy.setText(Main.songs.getSongById(songs.get(position)).getArtist());
-            Picasso.get().load(utils.getUrifromAlbumID(Main.songs.getSongById(songs.get(position)))).placeholder(R.mipmap.ic_launcher_foreground).placeholder(R.mipmap.ic_launcher).into(holder.circleImageView);
+            holder.songName.setText(SongUtils.getSongById(songs.get(position)).getTitle());
+            holder.songBy.setText(SongUtils.getSongById(songs.get(position)).getArtist());
+            Picasso.get().load(ExtraUtils.getUrifromAlbumID(SongUtils.getSongById(songs.get(position)))).placeholder(R.mipmap.ic_launcher_foreground).placeholder(R.mipmap.ic_launcher).into(holder.circleImageView);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Context context = holder.mView.getContext();
                     Main.musicList.clear();
-                    Main.musicList.add(Main.songs.getSongById(songs.get(position)));
+                    Main.musicList.add(SongUtils.getSongById(songs.get(position)));
                     Main.nowPlayingList = Main.musicList;
                     Main.musicService.setList(Main.nowPlayingList);
                     Intent intent = new Intent(context, PlayingNowList.class);

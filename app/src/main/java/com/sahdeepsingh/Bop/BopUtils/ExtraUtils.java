@@ -33,7 +33,7 @@ import androidx.renderscript.Element;
 import androidx.renderscript.RenderScript;
 import androidx.renderscript.ScriptIntrinsicBlur;
 
-public class utils {
+public class ExtraUtils {
 
     /* For blurring the image*/
     public static Bitmap blurMyImage(Bitmap image, Context context) {

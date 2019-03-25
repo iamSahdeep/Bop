@@ -9,7 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
+import com.sahdeepsingh.Bop.BopUtils.SongUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -41,12 +42,12 @@ public class GenreRecyclerViewAdapter extends RecyclerView.Adapter<GenreRecycler
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         String selectedGenre = mValues.get(position);
         holder.genre.setText(selectedGenre);
-        List<Song> songsList = Main.songs.getSongsByGenre(selectedGenre);
-        Picasso.get().load(utils.getUrifromAlbumID(songsList.get(0))).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.genreArt);
+        List<Song> songsList = SongUtils.getSongsByGenre(selectedGenre);
+        Picasso.get().load(ExtraUtils.getUrifromAlbumID(songsList.get(0))).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.genreArt);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Song> songsList = Main.songs.getSongsByGenre(selectedGenre);
+                List<Song> songsList = SongUtils.getSongsByGenre(selectedGenre);
                 Context context = holder.mView.getContext();
                 Main.musicList.clear();
                 Main.musicList.addAll(songsList);

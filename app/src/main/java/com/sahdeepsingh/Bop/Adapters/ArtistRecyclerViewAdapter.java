@@ -9,7 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
+import com.sahdeepsingh.Bop.BopUtils.SongUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -39,12 +40,12 @@ public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String selectedArtist = mValues.get(position);
         holder.artistname.setText(selectedArtist);
-        List<Song> songsList = Main.songs.getSongsByArtist(selectedArtist);
-        Picasso.get().load(utils.getUrifromAlbumID(songsList.get(0))).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
+        List<Song> songsList = SongUtils.getSongsByArtist(selectedArtist);
+        Picasso.get().load(ExtraUtils.getUrifromAlbumID(songsList.get(0))).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.albumart);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Song> songsList = Main.songs.getSongsByArtist(selectedArtist);
+                List<Song> songsList = SongUtils.getSongsByArtist(selectedArtist);
                 Context context = holder.mView.getContext();
                 Main.musicList.clear();
                 Main.musicList.addAll(songsList);

@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.Visualizers.barVisuals;
@@ -51,7 +51,7 @@ public class CurrentPlayListSongsAdapter extends RecyclerView.Adapter<CurrentPla
         holder.songName.setText(localItem.getTitle());
         holder.songBy.setText(localItem.getArtist());
         holder.songName.setSelected(true);
-        Picasso.get().load(utils.getUrifromAlbumID(localItem)).centerCrop().fit().error(R.mipmap.ic_launcher).into(holder.circleImageView);
+        Picasso.get().load(ExtraUtils.getUrifromAlbumID(localItem)).centerCrop().fit().error(R.mipmap.ic_launcher).into(holder.circleImageView);
 
         if (Main.mainMenuHasNowPlayingItem) {
             if (Main.musicService.currentSong.getTitle().equals(localItem.getTitle())) {
@@ -72,7 +72,7 @@ public class CurrentPlayListSongsAdapter extends RecyclerView.Adapter<CurrentPla
                 Main.musicService.playSong();
             }
         });
-        holder.songOptions.setImageDrawable(utils.getThemedIcon(holder.mView.getContext(), holder.mView.getContext().getDrawable(R.drawable.ic_3dots)));
+        holder.songOptions.setImageDrawable(ExtraUtils.getThemedIcon(holder.mView.getContext(), holder.mView.getContext().getDrawable(R.drawable.ic_3dots)));
         holder.songOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

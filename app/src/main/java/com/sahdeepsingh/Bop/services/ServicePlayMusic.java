@@ -33,7 +33,8 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.cleveroad.audiowidget.AudioWidget;
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
+import com.sahdeepsingh.Bop.BopUtils.RecentUtils;
 import com.sahdeepsingh.Bop.Handlers.NotificationHandler;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
@@ -82,7 +83,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
      */
     private final IBinder musicBind = new MusicBinder();
     /**
-     * Index of the current song we're playing on the `songs` list.
+     * Index of the current song we're playing on the `data` list.
      */
     public int currentSongPosition;
     /**
@@ -117,7 +118,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
      */
     public MediaPlayer player;
     /**
-     * List of songs we're  currently playing.
+     * List of data we're  currently playing.
      */
     private ArrayList<Song> songs;
     /**
@@ -469,7 +470,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
     private void setMediaSessionMetaData() {
         mMediaSessionCompat.setMetadata(new MediaMetadataCompat.Builder()
-                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, utils.getBitmapfromAlbumId(getApplicationContext(), currentSong))
+                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, ExtraUtils.getBitmapfromAlbumId(getApplicationContext(), currentSong))
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtist())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbum())
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitle())
@@ -633,11 +634,11 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         // Get the song ID from the list, extract the ID and
         // get an URL based on it
         Song songToPlay = songs.get(currentSongPosition);
-        Main.songs.addsong_toRecent(getApplicationContext(), songToPlay);
-        Main.songs.addcountSongsPlayed(getApplicationContext(), songToPlay);
+        RecentUtils.addsong_toRecent(getApplicationContext(), songToPlay);
+        RecentUtils.addcountSongsPlayed(getApplicationContext(), songToPlay);
         currentSong = songToPlay;
 
-        // Append the external URI with our songs'
+        // Append the external URI with our data'
         Uri songToPlayURI = ContentUris.withAppendedId
                 (android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         songToPlay.getId());
@@ -715,7 +716,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
     /**
      * Toggles the Shuffle mode
-     * (if will play songs in random order).
+     * (if will play data in random order).
      */
     public void toggleShuffle() {
         shuffleMode = !shuffleMode;

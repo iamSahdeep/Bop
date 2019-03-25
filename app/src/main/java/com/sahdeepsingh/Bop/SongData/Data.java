@@ -1,41 +1,25 @@
 package com.sahdeepsingh.Bop.SongData;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.sahdeepsingh.Bop.BopUtils.utils;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 // KMP <3
 
 /**
- * Global interface to all the songs this application can see.
+ * Global interface to all the data this application can see.
  * <p>
  * Tasks:
- * - Scans for songs on the device
+ * - Scans for data on the device
  * (both internal and external memories)
- * - Has query functions to songs and their attributes.
+ * - Has query functions to data and their attributes.
  * <p>
  * Thanks:
  * <p>
@@ -43,7 +27,7 @@ import java.util.Map;
  * http://stackoverflow.com/a/21333187
  * <p>
  * - Teaching me the queries to get Playlists
- * and their songs:
+ * and their data:
  * http://stackoverflow.com/q/11292125
  */
 public class Data {
@@ -73,37 +57,37 @@ public class Data {
     private HashMap<String, String> songIdToGenreIdMap;
 
     /**
-     * Flag that tells if successfully scanned all songs.
+     * Flag that tells if successfully scanned all data.
      */
     private boolean scannedSongs;
 
     /**
-     * Flag that tells if we're scanning songs right now.
+     * Flag that tells if we're scanning data right now.
      */
     private boolean scanningSongs;
 
     private ContentResolver resolver;
 
     /**
-     * Tells if we've successfully scanned all songs on
+     * Tells if we've successfully scanned all data on
      * the device.
      * <p>
      * This will return `false` both while we're scanning
-     * for songs and if some error happened while scanning.
+     * for data and if some error happened while scanning.
      */
     public boolean isInitialized() {
         return scannedSongs;
     }
 
     /**
-     * Tells if we're currently scanning songs on the device.
+     * Tells if we're currently scanning data on the device.
      */
     public boolean isScanning() {
         return scanningSongs;
     }
 
     /**
-     * Scans the device for songs.
+     * Scans the device for data.
      * <p>
      * This function takes a lot of time to execute and
      * blocks the program UI.
@@ -111,18 +95,18 @@ public class Data {
      * query `isInitialized` when needed.
      * <p>
      * Inside it, we make a lot of queries to the system's
-     * databases - getting songs, genres and playlists.
+     * databases - getting data, genres and playlists.
      *
      * @param c         The current Activity's Context.
-     * @param fromWhere Where should we scan for songs.
+     * @param fromWhere Where should we scan for data.
      *                  <p>
      *                  Accepted values to `fromWhere` are:
-     *                  - "internal" To scan for songs on the phone's memory.
-     *                  - "external" To scan for songs on the SD card.
-     *                  - "both"     To scan for songs anywhere.
+     *                  - "internal" To scan for data on the phone's memory.
+     *                  - "external" To scan for data on the SD card.
+     *                  - "both"     To scan for data anywhere.
      * @note If you call this function twice, it rescans
-     * the songs, refreshing internal lists.
-     * It doesn't add up songs.
+     * the data, refreshing internal lists.
+     * It doesn't add up data.
      */
     public void scanSongs(Context c, String fromWhere) {
 
@@ -142,7 +126,7 @@ public class Data {
 
     public void updateSongs(Context context, String fromWhere) {
 
-        //songs.clear();
+        //data.clear();
         resolver = context.getContentResolver();
         Cursor cursor;
         Uri musicUri = ((fromWhere.equals("internal")) ?
@@ -183,8 +167,8 @@ public class Data {
 
         if (cursor != null && cursor.moveToFirst()) {
             // NOTE: I tried to use MediaMetadataRetriever, but it was too slow.
-            //       Even with 10 songs, it took like 13 seconds,
-            //       No way I'm releasing it this way - I have like 4.260 songs!
+            //       Even with 10 data, it took like 13 seconds,
+            //       No way I'm releasing it this way - I have like 4.260 data!
 
             do {
                 // Creating a song from the values on the row
@@ -213,7 +197,7 @@ public class Data {
             }
             while (cursor.moveToNext());
         } else {
-            // What do I do if I can't find any songs?
+            // What do I do if I can't find any data?
         }
         if (cursor != null) {
             cursor.close();
@@ -233,7 +217,7 @@ public class Data {
 
         // Alright, now I'll get all the Playlists.
         // First I grab all playlist IDs and Names and then for each
-        // one of those, getting all songs inside them.
+        // one of those, getting all data inside them.
 
         // As you know, the columns for the database.
         playlists.clear();
@@ -332,7 +316,7 @@ public class Data {
             throw new RuntimeException("Can't scan from both locations - not implemented");
 
         // For each genre, we'll query the databases to get
-        // all songs's IDs that have it as a genre.
+        // all data's IDs that have it as a genre.
         for (String genreID : genreIdToGenreNameMap.keySet()) {
 
             Uri uri = MediaStore.Audio.Genres.Members.getContentUri(fromWhere,
@@ -354,561 +338,5 @@ public class Data {
     }
     public void destroy() {
         songs.clear();
-    }
-
-    public String getAlbumArt(Song song) {
-        String path = "";
-        //sometimes using this way, it causes npe
-           /* try {
-                Uri genericArtUri = Uri.parse("content://media/external/audio/albumart");
-                Uri actualArtUri = ContentUris.withAppendedId(genericArtUri, Long.parseLong(String.valueOf(song.getAlbumid())));
-                return actualArtUri.toString();
-            } catch(Exception e) {
-                return null;
-            }*/
-
-        //dont know why, but have to include this line, otherwise no albumart will be shown anywhere!!
-        Bitmap bitmap = getAlbumBitmap(song);
-        Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
-                MediaStore.Audio.Albums._ID + "=?",
-                new String[]{String.valueOf(song.getAlbumid())},
-                null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
-            // do whatever you need to do
-        }
-        assert cursor != null;
-        cursor.close();
-        return path;
-
-    }
-
-    //unnecessary but very useful xD
-    public Bitmap getAlbumBitmap(Song song) {
-        Bitmap bitmap = null;
-        Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), Long.valueOf(song.getAlbumid()));
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(
-                    resolver, albumArtUri);
-            // bitmap = Bitmap.createScaledBitmap(bitmap, 10, 10, false);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (bitmap != null)
-            return bitmap;
-        else
-            return BitmapFactory.decodeResource(Resources.getSystem(), android.R.drawable.ic_delete);
-    }
-
-    /**
-     * Returns an alphabetically sorted list with all the
-     * artists of the scanned songs.
-     *
-     * @note This method might take a while depending on how
-     * many songs you have.
-     */
-    public ArrayList<String> getArtists() {
-
-        ArrayList<String> artists = new ArrayList<String>();
-
-        for (Song song : songs) {
-            String artist = song.getArtist();
-
-            if ((artist != null) && (!artists.contains(artist)))
-                artists.add(artist);
-        }
-
-        // Making them alphabetically sorted
-        Collections.sort(artists);
-
-        return artists;
-    }
-
-    /**
-     * Returns an alphabetically sorted list with all the
-     * albums of the scanned songs.
-     *
-     * @note This method might take a while depending on how
-     * many songs you have.
-     */
-    public ArrayList<String> getAlbums() {
-
-        ArrayList<String> albums = new ArrayList<String>();
-
-        for (Song song : songs) {
-            String album = song.getAlbum();
-
-            if ((album != null) && (!albums.contains(album)))
-                albums.add(album);
-        }
-
-        // Making them alphabetically sorted
-        Collections.sort(albums);
-
-        return albums;
-    }
-
-    /**
-     * Returns an alphabetically sorted list with all
-     * existing genres on the scanned songs.
-     */
-    public ArrayList<String> getGenres() {
-
-        ArrayList<String> genres = new ArrayList<String>();
-
-        for (Song song : songs) {
-            String genre = song.getGenre();
-
-            if ((genre != null) && (!genres.contains(genre)))
-                genres.add(genre);
-        }
-
-        Collections.sort(genres);
-
-        return genres;
-    }
-
-    /**
-     * Returns a list with all years your songs have.
-     *
-     * @note It is a list of Strings. To access the
-     * years, do a `Integer.parseInt(string)`.
-     */
-    public ArrayList<String> getYears() {
-
-        ArrayList<String> years = new ArrayList<String>();
-
-        for (Song song : songs) {
-            String year = Integer.toString(song.getYear());
-
-            if ((Integer.parseInt(year) > 0) && (!years.contains(year)))
-                years.add(year);
-        }
-
-        // Making them alphabetically sorted
-        Collections.sort(years);
-
-        return years;
-    }
-
-    /**
-     * Returns a list of Songs belonging to a specified artist.
-     */
-    public ArrayList<Song> getSongsByArtist(String desiredArtist) {
-        ArrayList<Song> songsByArtist = new ArrayList<Song>();
-
-        for (Song song : songs) {
-            String currentArtist = song.getArtist();
-
-            if (currentArtist.equals(desiredArtist))
-                songsByArtist.add(song);
-        }
-
-        // Sorting resulting list by Album
-        Collections.sort(songsByArtist, new Comparator<Song>() {
-            public int compare(Song a, Song b) {
-                return a.getAlbum().compareTo(b.getAlbum());
-            }
-        });
-
-        return songsByArtist;
-    }
-
-    /**
-     * Returns a list of album names belonging to a specified artist.
-     */
-    public ArrayList<String> getAlbumsByArtist(String desiredArtist) {
-        ArrayList<String> albumsByArtist = new ArrayList<String>();
-
-        for (Song song : songs) {
-            String currentArtist = song.getArtist();
-            String currentAlbum = song.getAlbum();
-
-            if (currentArtist.equals(desiredArtist))
-                if (!albumsByArtist.contains(currentAlbum))
-                    albumsByArtist.add(currentAlbum);
-        }
-
-        // Sorting alphabetically
-        Collections.sort(albumsByArtist);
-
-        return albumsByArtist;
-    }
-
-    /**
-     * Returns a new list with all songs.
-     *
-     * @note This is different than accessing `songs` directly
-     * because it duplicates it - you can then mess with
-     * it without worrying about changing the original.
-     */
-    public ArrayList<Song> getSongs() {
-
-        return new ArrayList<>(songs);
-    }
-
-    /**
-     * Returns a list of Songs belonging to a specified album.
-     */
-    public ArrayList<Song> getSongsByAlbum(String desiredAlbum) {
-        ArrayList<Song> songsByAlbum = new ArrayList<Song>();
-
-        for (Song song : songs) {
-            String currentAlbum = song.getAlbum();
-
-            if (currentAlbum.equals(desiredAlbum))
-                songsByAlbum.add(song);
-        }
-
-        return songsByAlbum;
-    }
-
-    /**
-     * Returns a list with all songs that have the same `genre.`
-     */
-    public ArrayList<Song> getSongsByGenre(String genreName) {
-
-        ArrayList<Song> currentSongs = new ArrayList<Song>();
-
-        for (Song song : songs) {
-
-            String currentSongGenre = song.getGenre();
-            if (currentSongGenre != null && currentSongGenre.equals(genreName))
-                currentSongs.add(song);
-        }
-
-        return currentSongs;
-    }
-
-    /**
-     * Returns a list with all songs composed at `year`.
-     */
-    public ArrayList<Song> getSongsByYear(int year) {
-
-        ArrayList<Song> currentSongs = new ArrayList<Song>();
-
-        for (Song song : songs) {
-
-            int currentYear = song.getYear();
-
-            if (currentYear == year)
-                currentSongs.add(song);
-        }
-
-        return currentSongs;
-    }
-
-    public ArrayList<String> getPlaylistNames() {
-
-        ArrayList<String> names = new ArrayList<String>();
-
-        for (Playlist playlist : playlists)
-            names.add(playlist.getName());
-
-        return names;
-    }
-
-    public Song getSongById(long id) {
-
-        Song currentSong = null;
-
-        for (Song song : songs)
-            if (song.getId() == id) {
-                currentSong = song;
-                break;
-            }
-
-        return currentSong;
-    }
-
-    public ArrayList<Song> getSongsByPlaylist(String playlistName) {
-
-        ArrayList<Long> songIDs = new ArrayList<>();
-        for (Playlist playlist : playlists) {
-            if (playlist.getName().equals(playlistName)) {
-                songIDs = playlist.getSongIds();
-                break;
-            }
-        }
-
-        ArrayList<Song> currentSongs = new ArrayList<Song>();
-        if (songIDs != null)
-            for (Long songID : songIDs)
-                currentSongs.add(getSongById(songID));
-        Collections.sort(currentSongs, (song, t1) -> song.getTitle().compareTo(t1.getTitle()));
-        return currentSongs;
-    }
-
-    public Song getSongbyFile(File file) {
-        Song song = null;
-        for (Song s : songs) {
-            if (s.getFilePath().equals(file.getPath())) {
-                song = s;
-                break;
-            }
-        }
-        return song;
-    }
-
-    /**
-     * Creates a new Playlist.
-     *
-     * @param c          Activity on which we're creating.
-     * @param fromWhere  "internal" or "external".
-     * @param name       Playlist name.
-     * @param songsToAdd List of song IDs to place on it.
-     */
-    public void newPlaylist(Context c, String fromWhere, String name, ArrayList<Song> songsToAdd) {
-
-        // CHECK IF PLAYLIST EXISTS!
-
-        if (getPlaylistNames().contains(name)) {
-            addSongsToplaylist(c, name, songsToAdd);
-            return;
-        }
-
-
-        ContentResolver resolver = c.getContentResolver();
-
-        Uri playlistUri = ((fromWhere.equals("internal")) ?
-                android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI :
-                android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI);
-
-        // Setting the new playlists' values
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Audio.Playlists.NAME, name);
-        values.put(MediaStore.Audio.Playlists.DATE_MODIFIED, System.currentTimeMillis());
-
-        // Actually inserting the new playlist.
-        Uri newPlaylistUri = resolver.insert(playlistUri, values);
-
-        //Okay its strange that sometimes newPlaylistUri is null, It means playlist is already there, So i am deleting the playlist and creating new
-        if (newPlaylistUri == null) {
-            deletePlaylist(c, name);
-            newPlaylistUri = resolver.insert(playlistUri, values);
-        }
-
-        // Getting the new Playlist ID
-        String PLAYLIST_ID = MediaStore.Audio.Playlists._ID;
-        String PLAYLIST_NAME = MediaStore.Audio.Playlists.NAME;
-
-        // This is what I'll get for all playlists.
-        String[] playlistColumns = {
-                PLAYLIST_ID,
-                PLAYLIST_NAME
-        };
-
-        // The actual query - takes a while.
-        Cursor cursor = resolver.query(playlistUri, playlistColumns, null, null, null);
-
-        long playlistID = 0;
-
-        // Going through all playlists, creating my class and populating
-        // it with all the song IDs they have.
-        assert cursor != null;
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
-            if (name.equals(cursor.getString(cursor.getColumnIndex(PLAYLIST_NAME))))
-                playlistID = cursor.getLong(cursor.getColumnIndex(PLAYLIST_ID));
-        cursor.close();
-        // Now, to it's songs
-        Uri songUri = Uri.withAppendedPath(newPlaylistUri, MediaStore.Audio.Playlists.Members.CONTENT_DIRECTORY);
-        int songOrder = 1;
-
-        for (Song song : songsToAdd) {
-
-            ContentValues songValues = new ContentValues();
-
-            songValues.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, song.getId());
-            songValues.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, songOrder);
-
-            resolver.insert(songUri, songValues);
-            songOrder++;
-        }
-
-        // Finally, we're updating our internal list of Playlists
-        Playlist newPlaylist = new Playlist(playlistID, name);
-
-        for (Song song : songsToAdd)
-            newPlaylist.add(song.getId());
-
-        playlists.add(newPlaylist);
-    }
-
-    /* Deleting a Playlist*/
-    public void deletePlaylist(Context context, String selectedplaylist) {
-        String playlistid = getPlayListId(context, selectedplaylist);
-        ContentResolver resolver = context.getContentResolver();
-        String where = MediaStore.Audio.Playlists._ID + "=?";
-        String[] whereVal = {playlistid};
-        resolver.delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, where, whereVal);
-        updatePlaylists(context, "external");
-    }
-
-    // Getting Playlist unique ID
-    public String getPlayListId(String selectedplaylist) {
-        String id = "";
-        if (getPlaylistNames().contains(selectedplaylist)) {
-            for (Playlist playlist : playlists) {
-                if (selectedplaylist.equals(playlist.getName()))
-                    id = String.valueOf(playlist.getID());
-            }
-        }
-        return id;
-    }
-
-    public String getPlayListId(Context c, String playlist) {
-
-        //  read this record and get playlistid
-
-        Uri newuri = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
-
-        final String playlistid = MediaStore.Audio.Playlists._ID;
-
-        final String playlistname = MediaStore.Audio.Playlists.NAME;
-
-        String where = MediaStore.Audio.Playlists.NAME + "=?";
-
-        String[] whereVal = {playlist};
-
-        String[] projection = {playlistid, playlistname};
-
-        ContentResolver resolver = c.getContentResolver();
-
-        Cursor record = resolver.query(newuri, projection, where, whereVal, null);
-
-        int recordcount = record.getCount();
-
-        String foundplaylistid = "";
-
-        if (recordcount > 0) {
-            record.moveToFirst();
-
-            int idColumn = record.getColumnIndex(playlistid);
-
-            foundplaylistid = record.getString(idColumn);
-
-            record.close();
-        }
-
-        return foundplaylistid;
-    }
-
-    /* Renaming  Playlist */
-    public void renamePlaylist(Context context, String newplaylist, long playlist_id) {
-        ContentResolver resolver = context.getContentResolver();
-        ContentValues values = new ContentValues();
-        String where = MediaStore.Audio.Playlists._ID + " =? ";
-        String[] whereVal = {Long.toString(playlist_id)};
-        values.put(MediaStore.Audio.Playlists.NAME, newplaylist);
-        resolver.update(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values, where, whereVal);
-        Toast.makeText(context, "Renamed, Changes might take some time", Toast.LENGTH_SHORT).show();
-    }
-
-    /* Delete single song from Playlist*/
-    public void deletePlaylistTrack(Context context, String name, long audioId) {
-        final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", Long.parseLong(getPlayListId(name)));
-        final ContentResolver resolver = context.getContentResolver();
-        resolver.delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID + " = ? ", new String[]{
-                Long.toString(audioId)
-        });
-        for (Playlist p :
-                playlists) {
-            if (p.getName().equals(name)) {
-                p.removeSong(audioId);
-            }
-        }
-    }
-
-    /* Add single song to Playlist */
-    public void addToPlaylist(ContentResolver resolver, long playlistid, long audioId) {
-
-        String[] cols = new String[]{
-                "count(*)"
-        };
-        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistid);
-        Cursor cur = resolver.query(uri, cols, null, null, null);
-        assert cur != null;
-        cur.moveToFirst();
-        final int base = cur.getInt(0);
-        cur.close();
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, (int) (base + audioId));
-        values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
-        resolver.insert(uri, values);
-    }
-
-    /* Add Multiple Songs in the Playlist */
-    public void addSongsToplaylist(Context c, String name, ArrayList<Song> songsToAdd) {
-        long playlistID = Long.parseLong(getPlayListId(name));
-        for (Song s : songsToAdd
-                ) {
-            addToPlaylist(c.getContentResolver(), playlistID, s.getId());
-        }
-        Toast.makeText(c, "Added, Changes might take some time", Toast.LENGTH_SHORT).show();
-    }
-
-    public void addsong_toRecent(Context context, Song song) {
-        List<Long> recent = getRecentSongs(context);
-        if (recent == null)
-            recent = new ArrayList<>();
-        recent.remove(song.getId());
-        recent.add(0, song.getId());
-        if (recent.size() > 10) {
-            recent.remove(recent.size() - 1);
-        }
-
-        SharedPreferences appSharedPrefs = context.getSharedPreferences("com.sahdeepsingh.bop.RecentSongs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(recent);
-        prefsEditor.putString("RecentSongs", json);
-        prefsEditor.apply();
-    }
-
-    public List<Long> getRecentSongs(Context context) {
-        Type type = new TypeToken<List<Long>>() {
-        }.getType();
-        SharedPreferences appSharedPrefs = context.getSharedPreferences("com.sahdeepsingh.bop.RecentSongs", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = appSharedPrefs.getString("RecentSongs", "");
-        return gson.fromJson(json, type);
-    }
-
-    public void addcountSongsPlayed(Context context, Song song) {
-        SharedPreferences preferences = context.getSharedPreferences("com.sahdeepsingh.bop.SongsPlayedCount", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        int count = preferences.getInt(String.valueOf(song.getId()), 0);
-        editor.putInt(String.valueOf(song.getId()), ++count);
-        editor.apply();
-    }
-
-    public int getcountSongsPlayed(Context context, Song song) {
-        SharedPreferences preferences = context.getSharedPreferences("com.sahdeepsingh.bop.SongsPlayedCount", Context.MODE_PRIVATE);
-        return preferences.getInt(String.valueOf(song.getId()), 0);
-    }
-
-    public List<Song> getMostPlayedSongs(Context context) {
-        List<Song> songs = new ArrayList<>();
-
-        if (getSongs() == null)
-            return null;
-        HashMap<String, Integer> map = new HashMap<>();
-        for (Song s :
-                getSongs()) {
-            map.put(String.valueOf(s.getId()), getcountSongsPlayed(context, s));
-        }
-        Map<String, Integer> mapSorted = utils.sortMapByValue(map);
-
-        for (Map.Entry<String, Integer> s :
-                mapSorted.entrySet()) {
-            if (s.getValue() > 0)
-                songs.add(getSongById(Long.parseLong(s.getKey())));
-            if (songs.size() >= 10)
-                break;
-        }
-        return songs;
     }
 }

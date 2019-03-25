@@ -12,9 +12,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.sahdeepsingh.Bop.Adapters.AlbumRecyclerViewAdapter;
+import com.sahdeepsingh.Bop.BopUtils.DataUtils;
 import com.sahdeepsingh.Bop.BopUtils.RVUtils;
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,7 +56,7 @@ public class FragmentAlbum extends Fragment {
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 2)); //can change to create grid layout
-        ArrayList<String> albums = Main.songs.getAlbums();
+        ArrayList<String> albums = DataUtils.getAlbums();
         albumRecyclerViewAdapter = new AlbumRecyclerViewAdapter(albums);
         recyclerView.setAdapter(albumRecyclerViewAdapter);
         RVUtils.makenoDataVisible(recyclerView, noData);

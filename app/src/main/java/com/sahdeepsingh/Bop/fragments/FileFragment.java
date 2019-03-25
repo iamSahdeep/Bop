@@ -17,7 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
+import com.sahdeepsingh.Bop.BopUtils.SongUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -140,8 +141,8 @@ public class FileFragment extends Fragment {
         Main.musicList.clear();
         for (File f :
                 songs) {
-            if (Main.songs.getSongbyFile(f) != null)
-                songsList.add(Main.songs.getSongbyFile(f));
+            if (SongUtils.getSongbyFile(f) != null)
+                songsList.add(SongUtils.getSongbyFile(f));
         }
 
         if (songsList.isEmpty()) {
@@ -246,21 +247,21 @@ public class FileFragment extends Fragment {
                 Log.d(LOGTAG,
                         "File:" + fList[i] + " readable:"
                                 + (Boolean.valueOf(sel.canRead())).toString());
-                Drawable drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_folder));
+                Drawable drawable = ExtraUtils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_folder));
                 boolean canRead = sel.canRead();
                 // Set drawables
                 if (sel.isDirectory()) {
                     if (canRead) {
-                        drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_folder));
+                        drawable = ExtraUtils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_folder));
                     } else {
-                        drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_cancel));
+                        drawable = ExtraUtils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_cancel));
                     }
                 } else if (sel.isFile()) {
                     if (URLConnection.guessContentTypeFromName(sel.getAbsolutePath()) != null && URLConnection.guessContentTypeFromName(sel.getAbsolutePath()).startsWith("audio")) {
-                        drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_music));
+                        drawable = ExtraUtils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_music));
                         songs.add(sel);
                     } else
-                        drawable = utils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_file));
+                        drawable = ExtraUtils.getThemedIcon(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.ic_file));
                 }
                 fileList.add(i, new Item(fList[i], drawable, canRead));
             }
@@ -312,12 +313,12 @@ public class FileFragment extends Fragment {
             Main.musicService.stopMusicPlayer();
         }
         Main.musicList.clear();
-        if (Main.songs.getSongbyFile(new File(absolutePath)) == null) {
+        if (SongUtils.getSongbyFile(new File(absolutePath)) == null) {
             Toast.makeText(getActivity(), "Selected Song is not in mediaStore yet, Cant play for now", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Main.musicList.add(Main.songs.getSongbyFile(new File(absolutePath)));
+        Main.musicList.add(SongUtils.getSongbyFile(new File(absolutePath)));
         Main.nowPlayingList = Main.musicList;
         if (Main.nowPlayingList == null) {
             Toast.makeText(getActivity(), "Selected Song is not in mediaStore yet, Please wait", Toast.LENGTH_SHORT).show();

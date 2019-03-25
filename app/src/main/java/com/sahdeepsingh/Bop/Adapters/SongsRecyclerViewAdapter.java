@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -59,8 +59,8 @@ public class SongsRecyclerViewAdapter extends RecyclerView.Adapter<SongsRecycler
         holder.songName.setText(localItem.getTitle());
         holder.songBy.setText(localItem.getArtist());
         holder.songName.setSelected(true);
-        Picasso.get().load(utils.getUrifromAlbumID(localItem)).centerCrop().fit().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.circleImageView);
-        Bitmap bitmap = utils.getBitmapfromAlbumId(holder.mView.getContext(),localItem);
+        Picasso.get().load(ExtraUtils.getUrifromAlbumID(localItem)).centerCrop().fit().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher_foreground).into(holder.circleImageView);
+        Bitmap bitmap = ExtraUtils.getBitmapfromAlbumId(holder.mView.getContext(), localItem);
 
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

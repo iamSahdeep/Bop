@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.Adapters.MostPlayedSongsAdapter;
 import com.sahdeepsingh.Bop.Adapters.RecentSongsAdapter;
+import com.sahdeepsingh.Bop.BopUtils.RecentUtils;
+import com.sahdeepsingh.Bop.BopUtils.SongUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -71,8 +73,8 @@ public class HomeFragment extends Fragment {
 
         openArtists.setOnClickListener(view15 -> mViewPager.setCurrentItem(5, true));
 
-        List<Long> recentSongs = Main.songs.getRecentSongs(getActivity());
-        List<Song> mostPlayedSongs = Main.songs.getMostPlayedSongs(getActivity());
+        List<Long> recentSongs = RecentUtils.getRecentSongs(getActivity());
+        List<Song> mostPlayedSongs = RecentUtils.getMostPlayedSongs(getActivity());
 
         if (recentSongs == null || recentSongs.size() == 0)
             recents.setVisibility(View.VISIBLE);
@@ -106,13 +108,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Main.musicList.clear();
-                List<Long> temmp = Main.songs.getRecentSongs(getActivity());
+                List<Long> temmp = RecentUtils.getRecentSongs(getActivity());
                 if (temmp == null || temmp.size() <= 0) {
                     Toast.makeText(getActivity(), "No Songs to play", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 for (int i = 0; i < temmp.size(); i++) {
-                    Main.musicList.add(Main.songs.getSongById(temmp.get(i)));
+                    Main.musicList.add(SongUtils.getSongById(temmp.get(i)));
                 }
                 Main.nowPlayingList = Main.musicList;
                 Main.musicService.setList(Main.nowPlayingList);
@@ -125,7 +127,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Main.musicList.clear();
-                Main.musicList = (ArrayList<Song>) Main.songs.getMostPlayedSongs(getActivity());
+                Main.musicList = (ArrayList<Song>) RecentUtils.getMostPlayedSongs(getActivity());
                 if (Main.musicList == null || Main.musicList.size() <= 0) {
                     Toast.makeText(getActivity(), "No Songs to play", Toast.LENGTH_SHORT).show();
                     return;

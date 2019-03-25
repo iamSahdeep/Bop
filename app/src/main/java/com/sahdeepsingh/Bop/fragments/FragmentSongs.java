@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.Adapters.SongsRecyclerViewAdapter;
+import com.sahdeepsingh.Bop.BopUtils.PlaylistUtils;
 import com.sahdeepsingh.Bop.BopUtils.RVUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
@@ -47,7 +48,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
     FloatingActionButton floatingActionButton;
     ActionMode actionMode;
     EditText name, search;
-    List<Song> filtered = new ArrayList<>(Main.songs.songs);
+    List<Song> filtered = new ArrayList<>(Main.data.songs);
     LinearLayout noData;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -62,7 +63,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
     }
 
 
-    //Action mode for selecting songs and creating playlist.
+    //Action mode for selecting data and creating playlist.
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -129,7 +130,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
         Context context = view.getContext();
         recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        songsRecyclerViewAdapter = new SongsRecyclerViewAdapter(Main.songs.songs);
+        songsRecyclerViewAdapter = new SongsRecyclerViewAdapter(Main.data.songs);
         songsRecyclerViewAdapter.setActionModeReceiver(this);
         songsRecyclerViewAdapter.setHasStableIds(true);
         recyclerView.setHasFixedSize(true);
@@ -145,9 +146,9 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                 if (actionMode != null)
                     actionMode.finish();
 
-                Main.songs.songs.clear();
-                Main.songs.updateSongs(getActivity(), "external");
-                songsRecyclerViewAdapter.updateData(Main.songs.songs);
+                Main.data.songs.clear();
+                Main.data.updateSongs(getActivity(), "external");
+                songsRecyclerViewAdapter.updateData(Main.data.songs);
                 songsRecyclerViewAdapter.notifyDataSetChanged();
                 RVUtils.makenoDataVisible(recyclerView, noData);
                 swipeRefreshLayout.setRefreshing(false);
@@ -165,13 +166,13 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                 filtered.clear();
                 charSequence = charSequence.toString().toLowerCase();
                 if (charSequence.length() == 0) {
-                    filtered.addAll(Main.songs.songs);
+                    filtered.addAll(Main.data.songs);
                 } else
-                    for (int j = 0; j < Main.songs.songs.size(); j++) {
-                        final Song song = Main.songs.songs.get(j);
+                    for (int j = 0; j < Main.data.songs.size(); j++) {
+                        final Song song = Main.data.songs.get(j);
                         String name = song.getTitle();
                         if (name.toLowerCase().contains(charSequence.toString().toLowerCase())) {
-                            filtered.add(Main.songs.songs.get(j));
+                            filtered.add(Main.data.songs.get(j));
                         }
                     }
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -190,12 +191,12 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Main.songs.songs == null || Main.songs.songs.size() <= 0) {
-                    Toast.makeText(getActivity(), "No songs to play", Toast.LENGTH_SHORT).show();
+                if (Main.data.songs == null || Main.data.songs.size() <= 0) {
+                    Toast.makeText(getActivity(), "No data to play", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Main.musicList.clear();
-                Main.musicList.addAll(Main.songs.songs);
+                Main.musicList.addAll(Main.data.songs);
                 Main.nowPlayingList = Main.musicList;
                 Main.musicService.setList(Main.nowPlayingList);
                 Main.musicService.toggleShuffle();
@@ -213,7 +214,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
         final ListView listView;
         Button create, cancel;
         ArrayList<Song> songArrayList = new ArrayList<>(songsRecyclerViewAdapter.getSelected());
-        ArrayList<String> allPlaylists = Main.songs.getPlaylistNames();
+        ArrayList<String> allPlaylists = PlaylistUtils.getPlaylistNames();
         final Dialog dialog = new Dialog(getActivity());
         dialog.setCancelable(true);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -238,7 +239,7 @@ public class FragmentSongs extends android.app.Fragment implements SongsRecycler
                     return;
                 }
                 Main.showProgressDialog(getActivity());
-                Main.songs.newPlaylist(getActivity().getApplication(), "external", name.getText().toString(), songArrayList);
+                PlaylistUtils.newPlaylist(getActivity().getApplication(), "external", name.getText().toString(), songArrayList);
                 Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 Main.hideProgressDialog();

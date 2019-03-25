@@ -9,7 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
+import com.sahdeepsingh.Bop.BopUtils.RecentUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -45,8 +46,8 @@ public class MostPlayedSongsAdapter extends RecyclerView.Adapter<MostPlayedSongs
         if (getItemCount() != 0) {
             holder.songName.setText(songs.get(position).getTitle());
             holder.songBy.setText(songs.get(position).getArtist());
-            Picasso.get().load(utils.getUrifromAlbumID(songs.get(position))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.imageView);
-            holder.TimesPlayed.setText(String.valueOf(Main.songs.getcountSongsPlayed(context, songs.get(position))));
+            Picasso.get().load(ExtraUtils.getUrifromAlbumID(songs.get(position))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.imageView);
+            holder.TimesPlayed.setText(String.valueOf(RecentUtils.getcountSongsPlayed(context, songs.get(position))));
         }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

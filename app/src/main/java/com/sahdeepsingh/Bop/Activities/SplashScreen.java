@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.sahdeepsingh.Bop.BopUtils.SongUtils;
 import com.sahdeepsingh.Bop.Handlers.PermissionHandler;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -181,14 +182,14 @@ public class SplashScreen extends AppCompatActivity {
 
     void scanSongs(boolean forceScan) {
         Activity activity = this;
-        if ((forceScan) || (!Main.songs.isInitialized())) {
+        if ((forceScan) || (!Main.data.isInitialized())) {
             new SplashScreen.ScanSongs(this).execute();
         } else if (Intent.ACTION_VIEW.equals(activity.getIntent().getAction())) {
             File file = new File(activity.getIntent().getData().getPath());
             Intent intent = new Intent(activity, PlayingNowList.class);
             intent.putExtra("file", file);
             Main.musicList.clear();
-            Main.musicList.add(Main.songs.getSongbyFile(file));
+            Main.musicList.add(SongUtils.getSongbyFile(file));
             Main.nowPlayingList = Main.musicList;
             if (Main.nowPlayingList == null) {
                 Toast.makeText(this, "Selected Item is not a song OR is not in mediaStore", Toast.LENGTH_SHORT).show();
@@ -224,7 +225,7 @@ public class SplashScreen extends AppCompatActivity {
             if (activity == null || activity.isFinishing()) return "lol";
 
             try {
-                Main.songs.scanSongs(activity, "external");
+                Main.data.scanSongs(activity, "external");
                 return activity.getString(R.string.menu_main_scanning_ok);
             } catch (Exception e) {
                 Log.e("Couldn't execute", e.toString());
@@ -247,13 +248,13 @@ public class SplashScreen extends AppCompatActivity {
                 Intent intent = new Intent(activity, PlayingNowList.class);
                 intent.putExtra("file", file);
                 Main.musicList.clear();
-                if (Main.songs.getSongbyFile(file) == null){
+                if (SongUtils.getSongbyFile(file) == null) {
                     Toast.makeText(activity, "Selected Song is not in mediaStore yet, Cant play for now", Toast.LENGTH_SHORT).show();
                     intent = new Intent(activity, MainScreen.class);
                     activity.startActivity(intent);
                     activity.finish();
                 }
-                Main.musicList.add(Main.songs.getSongbyFile(file));
+                Main.musicList.add(SongUtils.getSongbyFile(file));
                 Main.nowPlayingList = Main.musicList;
                 if (Main.nowPlayingList == null) {
                     Toast.makeText(activity, "Selected Item is not a song OR is not in mediaStore", Toast.LENGTH_SHORT).show();

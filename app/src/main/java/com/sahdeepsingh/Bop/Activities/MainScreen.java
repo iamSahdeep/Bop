@@ -37,7 +37,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.mikepenz.materialize.util.UIUtils;
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.fragments.FileFragment;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
@@ -133,7 +133,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_ham)));
+        toolbar.setNavigationIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_ham)));
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,20 +173,20 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                 .withGenerateMiniDrawer(true)
                 .withCloseOnClick(true)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("Now Playing").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_play))).withIdentifier(1).withSelectable(false),
-                        new PrimaryDrawerItem().withName("Home").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_shuffle_on))).withIdentifier(6).withSelectable(true),
-                        new PrimaryDrawerItem().withName("All Songs").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_music))).withIdentifier(2).withSelectable(true),
-                        new PrimaryDrawerItem().withName("Playlist").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_playlist))).withIdentifier(3).withSelectable(true),
-                        new PrimaryDrawerItem().withName("Genres").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_genre))).withIdentifier(4).withSelectable(true),
-                        new PrimaryDrawerItem().withName("Albums").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_album))).withIdentifier(5).withSelectable(true),
-                        new PrimaryDrawerItem().withName("Artists").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_artist))).withIdentifier(7).withSelectable(true),
-                        new PrimaryDrawerItem().withName("Files").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_folder))).withIdentifier(8).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Now Playing").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_play))).withIdentifier(1).withSelectable(false),
+                        new PrimaryDrawerItem().withName("Home").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_shuffle_on))).withIdentifier(6).withSelectable(true),
+                        new PrimaryDrawerItem().withName("All Songs").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_music))).withIdentifier(2).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Playlist").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_playlist))).withIdentifier(3).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Genres").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_genre))).withIdentifier(4).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Albums").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_album))).withIdentifier(5).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Artists").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_artist))).withIdentifier(7).withSelectable(true),
+                        new PrimaryDrawerItem().withName("Files").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_folder))).withIdentifier(8).withSelectable(true),
                         new SectionDrawerItem().withName("More").withDivider(true),
-                        new SecondaryDrawerItem().withName("Support").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_support))).withIdentifier(20).withSelectable(false),
-                        new SecondaryDrawerItem().withName("Feedback").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_feedback))).withIdentifier(21).withSelectable(false))
+                        new SecondaryDrawerItem().withName("Support").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_support))).withIdentifier(20).withSelectable(false),
+                        new SecondaryDrawerItem().withName("Feedback").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_feedback))).withIdentifier(21).withSelectable(false))
                 .addStickyDrawerItems(
-                        new SecondaryDrawerItem().withName("Settings").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_setting))).withIdentifier(321).withSelectable(false),
-                        new SecondaryDrawerItem().withName("Exit").withIcon(utils.getThemedIcon(this, getDrawable(R.drawable.ic_exit))).withIdentifier(342).withSelectable(false)
+                        new SecondaryDrawerItem().withName("Settings").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_setting))).withIdentifier(321).withSelectable(false),
+                        new SecondaryDrawerItem().withName("Exit").withIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_exit))).withIdentifier(342).withSelectable(false)
                 ).withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     if (drawerItem != null) {
                         Intent intent;
@@ -218,10 +218,10 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                             mViewPager.setCurrentItem(6, true);
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 20) {
-                            utils.openCustomTabs(MainScreen.this, "https://github.com/iamSahdeep/Bop/issues");
+                            ExtraUtils.openCustomTabs(MainScreen.this, "https://github.com/iamSahdeep/Bop/issues");
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 21) {
-                            utils.sendFeedback(MainScreen.this);
+                            ExtraUtils.sendFeedback(MainScreen.this);
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 321) {
                             intent = new Intent(this, SettingsActivity.class);
@@ -449,7 +449,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
 
     private void setControlListeners() {
-        next.setImageDrawable(utils.getThemedIcon(this, getDrawable(R.drawable.ic_skip)));
+        next.setImageDrawable(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_skip)));
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -457,7 +457,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             }
         });
 
-        previous.setImageDrawable(utils.getThemedIcon(this, getDrawable(R.drawable.ic_previous)));
+        previous.setImageDrawable(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_previous)));
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -465,7 +465,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             }
         });
 
-        forward.setImageDrawable(utils.getThemedIcon(this, getDrawable(R.drawable.ic_forward)));
+        forward.setImageDrawable(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_forward)));
         forward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -473,7 +473,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             }
         });
 
-        rewind.setImageDrawable(utils.getThemedIcon(this, getDrawable(R.drawable.ic_rewind)));
+        rewind.setImageDrawable(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_rewind)));
         rewind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

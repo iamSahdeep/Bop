@@ -5,7 +5,7 @@
 
     <uses-sdk tools:overrideLibrary="com.bullhead.equalizer" />
 
-    <!-- So we can play songs while the device is locked -->
+    <!-- So we can play data while the device is locked -->
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

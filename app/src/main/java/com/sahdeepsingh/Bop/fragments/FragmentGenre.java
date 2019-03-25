@@ -12,9 +12,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.sahdeepsingh.Bop.Adapters.GenreRecyclerViewAdapter;
+import com.sahdeepsingh.Bop.BopUtils.DataUtils;
 import com.sahdeepsingh.Bop.BopUtils.RVUtils;
 import com.sahdeepsingh.Bop.R;
-import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +30,7 @@ public class FragmentGenre extends Fragment {
     EditText search;
     List<String> filtered = new ArrayList<>();
     LinearLayout noData;
-    ArrayList<String> genres = Main.songs.getGenres();
+    ArrayList<String> genres = DataUtils.getGenres();
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
 

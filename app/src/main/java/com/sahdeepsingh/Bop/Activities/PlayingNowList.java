@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sahdeepsingh.Bop.Adapters.CurrentPlayListSongsAdapter;
+import com.sahdeepsingh.Bop.BopUtils.PlaylistUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
@@ -322,7 +323,7 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
     private void showPlaylistDialog() {
         final ListView listView;
         Button create, cancel;
-        ArrayList<String> allPlaylists = Main.songs.getPlaylistNames();
+        ArrayList<String> allPlaylists = PlaylistUtils.getPlaylistNames();
         final Dialog dialog = new Dialog(this);
         dialog.setCancelable(true);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -347,7 +348,7 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
                     return;
                 }
                 Main.showProgressDialog(PlayingNowList.this);
-                Main.songs.newPlaylist(PlayingNowList.this, "external", name.getText().toString(), Main.nowPlayingList);
+                PlaylistUtils.newPlaylist(PlayingNowList.this, "external", name.getText().toString(), Main.nowPlayingList);
                 Toast.makeText(PlayingNowList.this, "Done", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 Main.hideProgressDialog();

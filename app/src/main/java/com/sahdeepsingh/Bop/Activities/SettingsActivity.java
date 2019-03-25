@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.settings.AppCompatPreferenceActivity;
@@ -155,7 +155,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    utils.sendFeedback(getActivity());
+                    ExtraUtils.sendFeedback(getActivity());
                     return true;
                 }
             });

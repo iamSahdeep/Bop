@@ -1,12 +1,15 @@
 package com.sahdeepsingh.Bop.Adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sahdeepsingh.Bop.BopUtils.utils;
+import com.sahdeepsingh.Bop.Activities.PlayingNowList;
+import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
+import com.sahdeepsingh.Bop.BopUtils.PlaylistUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.Visualizers.barVisuals;
@@ -46,7 +49,7 @@ public class ViewPlaylistAdapter extends RecyclerView.Adapter<ViewPlaylistAdapte
         holder.songName.setText(localItem.getTitle());
         holder.songBy.setText(localItem.getArtist());
         holder.songName.setSelected(true);
-        Picasso.get().load(utils.getUrifromAlbumID(localItem)).centerCrop().fit().error(R.mipmap.ic_launcher).into(holder.circleImageView);
+        Picasso.get().load(ExtraUtils.getUrifromAlbumID(localItem)).centerCrop().fit().error(R.mipmap.ic_launcher).into(holder.circleImageView);
 
         if (Main.mainMenuHasNowPlayingItem) {
             if (Main.musicService.currentSong.getTitle().equals(localItem.getTitle())) {
@@ -63,11 +66,16 @@ public class ViewPlaylistAdapter extends RecyclerView.Adapter<ViewPlaylistAdapte
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Main.musicService.setSong(holder.getAdapterPosition());
-                Main.musicService.playSong();
+                Main.musicList.clear();
+                Main.musicList.add(localItem);
+                Main.nowPlayingList = Main.musicList;
+                Main.musicService.setList(Main.nowPlayingList);
+                Intent intent = new Intent(v.getContext(), PlayingNowList.class);
+                intent.putExtra("playlistname", "Single Song");
+                v.getContext().startActivity(intent);
             }
         });
-        holder.songOptions.setImageDrawable(utils.getThemedIcon(holder.mView.getContext(), holder.mView.getContext().getDrawable(R.drawable.ic_3dots)));
+        holder.songOptions.setImageDrawable(ExtraUtils.getThemedIcon(holder.mView.getContext(), holder.mView.getContext().getDrawable(R.drawable.ic_3dots)));
         holder.songOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,14 +84,14 @@ public class ViewPlaylistAdapter extends RecyclerView.Adapter<ViewPlaylistAdapte
                 popup.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.one:
-                            Main.songs.deletePlaylistTrack(view.getContext(), name, Main.songs.getSongsByPlaylist(name).get(holder.getAdapterPosition()).getId());
+                            PlaylistUtils.deletePlaylistTrack(view.getContext(), name, PlaylistUtils.getSongsByPlaylist(name).get(holder.getAdapterPosition()).getId());
                             notifyItemRemoved(holder.getAdapterPosition());
                             return true;
                         case R.id.two:
-                            utils.shareSong(view.getContext(), Main.songs.getSongsByPlaylist(name).get(holder.getAdapterPosition()));
+                            ExtraUtils.shareSong(view.getContext(), PlaylistUtils.getSongsByPlaylist(name).get(holder.getAdapterPosition()));
                             return true;
                         case R.id.three:
-                            utils.showSongDetails(view.getContext(), Main.songs.getSongsByPlaylist(name).get(holder.getAdapterPosition()));
+                            ExtraUtils.showSongDetails(view.getContext(), PlaylistUtils.getSongsByPlaylist(name).get(holder.getAdapterPosition()));
                             return true;
                         default:
                             return false;
