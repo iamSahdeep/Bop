@@ -6,6 +6,7 @@
 
 Thank you for your interest in contributing to Bop music player. I appreciate all help with finding and fixing bugs, making performance improvements, and other tasks. Every contribution is helpful and I thank you for your effort. To ensure the process of contributing is as smooth as possible, here are a few guidelines for you to follow.
 
+- Remember to Create an Issue before submitting any major changes like new feature or UI changes etc. Changes like addition of new language or Spelling mistakes doesn't require issue creation.
 ---
 
 ## Feature requests. 
@@ -86,41 +87,19 @@ Simply put, the way to create a Pull request is first to;
 
 Do you have ideas of some new cool functionalities, a bug fix or other code you wish to contribute? This is the perfect section to guide you on that path.
 
-#### Test Your Code
+#### Test Your Project
 
-There are four possible tests you can run to verify your code.  The first
-is unit tests, which check the basic functionality of the application, and
-can be run by gradle using:
+Make sure your project is building and running in your local machine and every change you made doesn't explicitly affect the another feature of the project. Also check for any gradle or runtime errors.
 
-    # ./gradlew testReleaseUnitTest
+#### After Pull Request
 
-The second and third check for common problems using static analysis.
-These are the Android lint checker, run using:
-
-    # ./gradlew lintRelease
-
-and FindBugs, run using:
-
-    # ./gradlew findbugs
-
-The final check is by testing the application on a live device and verifying
-the basic functionality works as expected.
-
-#### Make Sure Your Code is Tested
-
-Bop music player code uses a fair number of unit tests to verify that the basic functionality is working. Submissions which add functionality or significantly change the existing code should include additional tests to verify the proper operation of the proposed changes.
+Bop music player code uses Travis Ci to check for build error. After submitting PR you wil find that Travis would run for some checks, If checks failed, please look at the log through clicking "Details". Perfect example for this scenerio would be [this]https://github.com/iamSahdeep/Bop/pull/35).
 
 #### Explain Your Work
 
 At the top of every patch, you should include a description of the problem you are trying to solve, how you solved it, and why you chose the solution you implemented. If you are submitting a bug fix, it is also incredibly helpful if you can describe/include a reproducer for the problem in the description as well as instructions on how to test for the bug and verify that it has been
 fixed.
 
-## Documentation.
-
-This is the creation of vital documents which are necessary for the software. Documentation also deals with written content creation. 
-For better implementation, ensure to create the document with markdown text styling.
-Rename the file with respect to content and add ```.md``` at the end so markdown is effective.
-Send a pull request after the document is created.
 
 ## Contact.
 
