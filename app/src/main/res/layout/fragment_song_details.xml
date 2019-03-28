@@ -9,13 +9,15 @@
     android:layout_marginBottom="100dp">
 
     <LinearLayout
+        android:id="@+id/songDetailsBlurImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"
+        android:background="?android:colorBackground"
         android:orientation="vertical">
 
 
         <TextView
+            android:id="@+id/share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -26,6 +28,7 @@
 
 
         <TextView
+            android:id="@+id/delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -35,7 +38,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/market"
+            android:id="@+id/addtoPlaylist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -47,6 +50,7 @@
             />
 
         <TextView
+            android:id="@+id/makeRingtone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -58,13 +62,13 @@
         <com.google.android.material.internal.ScrimInsetsFrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
             android:elevation="16dp"
             app:behavior_hideable="false"
             app:behavior_peekHeight="24dp"
             app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
             <include
-                android:id="@+id/fragment"
                 layout="@layout/fragment_view_song_details"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

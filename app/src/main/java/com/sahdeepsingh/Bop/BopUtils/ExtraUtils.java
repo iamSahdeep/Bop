@@ -53,7 +53,6 @@ public class ExtraUtils {
         tmpOut.copyTo(bitmaplol);
         renderScript.destroy();
         return bitmaplol;
-
     }
 
     /*get Themed icons, used in Navigation Drawer in MAinScreen*/

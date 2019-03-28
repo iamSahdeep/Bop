@@ -80,7 +80,7 @@
     <string name="transition_name_title" translatable="false">title</string>
     <string name="transition_name_cover" translatable="false">cover</string>
     <string name="transition_name_time" translatable="false">time</string>
-    <string name="transition_name_duration" translatable="false">duration</string>
+    <string name="transition_name_duration" translatable="false">Duration</string>
     <string name="transition_name_progress" translatable="false">progress</string>
     <string name="transition_name_fab" translatable="false">fab</string>
     <string name="play_vector_path" translatable="false">M6,5 l12,7 l0,0 l-12,0z M6,12 l12,0 l0,0 l-12,7z</string>
@@ -149,5 +149,8 @@
     <string name="rename">Rename</string>
     <string name="share">Share</string>
     <string name="make_ringtone">Make Ringtone</string>
+    <string name="album">Album</string>
+    <string name="year">Year</string>
+    <string name="location">Location</string>
 
 </resources>

@@ -82,16 +82,17 @@ public class ViewPlaylistAdapter extends RecyclerView.Adapter<ViewPlaylistAdapte
                 PopupMenu popup = new PopupMenu(view.getContext(), holder.songOptions);
                 popup.inflate(R.menu.view_playlist_options);
                 popup.setOnMenuItemClickListener(item -> {
+
                     switch (item.getItemId()) {
                         case R.id.one:
-                            PlaylistUtils.deletePlaylistTrack(view.getContext(), name, PlaylistUtils.getSongsByPlaylist(name).get(holder.getAdapterPosition()).getId());
+                            PlaylistUtils.deletePlaylistTrack(view.getContext(), name, localItem.getId());
                             notifyItemRemoved(holder.getAdapterPosition());
                             return true;
                         case R.id.two:
-                            ExtraUtils.shareSong(view.getContext(), PlaylistUtils.getSongsByPlaylist(name).get(holder.getAdapterPosition()));
+                            ExtraUtils.shareSong(view.getContext(), localItem);
                             return true;
                         case R.id.three:
-                            ExtraUtils.showSongDetails(view.getContext(), PlaylistUtils.getSongsByPlaylist(name).get(holder.getAdapterPosition()).getId());
+                            ExtraUtils.showSongDetails(view.getContext(), localItem.getId());
                             return true;
                         default:
                             return false;
