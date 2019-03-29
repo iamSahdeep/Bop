@@ -11,6 +11,8 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import static com.sahdeepsingh.Bop.BopUtils.ThemeUtil.THEME_RED;
+
 /**
  * Master Activity from which every other Activity inherits
  * (except for `SettingsActivity`).
@@ -47,6 +49,7 @@ public class BaseActivity extends AppCompatActivity {
      */
     protected String currentMode = "";
     protected String currentTheme = "";
+    public static int mTheme = THEME_RED;
 
 
     @Override

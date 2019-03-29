@@ -62,4 +62,12 @@ public class Settings {
 
         return preferences.getInt(key, defaultValue);
     }
+
+    public void set(String key, boolean value) {
+        preferences.edit().putBoolean(key, value).apply();
+    }
+
+    public void set(String key, String value) {
+        preferences.edit().putString(key, value).apply();
+    }
 }

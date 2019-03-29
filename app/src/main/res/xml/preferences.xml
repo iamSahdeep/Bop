@@ -25,51 +25,15 @@
 
     </PreferenceCategory>
 
-    <!--<PreferenceCategory android:title="General">
+    <PreferenceCategory android:title="General">
         <SwitchPreference
             android:defaultValue="true"
             android:key="show_lock_widget"
             android:summary="Display Lock screen Widget with Album Art as Wall Paper"
             android:title="Show LockScreen Widget" />
 
-        &lt;!&ndash;<CheckBoxPreference
-            android:defaultValue="true"
-            android:key="@string/key_upload_over_wifi"
-            android:summary="@string/summary_upload_over_wifi"
-            android:title="@string/title_auto_upload" />
 
-        <ListPreference
-            android:defaultValue="3"
-            android:dialogTitle="@string/title_upload_quality"
-            android:entries="@array/pref_upload_quality_entries"
-            android:entryValues="@array/pref_upload_quality_values"
-            android:key="@string/key_upload_quality"
-            android:summary="@string/summary_upload_video_quality"
-            android:title="@string/title_upload_quality" />&ndash;&gt;
-
-    </PreferenceCategory>-->
-
-    <!--    <PreferenceCategory android:title="@string/pref_title_notifications">
-
-            <SwitchPreference
-                android:defaultValue="true"
-                android:key="@string/notifications_new_message"
-                android:title="@string/title_new_notification_sound" />
-
-            <RingtonePreference
-                android:defaultValue="content://settings/system/notification_sound"
-                android:dependency="notifications_new_message"
-                android:key="@string/key_notifications_new_message_ringtone"
-                android:ringtoneType="notification"
-                android:summary="@string/summary_choose_ringtone"
-                android:title="@string/choose_email_client" />
-
-            <SwitchPreference
-                android:defaultValue="true"
-                android:key="@string/key_vibrate"
-                android:summary="@string/summary_vibrate"
-                android:title="@string/title_vibrate" />
-        </PreferenceCategory>-->
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_header_about">
 

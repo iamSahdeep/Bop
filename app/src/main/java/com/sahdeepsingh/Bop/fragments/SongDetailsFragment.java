@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 public class SongDetailsFragment extends Fragment {
 
     private static final String Songparam = "param1";
-    TextView share, delete, makeRingtone, addtoPlaylist, songname, songgame1, album, artist, year, duration, location;
+    TextView share, delete, addtoPlaylist, songname, songgame1, album, artist, year, duration, location;
     ImageView albumart;
     private Song song;
 
@@ -55,7 +55,6 @@ public class SongDetailsFragment extends Fragment {
         share = view.findViewById(R.id.share);
         delete = view.findViewById(R.id.delete);
         addtoPlaylist = view.findViewById(R.id.addtoPlaylist);
-        makeRingtone = view.findViewById(R.id.makeRingtone);
         songname = view.findViewById(R.id.songName);
         album = view.findViewById(R.id.album);
         artist = view.findViewById(R.id.artist);
@@ -91,17 +90,7 @@ public class SongDetailsFragment extends Fragment {
                 addtoPlaylist(v);
             }
         });
-        makeRingtone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                makeRingtone(v);
-            }
-        });
         return view;
-    }
-
-    private void makeRingtone(View v) {
-
     }
 
     private void deleteSong(View v) {
@@ -115,5 +104,6 @@ public class SongDetailsFragment extends Fragment {
     private void shareSong(View v) {
 
     }
+
 
 }

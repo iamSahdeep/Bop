@@ -224,7 +224,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                             ExtraUtils.sendFeedback(MainScreen.this);
                             drawer.closeDrawer();
                         } else if (drawerItem.getIdentifier() == 321) {
-                            intent = new Intent(this, SettingsActivity.class);
+                            intent = new Intent(this, SettingActivity.class);
                             startActivity(intent);
                         } else if (drawerItem.getIdentifier() == 342) {
                             Main.forceExit(this);
@@ -381,14 +381,16 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             bottomControls.setVisibility(View.VISIBLE);
             workonSlidingPanel();
 
+            if (Main.musicService.isPlaying()) {
+                if (playbackPaused) {
+                    playbackPaused = false;
+                }
+            }
+
         } else {
             bottomControls.setVisibility(View.GONE);
         }
-        if (Main.musicService.isPlaying()) {
-            if (playbackPaused) {
-                playbackPaused = false;
-            }
-        }
+
 
     }
 
@@ -430,7 +432,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                 break;
 
             case R.id.context_menu_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, SettingActivity.class));
                 break;
 
             case R.id.nowPlayingIcon:

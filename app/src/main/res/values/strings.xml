@@ -152,5 +152,31 @@
     <string name="album">Album</string>
     <string name="year">Year</string>
     <string name="location">Location</string>
+    <string name="reset">Reset</string>
+    <string name="theme">Theme</string>
+    <string name="appearance">Appearance</string>
+    <string name="mode">Mode</string>
+    <string name="day_night">Day/Night</string>
+    <string name="choose_color">Choose Color</string>
+    <string name="general">General</string>
+    <string name="headphones_actions">Headphones Actions</string>
+    <string name="pause_playback_when_headphone_unplugged">Pause Playback when headphone Unplugged</string>
+    <string name="resume_when_headphones_plugged">Resume when headphones Plugged</string>
+    <string name="headphone_controls">Headphone Controls</string>
+    <string name="enable_headphone_controls">Enable headphone controls</string>
+    <string name="headphones">Headphones</string>
+    <string name="about">About</string>
+    <string name="faq">FAQ</string>
+    <string name="frequently_asked_question">Frequently Asked Question</string>
+    <string name="view_privacy_policy">View Privacy Policy</string>
+    <string name="history">History</string>
+    <string name="save_rececnt_songs_list">Save Rececnt Songs List</string>
+    <string name="save_counts_of_playback">Save Counts of Playback</string>
+    <string name="last_playlist">Last Playlist</string>
+    <string name="save_last_played_playlist">Save Last Played Playlist</string>
+    <string name="contribute">Contribute</string>
+    <string name="summary_github_star">Want to Contribute or just want to view Source code! Give a star at Github.</string>
+    <string name="select_theme">Select Theme</string>
+    <string name="save">Save</string>
 
 </resources>
