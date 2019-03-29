@@ -358,7 +358,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
     public void stopMusicPlayer() {
         if (player == null)
             return;
-
         Main.mainMenuHasNowPlayingItem = false;
         player.stop();
         player.release();
@@ -372,7 +371,8 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
      * Sets the "Now Playing List"
      */
     public void setList(ArrayList<Song> theSongs) {
-        RecentUtils.saveLastPlaylist(getApplicationContext(), theSongs, 0);
+        if (Main.settings.get("savePlaylist", true))
+            RecentUtils.saveLastPlaylist(getApplicationContext(), theSongs);
         songs = theSongs;
         currentSongPosition = 0;
     }
@@ -653,6 +653,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
             RecentUtils.addsong_toRecent(getApplicationContext(), songToPlay);
         if (Main.settings.get("saveCount", true))
             RecentUtils.addcountSongsPlayed(getApplicationContext(), songToPlay);
+
         currentSong = songToPlay;
 
         // Append the external URI with our data'

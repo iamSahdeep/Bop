@@ -42,6 +42,7 @@ public class SplashScreen extends AppCompatActivity {
 
         SharedPreferences recent = getSharedPreferences("com.sahdeepsingh.bop.RecentSongs", 0);
         SharedPreferences count = getSharedPreferences("com.sahdeepsingh.bop.SongsPlayedCount", 0);
+        SharedPreferences last = getSharedPreferences("com.sahdeepsingh.bop.LastPlaylist", 0);
         SharedPreferences defaults = PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean firstRun = defaults.getBoolean("firstRun", true);
@@ -51,6 +52,7 @@ public class SplashScreen extends AppCompatActivity {
             defaults.edit().putBoolean("firstRun", false).apply();
             recent.edit().clear().apply();
             count.edit().clear().apply();
+            last.edit().clear().apply();
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

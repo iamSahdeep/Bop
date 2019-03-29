@@ -421,6 +421,9 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         drawable = DrawableCompat.wrap(drawable);
         menu.findItem(R.id.lastPlaylist).setIcon(ExtraUtils.getThemedIcon(getApplicationContext(), drawable));
 
+        if (!Main.settings.get("savePlaylist", true))
+            menu.findItem(R.id.lastPlaylist).setVisible(false);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -466,10 +469,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         }
         Main.nowPlayingList = Main.musicList;
         Main.musicService.setList(Main.nowPlayingList);
-        int index = RecentUtils.getLastPlayListIndex(MainScreen.this);
-        if (Main.nowPlayingList.size() < index + 1)
-            index = 0;
-        Main.musicService.setSong(index);
+
         Intent intent = new Intent(MainScreen.this, PlayingNowList.class);
         intent.putExtra("playlistname", "LastPlayed");
         startActivity(intent);
