@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -251,7 +250,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginStart="5dp"
                                 android:layout_weight="1"
-                                android:text="@string/save_rececnt_songs_list"
+                                android:text="@string/save_recent_songs_list"
                                 android:textSize="17sp" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
@@ -380,7 +379,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="@string/app_name"
+                            android:text="@string/version"
                             android:textSize="17sp" />
                     </LinearLayout>
 
@@ -461,6 +460,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="15dp"
+                        android:layout_marginBottom="30dp"
                         android:onClick="gotoPP"
                         android:orientation="vertical">
 

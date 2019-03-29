@@ -146,8 +146,24 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
     private BroadcastReceiver mNoisyReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (player != null && player.isPlaying()) {
-                pausePlayer();
+            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
+                if (Main.settings.get("pauseHeadphoneUnplugged", true)) {
+                    pausePlayer();
+                }
+            } else if (Intent.ACTION_HEADSET_PLUG.equals(intent.getAction())) {
+                int state = intent.getIntExtra("state", -1);
+                switch (state) {
+                    case 0:
+                        if (Main.settings.get("pauseHeadphoneUnplugged", true)) {
+                            pausePlayer();
+                        } else unpausePlayer();
+                        break;
+                    case 1:
+                        if (Main.settings.get("resumeHeadphonePlugged", true)) {
+                            unpausePlayer();
+                        } else pausePlayer();
+                        break;
+                }
             }
         }
     };
@@ -158,11 +174,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         @Override
         public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
             final String intentAction = mediaButtonEvent.getAction();
-            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intentAction)) {
-                if (Main.settings.get("pause_headphone_unplugged", true)) {
-                    pausePlayer();
-                }
-            } else if (Intent.ACTION_MEDIA_BUTTON.equals(intentAction)) {
+            if (Intent.ACTION_MEDIA_BUTTON.equals(intentAction)) {
                 final KeyEvent event = mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
                 if (event == null) return super.onMediaButtonEvent(mediaButtonEvent);
                 final int keycode = event.getKeyCode();
@@ -289,7 +301,9 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
     private void initNoisyReceiver() {
         //Handles headphones coming unplugged. cannot be done through a manifest receiver
-        IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        filter.addAction(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(mNoisyReceiver, filter);
     }
 
@@ -358,6 +372,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
      * Sets the "Now Playing List"
      */
     public void setList(ArrayList<Song> theSongs) {
+        RecentUtils.saveLastPlaylist(getApplicationContext(), theSongs, 0);
         songs = theSongs;
         currentSongPosition = 0;
     }
@@ -634,8 +649,10 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         // Get the song ID from the list, extract the ID and
         // get an URL based on it
         Song songToPlay = songs.get(currentSongPosition);
-        RecentUtils.addsong_toRecent(getApplicationContext(), songToPlay);
-        RecentUtils.addcountSongsPlayed(getApplicationContext(), songToPlay);
+        if (Main.settings.get("saveRecent", true))
+            RecentUtils.addsong_toRecent(getApplicationContext(), songToPlay);
+        if (Main.settings.get("saveCount", true))
+            RecentUtils.addcountSongsPlayed(getApplicationContext(), songToPlay);
         currentSong = songToPlay;
 
         // Append the external URI with our data'

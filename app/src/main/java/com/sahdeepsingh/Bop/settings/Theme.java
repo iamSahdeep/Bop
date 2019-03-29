@@ -1,4 +1,4 @@
-package com.sahdeepsingh.Bop.CustomViews;
+package com.sahdeepsingh.Bop.settings;
 
 public class Theme {
     private int id;

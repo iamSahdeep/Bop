@@ -1,8 +1,8 @@
 package com.sahdeepsingh.Bop.BopUtils;
 
-import com.sahdeepsingh.Bop.CustomViews.Theme;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.settings.Theme;
 
 import java.util.ArrayList;
 

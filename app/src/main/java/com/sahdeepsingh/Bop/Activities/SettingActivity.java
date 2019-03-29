@@ -14,9 +14,9 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.sahdeepsingh.Bop.Adapters.ThemeAdapter;
 import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.BopUtils.ThemeUtil;
-import com.sahdeepsingh.Bop.CustomViews.Theme;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
+import com.sahdeepsingh.Bop.settings.Theme;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +194,6 @@ public class SettingActivity extends BaseActivity {
                 } else {
                     Main.settings.set("saveCount", false);
                 }
-
             }
         });
 
@@ -324,15 +323,19 @@ public class SettingActivity extends BaseActivity {
     }
 
     public void sendFeedback(View view) {
+        ExtraUtils.sendFeedback(SettingActivity.this);
     }
 
     public void gotoFAQ(View view) {
+        ExtraUtils.openCustomTabs(SettingActivity.this, "https://github.com/iamSahdeep/Bop/blob/master/FAQs.md");
     }
 
     public void gotoPP(View view) {
+        ExtraUtils.openCustomTabs(SettingActivity.this, "https://github.com/iamSahdeep/Bop/blob/master/privacy_policy.md");
     }
 
     public void gotoGithub(View view) {
+        ExtraUtils.openCustomTabs(SettingActivity.this, "https://github.com/iamSahdeep/Bop");
     }
 
     public void cancelTheme(View view) {

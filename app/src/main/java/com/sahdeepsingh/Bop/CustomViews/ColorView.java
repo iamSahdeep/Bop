@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.settings.Theme;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;

@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 
 import com.sahdeepsingh.Bop.Activities.SettingActivity;
 import com.sahdeepsingh.Bop.CustomViews.ColorView;
-import com.sahdeepsingh.Bop.CustomViews.Theme;
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.settings.Theme;
 
 import java.util.List;
 

@@ -111,8 +111,8 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
         songListView.setLayoutManager(new LinearLayoutManager(this));
         songListView.setAdapter(new CurrentPlayListSongsAdapter(Main.nowPlayingList));
 
-
-        if ((getIntent().getExtras() != null && getIntent().getExtras().containsKey("playlistname")) || !Main.mainMenuHasNowPlayingItem) {
+        if (getIntent().getExtras() != null)
+            if (getIntent().getExtras().containsKey("playlistname") && !Main.mainMenuHasNowPlayingItem) {
             mPlaylistName.setText(Objects.requireNonNull(getIntent().getExtras()).getString("playlistname", "Current Playlist"));
             Main.musicService.playSong();
         }

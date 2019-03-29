@@ -58,8 +58,6 @@ public class RecentUtils {
     public static List<Song> getMostPlayedSongs(Context context) {
         List<Song> songs = new ArrayList<>();
 
-        if (SongUtils.getSongs() == null)
-            return null;
         HashMap<String, Integer> map = new HashMap<>();
         for (Song s :
                 SongUtils.getSongs()) {
@@ -75,5 +73,31 @@ public class RecentUtils {
                 break;
         }
         return songs;
+    }
+
+    public static void saveLastPlaylist(Context context, ArrayList<Song> theSongs, int index) {
+        SharedPreferences appSharedPrefs = context.getSharedPreferences("com.sahdeepsingh.bop.LastPlaylist", Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+        prefsEditor.clear().apply();
+        Gson gson = new Gson();
+        //LEL need to clone the songs, Causing Concurrent Modification Error.
+        String json = gson.toJson(theSongs.clone());
+        prefsEditor.putString("playList", json);
+        prefsEditor.putInt("index", index);
+        prefsEditor.apply();
+    }
+
+    public static ArrayList<Song> getLastPlayList(Context context) {
+        Type type = new TypeToken<List<Song>>() {
+        }.getType();
+        SharedPreferences appSharedPrefs = context.getSharedPreferences("com.sahdeepsingh.bop.LastPlaylist", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = appSharedPrefs.getString("playList", "");
+        return gson.fromJson(json, type);
+    }
+
+    public static int getLastPlayListIndex(Context context) {
+        SharedPreferences appSharedPrefs = context.getSharedPreferences("com.sahdeepsingh.bop.LastPlaylist", Context.MODE_PRIVATE);
+        return appSharedPrefs.getInt("index", 0);
     }
 }

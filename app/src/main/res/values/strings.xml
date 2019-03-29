@@ -167,10 +167,10 @@
     <string name="headphones">Headphones</string>
     <string name="about">About</string>
     <string name="faq">FAQ</string>
-    <string name="frequently_asked_question">Frequently Asked Question</string>
+    <string name="frequently_asked_question">Frequently Asked Questions</string>
     <string name="view_privacy_policy">View Privacy Policy</string>
     <string name="history">History</string>
-    <string name="save_rececnt_songs_list">Save Rececnt Songs List</string>
+    <string name="save_recent_songs_list">Save Recent Songs List</string>
     <string name="save_counts_of_playback">Save Counts of Playback</string>
     <string name="last_playlist">Last Playlist</string>
     <string name="save_last_played_playlist">Save Last Played Playlist</string>
@@ -178,5 +178,6 @@
     <string name="summary_github_star">Want to Contribute or just want to view Source code! Give a star at Github.</string>
     <string name="select_theme">Select Theme</string>
     <string name="save">Save</string>
+    <string name="version">v1.2</string>
 
 </resources>

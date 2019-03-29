@@ -4,10 +4,10 @@ package com.sahdeepsingh.Bop.Activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
-import android.preference.PreferenceManager;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -38,6 +38,7 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.mikepenz.materialize.util.UIUtils;
 import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
+import com.sahdeepsingh.Bop.BopUtils.RecentUtils;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.fragments.FileFragment;
 import com.sahdeepsingh.Bop.fragments.FragmentAlbum;
@@ -54,6 +55,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
 import androidx.legacy.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -117,7 +119,6 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         Main.settings.load(this);
 
         super.onCreate(savedInstanceState);
@@ -412,6 +413,14 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         if (Main.musicService.isPlaying())
             menu.findItem(R.id.nowPlayingIcon).setVisible(true);
 
+        Drawable drawable = menu.findItem(R.id.nowPlayingIcon).getIcon();
+        drawable = DrawableCompat.wrap(drawable);
+        menu.findItem(R.id.nowPlayingIcon).setIcon(ExtraUtils.getThemedIcon(getApplicationContext(), drawable));
+
+        drawable = menu.findItem(R.id.lastPlaylist).getIcon();
+        drawable = DrawableCompat.wrap(drawable);
+        menu.findItem(R.id.lastPlaylist).setIcon(ExtraUtils.getThemedIcon(getApplicationContext(), drawable));
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -436,12 +445,34 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                 break;
 
             case R.id.nowPlayingIcon:
-                startActivity(new Intent(this, PlayingNowList.class));
+                if (Main.mainMenuHasNowPlayingItem)
+                    startActivity(new Intent(this, PlayingNowList.class));
                 break;
 
+            case R.id.lastPlaylist:
+                playLastPlayList();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void playLastPlayList() {
+        Main.musicList.clear();
+        Main.musicList.addAll(RecentUtils.getLastPlayList(MainScreen.this));
+        if (Main.musicList == null || Main.musicList.isEmpty()) {
+            Toast.makeText(MainScreen.this, "Can't Find Songs", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Main.nowPlayingList = Main.musicList;
+        Main.musicService.setList(Main.nowPlayingList);
+        int index = RecentUtils.getLastPlayListIndex(MainScreen.this);
+        if (Main.nowPlayingList.size() < index + 1)
+            index = 0;
+        Main.musicService.setSong(index);
+        Intent intent = new Intent(MainScreen.this, PlayingNowList.class);
+        intent.putExtra("playlistname", "LastPlayed");
+        startActivity(intent);
     }
 
     @Override
