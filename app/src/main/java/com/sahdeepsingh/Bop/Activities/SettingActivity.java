@@ -1,7 +1,11 @@
 package com.sahdeepsingh.Bop.Activities;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +19,7 @@ import com.sahdeepsingh.Bop.Adapters.ThemeAdapter;
 import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.BopUtils.ThemeUtil;
 import com.sahdeepsingh.Bop.R;
+import com.sahdeepsingh.Bop.fragments.AdvancedSettings;
 import com.sahdeepsingh.Bop.playerMain.Main;
 import com.sahdeepsingh.Bop.settings.Theme;
 
@@ -29,7 +34,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SettingActivity extends BaseActivity {
+public class SettingActivity extends BaseActivity implements AdvancedSettings.OnFragmentInteractionListener {
 
     public static List<Theme> mThemeList = new ArrayList<>();
     public static int selectedTheme = 0;
@@ -346,5 +351,105 @@ public class SettingActivity extends BaseActivity {
         Main.settings.set("themes", getResources().getStringArray(R.array.themes_values)[selectedTheme]);
         Toast.makeText(SettingActivity.this, "Changes Made", Toast.LENGTH_SHORT).show();
         recreate();
+    }
+
+    public void AdvancedFragment(View view) {
+        findViewById(R.id.scrollSettings).setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.replaceAdvaced, AdvancedSettings.newInstance("", "")).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            findViewById(R.id.scrollSettings).setVisibility(View.VISIBLE);
+        } else super.onBackPressed();
+    }
+
+    @Override
+    public void onFragmentInteraction(String what) {
+        if (what.equals("jump")) {
+            createFWDialog();
+        } else if (what.equals("rescan")) {
+            rescanMediaStore();
+        }
+    }
+
+    private void createFWDialog() {
+        CharSequence[] values = {"5 sec", "10 sec", "15 sec", "20 sec", "25 sec"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
+        builder.setTitle("Set jump value in forwar/rewind");
+        int checkeditem = Main.settings.get("jumpValue", 10);
+        int[] newcheckeditem = {checkeditem};
+        builder.setSingleChoiceItems(values, checkeditem, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int item) {
+                        newcheckeditem[0] = item;
+                    }
+                }
+        );
+
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (checkeditem == newcheckeditem[0]) {
+                    dialog.dismiss();
+                } else {
+                    if (newcheckeditem[0] == 0) {
+                        Main.settings.set("jumpValue", 5);
+                    } else if (newcheckeditem[0] == 1) {
+                        Main.settings.set("jumpValue", 10);
+                    } else if (newcheckeditem[0] == 2) {
+                        Main.settings.set("jumpValue", 15);
+                    } else if (newcheckeditem[0] == 3) {
+                        Main.settings.set("jumpValue", 20);
+                    } else if (newcheckeditem[0] == 4) {
+                        Main.settings.set("jumpValue", 25);
+                    } else {
+                        Main.settings.set("jumpValue", 10);
+                    }
+                    Toast.makeText(SettingActivity.this, "Changes Made", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void rescanMediaStore() {
+        ProgressDialog lol = new ProgressDialog(SettingActivity.this);
+        lol.setMessage("Sending BroadCast to Scan");
+        lol.setCancelable(false);
+        lol.show();
+        MediaScannerConnection.scanFile(
+                getApplicationContext(),
+                new String[]{"file://" + Environment.getExternalStorageDirectory()},
+                new String[]{"audio/mp3", "audio/*"},
+                new MediaScannerConnection.MediaScannerConnectionClient() {
+                    public void onMediaScannerConnected() {
+
+                    }
+
+                    public void onScanCompleted(String path, Uri uri) {
+                        lol.cancel();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(SettingActivity.this, "Remove from recents and restart application", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+
     }
 }

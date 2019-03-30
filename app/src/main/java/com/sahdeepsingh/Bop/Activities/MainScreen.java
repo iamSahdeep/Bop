@@ -332,6 +332,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             return;
         } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
+            return;
         } else if (mViewPager.getCurrentItem() != 0) {
             mViewPager.setCurrentItem(0, true);
             return;

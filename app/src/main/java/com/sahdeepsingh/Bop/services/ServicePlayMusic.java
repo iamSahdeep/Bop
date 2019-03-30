@@ -32,7 +32,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.cleveroad.audiowidget.AudioWidget;
 import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.BopUtils.RecentUtils;
 import com.sahdeepsingh.Bop.Handlers.NotificationHandler;
@@ -109,9 +108,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
     AudioManager audioManager;
     //Just migrated to it to support everything where we are lacking
     public MediaSessionCompat mMediaSessionCompat;
-
-    // Haven't Implemented it yet
-    AudioWidget audioWidget;
 
     /**
      * Android Media Player - we control it in here.
@@ -280,10 +276,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
-        //Haven't added it yet just added to remember
-        if (Main.settings.get("showFloatingWidget", true))
-            createAudioWidget();
-
         initMusicPlayer();
 
         initMediaSession();
@@ -320,10 +312,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         mMediaSessionCompat.setMediaButtonReceiver(pendingIntent);
 
         setSessionToken(mMediaSessionCompat.getSessionToken());
-    }
-
-    private void createAudioWidget() {
-        audioWidget = new AudioWidget.Builder(getApplicationContext()).build();
     }
 
     /**
@@ -649,10 +637,6 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         // Get the song ID from the list, extract the ID and
         // get an URL based on it
         Song songToPlay = songs.get(currentSongPosition);
-        if (Main.settings.get("saveRecent", true))
-            RecentUtils.addsong_toRecent(getApplicationContext(), songToPlay);
-        if (Main.settings.get("saveCount", true))
-            RecentUtils.addcountSongsPlayed(getApplicationContext(), songToPlay);
 
         currentSong = songToPlay;
 
@@ -676,6 +660,12 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
         // Prepare the MusicPlayer asynchronously.
         // When finished, will call `onPrepare`
         player.prepareAsync();
+
+        if (Main.settings.get("saveRecent", true))
+            RecentUtils.addsong_toRecent(getApplicationContext(), songToPlay);
+        if (Main.settings.get("saveCount", true))
+            RecentUtils.addcountSongsPlayed(getApplicationContext(), songToPlay);
+
 
         serviceState = ServiceState.Preparing;
 

@@ -70,6 +70,10 @@ public class RecentSongsAdapter extends RecyclerView.Adapter<RecentSongsAdapter.
         else return 0;
     }
 
+    public void updateData(List<Long> recentSongs) {
+        this.songs = recentSongs;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public final View mView;

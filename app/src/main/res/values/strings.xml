@@ -179,5 +179,10 @@
     <string name="select_theme">Select Theme</string>
     <string name="save">Save</string>
     <string name="version">v1.2</string>
+    <string name="advanced">Advanced</string>
+    <string name="forward_rewind_jump">Forward/Rewind Jump</string>
+    <string name="_10_sec">10 sec</string>
+    <string name="rescan_mediaplayer">Rescan MediaStore</string>
+    <string name="might_help_if_you_cant_find_all_songs_in_app">Might help if you cant find all songs in App</string>
 
 </resources>

@@ -70,4 +70,8 @@ public class Settings {
     public void set(String key, String value) {
         preferences.edit().putString(key, value).apply();
     }
+
+    public void set(String jumpValue, int i) {
+        preferences.edit().putInt(jumpValue, i).apply();
+    }
 }

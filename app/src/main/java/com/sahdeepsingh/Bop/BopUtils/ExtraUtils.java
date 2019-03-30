@@ -32,28 +32,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 import androidx.palette.graphics.Palette;
-import androidx.renderscript.Allocation;
-import androidx.renderscript.Element;
-import androidx.renderscript.RenderScript;
-import androidx.renderscript.ScriptIntrinsicBlur;
 
 public class ExtraUtils {
 
-    /* For blurring the image*/
-    public static Bitmap blurMyImage(Bitmap image, Context context) {
-        if (null == image) return null;
-        Bitmap bitmaplol = image.copy(image.getConfig(), true);
-        RenderScript renderScript = RenderScript.create(context);
-        Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
-        Allocation tmpOut = Allocation.createFromBitmap(renderScript, bitmaplol);
-        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-        theIntrinsic.setRadius(25f);
-        theIntrinsic.setInput(tmpIn);
-        theIntrinsic.forEach(tmpOut);
-        tmpOut.copyTo(bitmaplol);
-        renderScript.destroy();
-        return bitmaplol;
-    }
 
     /*get Themed icons, used in Navigation Drawer in MAinScreen*/
     public static Drawable getThemedIcon(Context c, Drawable drawable) {

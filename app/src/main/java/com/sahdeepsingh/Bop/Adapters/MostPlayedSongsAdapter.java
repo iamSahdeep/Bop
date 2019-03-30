@@ -76,6 +76,10 @@ public class MostPlayedSongsAdapter extends RecyclerView.Adapter<MostPlayedSongs
         else return 0;
     }
 
+    public void updateData(List<Song> mostPlayedSongs) {
+        this.songs = mostPlayedSongs;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public final View mView;

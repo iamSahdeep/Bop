@@ -140,14 +140,14 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
         forward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                seekTo(getCurrentPosition() + 10000);
+                seekTo(getCurrentPosition() + (Main.settings.get("jumpValue", 10) * 1000));
             }
         });
 
         rewind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                seekTo(getCurrentPosition() - 10000);
+                seekTo(getCurrentPosition() - (Main.settings.get("jumpValue", 10) * 1000));
             }
         });
 

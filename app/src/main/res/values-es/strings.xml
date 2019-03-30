@@ -29,7 +29,6 @@
 
 
     <string name="pref_header_about">Acerca de</string>
-    <string name="summary_about">Somos un equipo de personas que piensan similar,especializándonos en el Desarrollo de Aplicaciones para Android creando nuevas tendencias en el espacio de las aplicaciones.</string>
     <string name="summary_support">Tienes algunos queries? Podemos ayudarte!</string>
     <string name="title_send_feedback">Enviar comentarios</string>
     <string name="title_faq">Más</string>

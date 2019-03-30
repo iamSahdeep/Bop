@@ -86,7 +86,6 @@ public class HomeFragment extends Fragment {
 
         RecyclerView recentRecycler = view.findViewById(R.id.recyclerRecent);
         recentRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recentRecycler.setHasFixedSize(true);
         recentRecycler.setItemViewCacheSize(20);
         recentRecycler.setDrawingCacheEnabled(true);
         recentRecycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
@@ -142,4 +141,5 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
 }
