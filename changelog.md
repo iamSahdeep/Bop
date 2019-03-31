@@ -1,5 +1,24 @@
 # CHANGELOG.md
 
+## 1.2.1
+### versionCode = 13
+
+Bug Fixes:
+
+  - Fix : Stop music if last song is removed from current playing list -> [c2f830cf0c896bdee65fd148fd7c0b51c6c36cc1](https://github.com/iamSahdeep/Bop/tree/c2f830cf0c896bdee65fd148fd7c0b51c6c36cc1)
+  - Fix : Shuffling single song causes freezing. also changed shuffling -> [50c65b43c574c51dd1f1d5b0b1f382c87e7e9c82](https://github.com/iamSahdeep/Bop/tree/50c65b43c574c51dd1f1d5b0b1f382c87e7e9c82)
+  - Fix : Setting UI Update same time -> [c2f830cf0c896bdee65fd148fd7c0b51c6c36cc1](https://github.com/iamSahdeep/Bop/tree/c2f830cf0c896bdee65fd148fd7c0b51c6c36cc1)
+  - Fix : Shuffling single song causes freezing. also changed shuffling -> [50c65b43c574c51dd1f1d5b0b1f382c87e7e9c82](https://github.com/iamSahdeep/Bop/tree/50c65b43c574c51dd1f1d5b0b1f382c87e7e9c82)
+
+New :
+
+  - Showing playlist content-> [21c856f90a68bd449ff4f1609074bc31d6bfa8e3](https://github.com/iamSahdeep/Bop/tree/21c856f90a68bd449ff4f1609074bc31d6bfa8e3)
+  - Share audio file-> [1ef8b9b3054845465d83ea5912c0de721b5f974e](https://github.com/iamSahdeep/Bop/tree/1ef8b9b3054845465d83ea5912c0de721b5f974e)
+  - Remove song from playlist-> [a4e07a0ae5abb15ebda7606c51dabaac78d3bdd6](https://github.com/iamSahdeep/Bop/tree/a4e07a0ae5abb15ebda7606c51dabaac78d3bdd6)
+  - View Song details-> [ddf50a5b27b86670d8f825f0ebc2563269a835d9](https://github.com/iamSahdeep/Bop/tree/ddf50a5b27b86670d8f825f0ebc2563269a835d9)
+  - Saving last played playlist-> [6749e777173120e5c352cf655ebb383d7a1294f6](https://github.com/iamSahdeep/Bop/tree/6749e777173120e5c352cf655ebb383d7a1294f6)
+  - Lots of new setting options-> [0b9eaa3ed3ce46e5e1f4b26003064ef6f3c39144](https://github.com/iamSahdeep/Bop/tree/0b9eaa3ed3ce46e5e1f4b26003064ef6f3c39144)
+
 ## 1.2
 ### versionCode = 12
 

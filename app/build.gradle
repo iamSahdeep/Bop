@@ -6,8 +6,8 @@ android {
         applicationId "com.sahdeepsingh.Bop"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 12
-        versionName "1.2"
+        versionCode 13
+        versionName "1.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
