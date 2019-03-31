@@ -373,7 +373,58 @@ public class SettingActivity extends BaseActivity implements AdvancedSettings.On
             createFWDialog();
         } else if (what.equals("rescan")) {
             rescanMediaStore();
+        } else if (what.equals("sleep")) {
+            createSTdialog();
         }
+    }
+
+    private void createSTdialog() {
+        CharSequence[] values = {"5 min", "10 min", "15 min", "20 min", "25 min"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
+        builder.setTitle("Set Sleep timer to close music player if paused");
+        int checkeditem = Main.settings.get("sleepTimer", 5);
+        int[] newcheckeditem = {checkeditem};
+        builder.setSingleChoiceItems(values, (checkeditem / 5) - 1, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int item) {
+                        newcheckeditem[0] = item;
+                    }
+                }
+        );
+
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (checkeditem == newcheckeditem[0]) {
+                    dialog.dismiss();
+                } else {
+                    if (newcheckeditem[0] == 0) {
+                        Main.settings.set("sleepTimer", 5);
+                    } else if (newcheckeditem[0] == 1) {
+                        Main.settings.set("sleepTimer", 10);
+                    } else if (newcheckeditem[0] == 2) {
+                        Main.settings.set("sleepTimer", 15);
+                    } else if (newcheckeditem[0] == 3) {
+                        Main.settings.set("sleepTimer", 20);
+                    } else if (newcheckeditem[0] == 4) {
+                        Main.settings.set("sleepTimer", 25);
+                    } else {
+                        Main.settings.set("sleepTimer", 5);
+                    }
+                    Toast.makeText(SettingActivity.this, "Changes Made", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void createFWDialog() {
@@ -382,7 +433,7 @@ public class SettingActivity extends BaseActivity implements AdvancedSettings.On
         builder.setTitle("Set jump value in forwar/rewind");
         int checkeditem = Main.settings.get("jumpValue", 10);
         int[] newcheckeditem = {checkeditem};
-        builder.setSingleChoiceItems(values, checkeditem, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(values, (checkeditem / 5) - 1, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int item) {
@@ -410,6 +461,7 @@ public class SettingActivity extends BaseActivity implements AdvancedSettings.On
                     } else {
                         Main.settings.set("jumpValue", 10);
                     }
+
                     Toast.makeText(SettingActivity.this, "Changes Made", Toast.LENGTH_SHORT).show();
                 }
             }

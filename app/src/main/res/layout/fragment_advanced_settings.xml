@@ -48,6 +48,31 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/settingSTimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sleep_timer"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sleepTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/_10_sec"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/settingsTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -67,7 +67,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
     //to handle the click delay if the the headshook is double clicked within 5ms
     static final long CLICK_DELAY = 500;
     //handling the pause event and stop service after 5 min if paused
-    private static final int STOP_DELAY = 300000;
+    private static final int STOP_DELAY = Main.settings.get("sleepTimer", 5) * 60000;
     //A static class to handle delay callbacks
     private final DelayedStopHandler mDelayedStopHandler = new DelayedStopHandler(this);
 
@@ -177,8 +177,11 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
                 final int action = event.getAction();
                 final long eventTime = event.getEventTime();
                 if (event.getRepeatCount() == 0 && action == KeyEvent.ACTION_DOWN) {
+
                     switch (keycode) {
                         case KeyEvent.KEYCODE_HEADSETHOOK:
+                            if (!Main.settings.get("headphoneControl", true))
+                                break;
                             if (eventTime - lastClick < CLICK_DELAY) {
                                 next(true);
                                 playSong();

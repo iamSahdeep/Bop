@@ -24,8 +24,8 @@ import androidx.fragment.app.Fragment;
 public class AdvancedSettings extends Fragment {
 
 
-    TextView jump, rescan;
-    LinearLayout jumpLL;
+    TextView jump, sleep, rescan;
+    LinearLayout jumpLL, sleepLL;
     private OnFragmentInteractionListener mListener;
 
     public AdvancedSettings() {
@@ -45,14 +45,23 @@ public class AdvancedSettings extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_advanced_settings, container, false);
+        sleepLL = view.findViewById(R.id.settingSTimer);
+        sleep = view.findViewById(R.id.sleepTime);
         jumpLL = view.findViewById(R.id.settingPSpeed);
         jump = view.findViewById(R.id.jumpTime);
         rescan = view.findViewById(R.id.rescan);
         jump.setText(String.format("%s sec", String.valueOf(Main.settings.get("jumpValue", 10))));
+        sleep.setText(String.format("%s min", String.valueOf(Main.settings.get("sleepTimer", 5))));
         jumpLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onButtonPressed("jump");
+            }
+        });
+        sleepLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onButtonPressed("sleep");
             }
         });
         rescan.setOnClickListener(new View.OnClickListener() {

@@ -184,5 +184,6 @@
     <string name="_10_sec">10 sec</string>
     <string name="rescan_mediaplayer">Rescan MediaStore</string>
     <string name="might_help_if_you_cant_find_all_songs_in_app">Might help if you cant find all songs in App</string>
+    <string name="sleep_timer">Sleep Timer</string>
 
 </resources>
