@@ -11,8 +11,6 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import static com.sahdeepsingh.Bop.BopUtils.ThemeUtil.THEME_RED;
-
 /**
  * Master Activity from which every other Activity inherits
  * (except for `SettingsActivity`).
@@ -30,7 +28,7 @@ import static com.sahdeepsingh.Bop.BopUtils.ThemeUtil.THEME_RED;
  * was changed by the user.
  * If it was, it `recreate()`s itself.
  *
- * @note We must call `Activity.setTheme()` BEFORE
+ *  We must call `Activity.setTheme()` BEFORE
  * `Activity.setContentView()`!
  * <p>
  * Sources that made me apply this idea, thank you so much:
@@ -40,16 +38,8 @@ import static com.sahdeepsingh.Bop.BopUtils.ThemeUtil.THEME_RED;
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
-    /**
-     * Keeping track of the current theme and Mode name.
-     *
-     * @note It's name and valid values are defined on
-     * `res/values/strings.xml`, at the fields
-     * we can change on the Settings menu.
-     */
     protected String currentMode = "";
     protected String currentTheme = "";
-    public static int mTheme = THEME_RED;
 
 
     @Override
@@ -71,7 +61,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        /**
+        /*
          * Why called it again?
          * Cause we want to apply changes when activity resumes.
          * and If Changes were made we will recreate the Activity

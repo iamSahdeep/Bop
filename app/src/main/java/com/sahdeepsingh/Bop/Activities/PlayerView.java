@@ -123,57 +123,31 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
         } else
             repeat.setImageDrawable((ExtraUtils.getThemedIcon(this, ContextCompat.getDrawable(this, R.drawable.ic_repeat_off))));
 
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playNext();
+        next.setOnClickListener(view -> playNext());
+
+        previous.setOnClickListener(view -> playPrevious());
+
+        forward.setOnClickListener(view -> seekTo(getCurrentPosition() + (Main.settings.get("jumpValue", 10) * 1000)));
+
+        rewind.setOnClickListener(view -> seekTo(getCurrentPosition() - (Main.settings.get("jumpValue", 10) * 1000)));
+
+        shuffle.setOnClickListener(view -> {
+            Main.musicService.toggleShuffle();
+            if (!Main.musicService.isShuffle()) {
+                shuffle.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shuffle_off))));
+            } else {
+                shuffle.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shuffle_on))));
             }
         });
 
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playPrevious();
-            }
-        });
-
-        forward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                seekTo(getCurrentPosition() + (Main.settings.get("jumpValue", 10) * 1000));
-            }
-        });
-
-        rewind.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                seekTo(getCurrentPosition() - (Main.settings.get("jumpValue", 10) * 1000));
-            }
-        });
-
-        shuffle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.toggleShuffle();
-                if (!Main.musicService.isShuffle()) {
-                    shuffle.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shuffle_off))));
-                } else {
-                    shuffle.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shuffle_on))));
-                }
-            }
-        });
-
-        repeat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.musicService.toggleRepeat();
-                if (Main.musicService.isRepeat() == 0) {
-                    repeat.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_one))));
-                } else if (Main.musicService.isRepeat() == 1) {
-                    repeat.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_on))));
-                } else
-                    repeat.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_off))));
-            }
+        repeat.setOnClickListener(view -> {
+            Main.musicService.toggleRepeat();
+            if (Main.musicService.isRepeat() == 0) {
+                repeat.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_one))));
+            } else if (Main.musicService.isRepeat() == 1) {
+                repeat.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_on))));
+            } else
+                repeat.setImageDrawable((ExtraUtils.getThemedIcon(getApplicationContext(), ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_repeat_off))));
         });
     }
 
@@ -398,6 +372,22 @@ public class PlayerView extends BaseActivity implements MediaController.MediaPla
                 finish();
                 break;
             default:
+            case PlaybackStateCompat.STATE_BUFFERING:
+                break;
+            case PlaybackStateCompat.STATE_CONNECTING:
+                break;
+            case PlaybackStateCompat.STATE_ERROR:
+                break;
+            case PlaybackStateCompat.STATE_FAST_FORWARDING:
+                break;
+            case PlaybackStateCompat.STATE_REWINDING:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_NEXT:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_QUEUE_ITEM:
+                break;
         }
 
     }

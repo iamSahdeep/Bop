@@ -355,12 +355,7 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
             }
         });
         cancel = view.findViewById(R.id.cancelPlaylist);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        cancel.setOnClickListener(view1 -> dialog.dismiss());
         dialog.setContentView(view);
         dialog.show();
     }

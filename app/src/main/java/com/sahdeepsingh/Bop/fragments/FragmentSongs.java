@@ -38,11 +38,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-public class FragmentSongs extends android.app.Fragment implements SongsRecyclerViewAdapter.OnClickAction {
+public class FragmentSongs extends Fragment implements SongsRecyclerViewAdapter.OnClickAction {
 
     SongsRecyclerViewAdapter songsRecyclerViewAdapter;
     FloatingActionButton floatingActionButton;

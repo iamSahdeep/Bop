@@ -1,8 +1,6 @@
 package com.sahdeepsingh.Bop.Activities;
 
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -57,7 +55,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
-import androidx.legacy.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import me.tankery.lib.circularseekbar.CircularSeekBar;
 
@@ -136,13 +136,10 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_ham)));
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (drawer.isDrawerOpen()) {
-                    drawer.closeDrawer();
-                } else drawer.openDrawer();
-            }
+        toolbar.setNavigationOnClickListener(view -> {
+            if (drawer.isDrawerOpen()) {
+                drawer.closeDrawer();
+            } else drawer.openDrawer();
         });
 
 
@@ -267,7 +264,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
         viewPager.setOffscreenPageLimit(5);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -484,36 +481,16 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
 
     private void setControlListeners() {
         next.setImageDrawable(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_skip)));
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playNext();
-            }
-        });
+        next.setOnClickListener(view -> playNext());
 
         previous.setImageDrawable(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_previous)));
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playPrevious();
-            }
-        });
+        previous.setOnClickListener(view -> playPrevious());
 
         forward.setImageDrawable(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_forward)));
-        forward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                seekTo(getCurrentPosition() + 10000);
-            }
-        });
+        forward.setOnClickListener(view -> seekTo(getCurrentPosition() + 10000));
 
         rewind.setImageDrawable(ExtraUtils.getThemedIcon(this, getDrawable(R.drawable.ic_rewind)));
-        rewind.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                seekTo(getCurrentPosition() - 10000);
-            }
-        });
+        rewind.setOnClickListener(view -> seekTo(getCurrentPosition() - 10000));
 
     }
 
@@ -540,7 +517,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
                     bottomControls.setVisibility(View.GONE);
                 }
                 if (isPlaying()) {
-                    mProgressView.setProgress(getCurrentPosition() / 1000);
+                    mProgressView.setProgress((float) getCurrentPosition() / 1000);
                 }
                 handler.postDelayed(this, 1000);
             }
@@ -657,6 +634,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
             super(fm);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.

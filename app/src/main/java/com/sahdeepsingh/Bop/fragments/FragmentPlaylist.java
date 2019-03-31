@@ -1,6 +1,5 @@
 package com.sahdeepsingh.Bop.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +19,7 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
