@@ -185,5 +185,7 @@
     <string name="rescan_mediaplayer">Rescan MediaStore</string>
     <string name="might_help_if_you_cant_find_all_songs_in_app">Might help if you cant find all songs in App</string>
     <string name="sleep_timer">Sleep Timer</string>
+    <string name="block_folder">Block Folder</string>
+    <string name="click_to_block_a_folder">Click to block a Folder</string>
 
 </resources>

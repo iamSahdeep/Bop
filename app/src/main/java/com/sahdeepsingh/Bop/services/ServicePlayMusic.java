@@ -32,6 +32,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.media.MediaBrowserServiceCompat;
+import androidx.media.session.MediaButtonReceiver;
+
 import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.BopUtils.RecentUtils;
 import com.sahdeepsingh.Bop.Handlers.NotificationHandler;
@@ -46,11 +51,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.media.MediaBrowserServiceCompat;
-import androidx.media.session.MediaButtonReceiver;
 
 public class ServicePlayMusic extends MediaBrowserServiceCompat
         implements MediaPlayer.OnPreparedListener,
@@ -636,6 +636,7 @@ public class ServicePlayMusic extends MediaBrowserServiceCompat
 
         if (player == null)
             initMusicPlayer();
+        player.stop();
         player.reset();
         // Get the song ID from the list, extract the ID and
         // get an URL based on it

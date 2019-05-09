@@ -26,8 +26,9 @@ public class SongUtils {
         for (Song song : songs) {
             String currentAlbum = song.getAlbum();
 
-            if (currentAlbum.equals(desiredAlbum))
+            if (currentAlbum.equals(desiredAlbum)) {
                 songsByAlbum.add(song);
+            }
         }
 
         return songsByAlbum;

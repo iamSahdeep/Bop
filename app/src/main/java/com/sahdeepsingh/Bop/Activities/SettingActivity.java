@@ -2,6 +2,7 @@ package com.sahdeepsingh.Bop.Activities;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,11 +14,20 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.sahdeepsingh.Bop.Adapters.ThemeAdapter;
 import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.BopUtils.ThemeUtil;
+import com.sahdeepsingh.Bop.Handlers.DefaultSPHandler;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.fragments.AdvancedSettings;
 import com.sahdeepsingh.Bop.playerMain.Main;
@@ -27,18 +37,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class SettingActivity extends BaseActivity implements AdvancedSettings.OnFragmentInteractionListener {
 
     public static List<Theme> mThemeList = new ArrayList<>();
     public static int selectedTheme = 0;
-    LinearLayout mode, theme;
+    LinearLayout mode, theme, blockfolder;
     MaterialCheckBox pauseHeadphoneUnplugged, resumeHeadphonePlugged, headphoneControl, saveRecent, savePlaylist, saveCount;
     LinearLayout llBottomSheet;
     private RecyclerView mRecyclerView;
@@ -68,6 +71,7 @@ public class SettingActivity extends BaseActivity implements AdvancedSettings.On
         saveRecent = findViewById(R.id.saveRecent);
         saveCount = findViewById(R.id.saveCount);
         savePlaylist = findViewById(R.id.savePlaylist);
+        blockfolder = findViewById(R.id.blockFolder);
 
         llBottomSheet = findViewById(R.id.bottom_sheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
@@ -240,6 +244,35 @@ public class SettingActivity extends BaseActivity implements AdvancedSettings.On
 
             }
         });
+        blockfolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+
+                // Filter to only show results that can be "opened", such as
+                // a file (as opposed to a list of contacts or timezones).
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+                // Create a file with the requested MIME type.
+                intent.setType("lol/lol");
+                intent.putExtra(Intent.EXTRA_TITLE, ".nomedia");
+                startActivityForResult(intent, 1122);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1122 && data != null) {
+            DefaultSPHandler spHandler = new DefaultSPHandler(getApplicationContext());
+            ArrayList<String> lol = spHandler.getListString("blockedURIs");
+            if (lol == null)
+                lol = new ArrayList<>();
+            lol.add(data.getData().toString());
+            spHandler.putListString("blockedURIs", lol);
+
+        }
     }
 
     private void changeTheme() {

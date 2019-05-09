@@ -47,14 +47,14 @@ public class Data {
      *
      * @note It's only available after calling `scanSongs`.
      */
-    private HashMap<String, String> genreIdToGenreNameMap;
+    private HashMap<String, String> genreIdToGenreNameMap = new HashMap<>();
 
     /**
      * Maps song's IDs to song genre IDs.
      *
      * @note It's only available after calling `scanSongs`.
      */
-    private HashMap<String, String> songIdToGenreIdMap;
+    private HashMap<String, String> songIdToGenreIdMap = new HashMap<>();
 
     /**
      * Flag that tells if successfully scanned all data.

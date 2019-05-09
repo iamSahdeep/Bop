@@ -15,6 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.sahdeepsingh.Bop.Activities.PlayingNowList;
 import com.sahdeepsingh.Bop.BopUtils.ExtraUtils;
 import com.sahdeepsingh.Bop.BopUtils.SongUtils;
@@ -29,12 +35,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -132,6 +132,30 @@ public class FileFragment extends Fragment {
                 playAllSongsinDirectory();
             }
         });
+
+    }
+
+    private void toggleBlock() {
+        File file = new File(path, ".nomedia");
+        if (file.exists()) {
+            file.delete();
+        } else {
+            try {
+                //file.createNewFile();
+                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+                String mimeType = "lol/lol";
+                String filename = ".nomedia";
+                intent.setType(mimeType);
+                intent.putExtra(Intent.EXTRA_TITLE, filename);
+                startActivityForResult(intent, 1122);
+            } catch (Exception e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        loadDirectory();
     }
 
     private void playAllSongsinDirectory() {
