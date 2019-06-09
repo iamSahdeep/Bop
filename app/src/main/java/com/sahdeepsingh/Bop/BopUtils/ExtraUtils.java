@@ -21,6 +21,7 @@ import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.fragments.SongDetailsFragment;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,6 +32,7 @@ import java.util.Map;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.palette.graphics.Palette;
 
 public class ExtraUtils {
@@ -127,11 +129,13 @@ public class ExtraUtils {
     }
 
     public static void shareSong(Context context, Song song) {
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("audio/*");
-        share.putExtra(Intent.EXTRA_STREAM, Uri.parse("content:///" + song.getFilePath()));
-        context.startActivity(Intent.createChooser(share, "Share Sound File"));
-        context.getContentResolver().notifyChange(Uri.parse("content://media"), null);
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("audio/*");
+        Uri fileUri = FileProvider.getUriForFile(context, "com.sahdeepsingh.Bop", new File(song.getFilePath()));
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+        context.startActivity(Intent.createChooser(shareIntent, "Share File"));
     }
 
     public static void showSongDetails(Context context, Long id) {

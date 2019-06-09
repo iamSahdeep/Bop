@@ -1,6 +1,8 @@
 package com.sahdeepsingh.Bop.fragments;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -15,7 +17,10 @@ import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.squareup.picasso.Picasso;
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+
+import java.io.File;
 
 public class SongDetailsFragment extends Fragment {
 
@@ -102,6 +107,7 @@ public class SongDetailsFragment extends Fragment {
     }
 
     private void shareSong(View v) {
+        ExtraUtils.shareSong(v.getContext(),song);
 
     }
 
