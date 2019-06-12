@@ -433,6 +433,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/curVersion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"

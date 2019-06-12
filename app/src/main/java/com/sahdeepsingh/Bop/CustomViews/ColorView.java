@@ -103,7 +103,7 @@ public class ColorView extends View {
         } else {
             border.setColor(ContextCompat.getColor(getContext(), R.color.md_blue_grey_400));
         }
-        border.setStrokeWidth(stroke);
+        border.setStrokeWidth(stroke * 2);
         canvas.drawRect(0, 0, width, height, back);
         canvas.drawRect(0, 0, width, statusbar, primary);
         canvas.drawRect(0, statusbar, width, toolbar, dark);

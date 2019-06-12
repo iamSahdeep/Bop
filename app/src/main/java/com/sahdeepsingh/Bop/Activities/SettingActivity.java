@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -72,11 +73,11 @@ public class SettingActivity extends BaseActivity implements AdvancedSettings.On
         saveCount = findViewById(R.id.saveCount);
         savePlaylist = findViewById(R.id.savePlaylist);
         blockfolder = findViewById(R.id.blockFolder);
-
         llBottomSheet = findViewById(R.id.bottom_sheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-
+        TextView slds = findViewById(R.id.curVersion);
+        slds.setText(Main.versionName);
         setupCheckBoxes();
         setListeners();
 
@@ -271,7 +272,6 @@ public class SettingActivity extends BaseActivity implements AdvancedSettings.On
                 lol = new ArrayList<>();
             lol.add(data.getData().toString());
             spHandler.putListString("blockedURIs", lol);
-
         }
     }
 
@@ -302,7 +302,7 @@ public class SettingActivity extends BaseActivity implements AdvancedSettings.On
     }
 
     private void showModeDialog() {
-        CharSequence[] values = {"Day Mode", "Nigh Mode"};
+        CharSequence[] values = {"Day Mode", "Night Mode"};
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
         builder.setTitle("Set Day/Night Mode");
         int checkeditem = Main.settings.get("modes", "Day").equals("Day") ? 0 : 1;
