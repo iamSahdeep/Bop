@@ -318,7 +318,7 @@ public class MainScreen extends BaseActivity implements MediaController.MediaPla
     @Override
     protected void onStart() {
         super.onStart();
-        Main.startMusicService(this);
+       // Main.startMusicService(this);
 
     }
 

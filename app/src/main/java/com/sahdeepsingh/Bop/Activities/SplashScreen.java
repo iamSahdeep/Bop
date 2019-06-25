@@ -1,6 +1,5 @@
 package com.sahdeepsingh.Bop.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -55,26 +54,28 @@ public class SplashScreen extends AppCompatActivity {
             last.edit().clear().apply();
         }
 
+        Main.initialize(this);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (PermissionHandler.isStoragePergiven(getApplicationContext())) {
-                if (Main.mainMenuHasNowPlayingItem) {
-                    Intent intent = new Intent(SplashScreen.this, MainScreen.class);
-                    startActivity(intent);
+                if (!Main.data.isInitialized()) {
+                    //Main.initialize(this);
+                    scanSongs();
                 } else {
-                    Main.initialize(this);
-                    scanSongs(false);
+                    Intent intent = new Intent(this, MainScreen.class);
+                    startActivity(intent);
                 }
             } else {
                 PermissionHandler.requestBothPermssion(this, PERMISSION_REQUEST_CODE);
             }
 
         } else {
-            if (Main.mainMenuHasNowPlayingItem) {
-                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+            if (!Main.data.isInitialized()) {
+               // Main.initialize(this);
+                scanSongs();
+            }else {
+                Intent intent = new Intent(this, MainScreen.class);
                 startActivity(intent);
-            } else {
-                Main.initialize(this);
-                scanSongs(false);
             }
         }
     }
@@ -87,12 +88,12 @@ public class SplashScreen extends AppCompatActivity {
 
                     if (PermissionHandler.isStoragePergiven(getApplicationContext())) {
                         if (PermissionHandler.isRecordingPergiven(getApplicationContext())) {
-                            if (Main.mainMenuHasNowPlayingItem) {
-                                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+                            if (!Main.data.isInitialized()) {
+                                //Main.initialize(this);
+                                scanSongs();
+                            }else {
+                                Intent intent = new Intent(this, MainScreen.class);
                                 startActivity(intent);
-                            } else {
-                                Main.initialize(getApplicationContext());
-                                scanSongs(false);
                             }
                         } else {
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -100,12 +101,12 @@ public class SplashScreen extends AppCompatActivity {
                                 if (showRationale) {
                                     PermissionHandler.requestRecording(SplashScreen.this, PERMISSION_REQUEST_CODE_Audio);
                                 } else {
-                                    if (Main.mainMenuHasNowPlayingItem) {
-                                        Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+                                    if (!Main.data.isInitialized()) {
+                                       // Main.initialize(this);
+                                        scanSongs();
+                                    }else {
+                                        Intent intent = new Intent(this, MainScreen.class);
                                         startActivity(intent);
-                                    } else {
-                                        Main.initialize(getApplicationContext());
-                                        scanSongs(false);
                                     }
                                 }
                             }
@@ -138,23 +139,23 @@ public class SplashScreen extends AppCompatActivity {
                 if (!PermissionHandler.isRecordingPergiven(getApplicationContext())) {
                     Toast.makeText(getApplicationContext(), "Starting without Visualizers", Toast.LENGTH_SHORT).show();
                 }
-                if (Main.mainMenuHasNowPlayingItem) {
-                    Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+                if (!Main.data.isInitialized()) {
+                    //Main.initialize(this);
+                    scanSongs();
+                }else {
+                    Intent intent = new Intent(this, MainScreen.class);
                     startActivity(intent);
-                } else {
-                    Main.initialize(getApplicationContext());
-                    scanSongs(false);
                 }
 
                 break;
             case PERMISSION_REQUEST_CODE_Storage:
                 if (PermissionHandler.isStoragePergiven(getApplicationContext())) {
-                    if (Main.mainMenuHasNowPlayingItem) {
-                        Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+                    if (!Main.data.isInitialized()) {
+                        //Main.initialize(this);
+                        scanSongs();
+                    }else {
+                        Intent intent = new Intent(this, MainScreen.class);
                         startActivity(intent);
-                    } else {
-                        Main.initialize(getApplicationContext());
-                        scanSongs(false);
                     }
                 } else {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -182,30 +183,15 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-    void scanSongs(boolean forceScan) {
-        Activity activity = this;
-        if ((forceScan) || (!Main.data.isInitialized())) {
-            new SplashScreen.ScanSongs(this).execute();
-        } else if (Intent.ACTION_VIEW.equals(activity.getIntent().getAction())) {
-            File file = new File(activity.getIntent().getData().getPath());
-            Intent intent = new Intent(activity, PlayingNowList.class);
-            intent.putExtra("file", file);
-            Main.musicList.clear();
-            Main.musicList.add(SongUtils.getSongbyFile(file));
-            Main.nowPlayingList = Main.musicList;
-            if (Main.nowPlayingList == null) {
-                Toast.makeText(this, "Selected Item is not a song OR is not in mediaStore", Toast.LENGTH_SHORT).show();
-                intent = new Intent(activity, MainScreen.class);
-                activity.startActivity(intent);
-                finish();
-            }
-            Main.musicService.setList(Main.nowPlayingList);
-            activity.startActivity(intent);
-            finish();
-        } else {
-            Intent intent = new Intent(activity, MainScreen.class);
-            activity.startActivity(intent);
-        }
+    void scanSongs() {
+        new SplashScreen.ScanSongs(this).execute();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Main.stopMusicService(this);
+        //his.unbindService(Main.musicConnection);
     }
 
     static class ScanSongs extends AsyncTask<String, Integer, String> {
@@ -267,16 +253,11 @@ public class SplashScreen extends AppCompatActivity {
                 Main.musicService.setList(Main.nowPlayingList);
                 activity.startActivity(intent);
                 activity.finish();
-            } else {
+
+            }  else {
                 Intent intent = new Intent(activity, MainScreen.class);
                 activity.startActivity(intent);
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Main.startMusicService(getApplicationContext());
     }
 }

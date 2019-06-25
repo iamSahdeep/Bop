@@ -149,8 +149,10 @@ public class Main {
      */
     public static void startMusicService(Context c) {
 
-        if (musicServiceIntent != null)
+        if (musicServiceIntent != null){
+            c.bindService(musicServiceIntent, musicConnection, Context.BIND_AUTO_CREATE);
             return;
+        }
 
         if (Main.musicService != null)
             return;
@@ -170,14 +172,8 @@ public class Main {
      */
     public static void stopMusicService(Context c) {
 
-        if (musicServiceIntent == null)
-            return;
-
-        Log.w("service", "stoppedService");
-        c.stopService(musicServiceIntent);
+        //c.stopService(musicServiceIntent);
         c.unbindService(musicConnection);
-        musicServiceIntent = null;
-        Main.musicService = null;
     }
 
     /**
