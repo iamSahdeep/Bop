@@ -21,6 +21,11 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme.RED">
         <activity
+            android:name=".Activities.SampleActivity"
+            android:theme="@style/MaterialBaseTheme.Dialog">
+
+        </activity>
+        <activity
             android:name=".Activities.SettingActivity"
             android:label="@string/settings"
             android:launchMode="singleTop"
@@ -80,7 +85,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
         </provider>
-
     </application>
 
 </manifest>

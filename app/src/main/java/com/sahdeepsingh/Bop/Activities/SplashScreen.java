@@ -12,18 +12,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.snackbar.Snackbar;
-import com.sahdeepsingh.Bop.BopUtils.SongUtils;
 import com.sahdeepsingh.Bop.Handlers.PermissionHandler;
 import com.sahdeepsingh.Bop.R;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.RECORD_AUDIO;
@@ -58,56 +56,32 @@ public class SplashScreen extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (PermissionHandler.isStoragePergiven(getApplicationContext())) {
-                if (!Main.data.isInitialized()) {
-                    //Main.initialize(this);
-                    scanSongs();
-                } else {
-                    Intent intent = new Intent(this, MainScreen.class);
-                    startActivity(intent);
-                }
+                scanSongs();
             } else {
                 PermissionHandler.requestBothPermssion(this, PERMISSION_REQUEST_CODE);
             }
 
         } else {
-            if (!Main.data.isInitialized()) {
-               // Main.initialize(this);
-                scanSongs();
-            }else {
-                Intent intent = new Intent(this, MainScreen.class);
-                startActivity(intent);
-            }
+            scanSongs();
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (true) {
 
                     if (PermissionHandler.isStoragePergiven(getApplicationContext())) {
                         if (PermissionHandler.isRecordingPergiven(getApplicationContext())) {
-                            if (!Main.data.isInitialized()) {
-                                //Main.initialize(this);
-                                scanSongs();
-                            }else {
-                                Intent intent = new Intent(this, MainScreen.class);
-                                startActivity(intent);
-                            }
+                            scanSongs();
                         } else {
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                                 boolean showRationale = shouldShowRequestPermissionRationale(RECORD_AUDIO);
                                 if (showRationale) {
                                     PermissionHandler.requestRecording(SplashScreen.this, PERMISSION_REQUEST_CODE_Audio);
                                 } else {
-                                    if (!Main.data.isInitialized()) {
-                                       // Main.initialize(this);
-                                        scanSongs();
-                                    }else {
-                                        Intent intent = new Intent(this, MainScreen.class);
-                                        startActivity(intent);
-                                    }
+                                    scanSongs();
                                 }
                             }
                         }
@@ -139,24 +113,11 @@ public class SplashScreen extends AppCompatActivity {
                 if (!PermissionHandler.isRecordingPergiven(getApplicationContext())) {
                     Toast.makeText(getApplicationContext(), "Starting without Visualizers", Toast.LENGTH_SHORT).show();
                 }
-                if (!Main.data.isInitialized()) {
-                    //Main.initialize(this);
-                    scanSongs();
-                }else {
-                    Intent intent = new Intent(this, MainScreen.class);
-                    startActivity(intent);
-                }
-
+                scanSongs();
                 break;
             case PERMISSION_REQUEST_CODE_Storage:
                 if (PermissionHandler.isStoragePergiven(getApplicationContext())) {
-                    if (!Main.data.isInitialized()) {
-                        //Main.initialize(this);
-                        scanSongs();
-                    }else {
-                        Intent intent = new Intent(this, MainScreen.class);
-                        startActivity(intent);
-                    }
+                    scanSongs();
                 } else {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                         boolean showRationale = shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE) && shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE);
@@ -232,16 +193,10 @@ public class SplashScreen extends AppCompatActivity {
             if (activity == null || activity.isFinishing()) return;
 
             if (Intent.ACTION_VIEW.equals(activity.getIntent().getAction())) {
-                File file = new File(activity.getIntent().getData().getPath());
-                Intent intent = new Intent(activity, PlayingNowList.class);
-                intent.putExtra("file", file);
-                Main.musicList.clear();
-                if (SongUtils.getSongbyFile(file) == null) {
-                    Toast.makeText(activity, "Selected Song is not in mediaStore yet, Cant play for now", Toast.LENGTH_SHORT).show();
-                    intent = new Intent(activity, MainScreen.class);
-                    activity.startActivity(intent);
-                    activity.finish();
-                }
+                Uri file = activity.getIntent().getData();
+                Intent intent = new Intent(activity, SampleActivity.class);
+                intent.putExtra("file", file.toString());
+               /* Main.musicList.clear();
                 Main.musicList.add(SongUtils.getSongbyFile(file));
                 Main.nowPlayingList = Main.musicList;
                 if (Main.nowPlayingList == null) {
@@ -250,7 +205,7 @@ public class SplashScreen extends AppCompatActivity {
                     activity.startActivity(intent);
                     activity.finish();
                 }
-                Main.musicService.setList(Main.nowPlayingList);
+                Main.musicService.setList(Main.nowPlayingList);*/
                 activity.startActivity(intent);
                 activity.finish();
 

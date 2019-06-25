@@ -115,6 +115,7 @@ public class Data {
             return;
         scanningSongs = true;
 
+        destroy();
         updateGenres(c, fromWhere);
         updateSongs(c, fromWhere);
         updatePlaylists(c, fromWhere);

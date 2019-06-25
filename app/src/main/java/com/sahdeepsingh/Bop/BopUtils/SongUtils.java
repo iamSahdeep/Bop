@@ -1,14 +1,5 @@
 package com.sahdeepsingh.Bop.BopUtils;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.database.Cursor;
-import android.media.MediaMetadataRetriever;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.provider.SyncStateContract;
-import android.util.Log;
-
 import com.sahdeepsingh.Bop.SongData.Song;
 import com.sahdeepsingh.Bop.playerMain.Main;
 
@@ -92,28 +83,6 @@ public class SongUtils {
         return currentSong;
     }
 
-    public static long getSongIdFromMediaStore(String songPath, Context context) {
-        long id = 0;
-        ContentResolver cr = context.getContentResolver();
-
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String selection = MediaStore.Audio.Media.DATA;
-        String[] selectionArgs = {songPath};
-        String[] projection = {MediaStore.Audio.Media._ID};
-        String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
-
-        Cursor cursor = cr.query(uri, projection, selection + "=?", selectionArgs, sortOrder);
-
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                int idIndex = cursor.getColumnIndex(MediaStore.Audio.Media._ID);
-                id = Long.parseLong(cursor.getString(idIndex));
-            }
-        }
-        return id;
-    }
-
     public static Song getSongbyFile(File file) {
         Song song = null;
         for (Song s : songs) {
@@ -121,10 +90,6 @@ public class SongUtils {
                 song = s;
                 break;
             }
-        }
-
-        if (song == null){
-           
         }
         return song;
     }
