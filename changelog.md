@@ -1,5 +1,13 @@
 # CHANGELOG.md
 
+## 1.2.2
+### versionCode = 14
+
+Bug Fixes:
+
+  - Fix : Song doesn't change when another song is being played
+  - Fix : Sharing song from playlist.
+
 ## 1.2.1
 ### versionCode = 13
 
