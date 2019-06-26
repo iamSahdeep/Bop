@@ -196,16 +196,6 @@ public class SplashScreen extends AppCompatActivity {
                 Uri file = activity.getIntent().getData();
                 Intent intent = new Intent(activity, SampleActivity.class);
                 intent.putExtra("file", file.toString());
-               /* Main.musicList.clear();
-                Main.musicList.add(SongUtils.getSongbyFile(file));
-                Main.nowPlayingList = Main.musicList;
-                if (Main.nowPlayingList == null) {
-                    Toast.makeText(activity, "Selected Item is not a song OR is not in mediaStore", Toast.LENGTH_SHORT).show();
-                    intent = new Intent(activity, MainScreen.class);
-                    activity.startActivity(intent);
-                    activity.finish();
-                }
-                Main.musicService.setList(Main.nowPlayingList);*/
                 activity.startActivity(intent);
                 activity.finish();
 

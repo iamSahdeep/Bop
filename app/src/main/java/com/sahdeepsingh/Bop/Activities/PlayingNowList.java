@@ -27,6 +27,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sahdeepsingh.Bop.Adapters.CurrentPlayListSongsAdapter;
 import com.sahdeepsingh.Bop.BopUtils.PlaylistUtils;
@@ -35,11 +40,6 @@ import com.sahdeepsingh.Bop.playerMain.Main;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class PlayingNowList extends BaseActivity implements MediaController.MediaPlayerControl {
 
@@ -112,13 +112,13 @@ public class PlayingNowList extends BaseActivity implements MediaController.Medi
         songListView.setAdapter(new CurrentPlayListSongsAdapter(Main.nowPlayingList));
 
         if (getIntent().getExtras() != null)
-            if (getIntent().getExtras().containsKey("playlistname") && !Main.mainMenuHasNowPlayingItem) {
+            if (getIntent().getExtras().containsKey("playlistname")) {
             mPlaylistName.setText(Objects.requireNonNull(getIntent().getExtras()).getString("playlistname", "Current Playlist"));
-            Main.musicService.playSong();
+                if (Main.musicService.currentSong != Main.musicList.get(0))
+                    Main.musicService.playSong();
         }
 
         MainScreen.addNowPlayingItem();
-
     }
 
 
